@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NeuroLjus — Acceso beta (perfiles)</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-content">
+      <h1>NeuroLjus</h1>
+      <p>Apoyo empático para personas autistas no verbales. Acceso a <strong>NeuroSignals (beta)</strong>.</p>
+      <button id="openBtn" class="btn-primary">Ingresar</button>
+      <p class="note">Acceso con <strong>código secreto</strong>. Cada código ↔ un perfil (rol/alcances).</p>
+    </div>
+  </header>
+
+  <div id="gateModal" class="modal hidden" aria-hidden="true" role="dialog" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <h2 id="modalTitle">Escribe tu código</h2>
+      <input id="secretInput" type="password" placeholder="Código secreto" autocomplete="off" />
+      <div class="row">
+        <button id="submitCode" class="btn-primary">Acceder</button>
+        <button id="closeModal" class="btn-secondary">Cancelar</button>
+      </div>
+      <p id="statusMsg" class="status" aria-live="polite"></p>
+      <p class="small">Tu acceso se recordará por 24h en este navegador.</p>
+    </div>
+  </div>
+
+  <section id="protected" class="hidden">
+    <div class="container">
+      <h2>NeuroSignals (beta)</h2>
+      <p id="greet"></p>
+      <div class="embed">
+        <iframe id="toolFrame" src="../app/index.html" title="NeuroSignals App"></iframe>
+      </div>
+      <div class="row gap">
+        <button id="goApp" class="btn-primary">Abrir en ventana completa</button>
+        <button id="logout" class="btn-secondary">Cerrar sesión</button>
+      </div>
+      <p class="small">La app puede leer <code>localStorage['nl_profile_v1']</code> para personalizar vistas/permisos.</p>
+    </div>
+  </section>
+
+  <script src="profiles.js"></script>
+  <script src="gate.js"></script>
+</body>
+</html>

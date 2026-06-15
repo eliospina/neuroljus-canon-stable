@@ -19,16 +19,11 @@ npm run build && npm start
 
 ## Environment Variables
 
-Copy `.env.example` to `.env.local` and fill in your values:
+Create a `.env.local` file in the project root:
 
 ```bash
-cp .env.example .env.local
+OPENAI_API_KEY=sk-proj-xxxxxxxxxxxxx
 ```
-
-| Variable | Required | Description |
-| --- | --- | --- |
-| `OPENAI_API_KEY` | Yes | Server-side key used by `/api/chat`. |
-| `NEXT_PUBLIC_WEB3FORMS_KEY` | Yes (for contact form) | Public Web3Forms access key. If unset, the contact form is disabled and shows a fallback email. |
 
 **Important**: Never commit `.env.local` to git (already in `.gitignore`)
 
@@ -47,31 +42,26 @@ cp .env.example .env.local
 .
 ├─ next.config.mjs
 ├─ package.json
-├─ .env.example           # Template for environment variables
-├─ .env.local             # Your secrets (not in git)
+├─ .env.local              # OpenAI API key (not in git)
 ├─ postcss.config.js
 ├─ tailwind.config.ts
 ├─ tsconfig.json
 ├─ public/
-│  ├─ brand/              # Logo and brand assets
-│  └─ beta/               # Static beta gate (legacy)
+│  ├─ favicon.svg
+│  └─ labs/
+│     └─ nl-vision/        # Vision AI demo
 └─ src/
-   ├─ lib/
-   │  └─ language.tsx     # Language context (ES/EN/SV) + persistence
    ├─ components/
-   │  ├─ Layout.tsx       # Shared header/footer shell (accessible)
-   │  ├─ CareChat.tsx     # AI chat with Neuroljus AI
-   │  ├─ LiveVitals.tsx   # Real-time metrics dashboard
-   │  └─ ContactForm.tsx  # Web3Forms contact form
+   │  ├─ CareChat.tsx      # AI chat with Neuroljus AI
+   │  ├─ LiveVitals.tsx    # Real-time metrics dashboard
+   │  └─ NeuroljusLanding.tsx
    ├─ pages/
    │  ├─ _app.tsx
-   │  ├─ index.tsx        # main landing
+   │  ├─ index.tsx         # main landing
    │  ├─ api/
-   │  │  └─ chat.ts       # OpenAI GPT-4o-mini integration
+   │  │  └─ chat.ts        # OpenAI GPT-4o-mini integration
    │  ├─ labs/
-   │  │  └─ nl-vision.tsx # Vision + AI chat demo
-   │  ├─ about.tsx
-   │  ├─ contact.tsx
+   │  │  └─ nl-vision.tsx  # Vision + AI chat demo
    │  ├─ privacy.tsx
    │  └─ accessibility.tsx
    └─ styles/
@@ -96,28 +86,6 @@ cp .env.example .env.local
 Add the Plausible script to `_app.tsx` or `_document.tsx` once the domain is live.
 
 ## Notes
-- Content is multilingual (ES/EN/SV) with a shared language switcher (persisted in `localStorage`)
+- Content is multilingual (EN/SV/ES)
 - Camera metrics stay on device unless explicitly shared with AI
 - All AI responses require valid OpenAI API key
-
-## Operations & Security
-
-### Domain (`neuroljus.com`)
-Registered via Vercel (registrar: Tucows).
-
-| Event | Date |
-| --- | --- |
-| Registered | 2025-08-15 |
-| Last updated | 2026-04-23 |
-| **Expires / renew by** | **2026-08-15** |
-
-> ⚠️ Renew the domain before **2026-08-15** to avoid downtime. Check auto-renew in the Vercel domain settings.
-
-### Rotating API tokens
-The previous Web3Forms key was committed to source history and must be considered compromised.
-
-1. **Web3Forms**: generate a new access key at https://web3forms.com, then set `NEXT_PUBLIC_WEB3FORMS_KEY` in Vercel → Project Settings → Environment Variables. The old key is no longer in source.
-2. **OpenAI**: rotate `OPENAI_API_KEY` at https://platform.openai.com/api-keys if there is any chance of exposure, and update it in Vercel.
-3. Redeploy after updating environment variables.
-
-Tokens are never hardcoded in source anymore — both keys come from environment variables.

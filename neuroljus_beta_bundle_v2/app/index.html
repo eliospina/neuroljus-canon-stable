@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NeuroSignals — App (placeholder)</title>
+  <style>
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;background:#0b0f14;color:#f5f7fb}
+    .wrap{max-width:960px;margin:0 auto;padding:2rem}
+    .card{background:#131a22;border:1px solid rgba(255,255,255,.06);border-radius:.8rem;padding:1.5rem;margin-bottom:1rem}
+    code{background:#0e141c;padding:.1rem .3rem;border-radius:.3rem}
+    a{color:#7ad7ff}
+    .pill{display:inline-block;padding:.2rem .5rem;border-radius:999px;background:#203042;margin-right:.25rem}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>NeuroSignals — Beta</h1>
+    <div id="who" class="card"></div>
+    <div class="card">
+      <h2>Qué verás aquí</h2>
+      <ul>
+        <li>Tu perfil define permisos y módulos visibles.</li>
+        <li>Este es un placeholder: aquí irá tu UI real (HRV, NL‑VISION, sensores ambiente).</li>
+        <li>La app puede leer <code>localStorage['nl_profile_v1']</code> para personalizar.</li>
+      </ul>
+      <p><a href="../beta/index.html">Volver a /beta</a></p>
+    </div>
+  </div>
+  <script>
+    const who = document.getElementById('who');
+    const p = JSON.parse(localStorage.getItem('nl_profile_v1')||'null');
+    if(!p){
+      who.innerHTML = '<p>No hay perfil en sesión. <a href="../beta/index.html">Ingresar</a></p>';
+    } else {
+      who.innerHTML = `<h2>Bienvenida/o, ${p.name}</h2>
+        <p><strong>Rol:</strong> ${p.role}</p>
+        <p><strong>ID:</strong> <code>${p.id}</code></p>
+        <p><strong>Alcances:</strong> ${(p.scopes||[]).map(s=>'<span class="pill">'+s+'</span>').join(' ')}</p>`;
+    }
+  </script>
+</body>
+</html>
