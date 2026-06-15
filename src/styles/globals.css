@@ -2,4 +2,516 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body { height: 100%; }
+/* ==========================================================================
+   NeuroLjus — Sensory-friendly institutional design system
+   Calm, low-stimulus palette · high readability · WCAG AA · reduced motion
+   ========================================================================== */
+
+:root {
+  /* Surfaces — warm, soft paper tones to reduce glare */
+  --nl-bg: #f6f5f1;
+  --nl-surface: #ffffff;
+  --nl-surface-soft: #efeee8;
+  --nl-tint: #e4efe9; /* very light teal wash for highlights */
+  --nl-border: #e3e1d8;
+
+  /* Text — soft dark slate instead of pure black */
+  --nl-text: #2a2d34;
+  --nl-text-soft: #565b64;
+  --nl-text-muted: #767b84;
+
+  /* Calm accents — muted teal/sage primary, soft lavender secondary */
+  --nl-primary: #2e6b5e;
+  --nl-primary-strong: #245447;
+  --nl-link: #266456;
+  --nl-lavender: #6f6aa0;
+
+  /* Functional */
+  --nl-focus: #1f5e54;
+  --nl-error: #9a3b3b;
+  --nl-success: #2e6b4f;
+
+  /* Shape & spacing */
+  --nl-radius: 16px;
+  --nl-radius-sm: 10px;
+  --nl-shadow: 0 1px 2px rgba(42, 45, 52, 0.04), 0 8px 24px rgba(42, 45, 52, 0.05);
+  --nl-maxw: 1080px;
+
+  --nl-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--nl-bg);
+  color: var(--nl-text);
+  font-family: var(--nl-font);
+  font-size: 17px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Honor users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Visible, calm focus indicator for keyboard users */
+:where(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 3px solid var(--nl-focus);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ---------- Layout shell ---------- */
+.nl-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.nl-container {
+  width: 100%;
+  max-width: var(--nl-maxw);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Skip link for screen-reader / keyboard users */
+.nl-skip {
+  position: absolute;
+  left: 16px;
+  top: -48px;
+  z-index: 100;
+  background: var(--nl-primary);
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: var(--nl-radius-sm);
+  text-decoration: none;
+  transition: top 150ms ease;
+}
+.nl-skip:focus {
+  top: 16px;
+}
+
+/* ---------- Header ---------- */
+.nl-header {
+  border-bottom: 1px solid var(--nl-border);
+  background: rgba(246, 245, 241, 0.85);
+  backdrop-filter: saturate(140%) blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.nl-header-inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+.nl-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--nl-text);
+}
+.nl-brand-badge {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--nl-tint);
+  flex: none;
+}
+.nl-brand-name {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-size: 18px;
+  line-height: 1.1;
+}
+.nl-brand-tag {
+  font-size: 12px;
+  color: var(--nl-text-muted);
+}
+.nl-nav {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.nl-nav a {
+  color: var(--nl-text-soft);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 6px 2px;
+}
+.nl-nav a:hover {
+  color: var(--nl-link);
+}
+.nl-langtoggle {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  background: var(--nl-surface-soft);
+  border: 1px solid var(--nl-border);
+  border-radius: 999px;
+}
+.nl-langtoggle button {
+  border: 0;
+  background: transparent;
+  color: var(--nl-text-soft);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 5px 11px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+.nl-langtoggle button[aria-pressed="true"] {
+  background: var(--nl-surface);
+  color: var(--nl-primary);
+  box-shadow: var(--nl-shadow);
+}
+
+/* ---------- Main ---------- */
+.nl-main {
+  flex: 1 0 auto;
+  padding: 56px 0 72px;
+}
+.nl-section {
+  margin-bottom: 48px;
+}
+
+/* ---------- Hero ---------- */
+.nl-hero {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 40px;
+  align-items: center;
+}
+.nl-eyebrow {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--nl-primary);
+  background: var(--nl-tint);
+  padding: 6px 12px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+.nl-title {
+  font-size: clamp(30px, 4.4vw, 46px);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin: 0 0 16px;
+  color: var(--nl-text);
+}
+.nl-lead {
+  font-size: 19px;
+  color: var(--nl-text-soft);
+  margin: 0 0 28px;
+  max-width: 56ch;
+}
+.nl-hero-art {
+  display: grid;
+  place-items: center;
+  background: linear-gradient(160deg, #ffffff 0%, var(--nl-tint) 100%);
+  border: 1px solid var(--nl-border);
+  border-radius: 24px;
+  padding: 36px;
+  box-shadow: var(--nl-shadow);
+}
+.nl-hero-art img {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+}
+
+/* ---------- Buttons ---------- */
+.nl-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+.nl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 13px 22px;
+  border-radius: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.nl-btn-primary {
+  background: var(--nl-primary);
+  color: #ffffff;
+}
+.nl-btn-primary:hover {
+  background: var(--nl-primary-strong);
+}
+.nl-btn-ghost {
+  background: var(--nl-surface);
+  color: var(--nl-link);
+  border-color: var(--nl-border);
+}
+.nl-btn-ghost:hover {
+  border-color: var(--nl-primary);
+}
+.nl-btn[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ---------- Cards & grids ---------- */
+.nl-card {
+  background: var(--nl-surface);
+  border: 1px solid var(--nl-border);
+  border-radius: var(--nl-radius);
+  padding: 26px;
+  box-shadow: var(--nl-shadow);
+}
+.nl-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.nl-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.nl-card h3 {
+  margin: 0 0 8px;
+  font-size: 19px;
+  color: var(--nl-text);
+}
+.nl-card p {
+  margin: 0;
+  color: var(--nl-text-soft);
+  font-size: 15.5px;
+}
+.nl-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--nl-tint);
+  color: var(--nl-primary);
+  margin-bottom: 14px;
+}
+
+/* ---------- Section headings ---------- */
+.nl-h2 {
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  margin: 0 0 10px;
+}
+.nl-sub {
+  color: var(--nl-text-soft);
+  font-size: 18px;
+  margin: 0 0 28px;
+  max-width: 62ch;
+}
+.nl-prose {
+  color: var(--nl-text-soft);
+  font-size: 16.5px;
+  line-height: 1.8;
+  white-space: pre-line;
+}
+.nl-center {
+  text-align: center;
+}
+.nl-center .nl-sub {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Role / meta label */
+.nl-role {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--nl-lavender);
+  background: #efeef6;
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+/* ---------- Forms ---------- */
+.nl-field {
+  margin-bottom: 18px;
+}
+.nl-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--nl-text);
+  margin-bottom: 6px;
+}
+.nl-input,
+.nl-textarea {
+  width: 100%;
+  font: inherit;
+  font-size: 16px;
+  color: var(--nl-text);
+  background: var(--nl-surface);
+  border: 1px solid var(--nl-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+.nl-input:focus,
+.nl-textarea:focus {
+  border-color: var(--nl-primary);
+  outline: 2px solid var(--nl-tint);
+}
+.nl-checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 15px;
+  color: var(--nl-text-soft);
+}
+.nl-msg-error {
+  color: var(--nl-error);
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+/* ---------- Links / email pill ---------- */
+.nl-a {
+  color: var(--nl-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* ---------- Footer ---------- */
+.nl-footer {
+  flex: none;
+  border-top: 1px solid var(--nl-border);
+  background: var(--nl-surface);
+  padding: 36px 0;
+  margin-top: 24px;
+}
+.nl-footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.nl-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+.nl-footer a {
+  color: var(--nl-text-soft);
+  text-decoration: none;
+  font-size: 14px;
+}
+.nl-footer a:hover {
+  color: var(--nl-link);
+  text-decoration: underline;
+}
+.nl-footer-fine {
+  color: var(--nl-text-muted);
+  font-size: 13px;
+  margin: 12px 0 0;
+  max-width: 60ch;
+}
+
+/* ---------- Utilities ---------- */
+.nl-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.nl-stack-sm > * + * {
+  margin-top: 12px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 860px) {
+  .nl-hero {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .nl-hero-art {
+    order: -1;
+    padding: 28px;
+  }
+  .nl-grid-3 {
+    grid-template-columns: 1fr;
+  }
+  .nl-grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .nl-nav {
+    gap: 14px;
+  }
+  .nl-brand-tag {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .nl-main {
+    padding: 36px 0 56px;
+  }
+  .nl-nav a:not(.nl-nav-keep) {
+    display: none;
+  }
+}
+
+/* Calm, optional hover transitions only when motion is welcome */
+@media (prefers-reduced-motion: no-preference) {
+  .nl-btn,
+  .nl-nav a,
+  .nl-card,
+  .nl-footer a {
+    transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease,
+      box-shadow 160ms ease;
+  }
+}

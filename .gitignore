@@ -6,4 +6,6 @@ dist/
 .DS_Store
 .vscode/
 .env*
+!.env.example
 .vercel
+tsconfig.tsbuildinfo

@@ -1,16 +1,15 @@
 import Head from "next/head";
-import ContactForm from "../components/ContactForm";
+import Layout from "@/components/Layout";
+import ContactForm from "@/components/ContactForm";
 
 export default function ContactPage() {
   return (
-    <>
+    <Layout>
       <Head>
-        <title>Contact — Neuroljus</title>
-        <meta name="description" content="Get in touch with Neuroljus." />
+        <title>Contact — NeuroLjus</title>
+        <meta name="description" content="Get in touch with NeuroLjus." />
       </Head>
-      <main className="px-6 py-10 md:py-16">
-        <ContactForm />
-      </main>
-    </>
+      <ContactForm />
+    </Layout>
   );
 }
