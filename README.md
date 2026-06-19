@@ -1,6 +1,8 @@
-# Neuroljus — Landing (Next.js + Tailwind)
+# NeuroLjus — [neuroljus.com](https://neuroljus.com)
 
-Empathic AI for sensory understanding. Specialized assistant for caregivers of non-verbal autistic individuals.
+Empathic, privacy-first AI for sensory understanding — a specialized assistant for caregivers of non-verbal autistic individuals.
+
+**Stack:** Next.js 15 · React 19 · OpenAI (server-side) · deployed on Vercel.
 
 ## Quick start
 ```bash
@@ -28,14 +30,13 @@ OPENAI_API_KEY=sk-proj-xxxxxxxxxxxxx
 **Important**: Never commit `.env.local` to git (already in `.gitignore`)
 
 ## Deploy on Vercel
-1. Push this repo to GitHub (e.g., `neuroljus-site`).
-2. Create a project on https://vercel.com and import the repo.
-3. Framework preset: **Next.js**.
-4. **Add Environment Variable**: 
-   - Go to Project Settings → Environment Variables
-   - Add `OPENAI_API_KEY` with your OpenAI API key
-5. Redeploy after adding the environment variable.
-6. After first deploy, set a custom domain when ready (e.g., `neuroljus.ai`).
+This site is live at **[neuroljus.com](https://neuroljus.com)** and **auto-deploys from the `main` branch** via the Vercel GitHub integration.
+
+To set it up on a fresh Vercel project:
+1. Import this repo on https://vercel.com (Framework preset: **Next.js**).
+2. Add the environment variable in Project Settings → Environment Variables:
+   - `OPENAI_API_KEY` — your OpenAI API key (server-side only; required for the AI chat).
+3. Deploy. Pushes to `main` then deploy automatically.
 
 ## Structure
 ```
