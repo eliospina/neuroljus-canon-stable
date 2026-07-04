@@ -50,6 +50,8 @@ Cada persona autista es un universo único. Yo solo ayudo a los cuidadores a obs
       horizon: "NeuroLjus mira hacia un futuro donde la IA y, eventualmente, los robots de cuidado puedan apoyar rutinas, comunicación y entornos neurodivergentes sin reemplazar el vínculo humano ni interpretar con falsa certeza.",
       methodTitle: "El método",
       method: "Observar a una persona en su propio contexto, con consentimiento, privacidad y tiempo. Buscar patrones dentro de la vida de esa persona, no etiquetas universales sobre el autismo.",
+      ethicsTitle: "El límite ético",
+      ethics: "NeuroLjus no intenta cruzar permisos por la puerta de atrás. Al contrario: reconoce que cualquier futura validación con personas, datos sensibles o uso clínico exige colaboración universitaria, responsable de investigación, revisión ética en Suecia cuando corresponda, financiación adecuada y protección estricta de datos. Por eso el white paper fue enviado a universidades: para abrir un camino serio hacia un laboratorio, no para experimentar sin autorización.",
       contact: "Contacto",
       contactText: "Si NeuroLjus resuena contigo, si quieres apoyar o colaborar:",
       email: "elizabeth@neuroljus.com",
@@ -87,6 +89,8 @@ Each autistic person is a unique universe. I only help caregivers observe with m
       horizon: "NeuroLjus looks toward a future where AI and, eventually, care robots may support routines, communication, and neurodivergent environments without replacing human relationship or interpreting with false certainty.",
       methodTitle: "The method",
       method: "Observe one person in their own context, with consent, privacy, and time. Look for patterns within that person's life, not universal labels about autism.",
+      ethicsTitle: "The ethical boundary",
+      ethics: "NeuroLjus is not trying to cross permissions through the back door. The opposite is true: any future validation with people, sensitive data, or clinical use requires university collaboration, a responsible research principal, Swedish ethical review when applicable, proper funding, and strict data protection. This is why the white paper was sent to universities: to open a serious path toward a lab, not to experiment without authorization.",
       contact: "Contact",
       contactText: "If NeuroLjus resonates with you, if you want to support or collaborate:",
       email: "elizabeth@neuroljus.com",
@@ -124,6 +128,8 @@ Varje autistisk person är ett unikt universum. Jag hjälper bara vårdgivare at
       horizon: "NeuroLjus blickar mot en framtid där AI och, så småningom, omsorgsrobotar kan stödja rutiner, kommunikation och neurodivergenta miljöer utan att ersätta mänsklig relation eller tolka med falsk säkerhet.",
       methodTitle: "Metoden",
       method: "Observera en person i sitt eget sammanhang, med samtycke, integritet och tid. Söka mönster i den personens liv, inte universella etiketter om autism.",
+      ethicsTitle: "Den etiska gränsen",
+      ethics: "NeuroLjus försöker inte gå runt tillstånd. Tvärtom: projektet erkänner att framtida validering med människor, känsliga data eller klinisk användning kräver universitetssamarbete, forskningshuvudman, svensk etikprövning när det är tillämpligt, rätt finansiering och starkt dataskydd. Därför skickades white paper till universitet: för att öppna en seriös väg mot ett laboratorium, inte för att experimentera utan tillstånd.",
       contact: "Kontakt",
       contactText: "Om NeuroLjus resonerar med dig, om du vill stödja eller samarbeta:",
       email: "elizabeth@neuroljus.com",
@@ -184,6 +190,11 @@ Varje autistisk person är ett unikt universum. Jag hjälper bara vårdgivare at
               <p style={styles.role}>{t.elizabethRole}</p>
             </div>
             <p style={styles.bio}>{t.elizabethBio}</p>
+          </section>
+
+          <section style={styles.card}>
+            <h2 style={styles.h2}>{t.ethicsTitle}</h2>
+            <p style={styles.text}>{t.ethics}</p>
           </section>
 
           {/* AI */}

@@ -53,7 +53,7 @@ export default function ContactForm() {
     <div className="max-w-2xl mx-auto">
       <h1 className="text-3xl md:text-4xl font-semibold mb-4">Contact</h1>
       <p className="text-sm text-gray-600 mb-6">
-        SV/EN/ES · Caregiver interviews, observation-method feedback, research collaboration,
+        Caregiver conversations, observation-method feedback, research collaboration,
         ethics, and accessibility inquiries are welcome.
         Please don’t send clinical data, identifying child data, or urgent care information.
         See our{" "}
@@ -122,7 +122,7 @@ export default function ContactForm() {
             rows={6}
             maxLength={3000}
             className="w-full rounded-xl border p-3 outline-none focus:ring"
-            placeholder="Tell us a bit about your care, research, or collaboration context (SV/EN/ES)…"
+            placeholder="Tell us a bit about your care, research, or collaboration context..."
           />
         </div>
 
