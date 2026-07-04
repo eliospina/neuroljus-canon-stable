@@ -28,7 +28,7 @@ export default function Home() {
         cta: "Öppna NL-VISION",
         secondaryCta: "Läs projektets historia",
         status:
-          "Nästa steg: samla verkliga vårdgivarinsikter, testa en snäv observationsmetod och bygga evidens innan produktutveckling öppnas igen.",
+          "Neuroljus är ett levande forskningsfönster: lyssnar på vårdgivare, formar en observationsmetod och bygger förtroende innan större påståenden.",
         navDemo: "Demo",
         navAbout: "Om",
         navOffer: "Erbjudande",
@@ -79,15 +79,15 @@ export default function Home() {
         robotTitle: "Robotik som horisont",
         robot:
           "Framtida robotar kan en dag stödja rutin, miljö, trygg överföring och kommunikation. I Neuroljus måste varje sådant steg bygga på samtycke, integritet, evidens och mänsklig närvaro.",
-        actionKicker: "Nästa 90 dagar",
-        actionTitle: "Kort sikt: bevisa att observationen är värdefull",
+        actionKicker: "Arbetet nu",
+        actionTitle: "Från bättre observation till bättre omsorg",
         actionIntro:
-          "Innan Neuroljus bygger mer produkt behöver projektet visa att vårdgivare faktiskt får nytta av en enkel, säker observationsloop.",
+          "Neuroljus ska inte låtsas vara färdigt innan det har förtjänat förtroende. Det offentliga arbetet nu är att lyssna, testa varsamt och låta evidens avgöra vad projektet får bli.",
         actionSteps: [
-          "Intervjua 5-10 vårdgivare eller relevanta stödpersoner.",
-          "Definiera en enda första användningssituation och en enda observationsmall.",
-          "Testa om strukturerade anteckningar plus frivilliga lokala signaler ger bättre reflektion över tid.",
-          "Dokumentera integritet, samtycke, risker och stoppkriterier innan någon pilot.",
+          "Lyssna på vårdgivare och familjer som känner vardagens verklighet.",
+          "Omvandla levd erfarenhet till en tydlig observationsmetod.",
+          "Testa om strukturerade anteckningar och frivilliga lokala signaler hjälper reflektion över tid.",
+          "Bygga varje framtida steg på integritet, samtycke, professionell granskning och mänsklig närvaro.",
         ],
         boundariesTitle: "Det Neuroljus inte påstår idag",
         boundaries: [
@@ -116,7 +116,7 @@ export default function Home() {
         cta: "Open NL-VISION",
         secondaryCta: "Read the origin story",
         status:
-          "Next step: gather real caregiver insight, test one narrow observation method, and build evidence before reopening product development.",
+          "Neuroljus is a living research window: listening to caregivers, shaping an observation method, and earning trust before making larger claims.",
         navDemo: "Demo",
         navAbout: "About",
         navOffer: "Offer",
@@ -167,15 +167,15 @@ export default function Home() {
         robotTitle: "Robotics as a horizon",
         robot:
           "Future robots may one day support routine, environment, safe handoffs, and communication. In Neuroljus, every such step must be grounded in consent, privacy, evidence, and human presence.",
-        actionKicker: "Next 90 days",
-        actionTitle: "Short term: prove the observation loop matters",
+        actionKicker: "The work now",
+        actionTitle: "From better observation to better care",
         actionIntro:
-          "Before Neuroljus builds more product, the project needs to show that caregivers get real value from a simple, safe observation loop.",
+          "Neuroljus should not pretend to be finished before it has earned trust. The public work now is to listen, test carefully, and let evidence decide what the project is allowed to become.",
         actionSteps: [
-          "Interview 5-10 caregivers or relevant support people.",
-          "Define one first use case and one observation template.",
-          "Test whether structured notes plus optional local signals improve reflection over time.",
-          "Document privacy, consent, risks, and stop criteria before any pilot.",
+          "Listen to caregivers and families who know the daily reality.",
+          "Turn lived experience into a clear observation method.",
+          "Test whether structured notes and optional local signals improve reflection over time.",
+          "Build every future step on privacy, consent, professional review, and human presence.",
         ],
         boundariesTitle: "What Neuroljus does not claim today",
         boundaries: [
