@@ -48,7 +48,7 @@ export default function ChatAI() {
         </div>
 
         <p style={{ color: "#9aa3bc", fontSize: 14, marginTop: 14 }}>
-          Camera permission is used for local prototype signals. Do not enter clinical or urgent care data.
+          Camera permission is used for local prototype signals. For privacy, keep notes general and leave clinical or urgent care details to the right services.
         </p>
       </main>
     </>

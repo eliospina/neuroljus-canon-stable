@@ -71,11 +71,12 @@ export default function ObservationMethod() {
         </p>
 
         <section className="mt-8 rounded-lg border border-slate-200 bg-slate-50 p-5">
-          <h2 className="text-lg font-semibold">Boundary</h2>
+          <h2 className="text-lg font-semibold">Care frame</h2>
           <p className="mt-2 leading-7 text-slate-700">
-            This method does not identify pain, emotion, intention, diagnosis, needs, or
-            inner states as fact. It is for respectful reflection and pattern review over
-            time.
+            This method keeps observation, interpretation, and uncertainty separate.
+            It helps caregivers review patterns over time while leaving pain, emotion,
+            intention, diagnosis, needs, and inner states to appropriate human and
+            clinical judgment.
           </p>
         </section>
 
@@ -98,7 +99,7 @@ export default function ObservationMethod() {
             <li>Choose one repeated situation.</li>
             <li>Write three to five entries using the same structure.</li>
             <li>Review only what repeats, what changes, what helps, and what remains uncertain.</li>
-            <li>Do not turn one entry into a conclusion.</li>
+            <li>Let repeated patterns, context, and professional judgment carry the conclusion.</li>
           </ol>
         </section>
 

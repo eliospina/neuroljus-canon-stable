@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const commitments = [
   "Prefer calm, screen-light interfaces over visually noisy experiences.",
-  "Keep non-diagnostic language visible where prototype signals could be overinterpreted.",
+  "Keep prototype language clear where signals could otherwise be overinterpreted.",
   "Support sensory-friendly controls such as low-stimulus, monochrome, and low-light modes in NL-VISION.",
   "Use clear labels, readable contrast, keyboard-reachable controls, and responsive layouts.",
   "Validate with target users before any pilot or active product use.",
@@ -14,7 +14,7 @@ const openWork = [
   "Testing with caregivers and neurodivergent users.",
   "Consent and assent flows suitable for vulnerable contexts.",
   "Clearer multilingual accessibility review across English, Swedish, and Spanish.",
-  "Documented stop criteria for experiences that increase distress or sensory load.",
+  "Documented pause criteria for experiences that increase distress or sensory load.",
 ];
 
 export default function Accessibility() {
@@ -36,7 +36,7 @@ export default function Accessibility() {
         <p className="mt-6 text-base leading-7 text-slate-700">
           Neuroljus treats accessibility as part of ethics, not polish. The project is
           especially sensitive to sensory load, caregiver fatigue, multilingual access,
-          and the risk that prototype signals may be misread as certainty.
+          and the need to keep prototype signals in their proper context.
         </p>
 
         <section className="mt-9 border-t border-slate-200 pt-6">
@@ -49,7 +49,7 @@ export default function Accessibility() {
         </section>
 
         <section className="mt-9 border-t border-slate-200 pt-6">
-          <h2 className="text-lg font-semibold">Required before pilot use</h2>
+          <h2 className="text-lg font-semibold">Before pilot use</h2>
           <ul className="mt-3 list-disc space-y-2 pl-5 leading-7 text-slate-700">
             {openWork.map((item) => (
               <li key={item}>{item}</li>

@@ -55,7 +55,8 @@ export default function ContactForm() {
       <p className="text-sm text-gray-600 mb-6">
         Caregiver conversations, observation-method feedback, research collaboration,
         ethics, and accessibility inquiries are welcome.
-        Please don’t send clinical data, identifying child data, or urgent care information.
+        For privacy, keep messages general and avoid clinical records, identifying child
+        data, or urgent care information.
         See our{" "}
         <Link href="/privacy" className="underline">Privacy</Link>.
       </p>

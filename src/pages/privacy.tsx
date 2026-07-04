@@ -5,27 +5,27 @@ const sections = [
   {
     title: "Prototype status",
     body:
-      "Neuroljus is a paused research and portfolio prototype. It is not a clinical product, diagnostic tool, medical device, institutional platform, or production care app.",
+      "Neuroljus is currently an independent research and prototype project. Its public surface is designed for learning, collaboration, and responsible development before any clinical product, diagnostic tool, medical device, institutional platform, or production care app.",
   },
   {
     title: "NL-VISION camera metrics",
     body:
-      "The NL-VISION demo is designed to process camera-derived face and hand metrics in the browser. Prototype metrics may be stored in your browser localStorage so the demo dashboard and chat can use the most recent observations. These metrics are not validated health, emotion, pain, or communication indicators.",
+      "The NL-VISION demo is designed to process camera-derived face and hand metrics in the browser. Prototype metrics may be stored in your browser localStorage so the demo dashboard and chat can use the most recent observations. These metrics are technical signals, not validated indicators of health, emotion, pain, or communication.",
   },
   {
     title: "AI chat",
     body:
-      "If you use the Neuroljus AI chat, your chat message, optional caregiver notes, and the most recent prototype metrics may be sent to the server-side chat endpoint and then to OpenAI for a response. Do not enter clinical records, identifying child data, secrets, or emergency information.",
+      "If you use the Neuroljus AI chat, your chat message, optional caregiver notes, and the most recent prototype metrics may be sent to the server-side chat endpoint and then to OpenAI for a response. For privacy, avoid entering clinical records, identifying child data, secrets, or emergency information.",
   },
   {
     title: "Contact form",
     body:
-      "The contact form is for collaboration and general project communication. Messages are submitted through the configured form provider. Please do not send sensitive clinical, diagnostic, or personal care data through the form.",
+      "The contact form is for collaboration and general project communication. Messages are submitted through the configured form provider. Please keep messages general and avoid sensitive clinical, diagnostic, or personal care data.",
   },
   {
     title: "Before any pilot",
     body:
-      "Before any pilot or active product use, Neuroljus needs a full privacy policy, consent and assent model, deletion process, data retention rules, AI-processing documentation, accessibility validation, and risk review.",
+      "A future pilot or active product would be prepared with a full privacy policy, consent and assent model, deletion process, data retention rules, AI-processing documentation, accessibility validation, and risk review.",
   },
 ];
 
@@ -48,7 +48,8 @@ export default function Privacy() {
         <p className="mt-3 text-sm text-slate-500">Last updated: 2026-07-04</p>
         <p className="mt-6 text-base leading-7 text-slate-700">
           This page describes the current prototype privacy approach. It is a project
-          statement, not a complete legal privacy policy for a deployed care product.
+          statement for the current public prototype and a foundation for future legal
+          and research review.
         </p>
 
         <div className="mt-9 space-y-6">
@@ -61,12 +62,11 @@ export default function Privacy() {
         </div>
 
         <section className="mt-10 rounded-lg border border-slate-200 bg-slate-50 p-5">
-          <h2 className="text-lg font-semibold">Emergency and medical boundary</h2>
+          <h2 className="text-lg font-semibold">Medical and emergency care</h2>
           <p className="mt-2 leading-7 text-slate-700">
-            Neuroljus does not provide emergency support, medical advice, diagnosis, or
-            certainty about a person's inner state. If severe pain, injury, distress,
-            abuse, or risk is suspected, contact appropriate healthcare, emergency, or
-            safeguarding services.
+            Medical and emergency situations deserve qualified human response. If severe
+            pain, injury, distress, abuse, or risk is suspected, appropriate healthcare,
+            emergency, or safeguarding services should be contacted.
           </p>
         </section>
       </main>
