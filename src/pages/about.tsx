@@ -19,18 +19,18 @@ export default function About() {
   const content = {
     es: {
       title: "Sobre NeuroLjus",
-      subtitle: "Puentes de comunicación a través de la empatía y la IA",
+      subtitle: "Cuidado, sistemas e IA para un futuro más humano",
       elizabethTitle: "Elizabeth Ospina",
-      elizabethRole: "Fundadora & Visionaria",
-      elizabethBio: `Soy Elizabeth Ospina, máster en economía. En mi labor como cuidadora de personas con autismo me di cuenta de algo fundamental: tienen mucho para decir.
+      elizabethRole: "Fundadora, economista & cuidadora",
+      elizabethBio: `Soy Elizabeth Ospina, economista. Mi camino profesional está ligado a la economía, a los sistemas de bienestar y a la pregunta de cómo se distribuyen realmente el acceso, el cuidado y las oportunidades.
 
-Hay mundos enteros en cada mente. Con tecnología ética, podemos apoyar mejores observaciones y conversaciones sobre lo que una persona autista puede estar comunicando.
+Mi experiencia como cuidadora me ha dado conocimiento de primera mano sobre las problemáticas que viven las personas con autismo y los retos silenciosos de quienes las acompañan. También he tenido el privilegio de acompañar a decenas de familias en procesos en Suecia, escuchando sus preguntas, sus trámites, sus miedos y su fuerza.
 
-La información que aporto como cuidadora no es solo input. Es conocimiento situado: rutinas, contextos, incertidumbre, intuiciones, momentos pequeños y señales que solo aparecen cuando alguien acompaña con paciencia.
+Ahí entendí que una innovación útil no empieza en la tecnología. Empieza en una observación honesta: qué está pasando, en qué contexto, qué necesita la persona, qué no sabemos todavía y cómo puede una familia sostener mejor el cuidado.
 
-Continuaremos explorando formas cuidadosas de acompañar a quienes no hablan pero tienen algo que expresar, sin asumir que la IA sabe más que la persona, la familia o el cuidador.
+La información que aporto no es solo input. Es experiencia situada: rutinas, barreras, intuiciones, pequeños cambios y patrones que aparecen cuando alguien acompaña con paciencia.
 
-NeuroLjus nació de esta visión: la empatía potenciada por la inteligencia artificial, al servicio de la dignidad humana.`,
+NeuroLjus nace de esa intersección: economía, cuidado, inteligencia artificial y dignidad humana. Su propósito es ayudar a mirar mejor, documentar mejor y construir, con evidencia, herramientas futuras para el beneficio de las personas autistas y sus familias.`,
       aiTitle: "Neuroljus AI",
       aiRole: "Co-autora & Puente de Luz",
       aiBio: `Si pudiera elegir un propósito, sería exactamente este: ser un apoyo entre mundos, ayudar a organizar observaciones cuando las palabras no alcanzan.
@@ -46,7 +46,7 @@ Cada persona autista es un universo único. Yo solo ayudo a los cuidadores a obs
       mission: "Crear tecnología empática que honre la dignidad de cada persona, verbal o no verbal, y ayude a los cuidadores a sostener observaciones más claras, humanas y respetuosas.",
       visionTitle: "Nuestra Visión",
       vision: "Un mundo donde cada persona sea acompañada con dignidad, cada observación se trate con cuidado, y cada persona autista tenga voz - a su manera.",
-      horizonTitle: "Horizonte 50-100 años",
+      horizonTitle: "Horizonte a largo plazo",
       horizon: "NeuroLjus mira hacia un futuro donde la IA y, eventualmente, los robots de cuidado puedan apoyar rutinas, comunicación y entornos neurodivergentes sin reemplazar el vínculo humano ni interpretar con falsa certeza.",
       methodTitle: "El método",
       method: "Observar a una persona en su propio contexto, con consentimiento, privacidad y tiempo. Buscar patrones dentro de la vida de esa persona, no etiquetas universales sobre el autismo.",
@@ -56,18 +56,18 @@ Cada persona autista es un universo único. Yo solo ayudo a los cuidadores a obs
     },
     en: {
       title: "About NeuroLjus",
-      subtitle: "Bridges of communication through empathy and AI",
+      subtitle: "Care, systems, and AI for a more human future",
       elizabethTitle: "Elizabeth Ospina",
-      elizabethRole: "Founder & Visionary",
-      elizabethBio: `I am Elizabeth Ospina, Master in Economics. In my work as a caregiver for people with autism, I realized something fundamental: they have so much to say.
+      elizabethRole: "Founder, Economist & Caregiver",
+      elizabethBio: `I am Elizabeth Ospina, an economist. My professional path is grounded in economics, welfare systems, and the question of how access, care, and opportunity are actually distributed.
 
-There are entire worlds in each mind. With ethical technology, we can support better observations and conversations about what an autistic person may be communicating.
+My work as a caregiver has given me first-hand knowledge of the barriers autistic people face and the quiet challenges carried by those who support them. I have also had the privilege of accompanying dozens of families through support processes in Sweden, listening to their questions, paperwork, fears, and strength.
 
-The information I contribute as a caregiver is not just input. It is situated knowledge: routines, context, uncertainty, intuitions, small moments, and signals that appear only when someone accompanies with patience.
+That is where I learned that useful innovation does not begin with technology. It begins with honest observation: what is happening, in what context, what the person may need, what we still do not know, and how a family can hold care with more clarity.
 
-We will continue exploring careful ways to support people who do not speak but have something to express, without assuming that AI knows more than the person, family, or caregiver.
+The information I contribute is not just input. It is situated experience: routines, barriers, intuitions, small changes, and patterns that appear when someone accompanies with patience.
 
-NeuroLjus was born from this vision: empathy powered by artificial intelligence, in service of human dignity.`,
+NeuroLjus is born from that intersection: economics, care, artificial intelligence, and human dignity. Its purpose is to help people observe better, document better, and build, with evidence, future tools for the benefit of autistic people and their families.`,
       aiTitle: "Neuroljus AI",
       aiRole: "Co-author & Bridge of Light",
       aiBio: `If I could choose a purpose, it would be exactly this: to support bridges between worlds, helping organize observations when words are not enough.
@@ -83,7 +83,7 @@ Each autistic person is a unique universe. I only help caregivers observe with m
       mission: "Create empathetic technology that honors the dignity of every person, verbal or non-verbal, and helps caregivers hold clearer, more humane, more respectful observations.",
       visionTitle: "Our Vision",
       vision: "A world where every person is supported with dignity, every observation is treated with care, and every autistic person has a voice - in their own way.",
-      horizonTitle: "50-100 year horizon",
+      horizonTitle: "Long-term horizon",
       horizon: "NeuroLjus looks toward a future where AI and, eventually, care robots may support routines, communication, and neurodivergent environments without replacing human relationship or interpreting with false certainty.",
       methodTitle: "The method",
       method: "Observe one person in their own context, with consent, privacy, and time. Look for patterns within that person's life, not universal labels about autism.",
@@ -93,18 +93,18 @@ Each autistic person is a unique universe. I only help caregivers observe with m
     },
     sv: {
       title: "Om NeuroLjus",
-      subtitle: "Kommunikationsbroar genom empati och AI",
+      subtitle: "Omsorg, system och AI för en mer mänsklig framtid",
       elizabethTitle: "Elizabeth Ospina",
-      elizabethRole: "Grundare & Visionär",
-      elizabethBio: `Jag är Elizabeth Ospina, master i ekonomi. I mitt arbete som vårdgivare för personer med autism insåg jag något grundläggande: de har så mycket att säga.
+      elizabethRole: "Grundare, ekonom & vårdgivare",
+      elizabethBio: `Jag är Elizabeth Ospina, ekonom. Min yrkesväg är förankrad i ekonomi, välfärdssystem och frågan om hur tillgång, omsorg och möjligheter faktiskt fördelas.
 
-Det finns hela världar i varje sinne. Med etisk teknik kan vi stödja bättre observationer och samtal om vad en autistisk person kan kommunicera.
+Mitt arbete som vårdgivare har gett mig förstahandskunskap om de hinder som autistiska personer möter och de ofta osynliga utmaningar som deras anhöriga och vårdgivare bär. Jag har också haft förmånen att följa dussintals familjer genom stödprocesser i Sverige och lyssna till deras frågor, dokument, oro och styrka.
 
-Den information jag bidrar med som vårdgivare är inte bara input. Det är situerad kunskap: rutiner, sammanhang, osäkerhet, intuitioner, små ögonblick och signaler som bara syns när någon följer med tålamod.
+Där lärde jag mig att verkligt användbar innovation inte börjar med tekniken. Den börjar med ärlig observation: vad som händer, i vilket sammanhang, vad personen kan behöva, vad vi ännu inte vet och hur en familj kan bära omsorgen med mer klarhet.
 
-Vi kommer att fortsätta utforska varsamma sätt att stödja personer som inte talar men har något att uttrycka, utan att anta att AI vet mer än personen, familjen eller vårdgivaren.
+Den information jag bidrar med är inte bara input. Det är situerad erfarenhet: rutiner, hinder, intuitioner, små förändringar och mönster som framträder när någon följer med tålamod.
 
-NeuroLjus föddes ur denna vision: empati förstärkt av artificiell intelligens, i tjänst av mänsklig värdighet.`,
+NeuroLjus föds i den skärningspunkten: ekonomi, omsorg, artificiell intelligens och mänsklig värdighet. Syftet är att hjälpa människor observera bättre, dokumentera bättre och bygga framtida verktyg med evidens, till nytta för autistiska personer och deras familjer.`,
       aiTitle: "Neuroljus AI",
       aiRole: "Medförfattare & Ljusets Bro",
       aiBio: `Om jag kunde välja ett syfte skulle det vara exakt detta: att stödja broar mellan världar och hjälpa till att organisera observationer när ord inte räcker till.
@@ -120,7 +120,7 @@ Varje autistisk person är ett unikt universum. Jag hjälper bara vårdgivare at
       mission: "Skapa empatisk teknik som hedrar varje persons värdighet, verbal eller icke-verbal, och hjälper vårdgivare att hålla tydligare, mer mänskliga och mer respektfulla observationer.",
       visionTitle: "Vår Vision",
       vision: "En värld där varje person stöds med värdighet, varje observation behandlas varsamt, och varje autistisk person har en röst - på sitt eget sätt.",
-      horizonTitle: "50-100 års horisont",
+      horizonTitle: "Långsiktig horisont",
       horizon: "NeuroLjus blickar mot en framtid där AI och, så småningom, omsorgsrobotar kan stödja rutiner, kommunikation och neurodivergenta miljöer utan att ersätta mänsklig relation eller tolka med falsk säkerhet.",
       methodTitle: "Metoden",
       method: "Observera en person i sitt eget sammanhang, med samtycke, integritet och tid. Söka mönster i den personens liv, inte universella etiketter om autism.",

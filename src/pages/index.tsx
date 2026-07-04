@@ -66,13 +66,13 @@ export default function Home() {
           },
         ],
         offerFoot:
-          "Erbjudandet är medvetet smalt: lärande, observation och evidens först. Ingen klinisk produkt, ingen diagnos och ingen automatiserad tolkning.",
-        thesisTitle: "Byggd från vårdgivarens blick",
+          "Dagens erbjudande är medvetet smalt: lärande, observation och evidens först. Neuroljus är ännu ingen klinisk produkt, ingen diagnos och ingen automatiserad tolkning.",
+        thesisTitle: "Fött ur verklig omsorg",
         thesis:
-          "Elizabeths erfarenhet som vårdgivare är inte en bakgrundsdetalj. Den är källan till modellen: noggranna observationer, sammanhang, omsorgsarbete och respekt för det som inte alltid uttrycks i tal.",
-        horizonTitle: "50-100 års fråga",
+          "Elizabeths erfarenhet som ekonom och vårdgivare är där Neuroljus börjar: förstahandskunskap om hinder som autistiska personer möter, vårdgivares ansvar och förmånen att ha följt dussintals familjer genom stödprocesser i Sverige.",
+        horizonTitle: "Långsiktig horisont",
         horizon:
-          "Hur kan framtidens AI och robotar hjälpa neurodivergenta personer utan att ersätta relationen, tolka med falsk säkerhet eller göra människan mindre central?",
+          "Inte framtid som fantasi, utan som ansvar: hur kan AI, robotik och omsorgssystem utvecklas utan att förlora samtycke, relation, evidens eller människan i centrum?",
         modelTitle: "Inom-person över tid",
         model:
           "Neuroljus söker inte universella svar om autism. Det utforskar hur strukturerade observationer över tid kan hjälpa vårdgivare se individuella mönster med mer omsorg och mindre gissning.",
@@ -89,12 +89,12 @@ export default function Home() {
           "Testa om strukturerade anteckningar plus frivilliga lokala signaler ger bättre reflektion över tid.",
           "Dokumentera integritet, samtycke, risker och stoppkriterier innan någon pilot.",
         ],
-        boundariesTitle: "Det Neuroljus inte påstår",
+        boundariesTitle: "Det Neuroljus inte påstår idag",
         boundaries: [
-          "Ingen diagnos och inga medicinska råd.",
-          "Ingen säker tolkning av inre tillstånd.",
+          "Ingen diagnos och inga medicinska råd idag.",
+          "Ingen säker tolkning av inre tillstånd från kamera eller AI.",
           "Ingen ersättning av vårdgivare, familj eller professionell omsorg.",
-          "Ingen produktlansering eller institutionell beredskap utan evidens.",
+          "Alla framtida kliniska eller diagnostiska vägar kräver evidens, professionell granskning och reglering.",
         ],
         labTitle: "Nuvarande tekniska artefakt",
         lab:
@@ -154,13 +154,13 @@ export default function Home() {
           },
         ],
         offerFoot:
-          "The offer is intentionally narrow: learning, observation, and evidence first. No clinical product, no diagnosis, and no automated interpretation.",
-        thesisTitle: "Built from the caregiver's witness",
+          "Today's offer is intentionally narrow: learning, observation, and evidence first. Neuroljus is not yet a clinical product, diagnosis, or automated interpretation system.",
+        thesisTitle: "Born from real care",
         thesis:
-          "Elizabeth's caregiver experience is not background decoration. It is the source of the model: careful observations, context, care work, and respect for what is not always expressed through speech.",
-        horizonTitle: "The 50-100 year question",
+          "Neuroljus begins where Elizabeth's work as an economist and caregiver meet: first-hand knowledge of the barriers autistic people face, the pressure carried by caregivers, and the privilege of accompanying dozens of families through support processes in Sweden.",
+        horizonTitle: "Long-term horizon",
         horizon:
-          "How can future AI and robots support neurodivergent people without replacing relationship, interpreting with false certainty, or making the human less central?",
+          "Not the future as fantasy, but as responsibility: how can AI, robotics, and care systems evolve without losing consent, relationship, evidence, or the human at the center?",
         modelTitle: "Within-person, over time",
         model:
           "Neuroljus is not searching for universal answers about autism. It explores whether structured observations over time can help caregivers see individual patterns with more care and less guesswork.",
@@ -177,12 +177,12 @@ export default function Home() {
           "Test whether structured notes plus optional local signals improve reflection over time.",
           "Document privacy, consent, risks, and stop criteria before any pilot.",
         ],
-        boundariesTitle: "What Neuroljus does not claim",
+        boundariesTitle: "What Neuroljus does not claim today",
         boundaries: [
-          "No diagnosis and no medical advice.",
-          "No certainty about inner states.",
+          "No diagnosis and no medical advice today.",
+          "No certainty about inner states from cameras or AI.",
           "No replacement of caregivers, family, or professional care.",
-          "No product launch or institutional readiness without evidence.",
+          "Any future clinical or diagnostic path requires evidence, professional review, and regulation.",
         ],
         labTitle: "Current technical artifact",
         lab:

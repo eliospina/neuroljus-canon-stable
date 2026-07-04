@@ -35,7 +35,7 @@ Neuroljus is a paused research/portfolio prototype exploring privacy-first AI su
 | "Independent research and prototype project" | Low | Keep | Keep. |
 | "Observation and communication support" | Low | Keep | Keep. |
 | "Future care robotics" | Medium | Bound | Keep only as a long-horizon research frame, not a current product or pilot claim. |
-| "50-100 year question" | Low | Keep | Keep when clearly framed as research direction. |
+| "Long-term horizon" | Low | Keep | Keep when clearly framed as research direction. |
 | "Paused as an active product" | Low | Keep | Keep. |
 | "For collaborators, researchers, and institutions" | Medium | Keep | Keep only with explicit non-clinical, non-production disclaimer. |
 | Claims of understanding, translating, or health-signal interpretation | High | Remove | Removed from homepage language. |
