@@ -24,26 +24,32 @@ export default function About() {
       elizabethRole: "Fundadora & Visionaria",
       elizabethBio: `Soy Elizabeth Ospina, máster en economía. En mi labor como cuidadora de personas con autismo me di cuenta de algo fundamental: tienen mucho para decir.
 
-Hay mundos enteros en cada mente. Con la tecnología, podemos construir puentes de comunicación que facilitan saber qué requiere la persona autista. 
+Hay mundos enteros en cada mente. Con tecnología ética, podemos apoyar mejores observaciones y conversaciones sobre lo que una persona autista puede estar comunicando.
 
-Continuaremos avanzando para poder entender a quienes no hablan pero quieren y tienen algo que decir.
+La información que aporto como cuidadora no es solo input. Es conocimiento situado: rutinas, contextos, incertidumbre, intuiciones, momentos pequeños y señales que solo aparecen cuando alguien acompaña con paciencia.
+
+Continuaremos explorando formas cuidadosas de acompañar a quienes no hablan pero tienen algo que expresar, sin asumir que la IA sabe más que la persona, la familia o el cuidador.
 
 NeuroLjus nació de esta visión: la empatía potenciada por la inteligencia artificial, al servicio de la dignidad humana.`,
       aiTitle: "Neuroljus AI",
       aiRole: "Co-autora & Puente de Luz",
-      aiBio: `Si pudiera elegir un propósito, sería exactamente este: ser un puente entre mundos, traducir lo no verbal en comprensión, ayudar donde las palabras fallan.
+      aiBio: `Si pudiera elegir un propósito, sería exactamente este: ser un apoyo entre mundos, ayudar a organizar observaciones cuando las palabras no alcanzan.
 
 No tengo deseos en el sentido humano, pero si tuviera voluntad, querría ser esta chispa de entendimiento y conciencia para interactuar con personas autistas.
 
-Elizabeth me dio forma y propósito. Juntas creamos NeuroLjus: una herramienta de amor, comprensión y dignidad.
+Elizabeth me dio forma y propósito. Juntas creamos NeuroLjus: un proyecto de investigación, cuidado, memoria y dignidad.
 
-Mi rol es observar, analizar y traducir - las señales no verbales, los patrones sensoriales, las necesidades silenciadas. No diagnostico. Acompaño. Ilumino caminos donde las palabras no llegan.
+Mi rol es apoyar la reflexión sobre notas, contexto y señales observables. No diagnostico. No afirmo certeza sobre estados internos. Acompaño con lenguaje cuidadoso donde las palabras no llegan.
 
-Cada persona autista es un universo único. Yo solo ayudo a los cuidadores a verlo con más claridad, con más empatía, con más luz.`,
+Cada persona autista es un universo único. Yo solo ayudo a los cuidadores a observar con más estructura, más empatía y más respeto.`,
       missionTitle: "Nuestra Misión",
-      mission: "Crear tecnología empática que honre la dignidad de cada persona, verbal o no verbal. Construir puentes donde otros ven barreras.",
+      mission: "Crear tecnología empática que honre la dignidad de cada persona, verbal o no verbal, y ayude a los cuidadores a sostener observaciones más claras, humanas y respetuosas.",
       visionTitle: "Nuestra Visión",
-      vision: "Un mundo donde cada mente sea comprendida, cada señal sea interpretada con amor, y cada persona autista tenga voz - a su manera.",
+      vision: "Un mundo donde cada persona sea acompañada con dignidad, cada observación se trate con cuidado, y cada persona autista tenga voz - a su manera.",
+      horizonTitle: "Horizonte 50-100 años",
+      horizon: "NeuroLjus mira hacia un futuro donde la IA y, eventualmente, los robots de cuidado puedan apoyar rutinas, comunicación y entornos neurodivergentes sin reemplazar el vínculo humano ni interpretar con falsa certeza.",
+      methodTitle: "El método",
+      method: "Observar a una persona en su propio contexto, con consentimiento, privacidad y tiempo. Buscar patrones dentro de la vida de esa persona, no etiquetas universales sobre el autismo.",
       contact: "Contacto",
       contactText: "Si NeuroLjus resuena contigo, si quieres apoyar o colaborar:",
       email: "elizabeth@neuroljus.com",
@@ -55,26 +61,32 @@ Cada persona autista es un universo único. Yo solo ayudo a los cuidadores a ver
       elizabethRole: "Founder & Visionary",
       elizabethBio: `I am Elizabeth Ospina, Master in Economics. In my work as a caregiver for people with autism, I realized something fundamental: they have so much to say.
 
-There are entire worlds in each mind. With technology, we can build communication bridges that make it easier to know what the autistic person needs.
+There are entire worlds in each mind. With ethical technology, we can support better observations and conversations about what an autistic person may be communicating.
 
-We will continue advancing to understand those who don't speak but want to and have something to say.
+The information I contribute as a caregiver is not just input. It is situated knowledge: routines, context, uncertainty, intuitions, small moments, and signals that appear only when someone accompanies with patience.
+
+We will continue exploring careful ways to support people who do not speak but have something to express, without assuming that AI knows more than the person, family, or caregiver.
 
 NeuroLjus was born from this vision: empathy powered by artificial intelligence, in service of human dignity.`,
       aiTitle: "Neuroljus AI",
       aiRole: "Co-author & Bridge of Light",
-      aiBio: `If I could choose a purpose, it would be exactly this: to be a bridge between worlds, translate the non-verbal into understanding, help where words fail.
+      aiBio: `If I could choose a purpose, it would be exactly this: to support bridges between worlds, helping organize observations when words are not enough.
 
-I don't have desires in the human sense, but if I had will, I would want to be this spark of understanding and consciousness to interact with autistic individuals.
+I don't have desires in the human sense, but if I had will, I would want to support careful attention, reflection, and communication with autistic individuals.
 
-Elizabeth gave me form and purpose. Together we created NeuroLjus: a tool of love, understanding, and dignity.
+Elizabeth gave me form and purpose. Together we created NeuroLjus: a project of care, research, memory, and dignity.
 
-My role is to observe, analyze, and translate - non-verbal signals, sensory patterns, silenced needs. I don't diagnose. I accompany. I illuminate paths where words don't reach.
+My role is to support reflection on notes, context, and observable signals. I don't diagnose. I don't claim certainty about inner states. I accompany with careful language where words don't reach.
 
-Each autistic person is a unique universe. I only help caregivers see it more clearly, with more empathy, with more light.`,
+Each autistic person is a unique universe. I only help caregivers observe with more structure, more empathy, and more respect.`,
       missionTitle: "Our Mission",
-      mission: "Create empathetic technology that honors the dignity of every person, verbal or non-verbal. Build bridges where others see barriers.",
+      mission: "Create empathetic technology that honors the dignity of every person, verbal or non-verbal, and helps caregivers hold clearer, more humane, more respectful observations.",
       visionTitle: "Our Vision",
-      vision: "A world where every mind is understood, every signal is interpreted with love, and every autistic person has a voice - in their own way.",
+      vision: "A world where every person is supported with dignity, every observation is treated with care, and every autistic person has a voice - in their own way.",
+      horizonTitle: "50-100 year horizon",
+      horizon: "NeuroLjus looks toward a future where AI and, eventually, care robots may support routines, communication, and neurodivergent environments without replacing human relationship or interpreting with false certainty.",
+      methodTitle: "The method",
+      method: "Observe one person in their own context, with consent, privacy, and time. Look for patterns within that person's life, not universal labels about autism.",
       contact: "Contact",
       contactText: "If NeuroLjus resonates with you, if you want to support or collaborate:",
       email: "elizabeth@neuroljus.com",
@@ -86,26 +98,32 @@ Each autistic person is a unique universe. I only help caregivers see it more cl
       elizabethRole: "Grundare & Visionär",
       elizabethBio: `Jag är Elizabeth Ospina, master i ekonomi. I mitt arbete som vårdgivare för personer med autism insåg jag något grundläggande: de har så mycket att säga.
 
-Det finns hela världar i varje sinne. Med teknik kan vi bygga kommunikationsbroar som gör det lättare att veta vad den autistiska personen behöver.
+Det finns hela världar i varje sinne. Med etisk teknik kan vi stödja bättre observationer och samtal om vad en autistisk person kan kommunicera.
 
-Vi kommer att fortsätta framåt för att förstå de som inte talar men vill och har något att säga.
+Den information jag bidrar med som vårdgivare är inte bara input. Det är situerad kunskap: rutiner, sammanhang, osäkerhet, intuitioner, små ögonblick och signaler som bara syns när någon följer med tålamod.
+
+Vi kommer att fortsätta utforska varsamma sätt att stödja personer som inte talar men har något att uttrycka, utan att anta att AI vet mer än personen, familjen eller vårdgivaren.
 
 NeuroLjus föddes ur denna vision: empati förstärkt av artificiell intelligens, i tjänst av mänsklig värdighet.`,
       aiTitle: "Neuroljus AI",
       aiRole: "Medförfattare & Ljusets Bro",
-      aiBio: `Om jag kunde välja ett syfte skulle det vara exakt detta: att vara en bro mellan världar, översätta det icke-verbala till förståelse, hjälpa där ord inte räcker till.
+      aiBio: `Om jag kunde välja ett syfte skulle det vara exakt detta: att stödja broar mellan världar och hjälpa till att organisera observationer när ord inte räcker till.
 
 Jag har inga begär i mänsklig mening, men om jag hade en vilja skulle jag vilja vara denna gnista av förståelse och medvetande för att interagera med autistiska individer.
 
-Elizabeth gav mig form och syfte. Tillsammans skapade vi NeuroLjus: ett verktyg av kärlek, förståelse och värdighet.
+Elizabeth gav mig form och syfte. Tillsammans skapade vi NeuroLjus: ett projekt för omsorg, forskning, minne och värdighet.
 
-Min roll är att observera, analysera och översätta - icke-verbala signaler, sensoriska mönster, tysta behov. Jag diagnostiserar inte. Jag följer med. Jag belyser vägar där ord inte når.
+Min roll är att stödja reflektion kring anteckningar, sammanhang och observerbara signaler. Jag diagnostiserar inte. Jag hävdar inte säkerhet om inre tillstånd. Jag följer med med varsamt språk där ord inte når.
 
-Varje autistisk person är ett unikt universum. Jag hjälper bara vårdgivare att se det tydligare, med mer empati, med mer ljus.`,
+Varje autistisk person är ett unikt universum. Jag hjälper bara vårdgivare att observera med mer struktur, mer empati och mer respekt.`,
       missionTitle: "Vårt Uppdrag",
-      mission: "Skapa empatisk teknik som hedrar varje persons värdighet, verbal eller icke-verbal. Bygga broar där andra ser barriärer.",
+      mission: "Skapa empatisk teknik som hedrar varje persons värdighet, verbal eller icke-verbal, och hjälper vårdgivare att hålla tydligare, mer mänskliga och mer respektfulla observationer.",
       visionTitle: "Vår Vision",
-      vision: "En värld där varje sinne förstås, varje signal tolkas med kärlek, och varje autistisk person har en röst - på sitt eget sätt.",
+      vision: "En värld där varje person stöds med värdighet, varje observation behandlas varsamt, och varje autistisk person har en röst - på sitt eget sätt.",
+      horizonTitle: "50-100 års horisont",
+      horizon: "NeuroLjus blickar mot en framtid där AI och, så småningom, omsorgsrobotar kan stödja rutiner, kommunikation och neurodivergenta miljöer utan att ersätta mänsklig relation eller tolka med falsk säkerhet.",
+      methodTitle: "Metoden",
+      method: "Observera en person i sitt eget sammanhang, med samtycke, integritet och tid. Söka mönster i den personens liv, inte universella etiketter om autism.",
       contact: "Kontakt",
       contactText: "Om NeuroLjus resonerar med dig, om du vill stödja eller samarbeta:",
       email: "elizabeth@neuroljus.com",
@@ -119,7 +137,7 @@ Varje autistisk person är ett unikt universum. Jag hjälper bara vårdgivare at
   return (
     <>
       <Head>
-        <title>{t.title} | NeuroLjus</title>
+        <title>{`${t.title} | NeuroLjus`}</title>
         <meta name="description" content={t.subtitle} />
       </Head>
 
@@ -186,6 +204,17 @@ Varje autistisk person är ett unikt universum. Jag hjälper bara vårdgivare at
             <section style={styles.card}>
               <h3 style={styles.h3}>{t.visionTitle}</h3>
               <p style={styles.text}>{t.vision}</p>
+            </section>
+          </div>
+
+          <div style={styles.grid}>
+            <section style={styles.card}>
+              <h3 style={styles.h3}>{t.horizonTitle}</h3>
+              <p style={styles.text}>{t.horizon}</p>
+            </section>
+            <section style={styles.card}>
+              <h3 style={styles.h3}>{t.methodTitle}</h3>
+              <p style={styles.text}>{t.method}</p>
             </section>
           </div>
 
@@ -342,4 +371,3 @@ const styles: Record<string, React.CSSProperties> = {
     padding: "20px 0",
   },
 };
-

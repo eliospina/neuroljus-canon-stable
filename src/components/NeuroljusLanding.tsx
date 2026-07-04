@@ -13,26 +13,26 @@ export default function NeuroljusLanding() {
   }, []);
 
   const T = {
-    tagSV: "Empatisk AI för sensorisk förståelse",
-    tagEN: "Empathic AI for Sensory Understanding",
-    titleSV: "Ljus som gör det osynliga begripligt",
-    titleEN: "Light that makes the invisible understandable",
+    tagSV: "Forsknings- och portfolio-prototyp",
+    tagEN: "Research and portfolio prototype",
+    titleSV: "Neuroljus",
+    titleEN: "Neuroljus",
     subSV:
-      "En empatisk, lokal AI-följeslagare som hjälper familjer och vårdgivare att förstå sensoriska mönster och hälsosignaler – i din takt.",
+      "Ett oberoende forsknings- och prototypprojekt som utforskar integritetsförst AI för observation och kommunikationsstöd i icke-talande autism.",
     subEN:
-      "An empathic, on-device AI companion that helps families and caregivers understand sensory patterns and health signals — at your pace.",
-    ctaSV: "Öppna NL-VISION (demo)",
-    ctaEN: "Open NL-VISION (demo)",
-    p1SV: "Granskningsbart, transparent och inkluderande.",
-    p1EN: "Auditable, transparent, and inclusive.",
-    p2SV: "GPT-stöd valfritt, integritet först.",
-    p2EN: "GPT support optional, privacy first.",
-    p3SV: "Skyddad kärna: data stannar lokalt.",
-    p3EN: "Protected core: data stays local.",
+      "An independent research and prototype project exploring privacy-first AI tools for caregiver observation and communication support in non-speaking autism.",
+    ctaSV: "Visa NL-VISION-prototypen",
+    ctaEN: "View NL-VISION prototype",
+    p1SV: "Pausad som aktiv produkt; bevarad som forsknings- och portfolio-prototyp.",
+    p1EN: "Paused as an active product; maintained as a research and portfolio prototype.",
+    p2SV: "NL-VISION är en teknisk prototyp för lokala observationssignaler.",
+    p2EN: "NL-VISION is a technical prototype for local observation signals.",
+    p3SV: "Integritetsförst: inga produkt- eller kliniska claims utan evidens.",
+    p3EN: "Privacy-first: no product or clinical claims without evidence.",
     footSV:
-      "NeuroLjus är experimentellt. Ingen data lämnar din enhet utan uttryckligt samtycke.",
+      "Neuroljus är pausat som aktiv produkt och underhålls som forsknings- och portfolio-prototyp.",
     footEN:
-      "NeuroLjus is experimental. No data leaves your device without explicit consent.",
+      "Neuroljus is paused as an active product and maintained as a research and portfolio prototype.",
   };
 
   const isSV = lang === "sv";
@@ -82,11 +82,7 @@ export default function NeuroljusLanding() {
             <a href="/labs/nl-vision" style={cta}>
               {isSV ? T.ctaSV : T.ctaEN}
             </a>
-            <p style={note}>
-              {isSV
-                ? "Data stannar på enheten. Inget skickas utan ditt samtycke."
-                : "Data stays on device. Nothing is sent without your consent."}
-            </p>
+            <p style={note}>{isSV ? "Status: pausad som aktiv produkt." : "Status: paused as an active product."}</p>
           </section>
 
           <section style={card}>
@@ -102,9 +98,9 @@ export default function NeuroljusLanding() {
         </main>
 
         <section id="about" style={pillGrid}>
-          <div style={pill}><h3>Open for Trust</h3><p style={pillText}>{isSV ? T.p1SV : T.p1EN}</p></div>
-          <div style={pill}><h3>Powered by GPT (optional)</h3><p style={pillText}>{isSV ? T.p2SV : T.p2EN}</p></div>
-          <div style={pill}><h3>Protected Core</h3><p style={pillText}>{isSV ? T.p3SV : T.p3EN}</p></div>
+          <div style={pill}><h3>{isSV ? "Pausad som produkt" : "Paused as a product"}</h3><p style={pillText}>{isSV ? T.p1SV : T.p1EN}</p></div>
+          <div style={pill}><h3>{isSV ? "Observationsprototyp" : "Observation prototype"}</h3><p style={pillText}>{isSV ? T.p2SV : T.p2EN}</p></div>
+          <div style={pill}><h3>{isSV ? "Integritetsförst" : "Privacy-first"}</h3><p style={pillText}>{isSV ? T.p3SV : T.p3EN}</p></div>
         </section>
 
         <footer style={{ textAlign: "center", color: "#b8c1d6", fontSize: 12, padding: "18px 22px" }}>

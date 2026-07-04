@@ -2,328 +2,709 @@ import Head from "next/head";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 
-export default function Home() {
-  const [lang, setLang] = useState<"sv" | "en">("sv");
+type Lang = "sv" | "en";
 
-  // Detect browser language once
+export default function Home() {
+  const [lang, setLang] = useState<Lang>("sv");
+
   useEffect(() => {
     try {
-      const l = navigator.language?.toLowerCase().startsWith("sv") ? "sv" : "en";
-      setLang(l as "sv" | "en");
+      setLang(navigator.language?.toLowerCase().startsWith("sv") ? "sv" : "en");
     } catch {
       setLang("sv");
     }
   }, []);
 
-  // Bilingual texts
   const T = useMemo(
     () => ({
-      titleSV: "Ljus som gör det osynliga begripligt",
-      titleEN: "Light that makes the invisible understandable",
-      subSV:
-        "En empatisk, lokal AI-följeslagare som hjälper familjer och vårdgivare att förstå sensoriska mönster och hälsosignaler – i din takt.",
-      subEN:
-        "An empathic, on-device AI companion that helps families and caregivers understand sensory patterns and health signals — at your pace.",
-      ctaSV: "Utforska NeuroLjus",
-      ctaEN: "Explore NeuroLjus",
-      tagSV: "Empatisk AI för sensorisk förståelse",
-      tagEN: "Empathic AI for Sensory Understanding",
-      p1SVTitle: "Öppen för förtroende",
-      p1SV: "Gränssnitt och flöden kan granskas. Transparent och inkluderande.",
-      p1ENTitle: "Open for Trust",
-      p1EN: "Interfaces and flows are auditable. Transparent and inclusive.",
-      p2SVTitle: "Drivs av GPT (valfritt)",
-      p2SV: "Avancerat resonemang när det behövs. Alltid integritet först.",
-      p2ENTitle: "Powered by GPT (optional)",
-      p2EN: "Advanced reasoning when needed. Always privacy-first.",
-      p3SVTitle: "Skyddad kärna",
-      p3SV: "Personliga mönster och signaler behandlas lokalt och säkert.",
-      p3ENTitle: "Protected Core",
-      p3EN: "Personal patterns and signals are processed locally and safely.",
-      footSV:
-        "NeuroLjus är ett experimentellt projekt. All data stannar på din enhet om du inte uttryckligen samtycker till annat.",
-      footEN:
-        "NeuroLjus is an experimental project. All data stays on your device unless you explicitly consent otherwise.",
+      sv: {
+        seoTitle: "NeuroLjus - forskningsprototyp för framtidens omsorg",
+        seoDesc:
+          "Neuroljus är ett integritetsförst forsknings- och prototypprojekt om vårdgivarobservation, kommunikationsstöd och framtida human omsorgsteknik.",
+        eyebrow: "Forskningsprototyp · integritet · värdighet",
+        title: "Neuroljus",
+        subtitle:
+          "Ett praktiskt forskningsprojekt för bättre vårdgivarobservation, kommunikationsstöd och etisk AI i icke-talande autism.",
+        cta: "Öppna NL-VISION",
+        secondaryCta: "Läs projektets historia",
+        status:
+          "Nästa steg: samla verkliga vårdgivarinsikter, testa en snäv observationsmetod och bygga evidens innan produktutveckling öppnas igen.",
+        navDemo: "Demo",
+        navAbout: "Om",
+        navOffer: "Erbjudande",
+        navContact: "Kontakt",
+        offerKicker: "Vad vi erbjuder nu",
+        offerTitle: "Fyra sätt att arbeta med Neuroljus idag",
+        offers: [
+          {
+            title: "Vårdgivarintervjuer",
+            body:
+              "Korta, varsamma samtal med vårdgivare och stödpersoner om hur observationer, överlämningar och osäkerhet fungerar i verkliga omsorgsmiljöer.",
+            action: "Delta i en intervju",
+            href: "/contact",
+          },
+          {
+            title: "Observationsmetod v0",
+            body:
+              "En enkel mall för att dokumentera vad som hände, sammanhanget, vårdgivarens tolkning, osäkerhet och vad som hjälpte.",
+            action: "Testa mallen",
+            href: "/observation-method",
+          },
+          {
+            title: "NL-VISION-labb",
+            body:
+              "Ett lokalt prototyplabb för frivilliga visuella signaler. Det används för reflektion, inte för diagnos eller säker tolkning.",
+            action: "Öppna labbet",
+            href: "/labs/nl-vision",
+          },
+          {
+            title: "Forskningssamarbete",
+            body:
+              "Samtal med forskare, institutioner och etiska samarbetspartners som vill bygga evidens innan produktutveckling.",
+            action: "Starta dialog",
+            href: "/contact",
+          },
+        ],
+        offerFoot:
+          "Erbjudandet är medvetet smalt: lärande, observation och evidens först. Ingen klinisk produkt, ingen diagnos och ingen automatiserad tolkning.",
+        thesisTitle: "Byggd från vårdgivarens blick",
+        thesis:
+          "Elizabeths erfarenhet som vårdgivare är inte en bakgrundsdetalj. Den är källan till modellen: noggranna observationer, sammanhang, omsorgsarbete och respekt för det som inte alltid uttrycks i tal.",
+        horizonTitle: "50-100 års fråga",
+        horizon:
+          "Hur kan framtidens AI och robotar hjälpa neurodivergenta personer utan att ersätta relationen, tolka med falsk säkerhet eller göra människan mindre central?",
+        modelTitle: "Inom-person över tid",
+        model:
+          "Neuroljus söker inte universella svar om autism. Det utforskar hur strukturerade observationer över tid kan hjälpa vårdgivare se individuella mönster med mer omsorg och mindre gissning.",
+        robotTitle: "Robotik som horisont",
+        robot:
+          "Framtida robotar kan en dag stödja rutin, miljö, trygg överföring och kommunikation. I Neuroljus måste varje sådant steg bygga på samtycke, integritet, evidens och mänsklig närvaro.",
+        actionKicker: "Nästa 90 dagar",
+        actionTitle: "Kort sikt: bevisa att observationen är värdefull",
+        actionIntro:
+          "Innan Neuroljus bygger mer produkt behöver projektet visa att vårdgivare faktiskt får nytta av en enkel, säker observationsloop.",
+        actionSteps: [
+          "Intervjua 5-10 vårdgivare eller relevanta stödpersoner.",
+          "Definiera en enda första användningssituation och en enda observationsmall.",
+          "Testa om strukturerade anteckningar plus frivilliga lokala signaler ger bättre reflektion över tid.",
+          "Dokumentera integritet, samtycke, risker och stoppkriterier innan någon pilot.",
+        ],
+        boundariesTitle: "Det Neuroljus inte påstår",
+        boundaries: [
+          "Ingen diagnos och inga medicinska råd.",
+          "Ingen säker tolkning av inre tillstånd.",
+          "Ingen ersättning av vårdgivare, familj eller professionell omsorg.",
+          "Ingen produktlansering eller institutionell beredskap utan evidens.",
+        ],
+        labTitle: "Nuvarande tekniska artefakt",
+        lab:
+          "NL-VISION är ett lokalt observationsdemo för ansikte, händer och enkla signaler. Det är inte validerat för att tolka smärta, känslor, behov eller kommunikation.",
+        collabTitle: "För forskare, institutioner och samarbetspartners",
+        collab:
+          "Neuroljus är öppet för samtal om etik, observation, neurodivergens, omsorgsteknik och framtida validering. Den aktiva produktutvecklingen förblir pausad tills tydliga kriterier är uppfyllda.",
+        footer:
+          "Neuroljus är ett oberoende forsknings- och portfolioprojekt av Elizabeth Ospina.",
+      },
+      en: {
+        seoTitle: "NeuroLjus - research prototype for future care",
+        seoDesc:
+          "Neuroljus is a privacy-first research and prototype project for caregiver observation, communication support, and humane future care technology.",
+        eyebrow: "Research prototype · privacy · dignity",
+        title: "Neuroljus",
+        subtitle:
+          "A practical research project for better caregiver observation, communication support, and ethical AI in non-speaking autism.",
+        cta: "Open NL-VISION",
+        secondaryCta: "Read the origin story",
+        status:
+          "Next step: gather real caregiver insight, test one narrow observation method, and build evidence before reopening product development.",
+        navDemo: "Demo",
+        navAbout: "About",
+        navOffer: "Offer",
+        navContact: "Contact",
+        offerKicker: "What we offer now",
+        offerTitle: "Four ways to work with Neuroljus today",
+        offers: [
+          {
+            title: "Caregiver interviews",
+            body:
+              "Short, careful conversations with caregivers and support people about how observation, handoffs, and uncertainty work in real care settings.",
+            action: "Join an interview",
+            href: "/contact",
+          },
+          {
+            title: "Observation method v0",
+            body:
+              "A simple template for documenting what happened, the context, caregiver interpretation, uncertainty, and what helped.",
+            action: "Try the template",
+            href: "/observation-method",
+          },
+          {
+            title: "NL-VISION lab",
+            body:
+              "A local prototype lab for optional visual signals. It is used for reflection, not for diagnosis or certain interpretation.",
+            action: "Open the lab",
+            href: "/labs/nl-vision",
+          },
+          {
+            title: "Research collaboration",
+            body:
+              "Conversations with researchers, institutions, and ethical collaborators who want to build evidence before product development.",
+            action: "Start a dialogue",
+            href: "/contact",
+          },
+        ],
+        offerFoot:
+          "The offer is intentionally narrow: learning, observation, and evidence first. No clinical product, no diagnosis, and no automated interpretation.",
+        thesisTitle: "Built from the caregiver's witness",
+        thesis:
+          "Elizabeth's caregiver experience is not background decoration. It is the source of the model: careful observations, context, care work, and respect for what is not always expressed through speech.",
+        horizonTitle: "The 50-100 year question",
+        horizon:
+          "How can future AI and robots support neurodivergent people without replacing relationship, interpreting with false certainty, or making the human less central?",
+        modelTitle: "Within-person, over time",
+        model:
+          "Neuroljus is not searching for universal answers about autism. It explores whether structured observations over time can help caregivers see individual patterns with more care and less guesswork.",
+        robotTitle: "Robotics as a horizon",
+        robot:
+          "Future robots may one day support routine, environment, safe handoffs, and communication. In Neuroljus, every such step must be grounded in consent, privacy, evidence, and human presence.",
+        actionKicker: "Next 90 days",
+        actionTitle: "Short term: prove the observation loop matters",
+        actionIntro:
+          "Before Neuroljus builds more product, the project needs to show that caregivers get real value from a simple, safe observation loop.",
+        actionSteps: [
+          "Interview 5-10 caregivers or relevant support people.",
+          "Define one first use case and one observation template.",
+          "Test whether structured notes plus optional local signals improve reflection over time.",
+          "Document privacy, consent, risks, and stop criteria before any pilot.",
+        ],
+        boundariesTitle: "What Neuroljus does not claim",
+        boundaries: [
+          "No diagnosis and no medical advice.",
+          "No certainty about inner states.",
+          "No replacement of caregivers, family, or professional care.",
+          "No product launch or institutional readiness without evidence.",
+        ],
+        labTitle: "Current technical artifact",
+        lab:
+          "NL-VISION is a local observation demo for face, hands, and simple signals. It is not validated to interpret pain, emotion, needs, or communication.",
+        collabTitle: "For researchers, institutions, and collaborators",
+        collab:
+          "Neuroljus is open to conversations about ethics, observation, neurodivergence, care technology, and future validation. Active product development remains paused until clear criteria are met.",
+        footer:
+          "Neuroljus is an independent research and portfolio project by Elizabeth Ospina.",
+      },
     }),
     []
   );
 
   const isSV = lang === "sv";
-
-  // SEO dynamic
-  const seoTitle = isSV
-    ? "NeuroLjus – Empatisk AI för sensorisk förståelse"
-    : "NeuroLjus – Empathic AI for Sensory Understanding";
-  const seoDesc = isSV
-    ? "En empatisk, lokal AI-följeslagare som hjälper familjer och vårdgivare att förstå sensoriska mönster och hälsosignaler."
-    : "An empathic, on-device AI companion that helps families and caregivers understand sensory patterns and health signals.";
+  const copy = T[lang];
 
   return (
     <>
       <Head>
-        <title>{seoTitle}</title>
-        <meta name="description" content={seoDesc} />
+        <title>{copy.seoTitle}</title>
+        <meta name="description" content={copy.seoDesc} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        {/* Open Graph */}
-        <meta property="og:title" content={seoTitle} />
-        <meta property="og:description" content={seoDesc} />
+        <meta property="og:title" content={copy.seoTitle} />
+        <meta property="og:description" content={copy.seoDesc} />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="/brand/neuroljus-logo.svg" />
-        <meta name="theme-color" content="#1E1F3B" />
+        <meta name="theme-color" content="#f5faf7" />
       </Head>
 
       <div className="page">
-        <div className="container">
-          {/* Header */}
-          <header className="header" role="banner">
-            <a className="brand" href="/" aria-label="NeuroLjus home">
-              <Image
-                src="/brand/neuroljus-logo.svg"
-                alt="NeuroLjus logo – protected core with aurora"
-                width={36}
-                height={36}
-                priority
-                className="brandLogo"
-              />
-              <div>
-                <div className="brandName">NeuroLjus</div>
-                <div className="tagline">{isSV ? T.tagSV : T.tagEN}</div>
+        <header className="shell header" role="banner">
+          <a className="brand" href="/" aria-label="NeuroLjus home">
+            <Image
+              src="/brand/neuroljus-logo.svg"
+              alt="NeuroLjus"
+              width={42}
+              height={42}
+              priority
+              className="brandLogo"
+            />
+            <span className="brandName">NeuroLjus</span>
+          </a>
+
+          <nav className="nav" aria-label={isSV ? "Primär" : "Primary"}>
+            <a href="/labs/nl-vision">{copy.navDemo}</a>
+            <a href="/about">{copy.navAbout}</a>
+            <a href="#offer">{copy.navOffer}</a>
+            <a href="/contact">{copy.navContact}</a>
+          </nav>
+
+          <div className="langToggle" role="group" aria-label="Language">
+            <button onClick={() => setLang("sv")} aria-pressed={isSV}>
+              SV
+            </button>
+            <button onClick={() => setLang("en")} aria-pressed={!isSV}>
+              EN
+            </button>
+          </div>
+        </header>
+
+        <main>
+          <section className="hero shell" aria-labelledby="hero-title">
+            <div className="heroCopy">
+              <p className="eyebrow">{copy.eyebrow}</p>
+              <h1 id="hero-title">{copy.title}</h1>
+              <p className="subtitle">{copy.subtitle}</p>
+              <div className="actions">
+                <a className="primaryCta" href="/labs/nl-vision">
+                  {copy.cta}
+                </a>
+                <a className="textCta" href="/about">
+                  {copy.secondaryCta}
+                </a>
               </div>
-            </a>
-
-            <nav className="nav" aria-label={isSV ? "Primär" : "Primary"}>
-              <a href="/labs/nl-vision">Demo</a>
-              <a href="/about">{isSV ? "Om" : "About"}</a>
-            </nav>
-
-            <div className="langToggle" role="group" aria-label="Language switch">
-              <button
-                onClick={() => setLang("sv")}
-                aria-label="Byt språk till svenska"
-                aria-pressed={isSV}
-              >
-                SV
-              </button>
-              <button
-                onClick={() => setLang("en")}
-                aria-label="Switch language to English"
-                aria-pressed={!isSV}
-              >
-                EN
-              </button>
+              <p className="status">{copy.status}</p>
             </div>
-          </header>
 
-          {/* Hero */}
-          <main className="hero" role="main">
-            <section className="card">
-              <h1 className="title">{isSV ? T.titleSV : T.titleEN}</h1>
-              <p className="subtitle">{isSV ? T.subSV : T.subEN}</p>
-
-              <a className="cta" href="/labs/nl-vision">
-                {isSV ? T.ctaSV : T.ctaEN}
-              </a>
-
-              <p className="note">
-                {isSV
-                  ? "Data stannar på enheten. Inget skickas utan ditt samtycke."
-                  : "Data stays on device. Nothing is sent without your consent."}
-              </p>
-            </section>
-
-            <section className="card">
+            <div className="heroMark" aria-hidden="true">
               <Image
                 src="/brand/neuroljus-logo.svg"
-                alt="NeuroLjus logo large"
-                width={800}
-                height={800}
-                className="logoLarge"
+                alt=""
+                width={720}
+                height={720}
                 priority
+                className="markImage"
               />
-            </section>
-          </main>
-
-          {/* Pillars */}
-          <section id="pillars" className="pillars" aria-label="Pillars">
-            <div className="pillar">
-              <h3>{isSV ? T.p1SVTitle : T.p1ENTitle}</h3>
-              <p>{isSV ? T.p1SV : T.p1EN}</p>
-            </div>
-            <div className="pillar">
-              <h3>{isSV ? T.p2SVTitle : T.p2ENTitle}</h3>
-              <p>{isSV ? T.p2SV : T.p2EN}</p>
-            </div>
-            <div className="pillar">
-              <h3>{isSV ? T.p3SVTitle : T.p3ENTitle}</h3>
-              <p>{isSV ? T.p3SV : T.p3EN}</p>
             </div>
           </section>
 
+          <section className="shell thesisBand" aria-labelledby="thesis-title">
+            <div>
+              <p className="sectionKicker">{isSV ? "Kärna" : "Core"}</p>
+              <h2 id="thesis-title">{copy.thesisTitle}</h2>
+            </div>
+            <p>{copy.thesis}</p>
+          </section>
 
-          <footer className="footer" role="contentinfo">
-            {isSV ? T.footSV : T.footEN}
-          </footer>
-        </div>
+          <section className="shell horizon" aria-label={isSV ? "Forskningshorisont" : "Research horizon"}>
+            <article>
+              <span>01</span>
+              <h3>{copy.modelTitle}</h3>
+              <p>{copy.model}</p>
+            </article>
+            <article>
+              <span>02</span>
+              <h3>{copy.horizonTitle}</h3>
+              <p>{copy.horizon}</p>
+            </article>
+            <article>
+              <span>03</span>
+              <h3>{copy.robotTitle}</h3>
+              <p>{copy.robot}</p>
+            </article>
+          </section>
+
+          <section className="shell actionBand" aria-labelledby="action-title">
+            <div>
+              <p className="sectionKicker">{copy.actionKicker}</p>
+              <h2 id="action-title">{copy.actionTitle}</h2>
+              <p>{copy.actionIntro}</p>
+            </div>
+            <ol>
+              {copy.actionSteps.map((step) => (
+                <li key={step}>{step}</li>
+              ))}
+            </ol>
+          </section>
+
+          <section id="offer" className="shell offerSection" aria-labelledby="offer-title">
+            <div className="offerIntro">
+              <p className="sectionKicker">{copy.offerKicker}</p>
+              <h2 id="offer-title">{copy.offerTitle}</h2>
+              <p>{copy.offerFoot}</p>
+            </div>
+            <div className="offerGrid">
+              {copy.offers.map((offer) => (
+                <article key={offer.title} className="offerCard">
+                  <h3>{offer.title}</h3>
+                  <p>{offer.body}</p>
+                  <a className="textCta" href={offer.href}>
+                    {offer.action}
+                  </a>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className="shell evidenceGrid">
+            <div className="labPanel">
+              <p className="sectionKicker">NL-VISION</p>
+              <h2>{copy.labTitle}</h2>
+              <p>{copy.lab}</p>
+              <a className="textCta" href="/labs/nl-vision">
+                {copy.cta}
+              </a>
+            </div>
+
+            <div className="boundaryPanel">
+              <h2>{copy.boundariesTitle}</h2>
+              <ul>
+                {copy.boundaries.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          <section className="shell collaborators" aria-labelledby="collab-title">
+            <p className="sectionKicker">{isSV ? "Samarbete" : "Collaboration"}</p>
+            <h2 id="collab-title">{copy.collabTitle}</h2>
+            <p>{copy.collab}</p>
+            <a className="primaryCta" href="/contact">
+              {copy.navContact}
+            </a>
+          </section>
+        </main>
+
+        <footer className="shell footer" role="contentinfo">
+          {copy.footer}
+        </footer>
       </div>
 
-      {/* Styles */}
       <style jsx>{`
         :global(html) {
           scroll-behavior: smooth;
         }
         .page {
           min-height: 100dvh;
-          color: #fff;
+          color: #17202f;
           background:
-            radial-gradient(1200px 700px at 20% 10%, rgba(94,230,164,0.18), transparent 60%),
-            radial-gradient(900px 600px at 80% 20%, rgba(124,227,247,0.18), transparent 60%),
-            radial-gradient(1200px 900px at 50% 120%, rgba(166,133,247,0.18), transparent 60%),
-            #1e1f3b;
-          display: flex;
-          flex-direction: column;
+            linear-gradient(145deg, rgba(245, 250, 247, 0.96), rgba(235, 245, 245, 0.92)),
+            linear-gradient(90deg, #f5faf7 0%, #eef7f2 44%, #f3f0fb 100%);
+          font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+            sans-serif;
         }
-        .container {
-          width: 100%;
-          max-width: 1100px;
+        .shell {
+          width: min(1120px, calc(100% - 40px));
           margin: 0 auto;
-          padding: 22px;
         }
         .header {
+          min-height: 76px;
           display: flex;
           align-items: center;
-          gap: 12px;
-          margin-bottom: 8px;
+          gap: 18px;
         }
         .brand {
-          display: flex;
+          display: inline-flex;
           align-items: center;
           gap: 12px;
+          color: inherit;
           text-decoration: none;
-          color: #fff;
         }
         .brandLogo {
-          filter: drop-shadow(0 0 10px rgba(124, 227, 247, 0.25));
+          filter: drop-shadow(0 8px 22px rgba(31, 111, 111, 0.18));
         }
         .brandName {
-          font-weight: 700;
-          letter-spacing: 0.3px;
-        }
-        .tagline {
-          font-size: 12px;
-          opacity: 0.8;
+          font-size: 18px;
+          font-weight: 760;
         }
         .nav {
           margin-left: auto;
           display: flex;
-          gap: 14px;
-        }
-        .nav a {
-          color: #cfe7ff;
-          text-decoration: none;
+          gap: 20px;
           font-size: 14px;
+        }
+        .nav a,
+        .textCta {
+          color: #245b62;
+          font-weight: 700;
+          text-decoration: none;
+        }
+        .nav a:hover,
+        .textCta:hover {
+          text-decoration: underline;
         }
         .langToggle {
           display: flex;
-          gap: 8px;
-          margin-left: 8px;
+          gap: 6px;
         }
         .langToggle button {
-          background: transparent;
-          color: #cfe7ff;
-          border: 1px solid #4a507e;
-          border-radius: 10px;
-          padding: 6px 10px;
+          min-width: 42px;
+          min-height: 34px;
+          border: 1px solid rgba(36, 91, 98, 0.22);
+          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.72);
+          color: #245b62;
           cursor: pointer;
+          font-weight: 700;
+        }
+        .langToggle button[aria-pressed="true"] {
+          background: #17202f;
+          color: #f7fbf8;
         }
         .hero {
+          position: relative;
+          min-height: 64vh;
           display: grid;
-          grid-template-columns: 1.2fr 0.8fr;
-          gap: 26px;
+          grid-template-columns: minmax(0, 0.98fr) minmax(280px, 0.72fr);
+          gap: 42px;
           align-items: center;
+          padding: 44px 0 32px;
+          overflow: hidden;
         }
-        .card {
-          background: rgba(255, 255, 255, 0.06);
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          border-radius: 18px;
-          padding: 22px;
+        .heroCopy {
+          position: relative;
+          z-index: 1;
         }
-        .title {
-          font-size: 40px;
-          margin: 6px 0;
+        .eyebrow,
+        .sectionKicker {
+          margin: 0 0 12px;
+          color: #6b4ea4;
+          font-size: 12px;
+          font-weight: 800;
+          letter-spacing: 0;
+          text-transform: uppercase;
+        }
+        h1,
+        h2,
+        h3,
+        p {
+          overflow-wrap: anywhere;
+        }
+        h1 {
+          margin: 0;
+          max-width: 720px;
+          font-size: clamp(48px, 8vw, 102px);
+          line-height: 0.92;
+          letter-spacing: 0;
         }
         .subtitle {
-          color: #cbd5e1;
-          margin: 0 0 14px;
-        }
-        .cta {
-          display: inline-block;
-          padding: 12px 18px;
-          border-radius: 12px;
-          font-weight: 600;
-          text-decoration: none;
-          color: #0b1220;
-          background-image: linear-gradient(135deg, #5ee6a4 0%, #7ce3f7 100%);
-          border: 1px solid rgba(255, 255, 255, 0.25);
-          box-shadow: 0 6px 20px rgba(94, 230, 164, 0.25);
-        }
-        .note {
-          opacity: 0.85;
-          margin-top: 10px;
-          font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
-            monospace;
-          font-size: 12px;
-        }
-        .logoLarge {
-          width: 100%;
-          height: auto;
-          display: block;
-        }
-        .pillars {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 18px;
-          margin-top: 22px;
-        }
-        .pillar {
-          background: rgba(255, 255, 255, 0.06);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 16px;
-          padding: 18px;
-        }
-        .pillar p {
-          color: #d7deea;
-          margin: 0;
-          font-size: 14px;
+          max-width: 720px;
+          margin: 22px 0 0;
+          color: #405064;
+          font-size: 21px;
           line-height: 1.45;
         }
-        .footer {
-          text-align: center;
-          color: #b8c1d6;
-          font-size: 12px;
-          padding: 18px 22px;
+        .actions {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 18px;
+          margin-top: 28px;
         }
-
-        /* Responsive */
+        .primaryCta {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 44px;
+          padding: 0 18px;
+          border: 1px solid rgba(23, 32, 47, 0.14);
+          border-radius: 8px;
+          background: #17202f;
+          color: #f8fffb;
+          box-shadow: 0 10px 26px rgba(23, 32, 47, 0.16);
+          font-weight: 800;
+          text-decoration: none;
+        }
+        .status {
+          max-width: 680px;
+          margin: 22px 0 0;
+          color: #5a6678;
+          font-size: 14px;
+        }
+        .heroMark {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 360px;
+        }
+        .markImage {
+          width: min(100%, 480px);
+          height: auto;
+          filter: drop-shadow(0 22px 48px rgba(31, 111, 111, 0.18));
+        }
+        .thesisBand {
+          display: grid;
+          grid-template-columns: 0.74fr 1.26fr;
+          gap: 38px;
+          padding: 34px 0;
+          border-top: 1px solid rgba(23, 32, 47, 0.12);
+          border-bottom: 1px solid rgba(23, 32, 47, 0.12);
+        }
+        .thesisBand h2,
+        .offerIntro h2,
+        .labPanel h2,
+        .boundaryPanel h2,
+        .collaborators h2 {
+          margin: 0;
+          font-size: 28px;
+          line-height: 1.12;
+        }
+        .thesisBand p,
+        .offerIntro p,
+        .offerCard p,
+        .labPanel p,
+        .collaborators p {
+          margin: 0;
+          color: #405064;
+          font-size: 17px;
+          line-height: 1.62;
+        }
+        .horizon {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 16px;
+          padding: 28px 0;
+        }
+        .actionBand {
+          display: grid;
+          grid-template-columns: 0.9fr 1.1fr;
+          gap: 24px;
+          align-items: start;
+          margin-bottom: 16px;
+          border: 1px solid rgba(23, 32, 47, 0.12);
+          border-radius: 8px;
+          background: #17202f;
+          color: #f8fffb;
+          padding: 26px;
+        }
+        .actionBand h2 {
+          margin: 0;
+          font-size: 28px;
+          line-height: 1.12;
+        }
+        .actionBand p {
+          margin: 12px 0 0;
+          color: #dbe8e3;
+          line-height: 1.58;
+        }
+        .actionBand .sectionKicker {
+          color: #9fe8cf;
+        }
+        .actionBand ol {
+          display: grid;
+          gap: 12px;
+          margin: 0;
+          padding-left: 20px;
+          color: #eef8f3;
+          line-height: 1.5;
+        }
+        .horizon article,
+        .offerCard,
+        .labPanel,
+        .boundaryPanel {
+          border: 1px solid rgba(23, 32, 47, 0.12);
+          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.64);
+          padding: 22px;
+        }
+        .horizon span {
+          color: #2f7f6f;
+          font-weight: 800;
+          font-size: 13px;
+        }
+        .horizon h3 {
+          margin: 14px 0 10px;
+          font-size: 21px;
+        }
+        .horizon p {
+          margin: 0;
+          color: #4f5f70;
+          line-height: 1.55;
+        }
+        .evidenceGrid {
+          display: grid;
+          grid-template-columns: 1.05fr 0.95fr;
+          gap: 16px;
+        }
+        .offerSection {
+          padding: 14px 0 28px;
+        }
+        .offerIntro {
+          max-width: 760px;
+          margin-bottom: 18px;
+        }
+        .offerGrid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 16px;
+        }
+        .offerCard {
+          display: flex;
+          flex-direction: column;
+          min-height: 260px;
+        }
+        .offerCard h3 {
+          margin: 0 0 10px;
+          font-size: 20px;
+          line-height: 1.15;
+        }
+        .offerCard p {
+          margin-bottom: 18px;
+          font-size: 15px;
+        }
+        .offerCard .textCta {
+          margin-top: auto;
+        }
+        .labPanel p {
+          margin: 12px 0 18px;
+        }
+        .boundaryPanel ul {
+          display: grid;
+          gap: 10px;
+          padding-left: 20px;
+          margin: 16px 0 0;
+          color: #405064;
+          line-height: 1.5;
+        }
+        .collaborators {
+          padding: 38px 0 32px;
+        }
+        .collaborators p {
+          max-width: 820px;
+          margin: 12px 0 22px;
+        }
+        .footer {
+          padding: 24px 0 34px;
+          color: #667286;
+          font-size: 13px;
+        }
         @media (max-width: 900px) {
-          .hero {
-            grid-template-columns: 1fr;
+          .shell {
+            width: min(100% - 28px, 1120px);
           }
-          .title {
-            font-size: 32px;
+          .header {
+            flex-wrap: wrap;
+            padding: 12px 0;
           }
           .nav {
-            display: none;
+            order: 3;
+            width: 100%;
+            margin-left: 0;
           }
-        }
-
-        /* Smooth hover */
-        @media (prefers-reduced-motion: no-preference) {
-          .cta {
-            transition: transform 200ms ease, box-shadow 200ms ease;
+          .langToggle {
+            margin-left: auto;
           }
-          .cta:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 10px 22px rgba(94, 230, 164, 0.3);
+          .hero,
+          .thesisBand,
+          .horizon,
+          .actionBand,
+          .offerGrid,
+          .evidenceGrid {
+            grid-template-columns: 1fr;
+          }
+          .offerCard {
+            min-height: auto;
+          }
+          .hero {
+            min-height: auto;
+            gap: 8px;
+            padding-top: 22px;
+          }
+          .subtitle {
+            font-size: 18px;
+          }
+          .heroMark {
+            min-height: 180px;
+            justify-content: flex-start;
+          }
+          .markImage {
+            width: min(260px, 70vw);
           }
         }
       `}</style>

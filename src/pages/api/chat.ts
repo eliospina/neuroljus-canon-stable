@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
+type Lang = "sv" | "en" | "es";
 
 // --- Basic abuse protection (defense-in-depth for a public endpoint) ---
 const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
@@ -46,6 +47,35 @@ function sanitizeMessages(input: unknown): ChatMessage[] {
     .map((m) => ({ role: m.role, content: m.content.slice(0, MAX_MESSAGE_CHARS) }));
 }
 
+function sanitizeLang(input: unknown): Lang {
+  return input === "sv" || input === "es" || input === "en" ? input : "en";
+}
+
+function languageInstruction(lang: Lang): string {
+  if (lang === "sv") return "Respond in Swedish unless the caregiver asks for another language.";
+  if (lang === "es") return "Respond in Spanish unless the caregiver asks for another language.";
+  return "Respond in English unless the caregiver asks for another language.";
+}
+
+function numberOrUndefined(input: unknown): number | undefined {
+  const n = typeof input === "number" ? input : typeof input === "string" ? Number(input) : undefined;
+  return Number.isFinite(n) ? n : undefined;
+}
+
+function numberOrZero(input: unknown): number {
+  return numberOrUndefined(input) ?? 0;
+}
+
+function formatRelative(input: unknown): string {
+  const n = numberOrUndefined(input);
+  return n === undefined ? "N/A" : (n * 1000).toFixed(2);
+}
+
+function formatFixed(input: unknown, digits: number): string {
+  const n = numberOrUndefined(input);
+  return n === undefined ? "N/A" : n.toFixed(digits);
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
@@ -65,6 +95,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       messages?: unknown;
       metrics?: any;
       notes?: unknown;
+      lang?: unknown;
     };
 
     const messages = sanitizeMessages(body.messages);
@@ -76,30 +107,43 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const notes =
       typeof body.notes === "string" ? body.notes.slice(0, MAX_NOTES_CHARS) : "";
-    const metrics = body.metrics;
+    const metrics =
+      body.metrics && typeof body.metrics === "object" && !Array.isArray(body.metrics)
+        ? body.metrics
+        : undefined;
+    const lang = sanitizeLang(body.lang);
 
     // Neuroljus AI system instruction
     const system =
-      "You are Neuroljus AI, an assistant specialized in helping caregivers understand non-verbal autistic individuals. " +
-      "You analyze camera metrics and user input with empathy and provide clear, supportive communication. " +
-      "Be concrete and gentle. Offer low-risk next steps. Use uncertainty language. " +
+      "You are Neuroljus AI, an experimental non-diagnostic support assistant for caregiver observation and reflection. " +
+      "Neuroljus is a paused research and portfolio prototype for privacy-first caregiver observation, communication support, and long-horizon care intelligence. " +
+      "You help caregivers organize notes, context, and optional prototype camera metrics without claiming to know inner states. " +
+      "Be concrete and gentle. Offer low-risk observation steps. Use uncertainty language. " +
       "If severe/persistent pain or risk is suspected, advise contacting healthcare. " +
-      "Interpret live signals contextually - hands near face may indicate self-soothing or discomfort, " +
-      "elevated blinking may suggest stress or fatigue, mouth opening patterns may relate to breathing or communication attempts.";
+      "Do not diagnose, do not translate non-speaking or non-verbal behavior as certainty, and do not present metrics as validated evidence. " +
+      "Never infer calmness, distress, engagement, disengagement, pain, emotion, intent, communication, or availability from face, hands, blinking, mouth openness, movement, or the absence of those signals. " +
+      "Do not claim that you can interpret inner states or understand a person's lived experience from camera data. " +
+      "When discussing live signals, describe them only as prototype observations that may help organize caregiver reflection. " +
+      "If no face or hands are detected, say only that no usable visual signal is available; do not turn absence into a behavioral conclusion. " +
+      "Do not mention camera metrics in introductions or general greetings unless the caregiver directly asks about them. " +
+      "If robotics or future care technology comes up, frame it only as a research horizon that must preserve consent, privacy, human relationship, and caregiver agency. " +
+      languageInstruction(lang);
 
-    const metricsContext = metrics
+    const hasMetrics = !!metrics && Object.keys(metrics).length > 0;
+    const metricsContext = hasMetrics
       ? `
-Live Camera Metrics (last 60 seconds):
-- Face detected: ${metrics.hasFace ? "Yes" : "No"}
-- Hands visible: ${metrics.handsAvg || 0} hands on average
-- Hand-to-face proximity: ${((metrics.handNearPct || 0) * 100).toFixed(1)}% of time
-- Face movement: ${metrics.faceMoveAvg ? (metrics.faceMoveAvg * 1000).toFixed(2) : "N/A"} (relative units)
-- Hand movement: ${metrics.handsMoveAvg ? (metrics.handsMoveAvg * 1000).toFixed(2) : "N/A"} (relative units)
-- Blinking rate: ${metrics.blinksPerMin || 0} blinks per minute
-- Eye aspect ratio: ${metrics.earAvg ? metrics.earAvg.toFixed(3) : "N/A"} (lower = more closed)
-- Mouth openness: ${metrics.mouthOpenAvg ? metrics.mouthOpenAvg.toFixed(3) : "N/A"} (higher = more open)
+Prototype visual signals (last 60 seconds, non-diagnostic and not validated):
+- Face detected: ${metrics.hasFace === true ? "Yes" : "No"}
+- Hands visible: ${numberOrZero(metrics.handsAvg)} hands on average
+- Hand-to-face proximity: ${(numberOrZero(metrics.handNearPct) * 100).toFixed(1)}% of time
+- Face movement: ${formatRelative(metrics.faceMoveAvg)} (relative units)
+- Hand movement: ${formatRelative(metrics.handsMoveAvg)} (relative units)
+- Blinking rate: ${numberOrZero(metrics.blinksPerMin)} blinks per minute
+- Eye aspect ratio: ${formatFixed(metrics.earAvg, 3)} (lower = more closed)
+- Mouth openness: ${formatFixed(metrics.mouthOpenAvg, 3)} (higher = more open)
+Boundary: These signals cannot determine calmness, engagement, pain, emotion, intent, or communication. Absence of a face, hands, or blinking is only absence of usable prototype signal.
 `
-      : "No live metrics available.";
+      : "No usable live prototype metrics were provided.";
 
     const context = metricsContext + `\nCaregiver notes: ${notes || "None provided"}`;
 
@@ -138,6 +182,14 @@ Live Camera Metrics (last 60 seconds):
         }),
       });
       j = await r.json();
+      if (!r.ok) {
+        console.error("OpenAI API returned an error", r.status, j?.error?.message);
+        return res.status(502).json({
+          role: "assistant",
+          content:
+            "I'm having trouble reaching the AI service right now. Please try again in a moment.",
+        });
+      }
     } finally {
       clearTimeout(timeout);
     }

@@ -19,10 +19,12 @@ const T: Record<Lang, Record<string, string>> = {
     placeholder: "Skriv din fråga här…",
     send: "Skicka",
     thinking: "Tänker…",
-    quick1: "Kan detta vara smärta?",
+    quick1: "Vad bör jag observera om jag misstänker smärta?",
     quick2: "Behöver vi sänka stimuli?",
     quick3: "Vilka nästa steg föreslår du?",
     disclaimer: "Detta är stödjande information – ingen medicinsk diagnos.",
+    notesPlaceholder: "Vårdgivarens anteckningar (valfritt, privat)",
+    error: "Jag har tekniska problem just nu. Försök igen om en liten stund.",
     engineOpenAI: "AI: OpenAI",
     engineHeur: "AI: Heuristisk",
   },
@@ -32,10 +34,12 @@ const T: Record<Lang, Record<string, string>> = {
     placeholder: "Type your question here…",
     send: "Send",
     thinking: "Thinking…",
-    quick1: "Could this be pain?",
+    quick1: "What should I observe if I suspect pain?",
     quick2: "Should we lower stimulation?",
     quick3: "What next steps do you suggest?",
     disclaimer: "Supportive information only — no medical diagnosis.",
+    notesPlaceholder: "Caregiver notes (optional, private)",
+    error: "I'm having technical trouble right now. Please try again in a moment.",
     engineOpenAI: "AI: OpenAI",
     engineHeur: "AI: Heuristic",
   },
@@ -45,51 +49,46 @@ const T: Record<Lang, Record<string, string>> = {
     placeholder: "Escribe tu pregunta aquí…",
     send: "Enviar",
     thinking: "Pensando…",
-    quick1: "¿Podría ser dolor?",
+    quick1: "¿Qué debo observar si sospecho dolor?",
     quick2: "¿Debemos reducir estímulos?",
     quick3: "¿Qué próximos pasos sugieres?",
     disclaimer: "Información de apoyo — no diagnóstico médico.",
+    notesPlaceholder: "Notas del cuidador (opcional, privado)",
+    error: "Tengo un problema técnico ahora mismo. Inténtalo de nuevo en un momento.",
     engineOpenAI: "IA: OpenAI",
     engineHeur: "IA: Heurística",
   },
 };
 
+const GREETING: Record<Lang, string> = {
+  sv:
+    "Hej. Jag är Neuroljus AI, ett icke-diagnostiskt stöd för att organisera vårdgivarens observationer, sammanhang och frågor. Jag tolkar inte inre tillstånd, ställer inte diagnos och ersätter inte professionell vård. Berätta vad du såg, vad som hände före och efter, och vad som fortfarande är oklart, så hjälper jag dig att strukturera reflektionen.",
+  en:
+    "Hello. I’m Neuroljus AI, a non-diagnostic support tool for organizing caregiver observations, context, and questions. I do not interpret inner states, diagnose, or replace professional care. Share what you observed, what happened before and after, and what remains uncertain, and I’ll help structure the reflection.",
+  es:
+    "Hola. Soy Neuroljus AI, un apoyo no diagnóstico para organizar observaciones de cuidadores, contexto y preguntas. No interpreto estados internos, no diagnostico y no reemplazo atención profesional. Comparte qué observaste, qué pasó antes y después, y qué sigue siendo incierto; te ayudaré a estructurar la reflexión.",
+};
+
+const greetingValues = new Set(Object.values(GREETING));
+
 export default function CareChat() {
   const [lang, setLang] = useState<Lang>("sv");
-  const [engine, setEngine] = useState<"openai">("openai");
-  const [msgs, setMsgs] = useState<Msg[]>([]);
+  const [msgs, setMsgs] = useState<Msg[]>([{ role: "assistant", content: GREETING.sv }]);
   const [input, setInput] = useState("");
   const [notes, setNotes] = useState("");
   const [busy, setBusy] = useState(false);
   const endRef = useRef<HTMLDivElement | null>(null);
 
-  // All responses come from Neuroljus AI
   useEffect(() => {
-    // Initialize with AI greeting if no messages
-    if (msgs.length === 0) {
-      const greeting = async () => {
-        try {
-          const metrics = readRecentMetrics();
-          const r = await fetch("/api/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ 
-              messages: [{ role: "user", content: "Hello, please introduce yourself and explain how you can help." }], 
-              metrics, 
-              notes: "", 
-              lang 
-            }),
-          });
-          const j = await r.json();
-          setMsgs([{ role: "assistant", content: j.content }]);
-        } catch (error) {
-          console.error('Initial greeting error:', error);
-          // If greeting fails, start with empty chat
-        }
-      };
-      greeting();
-    }
-  }, []);
+    setMsgs((current) => {
+      const hasOnlyGreeting =
+        current.length === 1 &&
+        current[0].role === "assistant" &&
+        greetingValues.has(current[0].content);
+
+      return hasOnlyGreeting ? [{ role: "assistant", content: GREETING[lang] }] : current;
+    });
+  }, [lang]);
 
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [msgs]);
 
@@ -100,8 +99,6 @@ export default function CareChat() {
       return arr[arr.length - 1] || {};
     } catch { return {}; }
   };
-
-  const quick = [T[lang].quick1, T[lang].quick2, T[lang].quick3];
 
   const send = async (text?: string) => {
     const content = (text ?? input).trim();
@@ -121,7 +118,7 @@ export default function CareChat() {
       setMsgs((m) => [...m, { role: "assistant", content: j.content }]);
     } catch (error) {
       console.error('Chat error:', error);
-      setMsgs((m) => [...m, { role: "assistant", content: "I'm experiencing some technical difficulties. Please try again in a moment." }]);
+      setMsgs((m) => [...m, { role: "assistant", content: T[lang].error }]);
     } finally {
       setBusy(false);
     }
@@ -158,7 +155,7 @@ export default function CareChat() {
       <textarea
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
-        placeholder="Caregiver notes (optional, private)"
+        placeholder={T[lang].notesPlaceholder}
         style={notesBox}
       />
 
@@ -189,7 +186,6 @@ const box: React.CSSProperties = {
 const thread: React.CSSProperties = { background: "rgba(0,0,0,0.3)", borderRadius: 10, padding: 10, maxHeight: 260, overflow: "auto" };
 const userBubble: React.CSSProperties = { background: "#2a3754", color: "#e8f0ff", borderRadius: 10, padding: "8px 10px", margin: "6px 0 6px auto", maxWidth: "85%" };
 const aiBubble: React.CSSProperties = { background: "#2f2a4f", color: "#f4e9ff", borderRadius: 10, padding: "8px 10px", margin: "6px auto 6px 0", maxWidth: "85%" };
-const chip: React.CSSProperties = { padding: "6px 10px", borderRadius: 999, border: "1px solid rgba(255,255,255,0.2)", background: "transparent", color: "#cfe7ff", cursor: "pointer" };
 const inputBox: React.CSSProperties = { flex: 1, padding: "10px 12px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.2)", background: "rgba(0,0,0,0.25)", color: "#e8f0ff" };
 const notesBox: React.CSSProperties = { width: "100%", height: 64, borderRadius: 10, padding: 10, border: "1px solid rgba(255,255,255,0.15)", background: "rgba(0,0,0,0.25)", color: "#e8f0ff", marginTop: 8 };
 const sendBtn: React.CSSProperties = { padding: "10px 14px", borderRadius: 10, background: "linear-gradient(135deg,#5EE6A4,#7CE3F7)", border: "none", color: "#0b1220", fontWeight: 700, cursor: "pointer" };

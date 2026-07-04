@@ -23,7 +23,7 @@ type Row = {
 
 export default function LiveVitals() {
   const [last, setLast] = useState<Partial<Row> | null>(null);
-  const [status, setStatus] = useState<{score:number;text:string}>({score:100,text:"Calm"});
+  const [status, setStatus] = useState<{score:number;text:string}>({score:100,text:"Baseline"});
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -45,7 +45,7 @@ export default function LiveVitals() {
     <div style={box} aria-label="Live vitals dashboard">
       <div style={header}>
         <div style={{fontWeight:700}}>Live Dashboard</div>
-        <div>State: <b>{status.text}</b></div>
+        <div>Signal level: <b>{status.text}</b></div>
       </div>
 
       <Bar label="Hands activity" value={fmt(last?.handsMoveAvg, 4)} raw={last?.handsMoveAvg ?? null} max={0.06} />
@@ -54,7 +54,7 @@ export default function LiveVitals() {
       <Bar label="Blinks / min" value={fmt(last?.blinksPerMin, 0)} raw={last?.blinksPerMin ?? null} max={40} />
 
       <div style={hint}>
-        This is supportive, non-diagnostic feedback based on on-device signals.
+        Prototype observations only. This does not infer emotion, pain, diagnosis, or inner state.
       </div>
     </div>
   );
@@ -65,7 +65,7 @@ function computeStatus(l: Partial<Row>) {
   if ((l.mouthOpenAvg ?? 0) > 0.38) score -= 15;
   if ((l.handsMoveAvg ?? 0) > 0.02) score -= 20;
   if ((l.handNearPct ?? 0) > 0.35) score -= 15;
-  const text = score>=75 ? "Calm" : score>=55 ? "Elevated" : "High";
+  const text = score>=75 ? "Baseline" : score>=55 ? "More activity" : "High activity";
   return { score, text };
 }
 

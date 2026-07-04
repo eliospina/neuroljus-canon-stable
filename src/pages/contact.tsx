@@ -6,7 +6,10 @@ export default function ContactPage() {
     <>
       <Head>
         <title>Contact — Neuroljus</title>
-        <meta name="description" content="Get in touch with Neuroljus." />
+        <meta
+          name="description"
+          content="Contact Neuroljus about research, collaboration, ethics, accessibility, and privacy-first caregiver observation."
+        />
       </Head>
       <main className="px-6 py-10 md:py-16">
         <ContactForm />

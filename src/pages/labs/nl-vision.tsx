@@ -228,7 +228,7 @@ function NLVisionHolistic() {
         lastPtsRef.current = { face: fC, lh: lC, rh: rC };
 
         const ear = computeEAR(faceLm) ?? undefined;             // closed eyes ~ < 0.24
-        const mouthOpen = computeMouthOpen(faceLm) ?? undefined; // speaking/stress ~ > 0.35
+        const mouthOpen = computeMouthOpen(faceLm) ?? undefined; // prototype mouth openness ratio
 
         // blink detection (simple)
         if (ear !== undefined) {
@@ -362,7 +362,7 @@ function NLVisionHolistic() {
   return (
     <div style={S.page}>
       <h1 style={S.h1}>NL-VISION · Holistic</h1>
-      <p style={S.sub}>Empathic AI · Face + Hands · On-device metrics</p>
+      <p style={S.sub}>Observation prototype · Face + Hands · On-device metrics</p>
 
       <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
         {!running ? <button onClick={start} style={S.btn}>Start Camera</button>
