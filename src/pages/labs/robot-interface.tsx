@@ -32,7 +32,7 @@ type SimStatus = "idle" | "running" | "paused" | "completed" | "escalated";
 type AuditEntry = {
   id: number;
   time: string;
-  actor: "caregiver" | "neuroljus" | "simulator" | "system";
+  actor: "caregiver" | "neuroljus" | "protocol" | "system";
   command: string;
   reason: string;
 };
@@ -140,7 +140,7 @@ export default function RobotInterfaceLab() {
       time: nowStamp(),
       actor: "system",
       command: "lab_ready",
-      reason: "local simulator initialized; no hardware adapter attached",
+      reason: "protocol workspace initialized for future adapter work",
     },
   ]);
 
@@ -151,7 +151,7 @@ export default function RobotInterfaceLab() {
     () => ({
       name: routineName || "Untitled routine",
       autonomy_level: 2,
-      mode: "simulator_first",
+      mode: "protocol_first",
       duration_minutes: duration,
       environment,
       allowed_commands: commands,
@@ -173,9 +173,9 @@ export default function RobotInterfaceLab() {
           "local audit trail",
         ],
       },
-      hardware_adapter: {
-        attached: false,
-        status: "simulation_only",
+      integration_adapter: {
+        stage: "contract_design",
+        readiness: "ready_for_local_adapter_work",
       },
     }),
     [adapterTarget, commands, duration, environment, exceptions, routineName]
@@ -224,25 +224,25 @@ export default function RobotInterfaceLab() {
   function resetRoutine() {
     setStatus("idle");
     setStepIndex(0);
-    addLog("caregiver", "reset_simulator", "routine returned to idle state");
+    addLog("caregiver", "reset_protocol_run", "routine returned to idle state");
   }
 
-  function completeRoutine(reason = "routine completed within protocol") {
+  function completeRoutine(reason = "routine completed inside protocol") {
     setStatus("completed");
     setStepIndex(activeCommands.length);
-    addLog("simulator", "routine_complete", reason);
+    addLog("protocol", "routine_complete", reason);
   }
 
   function injectEvent(label: "person rejects" | "noise increases" | "caregiver pauses" | "routine completes") {
     if (label === "routine completes") {
-      completeRoutine("manual completion event injected in simulator");
+      completeRoutine("manual completion event added to protocol run");
       return;
     }
 
     const exception = eventToException[label];
     const command = exception ? exception : "event";
 
-    addLog("simulator", command, `${label} event injected`);
+    addLog("protocol", command, `${label} event added`);
 
     if (exception && exceptions.includes(exception)) {
       setStatus(exception === "caregiver_pause" ? "paused" : "escalated");
@@ -302,7 +302,7 @@ export default function RobotInterfaceLab() {
         <title>Robot Care Interface Lab - Neuroljus</title>
         <meta
           name="description"
-          content="Local simulator for Neuroljus care command protocols, preauthorized routines, safety exceptions, and audit trails."
+          content="Protocol-first workspace for Neuroljus care command protocols, preauthorized routines, safety exceptions, audit trails, and future adapter work."
         />
       </Head>
 
@@ -312,7 +312,7 @@ export default function RobotInterfaceLab() {
             Neuroljus
           </Link>
           <div>
-            <p className="kicker">Local prototype · open protocol · simulator first</p>
+            <p className="kicker">Local prototype · open protocol · adapter-ready</p>
             <h1>Robot Care Interface</h1>
           </div>
           <div className={`status ${status}`}>{statusLabel[status]}</div>
@@ -322,7 +322,7 @@ export default function RobotInterfaceLab() {
           <div>
             <span>Core</span>
             <strong>Preauthorized autonomy</strong>
-            <p>Configured routines execute without asking at every step.</p>
+            <p>Configured routines execute from caregiver-authored settings.</p>
           </div>
           <div>
             <span>Exception</span>
@@ -341,8 +341,8 @@ export default function RobotInterfaceLab() {
           </div>
           <div>
             <span>Adapter</span>
-            <strong>Simulation only</strong>
-            <p>Today it designs the contract. Devices can attach after the contract is sound.</p>
+            <strong>Integration-ready contract</strong>
+            <p>Future devices attach by preserving commands, exceptions, and audit records.</p>
           </div>
         </section>
 
@@ -502,7 +502,7 @@ export default function RobotInterfaceLab() {
 
           <section className="panel simulator" aria-labelledby="sim-title">
             <div className="panelHeader">
-              <p className="kicker">02 · Simulator panel</p>
+              <p className="kicker">02 · Protocol panel</p>
               <h2 id="sim-title">Preauthorized routine</h2>
             </div>
 
@@ -534,7 +534,7 @@ export default function RobotInterfaceLab() {
               <button onClick={resetRoutine}>Reset</button>
             </div>
 
-            <div className="injectors" aria-label="Inject simulator events">
+            <div className="injectors" aria-label="Inject protocol events">
               <button onClick={() => injectEvent("person rejects")}>Person rejects</button>
               <button onClick={() => injectEvent("noise increases")}>Noise increases</button>
               <button onClick={() => injectEvent("caregiver pauses")}>Caregiver pauses</button>

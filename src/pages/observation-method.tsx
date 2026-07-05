@@ -51,7 +51,7 @@ export default function ObservationMethod() {
         <title>Observation Method v0 - Neuroljus</title>
         <meta
           name="description"
-          content="A non-diagnostic caregiver observation method for documenting context, uncertainty, and within-person patterns over time."
+          content="A caregiver observation method for documenting context, uncertainty, responses, and within-person patterns over time."
         />
       </Head>
 
@@ -63,20 +63,20 @@ export default function ObservationMethod() {
           Observation Method v0
         </p>
         <h1 className="mt-3 text-4xl font-semibold tracking-tight">
-          Better observations first
+          Care observations that can become knowledge
         </h1>
         <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-700">
-          This is a simple, non-diagnostic way to help caregivers document what happened,
-          the surrounding context, their interpretation, uncertainty, and what helped.
+          A simple structure for documenting what happened, the surrounding context,
+          the caregiver's interpretation, uncertainty, and what helped.
         </p>
 
         <section className="mt-8 rounded-lg border border-slate-200 bg-slate-50 p-5">
           <h2 className="text-lg font-semibold">Care frame</h2>
           <p className="mt-2 leading-7 text-slate-700">
-            This method keeps observation, interpretation, and uncertainty separate.
-            It helps caregivers review patterns over time while leaving pain, emotion,
-            intention, diagnosis, needs, and inner states to appropriate human and
-            clinical judgment.
+            This method keeps observation, interpretation, and uncertainty separate so
+            daily care can become clearer over time. Repeated entries help caregivers,
+            families, and future research partners review patterns with more context
+            and less noise.
           </p>
         </section>
 

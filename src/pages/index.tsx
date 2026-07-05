@@ -21,23 +21,23 @@ export default function Home() {
   const T = useMemo(
     () => ({
       sv: {
-        seoTitle: "NeuroLjus - omsorgsintelligens genom design",
+        seoTitle: "NeuroLjus - care intelligence for future health and care",
         seoDesc:
-          "Neuroljus designar integritetsförst omsorgsintelligens: observationsmetod, prototyper och en vetenskaplig väg mot framtida AI och omsorgsrobotik.",
+          "Neuroljus är en forskningsförberedd plattform för omsorgsintelligens, vardagsobservation, öppna protokoll och framtida AI- och robotikstöd inom vård och omsorg.",
         primaryNav: "Primär",
         coreKicker: "Kärna",
         horizonAria: "Forskningshorisont",
         collabKicker: "Samarbete",
-        eyebrow: "Omsorgsintelligens genom design · integritet · framtida omsorg",
+        eyebrow: "Omsorgsintelligens · svensk omsorgslogik · framtida hälsoteknik",
         title: "Neuroljus",
         subtitle:
-          "Neuroljus designar observationslagret för framtidens omsorgsintelligens: där vårdgivares kunskap blir strukturerat språk, etisk AI och en väg mot omsorgsrobotik.",
+          "Neuroljus omvandlar levd omsorgskunskap till strukturerade rutiner, lokala observationer och öppna protokoll för framtida hälsa, forskning och assisterande robotik.",
         cta: "Öppna NL-VISION",
         whitepaperCta: "Läs white paper",
         whitepaperHref: "https://doi.org/10.5281/zenodo.20775583",
         secondaryCta: "Läs projektets historia",
         status:
-          "Vi tror på visionen och bygger den del som kan byggas idag: språk, arkitektur, prototyp och vetenskaplig väg. Den etiska ramen är en del av att tänka stort och bygga något som kan hålla i längden.",
+          "Vi bygger de första lagren: språk, metod, lokal prototyp, öppna protokoll och forskningsväg. Visionen är större än en app: omsorgskunskap som en del av framtidens hälsoinfrastruktur.",
         navDemo: "Demo",
         navAbout: "Om",
         navOffer: "Nu",
@@ -48,7 +48,7 @@ export default function Home() {
           {
             title: "Vårdgivarintelligens",
             body:
-              "Vardagens omsorg innehåller expertis. Neuroljus börjar med att lyssna till observationer, överlämningar och osäkerhet så att levd kunskap kan bli designmaterial.",
+              "Vardagens omsorg innehåller expertis. Neuroljus gör observationer, överlämningar och osäkerhet till strukturerat designmaterial.",
             action: "Starta samtal",
             href: "/contact",
           },
@@ -62,77 +62,84 @@ export default function Home() {
           {
             title: "NL-VISION-labb",
             body:
-              "Ett lokalt prototyplabb för valfria visuella signaler. Det visar hur framtida omsorgsteknik kan designas med integritet från första raden kod.",
+              "Ett lokalt observationslager för valfria visuella signaler, byggt för integritet och framtida forskningsanknytning från första raden kod.",
             action: "Öppna labbet",
             href: "/labs/nl-vision",
           },
           {
+            title: "Robotgränssnittslabb",
+            body:
+              "Ett första öppet protokoll för förgodkända omsorgsrutiner, lokala händelseloggar och framtida adapterarbete mot ROS2, MQTT, HTTP eller offlineverktyg.",
+            action: "Öppna robotlabbet",
+            href: "/labs/robot-interface",
+          },
+          {
             title: "Klinisk-vetenskaplig förankring",
             body:
-              "Dialog med universitet, forskare, kliniska miljöer och etiska samarbetspartners som kan hjälpa Neuroljus växa med evidens.",
+              "Dialog med universitet, forskare och kliniska miljöer som kan hjälpa Neuroljus växa mot validerade lager för forskning, diagnostiskt stöd och omsorgsinfrastruktur.",
             action: "Starta dialog",
             href: "/contact",
           },
         ],
         offerFoot:
-          "Neuroljus är här för att tänka stort och börja rätt: med språk, observation, prototyp och forskningsdialog innan klinisk produkt, diagnos eller automatiserad tolkning.",
+          "Neuroljus börjar i vardagens omsorg och bygger för större integration: forskning, klinisk vetenskap, välfärdssystem, öppna protokoll och assisterande teknik.",
         thesisTitle: "Fött ur verklig omsorg",
         thesis:
           "Elizabeths erfarenhet som ekonom och vårdgivare är projektets grund: noggrann observation, systemförståelse, omsorgsarbete och respekt för det som inte alltid uttrycks genom tal.",
         horizonTitle: "Den långsiktiga frågan",
         horizon:
-          "Om framtidens omsorg en dag inkluderar AI och robotar, vem lär dem vad värdighet betyder? Neuroljus börjar där ansvaret är konkret: en person, ett sammanhang, en observation, ett nästa steg.",
+          "När framtidens omsorg inkluderar AI, sensorer och robotar behöver de lära sig från verklig omsorg: en person, ett sammanhang, en rutin, ett nästa steg.",
         modelTitle: "Inom-person över tid",
         model:
           "Neuroljus börjar med individuella mönster före universella svar om autism. Det utforskar hur strukturerade observationer över tid kan hjälpa vårdgivare se mer med omsorg och mindre gissning.",
         robotTitle: "Robotik som horisont",
         robot:
-          "Framtida robotar kan en dag stödja rutiner, miljö, trygg överföring och kommunikation. I Neuroljus får tekniken bara växa där samtycke, integritet, evidens och mänsklig närvaro följer med.",
+          "Assisterande robotik kan stödja rutiner, miljö, överföringar och kommunikation. Neuroljus bygger protokollen som gör sådant stöd begripligt, spårbart och anpassningsbart.",
         actionKicker: "Vägen framåt",
-        actionTitle: "En väg som tål granskning",
+        actionTitle: "Från vardagsomsorg till hälsoinfrastruktur",
         actionIntro:
-          "Arbetet nu är att designa med övertygelse och samtidigt hitta rätt institutionellt hem, rätt vetenskapliga ankare och rätt skydd innan Neuroljus närmar sig mänsklig validering.",
+          "Arbetet nu är att bygga de lager som gör omsorgskunskap användbar för familjer, kommuner, forskning, kliniska partners och framtida omsorgsteknik.",
         actionSteps: [
-          "Hålla NL-VISION lokalt, frivilligt, icke-diagnostiskt och tydligt märkt som prototyp.",
-          "Dela white paper med universitet och forskare som kan ge klinisk-vetenskaplig förankring.",
-          "Förbereda dataskydd, samtycke, riskanalys och etikprövning innan känslig mänsklig validering.",
-          "Bygga den arkitektur som kan bära en större framtid när evidens, partnerskap och ansvar är på plats.",
+          "Utveckla observations- och rutinverktyg som passar vardagens omsorg.",
+          "Göra protokoll portabla så att forskare, öppna projekt och framtida enheter kan bygga vidare.",
+          "Söka universitet och kliniska partners för lager som kräver validering, evidens och forskningsansvar.",
+          "Bygga integritet, samtycke, spårbarhet och lokal kontroll som tekniska egenskaper från början.",
         ],
-        boundariesTitle: "Nuvarande ram",
+        boundariesTitle: "Designprinciper",
         boundaries: [
-          "Idag stödjer Neuroljus reflektion, inte diagnos eller medicinska råd.",
-          "Kamerasignaler behandlas som tekniska observationer, inte som säkerhet om inre tillstånd.",
-          "Validering med människor eller känsliga data hör hemma i ett godkänt forskningsramverk.",
-          "Tekniken ska stödja människor, inte ersätta familj, vårdgivare eller professionell omsorg.",
-          "Alla framtida kliniska eller diagnostiska vägar kräver evidens, forskningsansvar, etik, dataskydd och reglering.",
+          "Vårdgivaren författar rutiner, sammanhang och mål.",
+          "Lokala observationer prioriterar integritet och kontroll nära personen.",
+          "Osäkerhet sparas som data så att systemet kan lära utan att låtsas veta mer än det vet.",
+          "Kliniska och diagnostiska lager utvecklas tillsammans med kvalificerade forsknings- och vårdpartners.",
+          "Familj, vårdgivare, professionell omsorg och framtida teknik ingår i samma stödnätverk.",
         ],
-        labTitle: "Nuvarande tekniska artefakt",
+        labTitle: "Aktuellt tekniskt lager",
         lab:
-          "NL-VISION är ett lokalt observationsdemo för ansikte, händer och enkla signaler. Signalerna är tekniska datapunkter, inte evidens för smärta, känslor, behov eller kommunikation.",
+          "NL-VISION är ett lokalt observationslager för ansikte, händer och enkla signaler. Det visar hur vardagsnära tekniska signaler kan struktureras för reflektion, forskning och framtida integration.",
         collabTitle: "För universitet, forskare och etiska samarbetspartners",
         collab:
-          "Neuroljus söker ett klinisk-vetenskapligt ankare: en miljö där levd erfarenhet, teknik, autismforskning, dataskydd och etik kan mötas i den takt som människorna bakom projektet förtjänar.",
+          "Neuroljus söker klinisk-vetenskapliga ankare: miljöer där levd erfarenhet, teknik, autismforskning, dataskydd och svensk omsorgslogik kan bli framtida hälsa- och omsorgsinfrastruktur.",
         footer:
           "Neuroljus är ett oberoende forsknings- och portfolioprojekt av Elizabeth Ospina.",
       },
       en: {
-        seoTitle: "NeuroLjus - care intelligence by design",
+        seoTitle: "NeuroLjus - care intelligence for future health and care",
         seoDesc:
-          "Neuroljus designs privacy-first care intelligence: observation method, prototypes, and a scientific path toward future AI and care robotics.",
+          "Neuroljus is a research-ready care intelligence platform for everyday observation, open protocols, and future AI and robotics support in health and care.",
         primaryNav: "Primary",
         coreKicker: "Core",
         horizonAria: "Research horizon",
         collabKicker: "Collaboration",
-        eyebrow: "Care intelligence by design · privacy · future care",
+        eyebrow: "Care intelligence · Swedish care logic · future health technology",
         title: "Neuroljus",
         subtitle:
-          "Neuroljus designs the observation layer for future care intelligence: where caregiver knowledge becomes structured language, ethical AI, and a path toward care robotics.",
+          "Neuroljus transforms lived caregiving knowledge into structured routines, local observations, and open protocols for future health, research, and assistive robotics.",
         cta: "Open NL-VISION",
         whitepaperCta: "Read the white paper",
         whitepaperHref: "https://doi.org/10.5281/zenodo.20775583",
         secondaryCta: "Read the origin story",
         status:
-          "We believe in the vision and we are building the part that can be built today: language, architecture, prototype, and scientific path. The ethical framework is part of thinking at full scale and building something that can last.",
+          "We are building the first layers: language, method, local prototype, open protocols, and research path. The vision is larger than an app: caregiving knowledge as part of future health infrastructure.",
         navDemo: "Demo",
         navAbout: "About",
         navOffer: "Now",
@@ -143,7 +150,7 @@ export default function Home() {
           {
             title: "Caregiver intelligence",
             body:
-              "Everyday care contains expertise. Neuroljus begins by listening to observations, handoffs, and uncertainty so lived knowledge can become design material.",
+              "Everyday care contains expertise. Neuroljus turns observations, handoffs, and uncertainty into structured design material.",
             action: "Start a conversation",
             href: "/contact",
           },
@@ -157,77 +164,84 @@ export default function Home() {
           {
             title: "NL-VISION lab",
             body:
-              "A local prototype lab for optional visual signals. It shows how future care technology can be designed with privacy from the first line of code.",
+              "A local observation layer for optional visual signals, built for privacy and future research connection from the first line of code.",
             action: "Open the lab",
             href: "/labs/nl-vision",
           },
           {
+            title: "Robot interface lab",
+            body:
+              "A first open protocol for preauthorized care routines, local event logs, and future adapter work across ROS2, MQTT, HTTP, or offline tools.",
+            action: "Open robot lab",
+            href: "/labs/robot-interface",
+          },
+          {
             title: "Clinical-science anchor",
             body:
-              "Dialogue with universities, researchers, clinical environments, and ethical collaborators who can help Neuroljus grow with evidence.",
+              "Dialogue with universities, researchers, and clinical environments that can help Neuroljus grow toward validated layers for research, diagnostic support, and care infrastructure.",
             action: "Start a dialogue",
             href: "/contact",
           },
         ],
         offerFoot:
-          "Neuroljus is here to think at full scale and begin correctly: with language, observation, prototype, and research dialogue before clinical product, diagnosis, or automated interpretation.",
+          "Neuroljus begins in everyday care and builds toward larger integration: research, clinical science, welfare systems, open protocols, and assistive technology.",
         thesisTitle: "Born from real care",
         thesis:
           "Elizabeth's experience as an economist and caregiver is the project's foundation: careful observation, systems knowledge, care work, and respect for what is not always expressed through speech.",
         horizonTitle: "The long-term question",
         horizon:
-          "If future care one day includes AI and robots, who teaches them what dignity means? Neuroljus begins where responsibility is concrete: one person, one context, one observation, one next step.",
+          "When future care includes AI, sensors, and robots, they need to learn from real care: one person, one context, one routine, one next step.",
         modelTitle: "Within-person, over time",
         model:
           "Neuroljus begins with individual patterns before universal answers about autism. It explores whether structured observations over time can help caregivers see with more care and less guesswork.",
         robotTitle: "Robotics as a horizon",
         robot:
-          "Future robots may one day support routines, environment, safe handoffs, and communication. In Neuroljus, technology may only grow where consent, privacy, evidence, and human presence grow with it.",
+          "Assistive robotics can support routines, environments, handoffs, and communication. Neuroljus builds the protocols that make that support understandable, traceable, and adaptable.",
         actionKicker: "The path forward",
-        actionTitle: "A path that can stand up to review",
+        actionTitle: "From everyday care to health infrastructure",
         actionIntro:
-          "The work now is to design with conviction while finding the right institutional home, scientific anchor, and protections before Neuroljus approaches human validation.",
+          "The work now is to build the layers that make caregiving knowledge useful for families, municipalities, research, clinical partners, and future care technology.",
         actionSteps: [
-          "Keep NL-VISION local, optional, non-diagnostic, and clearly marked as a prototype.",
-          "Share the white paper with universities and researchers who can provide clinical-science grounding.",
-          "Prepare data protection, consent, risk review, and ethical review before sensitive human validation.",
-          "Build the architecture that can carry a larger future when evidence, partnership, and responsibility are in place.",
+          "Develop observation and routine tools that fit everyday care.",
+          "Make protocols portable so researchers, open projects, and future devices can build on them.",
+          "Seek university and clinical partners for layers that require validation, evidence, and research responsibility.",
+          "Build privacy, consent, traceability, and local control as technical properties from the beginning.",
         ],
-        boundariesTitle: "Current frame",
+        boundariesTitle: "Design principles",
         boundaries: [
-          "Today, Neuroljus supports reflection rather than diagnosis or medical advice.",
-          "Camera signals are treated as technical observations, not certainty about inner states.",
-          "Validation with people or sensitive data belongs inside an approved research framework.",
-          "The technology should support people, not replace family, caregivers, or professional care.",
-          "Any future clinical or diagnostic path requires evidence, research responsibility, ethics, data protection, and regulation.",
+          "The caregiver authors routines, context, and goals.",
+          "Local observations prioritize privacy and control near the person.",
+          "Uncertainty is preserved as data so the system can learn without pretending to know more than it knows.",
+          "Clinical and diagnostic layers are developed with qualified research and care partners.",
+          "Family, caregivers, professional care, and future technology belong to the same support network.",
         ],
-        labTitle: "Current technical artifact",
+        labTitle: "Current technical layer",
         lab:
-          "NL-VISION is a local observation demo for face, hands, and simple signals. Its signals are technical data points, not evidence of pain, emotion, needs, or communication.",
+          "NL-VISION is a local observation layer for face, hands, and simple signals. It shows how everyday technical signals can be structured for reflection, research, and future integration.",
         collabTitle: "For universities, researchers, and ethical collaborators",
         collab:
-          "Neuroljus is seeking a clinical-science anchor: a place where lived experience, technology, autism research, data protection, and ethics can meet at the pace the people behind this work deserve.",
+          "Neuroljus is seeking clinical-science anchors: environments where lived experience, technology, autism research, data protection, and Swedish care logic can become future health and care infrastructure.",
         footer:
           "Neuroljus is an independent research and portfolio project by Elizabeth Ospina.",
       },
       es: {
-        seoTitle: "NeuroLjus - inteligencia de cuidado por diseño",
+        seoTitle: "NeuroLjus - inteligencia de cuidado para salud y cuidado futuro",
         seoDesc:
-          "Neuroljus diseña inteligencia de cuidado centrada en privacidad: método de observación, prototipos y un camino científico hacia futura IA y robótica de cuidado.",
+          "Neuroljus es una plataforma de inteligencia del cuidado preparada para investigación, observación cotidiana, protocolos abiertos y futura IA y robótica al servicio de la salud y el cuidado.",
         primaryNav: "Principal",
         coreKicker: "Núcleo",
         horizonAria: "Horizonte de investigación",
         collabKicker: "Colaboración",
-        eyebrow: "Inteligencia de cuidado por diseño · privacidad · futuro del cuidado",
+        eyebrow: "Inteligencia del cuidado · lógica sueca de cuidado · salud futura",
         title: "Neuroljus",
         subtitle:
-          "Neuroljus diseña la capa de observación para la inteligencia de cuidado del futuro: donde el conocimiento de los cuidadores se convierte en lenguaje estructurado, IA ética y camino hacia robótica de cuidado.",
+          "Neuroljus transforma conocimiento cuidador vivido en rutinas estructuradas, observaciones locales y protocolos abiertos para futura salud, investigación y robótica asistiva.",
         cta: "Abrir NL-VISION",
         whitepaperCta: "Leer el white paper",
         whitepaperHref: "https://doi.org/10.5281/zenodo.20775583",
         secondaryCta: "Leer la historia",
         status:
-          "Creemos en la visión y estamos construyendo la parte que sí puede construirse hoy: lenguaje, arquitectura, prototipo y camino científico. El marco ético es parte de pensar en grande y construir algo que dure.",
+          "Estamos construyendo las primeras capas: lenguaje, método, prototipo local, protocolos abiertos y camino de investigación. La visión es más grande que una app: conocimiento cuidador como parte de la infraestructura futura de salud.",
         navDemo: "Demo",
         navAbout: "Sobre",
         navOffer: "Ahora",
@@ -238,7 +252,7 @@ export default function Home() {
           {
             title: "Inteligencia cuidadora",
             body:
-              "El cuidado cotidiano contiene experticia. Neuroljus empieza escuchando observaciones, traspasos e incertidumbre para convertir conocimiento vivido en material de diseño.",
+              "El cuidado cotidiano contiene experticia. Neuroljus convierte observaciones, traspasos e incertidumbre en material de diseño estructurado.",
             action: "Iniciar conversación",
             href: "/contact",
           },
@@ -252,56 +266,63 @@ export default function Home() {
           {
             title: "Laboratorio NL-VISION",
             body:
-              "Un prototipo local para señales visuales opcionales. Muestra cómo la tecnología futura de cuidado puede diseñarse con privacidad desde la primera línea de código.",
+              "Una capa local de observación para señales visuales opcionales, construida con privacidad y conexión futura a investigación desde la primera línea de código.",
             action: "Abrir el laboratorio",
             href: "/labs/nl-vision",
           },
           {
+            title: "Laboratorio de interfaz robot",
+            body:
+              "Un primer protocolo abierto para rutinas de cuidado preautorizadas, bitácoras locales y futuros adaptadores ROS2, MQTT, HTTP o herramientas offline.",
+            action: "Abrir robot lab",
+            href: "/labs/robot-interface",
+          },
+          {
             title: "Anclaje clínico-científico",
             body:
-              "Diálogo con universidades, investigadores, entornos clínicos y aliados éticos que puedan ayudar a Neuroljus a crecer con evidencia.",
+              "Diálogo con universidades, investigadores y entornos clínicos que puedan ayudar a Neuroljus a crecer hacia capas validadas de investigación, apoyo diagnóstico e infraestructura de cuidado.",
             action: "Iniciar diálogo",
             href: "/contact",
           },
         ],
         offerFoot:
-          "Neuroljus está aquí para pensar en grande y empezar correctamente: con lenguaje, observación, prototipo y diálogo de investigación antes de producto clínico, diagnóstico o interpretación automática.",
+          "Neuroljus empieza en el cuidado cotidiano y construye hacia una integración mayor: investigación, ciencia clínica, sistemas de bienestar, protocolos abiertos y tecnología asistiva.",
         thesisTitle: "Nacido del cuidado real",
         thesis:
           "La experiencia de Elizabeth como economista y cuidadora es el fundamento del proyecto: observación cuidadosa, conocimiento de sistemas, trabajo de cuidado y respeto por lo que no siempre se expresa con palabras.",
         horizonTitle: "La pregunta a largo plazo",
         horizon:
-          "Si el cuidado del futuro algún día incluye IA y robots, ¿quién les enseña lo que significa dignidad? Neuroljus empieza donde la responsabilidad es concreta: una persona, un contexto, una observación, un siguiente paso.",
+          "Cuando el cuidado del futuro incluya IA, sensores y robots, tendrán que aprender del cuidado real: una persona, un contexto, una rutina, un siguiente paso.",
         modelTitle: "Dentro de una persona, a través del tiempo",
         model:
           "Neuroljus empieza con patrones individuales antes que respuestas universales sobre el autismo. Explora si las observaciones estructuradas en el tiempo pueden ayudar a cuidadores a mirar con más cuidado y menos suposición.",
         robotTitle: "La robótica como horizonte",
         robot:
-          "Los robots futuros podrían apoyar rutinas, ambiente, traspasos seguros y comunicación. En Neuroljus, la tecnología solo debe crecer donde también crezcan el consentimiento, la privacidad, la evidencia y la presencia humana.",
+          "La robótica asistiva puede apoyar rutinas, entornos, traspasos y comunicación. Neuroljus construye los protocolos para que ese apoyo sea comprensible, trazable y adaptable.",
         actionKicker: "El camino ahora",
-        actionTitle: "Un camino que puede sostener revisión",
+        actionTitle: "Del cuidado cotidiano a infraestructura de salud",
         actionIntro:
-          "El trabajo ahora es diseñar con convicción mientras encontramos el hogar institucional correcto, el anclaje científico y las protecciones necesarias antes de acercarnos a una validación humana.",
+          "El trabajo ahora es construir las capas que vuelven útil el conocimiento cuidador para familias, comunas, investigación, aliados clínicos y futura tecnología de cuidado.",
         actionSteps: [
-          "Mantener NL-VISION local, opcional, no diagnóstico y claramente marcado como prototipo.",
-          "Compartir el white paper con universidades e investigadores que puedan dar base clínico-científica.",
-          "Preparar protección de datos, consentimiento, análisis de riesgos y revisión ética antes de una validación humana sensible.",
-          "Construir la arquitectura que pueda sostener una visión más grande cuando existan evidencia, alianzas y responsabilidad.",
+          "Desarrollar herramientas de observación y rutina que encajen en el cuidado cotidiano.",
+          "Hacer protocolos portables para que investigadores, proyectos abiertos y futuros dispositivos puedan construir encima.",
+          "Buscar universidades y aliados clínicos para capas que requieran validación, evidencia y responsabilidad investigadora.",
+          "Construir privacidad, consentimiento, trazabilidad y control local como propiedades técnicas desde el inicio.",
         ],
-        boundariesTitle: "Marco actual",
+        boundariesTitle: "Principios de diseño",
         boundaries: [
-          "Hoy Neuroljus acompaña reflexión, no diagnóstico ni consejo médico.",
-          "Las señales de cámara se tratan como observaciones técnicas, no como certeza sobre estados internos.",
-          "La validación con personas o datos sensibles pertenece a un marco de investigación aprobado.",
-          "La tecnología debe apoyar a las personas, no reemplazar familia, cuidadores ni atención profesional.",
-          "Cualquier camino clínico o diagnóstico futuro exige evidencia, responsabilidad investigadora, ética, protección de datos y regulación.",
+          "La cuidadora define rutinas, contexto y objetivos.",
+          "Las observaciones locales priorizan privacidad y control cerca de la persona.",
+          "La incertidumbre se conserva como dato para que el sistema aprenda sin fingir más certeza de la que tiene.",
+          "Las capas clínicas y diagnósticas se desarrollan con aliados cualificados de investigación y cuidado.",
+          "Familia, cuidadores, atención profesional y futura tecnología pertenecen a una misma red de apoyo.",
         ],
-        labTitle: "Artefacto técnico actual",
+        labTitle: "Capa técnica actual",
         lab:
-          "NL-VISION es una demo local de observación de rostro, manos y señales simples. Sus señales son datos técnicos, no evidencia de dolor, emociones, necesidades o comunicación.",
+          "NL-VISION es una capa local de observación de rostro, manos y señales simples. Muestra cómo señales técnicas de la vida cotidiana pueden estructurarse para reflexión, investigación e integración futura.",
         collabTitle: "Para universidades, investigadores y aliados éticos",
         collab:
-          "Neuroljus busca un anclaje clínico-científico: un lugar donde experiencia vivida, tecnología, investigación en autismo, protección de datos y ética puedan encontrarse al ritmo que merecen las personas detrás de este trabajo.",
+          "Neuroljus busca anclajes clínico-científicos: entornos donde experiencia vivida, tecnología, investigación en autismo, protección de datos y lógica sueca de cuidado puedan convertirse en infraestructura futura de salud y cuidado.",
         footer:
           "Neuroljus es un proyecto independiente de investigación y portafolio de Elizabeth Ospina.",
       },
@@ -743,7 +764,7 @@ export default function Home() {
         }
         .offerGrid {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
+          grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
           gap: 16px;
         }
         .offerCard {
