@@ -27,7 +27,33 @@ type Environment = {
 
 type AdapterTarget = "ros2" | "mqtt" | "http" | "offline";
 
+type ScenarioId =
+  | "evening_transition"
+  | "sensory_overload"
+  | "leaving_home"
+  | "meal_support"
+  | "school_arrival";
+
 type SimStatus = "idle" | "running" | "paused" | "completed" | "escalated";
+
+type VisionSnapshot = {
+  faceDetected: boolean;
+  handsAvg: number;
+  handNearPct: number;
+  movement: number;
+  blinksPerMin: number;
+};
+
+type ScenarioPreset = {
+  id: ScenarioId;
+  name: string;
+  careGoal: string;
+  visualCard: string;
+  duration: number;
+  environment: Environment;
+  commands: Command[];
+  exceptions: SafetyException[];
+};
 
 type AuditEntry = {
   id: number;
@@ -69,6 +95,8 @@ const eventToException: Record<string, SafetyException> = {
   "person rejects": "rejection_signal",
   "noise increases": "unknown_event",
   "caregiver pauses": "caregiver_pause",
+  "unusual movement": "unusual_movement",
+  "timeout reached": "timeout",
 };
 
 const defaultCommands: Command[] = [
@@ -79,13 +107,6 @@ const defaultCommands: Command[] = [
   "offer_visual_card",
   "notify_caregiver",
   "log_observation",
-];
-
-const defaultExceptions: SafetyException[] = [
-  "rejection_signal",
-  "caregiver_pause",
-  "timeout",
-  "unknown_event",
 ];
 
 const adapterLabels: Record<AdapterTarget, string> = {
@@ -100,6 +121,77 @@ const adapterTransports: Record<AdapterTarget, string> = {
   mqtt: "publish command envelopes to a private MQTT topic",
   http: "send command envelopes to a local HTTP adapter",
   offline: "export command envelopes for human review and field adaptation",
+};
+
+const scenarioOrder: ScenarioId[] = [
+  "evening_transition",
+  "sensory_overload",
+  "leaving_home",
+  "meal_support",
+  "school_arrival",
+];
+
+const scenarioPresets: Record<ScenarioId, ScenarioPreset> = {
+  evening_transition: {
+    id: "evening_transition",
+    name: "Evening transition",
+    careGoal: "Move from activity to rest with a predictable, low-stimulus routine.",
+    visualCard: "Now: quiet room. Next: sleep routine.",
+    duration: 20,
+    environment: { light: 35, sound: 25, distance: 1.5, pace: "slow" },
+    commands: defaultCommands,
+    exceptions: ["rejection_signal", "caregiver_pause", "timeout", "unknown_event"],
+  },
+  sensory_overload: {
+    id: "sensory_overload",
+    name: "Sensory overload support",
+    careGoal: "Reduce sensory load and increase personal space before adding new demands.",
+    visualCard: "Pause. Less light. Less sound. More space.",
+    duration: 12,
+    environment: { light: 22, sound: 12, distance: 2.4, pace: "slow" },
+    commands: ["reduce_sound", "lower_light", "step_back", "pause_interaction", "notify_caregiver", "log_observation"],
+    exceptions: ["rejection_signal", "unusual_movement", "caregiver_pause", "unknown_event"],
+  },
+  leaving_home: {
+    id: "leaving_home",
+    name: "Leaving home",
+    careGoal: "Make a transition visible, paced, and repeatable before going outside.",
+    visualCard: "Shoes. Jacket. Door. Outside.",
+    duration: 18,
+    environment: { light: 48, sound: 30, distance: 1.8, pace: "steady" },
+    commands: ["offer_visual_card", "pause_interaction", "step_back", "notify_caregiver", "log_observation"],
+    exceptions: ["rejection_signal", "caregiver_pause", "timeout"],
+  },
+  meal_support: {
+    id: "meal_support",
+    name: "Meal support",
+    careGoal: "Support a meal routine with predictable steps and low interaction pressure.",
+    visualCard: "Table. Food. Drink. Finished.",
+    duration: 30,
+    environment: { light: 45, sound: 20, distance: 1.6, pace: "adaptive" },
+    commands: ["offer_visual_card", "pause_interaction", "reduce_sound", "notify_caregiver", "log_observation"],
+    exceptions: ["rejection_signal", "unusual_movement", "caregiver_pause", "timeout"],
+  },
+  school_arrival: {
+    id: "school_arrival",
+    name: "School arrival",
+    careGoal: "Support handoff from family to school with context, pacing, and audit record.",
+    visualCard: "Arrive. Quiet corner. Teacher. First task.",
+    duration: 15,
+    environment: { light: 55, sound: 35, distance: 1.9, pace: "steady" },
+    commands: ["offer_visual_card", "step_back", "pause_interaction", "notify_caregiver", "log_observation"],
+    exceptions: ["rejection_signal", "caregiver_pause", "timeout", "unknown_event"],
+  },
+};
+
+const commandEffects: Record<Command, string> = {
+  lower_light: "Room light moves toward the caregiver target.",
+  reduce_sound: "Sound load moves toward the caregiver target.",
+  step_back: "Robot increases personal space.",
+  pause_interaction: "Interaction pressure pauses.",
+  offer_visual_card: "Visual support card becomes available.",
+  notify_caregiver: "Caregiver receives a protocol notice.",
+  log_observation: "The event is preserved in the local audit trail.",
 };
 
 const pad = (value: number) => String(value).padStart(2, "0");
@@ -120,17 +212,17 @@ function commandReason(command: Command) {
 }
 
 export default function RobotInterfaceLab() {
-  const [routineName, setRoutineName] = useState("Evening transition");
-  const [duration, setDuration] = useState(20);
-  const [environment, setEnvironment] = useState<Environment>({
-    light: 35,
-    sound: 25,
-    distance: 1.5,
-    pace: "slow",
-  });
-  const [commands, setCommands] = useState<Command[]>(defaultCommands);
-  const [exceptions, setExceptions] = useState<SafetyException[]>(defaultExceptions);
+  const initialScenario = scenarioPresets.evening_transition;
+  const [selectedScenario, setSelectedScenario] = useState<ScenarioId>(initialScenario.id);
+  const [routineName, setRoutineName] = useState(initialScenario.name);
+  const [careGoal, setCareGoal] = useState(initialScenario.careGoal);
+  const [visualCard, setVisualCard] = useState(initialScenario.visualCard);
+  const [duration, setDuration] = useState(initialScenario.duration);
+  const [environment, setEnvironment] = useState<Environment>(initialScenario.environment);
+  const [commands, setCommands] = useState<Command[]>(initialScenario.commands);
+  const [exceptions, setExceptions] = useState<SafetyException[]>(initialScenario.exceptions);
   const [adapterTarget, setAdapterTarget] = useState<AdapterTarget>("ros2");
+  const [visionSnapshot, setVisionSnapshot] = useState<VisionSnapshot | null>(null);
   const [status, setStatus] = useState<SimStatus>("idle");
   const [stepIndex, setStepIndex] = useState(0);
   const [copied, setCopied] = useState(false);
@@ -150,10 +242,22 @@ export default function RobotInterfaceLab() {
   const protocol = useMemo(
     () => ({
       name: routineName || "Untitled routine",
+      scenario: selectedScenario,
+      care_goal: careGoal,
+      visual_card: visualCard,
       autonomy_level: 2,
       mode: "protocol_first",
       duration_minutes: duration,
       environment,
+      vision_context: visionSnapshot
+        ? {
+            source: "nlvision_holistic_v1",
+            latest_local_snapshot: visionSnapshot,
+          }
+        : {
+            source: "manual_context",
+            latest_local_snapshot: null,
+          },
       allowed_commands: commands,
       safety_exceptions: exceptions,
       audit_policy: {
@@ -178,7 +282,18 @@ export default function RobotInterfaceLab() {
         readiness: "ready_for_local_adapter_work",
       },
     }),
-    [adapterTarget, commands, duration, environment, exceptions, routineName]
+    [
+      adapterTarget,
+      careGoal,
+      commands,
+      duration,
+      environment,
+      exceptions,
+      routineName,
+      selectedScenario,
+      visionSnapshot,
+      visualCard,
+    ]
   );
 
   function addLog(actor: AuditEntry["actor"], command: string, reason: string) {
@@ -210,6 +325,49 @@ export default function RobotInterfaceLab() {
     );
   }
 
+  function applyScenario(id: ScenarioId) {
+    const preset = scenarioPresets[id];
+    setSelectedScenario(id);
+    setRoutineName(preset.name);
+    setCareGoal(preset.careGoal);
+    setVisualCard(preset.visualCard);
+    setDuration(preset.duration);
+    setEnvironment(preset.environment);
+    setCommands(preset.commands);
+    setExceptions(preset.exceptions);
+    setStatus("idle");
+    setStepIndex(0);
+    addLog("caregiver", "load_scenario", `${preset.name} scenario loaded`);
+  }
+
+  function importVisionSignals() {
+    try {
+      const raw = window.localStorage.getItem("nlvision_holistic_v1") || "[]";
+      const arr = JSON.parse(raw) as Array<Record<string, unknown>>;
+      const latest = arr[arr.length - 1];
+
+      if (!latest) {
+        addLog("system", "vision_context_empty", "no NL-VISION local samples available yet");
+        return;
+      }
+
+      const snapshot: VisionSnapshot = {
+        faceDetected: latest.hasFace === true,
+        handsAvg: typeof latest.handsAvg === "number" ? latest.handsAvg : 0,
+        handNearPct: typeof latest.handNearPct === "number" ? latest.handNearPct : 0,
+        movement:
+          (typeof latest.faceMoveAvg === "number" ? latest.faceMoveAvg : 0) +
+          (typeof latest.handsMoveAvg === "number" ? latest.handsMoveAvg : 0),
+        blinksPerMin: typeof latest.blinksPerMin === "number" ? latest.blinksPerMin : 0,
+      };
+
+      setVisionSnapshot(snapshot);
+      addLog("caregiver", "import_nlvision_signal", "latest local NL-VISION snapshot attached");
+    } catch {
+      addLog("system", "vision_context_failed", "could not read local NL-VISION samples");
+    }
+  }
+
   function startRoutine() {
     if (activeCommands.length === 0) {
       addLog("system", "routine_blocked", "at least one allowed command is required");
@@ -233,7 +391,15 @@ export default function RobotInterfaceLab() {
     addLog("protocol", "routine_complete", reason);
   }
 
-  function injectEvent(label: "person rejects" | "noise increases" | "caregiver pauses" | "routine completes") {
+  function injectEvent(
+    label:
+      | "person rejects"
+      | "noise increases"
+      | "caregiver pauses"
+      | "unusual movement"
+      | "timeout reached"
+      | "routine completes"
+  ) {
     if (label === "routine completes") {
       completeRoutine("manual completion event added to protocol run");
       return;
@@ -284,6 +450,58 @@ export default function RobotInterfaceLab() {
     return () => window.clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeCommands, status, stepIndex]);
+
+  const completedCommands = useMemo(
+    () => new Set(activeCommands.slice(0, stepIndex)),
+    [activeCommands, stepIndex]
+  );
+  const currentCommand =
+    status === "running" && stepIndex < activeCommands.length ? activeCommands[stepIndex] : undefined;
+  const sceneLight = completedCommands.has("lower_light") ? environment.light : Math.min(82, environment.light + 36);
+  const sceneSound = completedCommands.has("reduce_sound") ? environment.sound : Math.min(78, environment.sound + 38);
+  const robotDistance = completedCommands.has("step_back") ? environment.distance : Math.max(0.7, environment.distance - 0.7);
+  const robotTravel = Math.min(188, Math.round(robotDistance * 48));
+  const cardVisible = completedCommands.has("offer_visual_card") || currentCommand === "offer_visual_card";
+  const caregiverNotified =
+    completedCommands.has("notify_caregiver") || status === "escalated" || status === "completed";
+  const roomStyle = {
+    "--light-level": `${sceneLight}%`,
+    "--sound-level": `${sceneSound}%`,
+    "--light-opacity": `${0.2 + sceneLight / 150}`,
+    "--sound-opacity": `${Math.max(0.12, sceneSound / 100)}`,
+    "--robot-travel": `${robotTravel}px`,
+  } as React.CSSProperties;
+  const activeEffect = currentCommand
+    ? commandEffects[currentCommand]
+    : status === "completed"
+      ? "Routine complete. The audit trail and protocol export are ready."
+      : status === "escalated"
+        ? "Safety exception active. The protocol is waiting for caregiver direction."
+        : status === "paused"
+          ? "Routine paused by configured rule."
+          : "Choose a scenario or start the current routine.";
+  const adapterEnvelope = useMemo(
+    () => ({
+      envelope: "neuroljus.care_command.v0",
+      target: adapterTarget,
+      route:
+        adapterTarget === "ros2"
+          ? "/neuroljus/care_command"
+          : adapterTarget === "mqtt"
+            ? "neuroljus/care/command"
+            : adapterTarget === "http"
+              ? "POST http://localhost:8787/care-command"
+              : "offline-json-playbook",
+      command: currentCommand || "idle",
+      scenario: selectedScenario,
+      routine: routineName || "Untitled routine",
+      care_goal: careGoal,
+      environment_targets: environment,
+      safety_exceptions: exceptions,
+      audit_required: true,
+    }),
+    [adapterTarget, careGoal, currentCommand, environment, exceptions, routineName, selectedScenario]
+  );
 
   const progress =
     activeCommands.length === 0 ? 0 : Math.min(100, Math.round((stepIndex / activeCommands.length) * 100));
@@ -346,11 +564,139 @@ export default function RobotInterfaceLab() {
           </div>
         </section>
 
+        <section className="experience" aria-label="Robot care protocol live demo">
+          <div className="experienceIntro">
+            <p className="kicker">Live care protocol</p>
+            <h2>Observe, structure, run, record</h2>
+            <p>
+              This demo shows how a caregiver-authored routine can move from context
+              to action: environment targets, personal space, visual support, pause
+              rules, caregiver notice, and local audit.
+            </p>
+          </div>
+
+          <div className="careRoom" style={roomStyle}>
+            <div className="roomHeader">
+              <span>Care room</span>
+              <strong>{statusLabel[status]}</strong>
+            </div>
+            <div className="environmentMeters">
+              <div>
+                <span>Light</span>
+                <b>{sceneLight}%</b>
+              </div>
+              <div>
+                <span>Sound</span>
+                <b>{sceneSound}%</b>
+              </div>
+              <div>
+                <span>Distance</span>
+                <b>{robotDistance.toFixed(1)}m</b>
+              </div>
+            </div>
+
+            <div className="roomCanvas" aria-label="Care room visual simulation">
+              <div className="windowGlow" />
+              <div className="soundField">
+                <span />
+                <span />
+                <span />
+              </div>
+              <div className="personSpace">
+                <div className="personMarker">
+                  <span />
+                </div>
+                <p>Person</p>
+              </div>
+              <div className="robotUnit">
+                <div className="robotHead">
+                  <span />
+                  <span />
+                </div>
+                <div className="robotBody" />
+                <p>Care interface</p>
+              </div>
+              {cardVisible && (
+                <div className="visualCard">
+                  <span>Visual support</span>
+                  <strong>{visualCard}</strong>
+                </div>
+              )}
+              {caregiverNotified && (
+                <div className="noticeCard">
+                  <span>Caregiver notice</span>
+                  <strong>{status === "completed" ? "Routine complete" : "Review requested"}</strong>
+                </div>
+              )}
+            </div>
+
+            <div className="activeEffect">
+              <span>Now</span>
+              <strong>{currentCommand ? commandLabels[currentCommand] : statusLabel[status]}</strong>
+              <p>{activeEffect}</p>
+            </div>
+          </div>
+
+          <aside className="signalPanel" aria-label="NL-VISION signal bridge">
+            <p className="kicker">Signal bridge</p>
+            <h2>NL-VISION context</h2>
+            <p>
+              Attach the latest local NL-VISION sample to the protocol context. It
+              remains local and becomes structured context for the routine.
+            </p>
+            <button onClick={importVisionSignals}>Import local signal</button>
+            {visionSnapshot ? (
+              <div className="visionGrid">
+                <div>
+                  <span>Face signal</span>
+                  <strong>{visionSnapshot.faceDetected ? "Available" : "Unavailable"}</strong>
+                </div>
+                <div>
+                  <span>Hands avg</span>
+                  <strong>{visionSnapshot.handsAvg.toFixed(2)}</strong>
+                </div>
+                <div>
+                  <span>Near face</span>
+                  <strong>{Math.round(visionSnapshot.handNearPct * 100)}%</strong>
+                </div>
+                <div>
+                  <span>Movement</span>
+                  <strong>{visionSnapshot.movement.toFixed(4)}</strong>
+                </div>
+              </div>
+            ) : (
+              <p className="empty">No imported local signal yet.</p>
+            )}
+          </aside>
+
+          <aside className="adapterPanel" aria-label="Adapter packet">
+            <p className="kicker">Open adapter packet</p>
+            <h2>{adapterLabels[adapterTarget]}</h2>
+            <p>{adapterTransports[adapterTarget]}.</p>
+            <pre>{JSON.stringify(adapterEnvelope, null, 2)}</pre>
+          </aside>
+        </section>
+
         <div className="layout">
           <section className="panel builder" aria-labelledby="builder-title">
             <div className="panelHeader">
               <p className="kicker">01 · Routine builder</p>
               <h2 id="builder-title">Care command protocol</h2>
+            </div>
+
+            <div className="presetSection">
+              <h3>Care scenarios</h3>
+              <div className="presetGrid">
+                {scenarioOrder.map((id) => (
+                  <button
+                    key={id}
+                    onClick={() => applyScenario(id)}
+                    className={selectedScenario === id ? "preset activePreset" : "preset"}
+                  >
+                    {scenarioPresets[id].name}
+                  </button>
+                ))}
+              </div>
             </div>
 
             <label className="field">
@@ -359,6 +705,24 @@ export default function RobotInterfaceLab() {
                 value={routineName}
                 onChange={(event) => setRoutineName(event.target.value)}
                 maxLength={80}
+              />
+            </label>
+
+            <label className="field">
+              Care goal
+              <textarea
+                value={careGoal}
+                onChange={(event) => setCareGoal(event.target.value)}
+                maxLength={220}
+              />
+            </label>
+
+            <label className="field">
+              Visual support card
+              <input
+                value={visualCard}
+                onChange={(event) => setVisualCard(event.target.value)}
+                maxLength={120}
               />
             </label>
 
@@ -511,8 +875,7 @@ export default function RobotInterfaceLab() {
                 <span>Scenario</span>
                 <strong>{routineName || "Untitled routine"}</strong>
                 <p>
-                  A transition routine runs with configured environment targets and
-                  allowed commands. Exceptions interrupt the run.
+                  {careGoal}
                 </p>
               </div>
               <div className="progressWrap" aria-label={`Progress ${progress}%`}>
@@ -538,6 +901,8 @@ export default function RobotInterfaceLab() {
               <button onClick={() => injectEvent("person rejects")}>Person rejects</button>
               <button onClick={() => injectEvent("noise increases")}>Noise increases</button>
               <button onClick={() => injectEvent("caregiver pauses")}>Caregiver pauses</button>
+              <button onClick={() => injectEvent("unusual movement")}>Unusual movement</button>
+              <button onClick={() => injectEvent("timeout reached")}>Timeout</button>
               <button onClick={() => injectEvent("routine completes")}>Routine completes</button>
             </div>
 
@@ -703,6 +1068,253 @@ export default function RobotInterfaceLab() {
           font-size: 13px;
           line-height: 1.45;
         }
+        .experience {
+          max-width: 1360px;
+          margin: 0 auto 16px;
+          display: grid;
+          grid-template-columns: minmax(260px, 0.8fr) minmax(420px, 1.35fr) minmax(260px, 0.9fr);
+          gap: 16px;
+          align-items: stretch;
+        }
+        .experienceIntro,
+        .careRoom,
+        .signalPanel,
+        .adapterPanel {
+          border: 1px solid #d8e1df;
+          border-radius: 8px;
+          background: #ffffff;
+          padding: 18px;
+        }
+        .experienceIntro {
+          display: grid;
+          align-content: center;
+        }
+        .experienceIntro h2,
+        .signalPanel h2,
+        .adapterPanel h2 {
+          margin-bottom: 10px;
+        }
+        .experienceIntro p,
+        .signalPanel p,
+        .adapterPanel p {
+          color: #566477;
+          line-height: 1.55;
+        }
+        .careRoom {
+          grid-row: span 2;
+          display: grid;
+          gap: 12px;
+          background:
+            linear-gradient(180deg, rgba(255, 255, 255, var(--light-opacity)), rgba(240, 247, 244, 0.96)),
+            #eef5f2;
+        }
+        .roomHeader,
+        .environmentMeters {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+        }
+        .roomHeader span,
+        .environmentMeters span,
+        .activeEffect span,
+        .visionGrid span,
+        .visualCard span,
+        .noticeCard span {
+          color: #637085;
+          font-size: 11px;
+          font-weight: 800;
+          text-transform: uppercase;
+        }
+        .roomHeader strong {
+          color: #245b62;
+        }
+        .environmentMeters {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .environmentMeters div,
+        .visionGrid div {
+          border: 1px solid #d8e1df;
+          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.72);
+          padding: 10px;
+        }
+        .environmentMeters b,
+        .visionGrid strong {
+          display: block;
+          margin-top: 4px;
+        }
+        .roomCanvas {
+          position: relative;
+          min-height: 340px;
+          overflow: hidden;
+          border: 1px solid #cbd8d5;
+          border-radius: 8px;
+          background:
+            linear-gradient(180deg, rgba(255, 255, 255, var(--light-opacity)), rgba(221, 235, 232, 0.96)),
+            linear-gradient(90deg, #dfece8, #f6fbf8);
+        }
+        .windowGlow {
+          position: absolute;
+          top: 22px;
+          left: 22px;
+          width: 128px;
+          height: 88px;
+          border: 1px solid rgba(36, 91, 98, 0.18);
+          border-radius: 8px;
+          background: rgba(255, 246, 210, var(--light-opacity));
+          box-shadow: 0 0 38px rgba(255, 230, 150, var(--light-opacity));
+        }
+        .soundField {
+          position: absolute;
+          right: 22px;
+          top: 28px;
+          width: 112px;
+          height: 80px;
+          opacity: var(--sound-opacity);
+        }
+        .soundField span {
+          position: absolute;
+          right: 0;
+          border: 2px solid rgba(36, 91, 98, 0.38);
+          border-left: 0;
+          border-radius: 0 999px 999px 0;
+        }
+        .soundField span:nth-child(1) {
+          width: 34px;
+          height: 28px;
+          top: 26px;
+        }
+        .soundField span:nth-child(2) {
+          width: 62px;
+          height: 52px;
+          top: 14px;
+        }
+        .soundField span:nth-child(3) {
+          width: 94px;
+          height: 76px;
+          top: 2px;
+        }
+        .personSpace {
+          position: absolute;
+          left: 68px;
+          bottom: 34px;
+          display: grid;
+          gap: 8px;
+          justify-items: center;
+          color: #405064;
+          font-weight: 800;
+        }
+        .personMarker {
+          width: 92px;
+          height: 92px;
+          display: grid;
+          place-items: center;
+          border: 1px solid rgba(36, 91, 98, 0.28);
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.72);
+          box-shadow: 0 0 0 28px rgba(36, 91, 98, 0.07);
+        }
+        .personMarker span {
+          width: 38px;
+          height: 52px;
+          border-radius: 999px 999px 12px 12px;
+          background: #245b62;
+        }
+        .robotUnit {
+          position: absolute;
+          left: calc(178px + var(--robot-travel));
+          bottom: 34px;
+          display: grid;
+          gap: 7px;
+          justify-items: center;
+          color: #17202f;
+          font-size: 12px;
+          font-weight: 800;
+          transition: left 240ms ease;
+        }
+        .robotHead {
+          width: 76px;
+          height: 52px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          border: 2px solid #17202f;
+          border-radius: 8px;
+          background: #ffffff;
+        }
+        .robotHead span {
+          width: 9px;
+          height: 9px;
+          border-radius: 999px;
+          background: #245b62;
+        }
+        .robotBody {
+          width: 58px;
+          height: 46px;
+          border: 2px solid #17202f;
+          border-radius: 8px;
+          background: #e6f7ef;
+        }
+        .visualCard,
+        .noticeCard {
+          position: absolute;
+          max-width: 230px;
+          border: 1px solid rgba(23, 32, 47, 0.14);
+          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.92);
+          padding: 12px;
+          box-shadow: 0 16px 30px rgba(23, 32, 47, 0.12);
+        }
+        .visualCard {
+          left: 34px;
+          top: 128px;
+        }
+        .noticeCard {
+          right: 28px;
+          bottom: 34px;
+        }
+        .visualCard strong,
+        .noticeCard strong {
+          display: block;
+          margin-top: 5px;
+          line-height: 1.25;
+        }
+        .activeEffect {
+          border: 1px solid #d8e1df;
+          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.76);
+          padding: 12px;
+        }
+        .activeEffect strong {
+          display: block;
+          margin: 4px 0;
+        }
+        .activeEffect p {
+          color: #566477;
+          line-height: 1.45;
+        }
+        .signalPanel,
+        .adapterPanel {
+          display: grid;
+          align-content: start;
+          gap: 10px;
+        }
+        .signalPanel button {
+          justify-self: start;
+          background: #17202f;
+          color: #ffffff;
+        }
+        .visionGrid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 8px;
+        }
+        .adapterPanel pre {
+          max-height: 310px;
+        }
         .layout {
           max-width: 1360px;
           margin: 0 auto;
@@ -716,6 +1328,28 @@ export default function RobotInterfaceLab() {
         }
         .panelHeader {
           margin-bottom: 16px;
+        }
+        .presetSection {
+          margin-bottom: 14px;
+        }
+        .presetSection h3 {
+          margin-bottom: 10px;
+        }
+        .presetGrid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+          gap: 8px;
+        }
+        .preset {
+          min-height: 44px;
+          padding: 0 10px;
+          text-align: left;
+          background: #fbfdfc;
+        }
+        .activePreset {
+          border-color: #245b62;
+          background: #e6f7ef;
+          color: #245b62;
         }
         .field {
           display: grid;
@@ -745,7 +1379,8 @@ export default function RobotInterfaceLab() {
           gap: 12px;
         }
         input,
-        select {
+        select,
+        textarea {
           width: 100%;
           min-height: 40px;
           border: 1px solid #cbd8d5;
@@ -755,11 +1390,19 @@ export default function RobotInterfaceLab() {
           font: inherit;
         }
         input,
-        select {
+        select,
+        textarea {
           padding: 0 10px;
+        }
+        textarea {
+          min-height: 86px;
+          padding-top: 10px;
+          resize: vertical;
+          line-height: 1.45;
         }
         input:focus,
         select:focus,
+        textarea:focus,
         button:focus {
           outline: 2px solid #245b62;
           outline-offset: 2px;
@@ -993,8 +1636,12 @@ export default function RobotInterfaceLab() {
         @media (max-width: 980px) {
           .topbar,
           .layout,
-          .summary {
+          .summary,
+          .experience {
             grid-template-columns: 1fr;
+          }
+          .careRoom {
+            grid-row: auto;
           }
           .status {
             justify-self: start;
@@ -1008,8 +1655,21 @@ export default function RobotInterfaceLab() {
             font-size: 26px;
           }
           .fieldGrid,
-          .checks {
+          .checks,
+          .environmentMeters,
+          .visionGrid {
             grid-template-columns: 1fr;
+          }
+          .roomCanvas {
+            min-height: 300px;
+          }
+          .robotUnit {
+            left: min(calc(110px + var(--robot-travel)), calc(100% - 118px));
+          }
+          .noticeCard,
+          .visualCard {
+            position: static;
+            margin: 12px;
           }
           .logItem {
             grid-template-columns: 1fr;
