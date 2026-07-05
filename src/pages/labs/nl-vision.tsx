@@ -364,6 +364,26 @@ function NLVisionHolistic() {
       <h1 style={S.h1}>NL-VISION · Holistic</h1>
       <p style={S.sub}>Observation prototype · Face + Hands · On-device metrics</p>
 
+      <section style={S.robotCard} aria-label="Robot Care Interface demo">
+        <div>
+          <p style={S.robotKicker}>Next lab · care robotics</p>
+          <h2 style={S.robotTitle}>From observation to care protocol</h2>
+          <p style={S.robotText}>
+            NL-VISION explores local observation signals. Robot Care Interface turns
+            caregiver-authored routines into an open protocol for future robots,
+            devices, and care environments.
+          </p>
+        </div>
+        <div style={S.robotActions}>
+          <a href="/labs/robot-interface" style={S.robotPrimary}>
+            Open Robot Demo
+          </a>
+          <a href="/" style={S.robotSecondary}>
+            View public vision
+          </a>
+        </div>
+      </section>
+
       <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
         {!running ? <button onClick={start} style={S.btn}>Start Camera</button>
                   : <button onClick={stop}  style={S.btn}>Stop</button>}
@@ -419,6 +439,53 @@ const S: Record<string, any> = {
   },
   h1: { fontSize: 26, margin: "8px 0 0" },
   sub: { fontSize: 14, opacity: 0.9, margin: "6px 0 12px" },
+  robotCard: {
+    width: "min(92vw, 960px)",
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+    gap: 18,
+    alignItems: "center",
+    border: "1px solid rgba(255,255,255,0.16)",
+    borderRadius: 14,
+    background: "rgba(255,255,255,0.07)",
+    padding: 16,
+    margin: "2px 0 14px",
+  },
+  robotKicker: {
+    margin: "0 0 5px",
+    color: "#9fe8cf",
+    fontSize: 12,
+    fontWeight: 800,
+    letterSpacing: 0,
+    textTransform: "uppercase",
+  },
+  robotTitle: { margin: "0 0 6px", fontSize: 18, lineHeight: 1.2 },
+  robotText: { margin: 0, color: "#d9e5f2", fontSize: 14, lineHeight: 1.5 },
+  robotActions: { display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" },
+  robotPrimary: {
+    minHeight: 40,
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "0 13px",
+    borderRadius: 10,
+    background: "linear-gradient(135deg,#5EE6A4,#7CE3F7)",
+    color: "#0b1220",
+    fontWeight: 800,
+    textDecoration: "none",
+  },
+  robotSecondary: {
+    minHeight: 40,
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "0 13px",
+    border: "1px solid rgba(255,255,255,0.22)",
+    borderRadius: 10,
+    color: "#cfe7ff",
+    fontWeight: 800,
+    textDecoration: "none",
+  },
   btn: {
     padding: 12, background: "linear-gradient(135deg,#5EE6A4,#7CE3F7)",
     border: "none", borderRadius: 10, color: "#0b1220", fontWeight: 700, cursor: "pointer",
