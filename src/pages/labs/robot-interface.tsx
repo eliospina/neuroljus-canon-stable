@@ -1,59 +1,26 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-
-type Command =
-  | "lower_light"
-  | "reduce_sound"
-  | "step_back"
-  | "pause_interaction"
-  | "offer_visual_card"
-  | "notify_caregiver"
-  | "log_observation";
-
-type SafetyException =
-  | "rejection_signal"
-  | "unusual_movement"
-  | "caregiver_pause"
-  | "timeout"
-  | "unknown_event";
-
-type Environment = {
-  light: number;
-  sound: number;
-  distance: number;
-  pace: "slow" | "steady" | "adaptive";
-};
-
-type AdapterTarget = "ros2" | "mqtt" | "http" | "offline";
-
-type ScenarioId =
-  | "evening_transition"
-  | "sensory_overload"
-  | "leaving_home"
-  | "meal_support"
-  | "school_arrival";
+import type {
+  AdapterTarget,
+  AttentionFlagSeverity,
+  Command,
+  Environment,
+  PlannerResult,
+  SafetyException,
+  ScenarioId,
+  ScenarioPreset,
+  VisionSnapshot,
+} from "@/lib/careProtocol/types";
+import {
+  adapterLabels,
+  adapterTransports,
+  buildCarePlan,
+  commandLabels,
+  exceptionLabels,
+} from "@/lib/careProtocol/planner";
 
 type SimStatus = "idle" | "running" | "paused" | "completed" | "escalated";
-
-type VisionSnapshot = {
-  faceDetected: boolean;
-  handsAvg: number;
-  handNearPct: number;
-  movement: number;
-  blinksPerMin: number;
-};
-
-type ScenarioPreset = {
-  id: ScenarioId;
-  name: string;
-  careGoal: string;
-  visualCard: string;
-  duration: number;
-  environment: Environment;
-  commands: Command[];
-  exceptions: SafetyException[];
-};
 
 type AuditEntry = {
   id: number;
@@ -61,16 +28,6 @@ type AuditEntry = {
   actor: "caregiver" | "neuroljus" | "protocol" | "system";
   command: string;
   reason: string;
-};
-
-const commandLabels: Record<Command, string> = {
-  lower_light: "Lower light",
-  reduce_sound: "Reduce sound",
-  step_back: "Step back",
-  pause_interaction: "Pause interaction",
-  offer_visual_card: "Offer visual card",
-  notify_caregiver: "Notify caregiver",
-  log_observation: "Log observation",
 };
 
 const commandNotes: Record<Command, string> = {
@@ -81,14 +38,6 @@ const commandNotes: Record<Command, string> = {
   offer_visual_card: "Routine support",
   notify_caregiver: "Escalation channel",
   log_observation: "Local audit record",
-};
-
-const exceptionLabels: Record<SafetyException, string> = {
-  rejection_signal: "Person rejects",
-  unusual_movement: "Unusual movement",
-  caregiver_pause: "Caregiver pauses",
-  timeout: "Timeout",
-  unknown_event: "Unknown event",
 };
 
 const eventToException: Record<string, SafetyException> = {
@@ -108,20 +57,6 @@ const defaultCommands: Command[] = [
   "notify_caregiver",
   "log_observation",
 ];
-
-const adapterLabels: Record<AdapterTarget, string> = {
-  ros2: "ROS2 robot middleware",
-  mqtt: "MQTT care device broker",
-  http: "Local HTTP command bridge",
-  offline: "Offline JSON playbook",
-};
-
-const adapterTransports: Record<AdapterTarget, string> = {
-  ros2: "publish command envelopes to a local ROS2 node",
-  mqtt: "publish command envelopes to a private MQTT topic",
-  http: "send command envelopes to a local HTTP adapter",
-  offline: "export command envelopes for human review and field adaptation",
-};
 
 const scenarioOrder: ScenarioId[] = [
   "evening_transition",
@@ -226,6 +161,9 @@ export default function RobotInterfaceLab() {
   const [status, setStatus] = useState<SimStatus>("idle");
   const [stepIndex, setStepIndex] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [plan, setPlan] = useState<PlannerResult | null>(null);
+  const [planGeneratedAt, setPlanGeneratedAt] = useState<string | null>(null);
+  const [packetCopied, setPacketCopied] = useState(false);
   const [log, setLog] = useState<AuditEntry[]>([
     {
       id: 1,
@@ -440,19 +378,74 @@ export default function RobotInterfaceLab() {
     }
   }
 
-  function downloadProtocol() {
+  function downloadJson(payload: unknown, filenameBase: string) {
     const slug = (routineName || "untitled-routine")
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
-    const blob = new Blob([JSON.stringify(protocol, null, 2)], { type: "application/json" });
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
     anchor.href = url;
-    anchor.download = `neuroljus-protocol-${slug || "routine"}.json`;
+    anchor.download = `${filenameBase}-${slug || "routine"}.json`;
     anchor.click();
     URL.revokeObjectURL(url);
+  }
+
+  function downloadProtocol() {
+    downloadJson(protocol, "neuroljus-protocol");
     addLog("caregiver", "download_protocol", "open protocol downloaded as JSON file");
+  }
+
+  function generatePlan() {
+    const result = buildCarePlan({
+      scenario: selectedScenario,
+      routineName,
+      careGoal,
+      visualCard,
+      durationMinutes: duration,
+      environment,
+      allowedCommands: commands,
+      safetyExceptions: exceptions,
+      visionContext: visionSnapshot,
+    });
+    setPlan(result);
+    setPlanGeneratedAt(nowStamp());
+    addLog(
+      "neuroljus",
+      "generate_protocol",
+      result.validation.valid
+        ? "protocol plan generated locally from caregiver settings"
+        : `protocol plan generated with ${result.validation.issues.length} validation issue(s)`
+    );
+  }
+
+  function exportPlan() {
+    if (!plan) return;
+    downloadJson(plan.protocol, "neuroljus-care-protocol-v0");
+    addLog("caregiver", "export_protocol", "care_command_protocol_v0 exported for adapter work");
+  }
+
+  async function copyAdapterPacket() {
+    if (!plan) return;
+    try {
+      await navigator.clipboard.writeText(
+        JSON.stringify(plan.adapterPackets[adapterTarget], null, 2)
+      );
+      setPacketCopied(true);
+      addLog("caregiver", "copy_adapter_packet", `${adapterLabels[adapterTarget]} packet copied`);
+      window.setTimeout(() => setPacketCopied(false), 1500);
+    } catch {
+      addLog("system", "copy_failed", "browser clipboard was unavailable");
+    }
+  }
+
+  function replayPlan() {
+    if (!plan || plan.steps.length === 0) return;
+    setCommands(plan.steps.map((step) => step.command));
+    setStepIndex(0);
+    setStatus("running");
+    addLog("caregiver", "replay_plan", "generated protocol sequence replayed in the simulator");
   }
 
   useEffect(() => {
@@ -534,6 +527,12 @@ export default function RobotInterfaceLab() {
     paused: "Paused",
     completed: "Completed",
     escalated: "Safety exception",
+  };
+
+  const severityLabels: Record<AttentionFlagSeverity, string> = {
+    warning: "Review",
+    advice: "Consider",
+    info: "Note",
   };
 
   return (
@@ -964,9 +963,134 @@ export default function RobotInterfaceLab() {
             </div>
           </section>
 
+          <section className="panel intelligence" aria-labelledby="intelligence-title">
+            <div className="panelHeader">
+              <p className="kicker">03 · Protocol intelligence</p>
+              <h2 id="intelligence-title">Generate, validate, explain, export</h2>
+            </div>
+            <p className="intelligenceIntro">
+              The local planner turns the current routine settings into an
+              ordered, timed care protocol with adapter packets for future
+              devices. It runs entirely on this device: no external API, and
+              the same settings always produce the same plan.
+            </p>
+            <div className="intelligenceActions">
+              <button className="primaryAction" onClick={generatePlan}>
+                Generate protocol
+              </button>
+              <button onClick={exportPlan} disabled={!plan}>
+                Export protocol
+              </button>
+              <button onClick={copyAdapterPacket} disabled={!plan}>
+                {packetCopied ? "Copied" : "Copy adapter packet"}
+              </button>
+              <button onClick={replayPlan} disabled={!plan || plan.steps.length === 0}>
+                Replay in simulator
+              </button>
+            </div>
+
+            {plan ? (
+              <div className="intelligenceBody">
+                <div className="intelligenceColumn">
+                  <h3>Plan explanation</h3>
+                  {planGeneratedAt && (
+                    <p className="planMeta">
+                      Generated at {planGeneratedAt} from the routine settings at that moment.
+                    </p>
+                  )}
+                  {plan.explanation.map((paragraph, index) => (
+                    <p key={index} className="planParagraph">
+                      {paragraph}
+                    </p>
+                  ))}
+
+                  <h3>Planned sequence</h3>
+                  <div className="planSteps">
+                    {plan.steps.length === 0 ? (
+                      <p className="empty">No allowed commands, so the plan has no steps.</p>
+                    ) : (
+                      plan.steps.map((step, index) => (
+                        <div key={`${step.command}-${index}`} className="planStep">
+                          <span>
+                            {step.offsetMinutes} min
+                          </span>
+                          <div>
+                            <strong>{commandLabels[step.command]}</strong>
+                            <small>
+                              {step.reason} · about {step.durationMinutes} min
+                            </small>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+
+                <div className="intelligenceColumn">
+                  <h3>Validation</h3>
+                  <p className={plan.validation.valid ? "validationOk" : "validationIssues"}>
+                    {plan.validation.valid
+                      ? "The configuration is complete enough for adapter work."
+                      : "The configuration needs attention before adapter work:"}
+                  </p>
+                  {plan.validation.issues.length > 0 && (
+                    <ul className="issueList">
+                      {plan.validation.issues.map((issue) => (
+                        <li key={issue}>{issue}</li>
+                      ))}
+                    </ul>
+                  )}
+
+                  <h3>Attention flags</h3>
+                  {plan.attentionFlags.length === 0 ? (
+                    <p className="empty">No attention flags for this configuration.</p>
+                  ) : (
+                    <ul className="flagList">
+                      {plan.attentionFlags.map((flag) => (
+                        <li key={flag.message} className={`flag ${flag.severity}`}>
+                          <span>{severityLabels[flag.severity]}</span>
+                          <p>{flag.message}</p>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  <h3>Reflection for the caregiver</h3>
+                  <ul className="questionList">
+                    {plan.reflectionQuestions.map((question) => (
+                      <li key={question}>{question}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="intelligenceColumn">
+                  <div className="packetHead">
+                    <h3>Adapter packet</h3>
+                    <select
+                      value={adapterTarget}
+                      onChange={(event) => setAdapterTarget(event.target.value as AdapterTarget)}
+                      aria-label="Adapter packet target"
+                    >
+                      {(Object.keys(adapterLabels) as AdapterTarget[]).map((target) => (
+                        <option key={target} value={target}>
+                          {adapterLabels[target]}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <pre>{JSON.stringify(plan.adapterPackets[adapterTarget], null, 2)}</pre>
+                </div>
+              </div>
+            ) : (
+              <p className="empty">
+                No protocol generated yet. Configure the routine above, then generate a plan.
+              </p>
+            )}
+          </section>
+
           <section className="panel audit" aria-labelledby="audit-title">
             <div className="panelHeader">
-              <p className="kicker">03 · Audit trail</p>
+              <p className="kicker">04 · Audit trail</p>
               <h2 id="audit-title">Local event log</h2>
             </div>
             <div className="logList">
@@ -985,7 +1109,7 @@ export default function RobotInterfaceLab() {
 
           <section className="panel protocol" aria-labelledby="protocol-title">
             <div className="panelHeader">
-              <p className="kicker">04 · Protocol export</p>
+              <p className="kicker">05 · Protocol export</p>
               <h2 id="protocol-title">Generated JSON</h2>
             </div>
             <div className="exportButtons">
@@ -1641,6 +1765,142 @@ export default function RobotInterfaceLab() {
         .protocol {
           grid-column: span 1;
         }
+        .intelligence {
+          grid-column: 1 / -1;
+        }
+        .intelligenceIntro {
+          max-width: 760px;
+          color: #566477;
+          line-height: 1.55;
+        }
+        .intelligenceActions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin: 14px 0;
+        }
+        .primaryAction {
+          background: #17202f;
+          color: #ffffff;
+        }
+        .intelligenceBody {
+          display: grid;
+          grid-template-columns: minmax(280px, 1.1fr) minmax(280px, 1fr) minmax(280px, 1fr);
+          gap: 16px;
+          align-items: start;
+          padding-top: 14px;
+          border-top: 1px solid #edf1f0;
+        }
+        .intelligenceColumn {
+          display: grid;
+          gap: 10px;
+          align-content: start;
+        }
+        .intelligenceColumn h3 {
+          margin-top: 6px;
+        }
+        .planMeta {
+          color: #637085;
+          font-size: 12px;
+          font-weight: 700;
+        }
+        .planParagraph {
+          color: #566477;
+          font-size: 13px;
+          line-height: 1.5;
+        }
+        .planSteps {
+          display: grid;
+          gap: 8px;
+        }
+        .planStep {
+          display: grid;
+          grid-template-columns: 58px minmax(0, 1fr);
+          gap: 10px;
+          align-items: start;
+          border: 1px solid #d8e1df;
+          border-radius: 8px;
+          padding: 10px;
+          background: #fbfdfc;
+        }
+        .planStep span {
+          color: #245b62;
+          font-size: 12px;
+          font-weight: 800;
+        }
+        .planStep small {
+          display: block;
+          margin-top: 2px;
+          color: #637085;
+          line-height: 1.35;
+        }
+        .validationOk {
+          color: #1f6b46;
+          font-size: 13px;
+          font-weight: 800;
+        }
+        .validationIssues {
+          color: #8a5a12;
+          font-size: 13px;
+          font-weight: 800;
+        }
+        .issueList,
+        .questionList {
+          margin: 0;
+          padding-left: 18px;
+          display: grid;
+          gap: 6px;
+          color: #566477;
+          font-size: 13px;
+          line-height: 1.45;
+        }
+        .flagList {
+          margin: 0;
+          padding: 0;
+          list-style: none;
+          display: grid;
+          gap: 8px;
+        }
+        .flag {
+          display: grid;
+          grid-template-columns: 72px minmax(0, 1fr);
+          gap: 10px;
+          align-items: start;
+          border: 1px solid #d8e1df;
+          border-radius: 8px;
+          padding: 10px;
+          background: #fbfdfc;
+        }
+        .flag span {
+          font-size: 11px;
+          font-weight: 800;
+          text-transform: uppercase;
+          color: #637085;
+        }
+        .flag.warning {
+          border-color: #d8b15f;
+          background: #fff7e2;
+        }
+        .flag.warning span {
+          color: #8a5a12;
+        }
+        .flag p {
+          color: #566477;
+          font-size: 13px;
+          line-height: 1.4;
+        }
+        .packetHead {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+        }
+        .packetHead select {
+          max-width: 240px;
+        }
+        .intelligence pre {
+          max-height: 420px;
+        }
         .logList {
           display: grid;
           gap: 8px;
@@ -1686,7 +1946,8 @@ export default function RobotInterfaceLab() {
           .topbar,
           .layout,
           .summary,
-          .experience {
+          .experience,
+          .intelligenceBody {
             grid-template-columns: 1fr;
           }
           .careRoom {
