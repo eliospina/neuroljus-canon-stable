@@ -237,7 +237,7 @@ export default function RobotInterfaceLab() {
   ]);
 
   const nextId = useRef(2);
-  const activeCommands = useMemo(() => commands, [commands]);
+  const activeCommands = commands;
 
   const protocol = useMemo(
     () => ({
@@ -297,16 +297,18 @@ export default function RobotInterfaceLab() {
   );
 
   function addLog(actor: AuditEntry["actor"], command: string, reason: string) {
-    setLog((current) => [
-      {
-        id: nextId.current++,
-        time: nowStamp(),
-        actor,
-        command,
-        reason,
-      },
-      ...current,
-    ]);
+    setLog((current) =>
+      [
+        {
+          id: nextId.current++,
+          time: nowStamp(),
+          actor,
+          command,
+          reason,
+        },
+        ...current,
+      ].slice(0, 200)
+    );
   }
 
   function toggleCommand(command: Command) {
@@ -379,6 +381,11 @@ export default function RobotInterfaceLab() {
     addLog("caregiver", "start_routine", `${routineName || "Untitled routine"} started`);
   }
 
+  function pauseRoutine() {
+    setStatus("paused");
+    addLog("caregiver", "pause_routine", "caregiver paused the routine manually");
+  }
+
   function resetRoutine() {
     setStatus("idle");
     setStepIndex(0);
@@ -431,6 +438,21 @@ export default function RobotInterfaceLab() {
     } catch {
       addLog("system", "copy_failed", "browser clipboard was unavailable");
     }
+  }
+
+  function downloadProtocol() {
+    const slug = (routineName || "untitled-routine")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    const blob = new Blob([JSON.stringify(protocol, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `neuroljus-protocol-${slug || "routine"}.json`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+    addLog("caregiver", "download_protocol", "open protocol downloaded as JSON file");
   }
 
   useEffect(() => {
@@ -533,7 +555,9 @@ export default function RobotInterfaceLab() {
             <p className="kicker">Local prototype · open protocol · adapter-ready</p>
             <h1>Robot Care Interface</h1>
           </div>
-          <div className={`status ${status}`}>{statusLabel[status]}</div>
+          <div className={`status ${status}`} role="status" aria-live="polite">
+            {statusLabel[status]}
+          </div>
         </header>
 
         <section className="summary" aria-label="Protocol summary">
@@ -630,7 +654,7 @@ export default function RobotInterfaceLab() {
               )}
             </div>
 
-            <div className="activeEffect">
+            <div className="activeEffect" aria-live="polite">
               <span>Now</span>
               <strong>{currentCommand ? commandLabels[currentCommand] : statusLabel[status]}</strong>
               <p>{activeEffect}</p>
@@ -692,6 +716,7 @@ export default function RobotInterfaceLab() {
                     key={id}
                     onClick={() => applyScenario(id)}
                     className={selectedScenario === id ? "preset activePreset" : "preset"}
+                    aria-pressed={selectedScenario === id}
                   >
                     {scenarioPresets[id].name}
                   </button>
@@ -735,7 +760,10 @@ export default function RobotInterfaceLab() {
                     min={1}
                     max={120}
                     value={duration}
-                    onChange={(event) => setDuration(Number(event.target.value))}
+                    onChange={(event) => {
+                      const value = Number(event.target.value);
+                      setDuration(Number.isFinite(value) ? Math.min(120, Math.max(1, Math.round(value))) : 1);
+                    }}
                   />
                   <span>minutes</span>
                 </div>
@@ -878,7 +906,14 @@ export default function RobotInterfaceLab() {
                   {careGoal}
                 </p>
               </div>
-              <div className="progressWrap" aria-label={`Progress ${progress}%`}>
+              <div
+                className="progressWrap"
+                role="progressbar"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={progress}
+                aria-label="Routine progress"
+              >
                 <div style={{ width: `${progress}%` }} />
               </div>
               <p className="stepText">
@@ -890,6 +925,9 @@ export default function RobotInterfaceLab() {
             <div className="simButtons">
               <button onClick={startRoutine} disabled={status === "running"}>
                 Start routine
+              </button>
+              <button onClick={pauseRoutine} disabled={status !== "running"}>
+                Pause
               </button>
               <button onClick={() => setStatus("running")} disabled={status !== "paused"}>
                 Resume
@@ -950,9 +988,14 @@ export default function RobotInterfaceLab() {
               <p className="kicker">04 · Protocol export</p>
               <h2 id="protocol-title">Generated JSON</h2>
             </div>
-            <button className="copyButton" onClick={copyProtocol}>
-              {copied ? "Copied" : "Copy JSON"}
-            </button>
+            <div className="exportButtons">
+              <button className="copyButton" onClick={copyProtocol}>
+                {copied ? "Copied" : "Copy JSON"}
+              </button>
+              <button className="copyButton" onClick={downloadProtocol}>
+                Download JSON
+              </button>
+            </div>
             <pre>{JSON.stringify(protocol, null, 2)}</pre>
           </section>
         </div>
@@ -1541,8 +1584,14 @@ export default function RobotInterfaceLab() {
           cursor: not-allowed;
           opacity: 0.5;
         }
-        .copyButton {
+        .exportButtons {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
           margin-bottom: 12px;
+        }
+        .copyButton {
+          margin-bottom: 0;
         }
         .simButtons button:first-child {
           background: #17202f;
