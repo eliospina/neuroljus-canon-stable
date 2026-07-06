@@ -9,7 +9,6 @@ import type {
   PlannerResult,
   SafetyException,
   ScenarioId,
-  ScenarioPreset,
   VisionSnapshot,
 } from "@/lib/careProtocol/types";
 import {
@@ -19,6 +18,7 @@ import {
   commandLabels,
   exceptionLabels,
 } from "@/lib/careProtocol/planner";
+import { scenarioOrder, scenarioPresets } from "@/lib/careProtocol/scenarios";
 
 type SimStatus = "idle" | "running" | "paused" | "completed" | "escalated";
 
@@ -46,77 +46,6 @@ const eventToException: Record<string, SafetyException> = {
   "caregiver pauses": "caregiver_pause",
   "unusual movement": "unusual_movement",
   "timeout reached": "timeout",
-};
-
-const defaultCommands: Command[] = [
-  "lower_light",
-  "reduce_sound",
-  "step_back",
-  "pause_interaction",
-  "offer_visual_card",
-  "notify_caregiver",
-  "log_observation",
-];
-
-const scenarioOrder: ScenarioId[] = [
-  "evening_transition",
-  "sensory_overload",
-  "leaving_home",
-  "meal_support",
-  "school_arrival",
-];
-
-const scenarioPresets: Record<ScenarioId, ScenarioPreset> = {
-  evening_transition: {
-    id: "evening_transition",
-    name: "Evening transition",
-    careGoal: "Move from activity to rest with a predictable, low-stimulus routine.",
-    visualCard: "Now: quiet room. Next: sleep routine.",
-    duration: 20,
-    environment: { light: 35, sound: 25, distance: 1.5, pace: "slow" },
-    commands: defaultCommands,
-    exceptions: ["rejection_signal", "caregiver_pause", "timeout", "unknown_event"],
-  },
-  sensory_overload: {
-    id: "sensory_overload",
-    name: "Sensory overload support",
-    careGoal: "Reduce sensory load and increase personal space before adding new demands.",
-    visualCard: "Pause. Less light. Less sound. More space.",
-    duration: 12,
-    environment: { light: 22, sound: 12, distance: 2.4, pace: "slow" },
-    commands: ["reduce_sound", "lower_light", "step_back", "pause_interaction", "notify_caregiver", "log_observation"],
-    exceptions: ["rejection_signal", "unusual_movement", "caregiver_pause", "unknown_event"],
-  },
-  leaving_home: {
-    id: "leaving_home",
-    name: "Leaving home",
-    careGoal: "Make a transition visible, paced, and repeatable before going outside.",
-    visualCard: "Shoes. Jacket. Door. Outside.",
-    duration: 18,
-    environment: { light: 48, sound: 30, distance: 1.8, pace: "steady" },
-    commands: ["offer_visual_card", "pause_interaction", "step_back", "notify_caregiver", "log_observation"],
-    exceptions: ["rejection_signal", "caregiver_pause", "timeout"],
-  },
-  meal_support: {
-    id: "meal_support",
-    name: "Meal support",
-    careGoal: "Support a meal routine with predictable steps and low interaction pressure.",
-    visualCard: "Table. Food. Drink. Finished.",
-    duration: 30,
-    environment: { light: 45, sound: 20, distance: 1.6, pace: "adaptive" },
-    commands: ["offer_visual_card", "pause_interaction", "reduce_sound", "notify_caregiver", "log_observation"],
-    exceptions: ["rejection_signal", "unusual_movement", "caregiver_pause", "timeout"],
-  },
-  school_arrival: {
-    id: "school_arrival",
-    name: "School arrival",
-    careGoal: "Support handoff from family to school with context, pacing, and audit record.",
-    visualCard: "Arrive. Quiet corner. Teacher. First task.",
-    duration: 15,
-    environment: { light: 55, sound: 35, distance: 1.9, pace: "steady" },
-    commands: ["offer_visual_card", "step_back", "pause_interaction", "notify_caregiver", "log_observation"],
-    exceptions: ["rejection_signal", "caregiver_pause", "timeout", "unknown_event"],
-  },
 };
 
 const commandEffects: Record<Command, string> = {
@@ -553,6 +482,10 @@ export default function RobotInterfaceLab() {
           <div>
             <p className="kicker">Local prototype · open protocol · adapter-ready</p>
             <h1>Robot Care Interface</h1>
+            <p className="roomLink">
+              Prefer the experiential view?{" "}
+              <Link href="/labs/future-care-room">Enter the Future Care Room</Link>
+            </p>
           </div>
           <div className={`status ${status}`} role="status" aria-live="polite">
             {statusLabel[status]}
@@ -1149,6 +1082,15 @@ export default function RobotInterfaceLab() {
           color: #245b62;
           font-weight: 800;
           text-decoration: none;
+        }
+        .roomLink {
+          margin-top: 6px;
+          color: #637085;
+          font-size: 13px;
+          font-weight: 700;
+        }
+        .roomLink :global(a) {
+          color: #245b62;
         }
         h1,
         h2,
