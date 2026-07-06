@@ -229,7 +229,7 @@ export default function RobotInterfaceLab() {
   const [log, setLog] = useState<AuditEntry[]>([
     {
       id: 1,
-      time: nowStamp(),
+      time: "ready",
       actor: "system",
       command: "lab_ready",
       reason: "protocol workspace initialized for future adapter work",
