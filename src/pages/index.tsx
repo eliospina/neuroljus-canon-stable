@@ -33,6 +33,7 @@ export default function Home() {
         subtitle:
           "Neuroljus omvandlar levd omsorgskunskap till strukturerade rutiner, lokala observationer och öppna protokoll för framtida hälsa, forskning och assisterande robotik.",
         cta: "Öppna NL-VISION",
+        futureRoomCta: "Gå in i Future Care Room",
         whitepaperCta: "Läs white paper",
         whitepaperHref: "https://doi.org/10.5281/zenodo.20775583",
         secondaryCta: "Läs projektets historia",
@@ -67,11 +68,11 @@ export default function Home() {
             href: "/labs/nl-vision",
           },
           {
-            title: "Robotgränssnittslabb",
+            title: "Future Care Room",
             body:
-              "Ett första öppet protokoll för förgodkända omsorgsrutiner, lokala händelseloggar och framtida adapterarbete mot ROS2, MQTT, HTTP eller offlineverktyg.",
-            action: "Öppna robotlabbet",
-            href: "/labs/robot-interface",
+              "En interaktiv vårdrumssimulering där ljus, ljud, avstånd och rytm blir ett levande omsorgsprotokoll för framtida robot- och adapterarbete.",
+            action: "Gå in i rummet",
+            href: "/labs/future-care-room",
           },
           {
             title: "Klinisk-vetenskaplig förankring",
@@ -135,6 +136,7 @@ export default function Home() {
         subtitle:
           "Neuroljus transforms lived caregiving knowledge into structured routines, local observations, and open protocols for future health, research, and assistive robotics.",
         cta: "Open NL-VISION",
+        futureRoomCta: "Enter the Future Care Room",
         whitepaperCta: "Read the white paper",
         whitepaperHref: "https://doi.org/10.5281/zenodo.20775583",
         secondaryCta: "Read the origin story",
@@ -169,11 +171,11 @@ export default function Home() {
             href: "/labs/nl-vision",
           },
           {
-            title: "Robot interface lab",
+            title: "Future Care Room",
             body:
-              "A first open protocol for preauthorized care routines, local event logs, and future adapter work across ROS2, MQTT, HTTP, or offline tools.",
-            action: "Open robot lab",
-            href: "/labs/robot-interface",
+              "An interactive care-room simulation where light, sound, distance, and rhythm become a living care protocol for future robot and adapter work.",
+            action: "Enter the room",
+            href: "/labs/future-care-room",
           },
           {
             title: "Clinical-science anchor",
@@ -237,6 +239,7 @@ export default function Home() {
         subtitle:
           "Neuroljus transforma conocimiento cuidador vivido en rutinas estructuradas, observaciones locales y protocolos abiertos para futura salud, investigación y robótica asistiva.",
         cta: "Abrir NL-VISION",
+        futureRoomCta: "Entrar a Future Care Room",
         whitepaperCta: "Leer el white paper",
         whitepaperHref: "https://doi.org/10.5281/zenodo.20775583",
         secondaryCta: "Leer la historia",
@@ -271,11 +274,11 @@ export default function Home() {
             href: "/labs/nl-vision",
           },
           {
-            title: "Laboratorio de interfaz robot",
+            title: "Future Care Room",
             body:
-              "Un primer protocolo abierto para rutinas de cuidado preautorizadas, bitácoras locales y futuros adaptadores ROS2, MQTT, HTTP o herramientas offline.",
-            action: "Abrir robot lab",
-            href: "/labs/robot-interface",
+              "Una simulación interactiva de una sala de cuidado donde luz, sonido, distancia y ritmo se convierten en un protocolo vivo para futuros robots y adaptadores.",
+            action: "Entrar a la sala",
+            href: "/labs/future-care-room",
           },
           {
             title: "Anclaje clínico-científico",
@@ -388,6 +391,9 @@ export default function Home() {
               <div className="actions">
                 <a className="primaryCta" href="/labs/nl-vision">
                   {copy.cta}
+                </a>
+                <a className="textCta" href="/labs/future-care-room">
+                  {copy.futureRoomCta}
                 </a>
                 <a className="textCta" href="/about">
                   {copy.secondaryCta}
