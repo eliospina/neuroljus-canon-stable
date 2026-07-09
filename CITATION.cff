@@ -1,0 +1,48 @@
+cff-version: 1.2.0
+message: "If you use NeuroLjus or refer to this work, please cite it using the metadata below."
+title: "NeuroLjus: Empathic, Privacy-First Technology for Sensory Understanding and Caregiver Support"
+abstract: >-
+  NeuroLjus is an independent social-innovation initiative and experimental,
+  privacy-first platform supporting autistic individuals, their families, and
+  caregivers. It pairs on-device movement-signal sensing (NL-VISION, MediaPipe
+  Holistic, processed entirely in the browser) with an optional, non-diagnostic
+  multilingual AI assistant (Care Chat), and is designed to grow into a
+  connected ecosystem for care discovery, community, and learning. The system
+  is explicitly non-diagnostic, GDPR-aligned, and architected so that users
+  retain ownership and control of their data.
+type: software
+license: CC-BY-4.0
+authors:
+  - given-names: Elizabeth
+    family-names: Ospina
+    orcid: "https://orcid.org/0009-0004-7291-3340"
+    affiliation: "NeuroLjus (independent researcher, Sweden)"
+version: "0.1.0"
+date-released: "2026-06-20"
+url: "https://neuroljus.com"
+repository-code: "https://github.com/eliospina/neuroljus-canon-stable"
+keywords:
+  - autism
+  - neurodiversity
+  - assistive technology
+  - privacy by design
+  - on-device AI
+  - caregiver support
+  - GDPR
+  - ethical AI
+  - data sovereignty
+  - digital inclusion
+preferred-citation:
+  type: report
+  title: "NeuroLjus: Illuminating Understanding — An Empathic, Privacy-First Platform for Autism Care Discovery, Community, and Caregiver Support (Strategic White Paper v2.0.1)"
+  authors:
+    - given-names: Elizabeth
+      family-names: Ospina
+      orcid: "https://orcid.org/0009-0004-7291-3340"
+      affiliation: "NeuroLjus (independent researcher, Sweden)"
+  year: 2026
+  month: 6
+  institution:
+    name: "NeuroLjus"
+  url: "https://neuroljus.com"
+  doi: 10.5281/zenodo.20775583
