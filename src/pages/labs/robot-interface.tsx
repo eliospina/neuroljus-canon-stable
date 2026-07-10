@@ -467,30 +467,56 @@ export default function RobotInterfaceLab() {
   return (
     <>
       <Head>
-        <title>Robot Care Interface Lab - Neuroljus</title>
+        <title>Protocol Workspace — Neuroljus</title>
         <meta
           name="description"
-          content="Protocol-first workspace for Neuroljus care command protocols, preauthorized routines, safety exceptions, audit trails, and future adapter work."
+          content="Protocol-first workspace for Neuroljus care command protocols, preauthorized routines, safety exceptions, audit trails, and adapter-ready export."
         />
+        <meta name="theme-color" content="#09090b" />
       </Head>
 
-      <main className="page">
-        <header className="topbar">
-          <Link href="/" className="brand">
-            Neuroljus
-          </Link>
-          <div>
-            <p className="kicker">Local prototype · open protocol · adapter-ready</p>
+      <div className="page">
+        <div className="statusbar" aria-hidden="true">
+          <span>
+            neuroljus://local · <b>care_command_protocol_v0</b> · audit=on · network=off
+          </span>
+          <span>latency 0ms · deterministic · caregiver_authority=true</span>
+        </div>
+
+        <header className="shell topnav" role="banner">
+          <div className="brandRow">
+            <Link href="/" className="logo">
+              Neuroljus
+            </Link>
+            <span className="sep">/</span>
+            <span className="platform">Protocol Workspace</span>
+          </div>
+          <nav className="navLinks" aria-label="Labs">
+            <Link href="/labs/future-care-room">Care Room</Link>
+            <Link href="/">Platform</Link>
+          </nav>
+          <div className="navRight">
+            <div className="pills" role="group" aria-label="Platform layers">
+              <span className="pill">runtime</span>
+              <span className="pill on">protocol</span>
+              <span className="pill">adapters</span>
+              <span className="pill">audit</span>
+            </div>
+            <div className={`simStatus ${status}`} role="status" aria-live="polite">
+              {statusLabel[status]}
+            </div>
+          </div>
+        </header>
+
+        <main className="workspace">
+          <div className="pageIntro shell">
+            <p className="cli">$ neuroljus workspace --protocol</p>
             <h1>Robot Care Interface</h1>
             <p className="roomLink">
               Prefer the experiential view?{" "}
               <Link href="/labs/future-care-room">Enter the Future Care Room</Link>
             </p>
           </div>
-          <div className={`status ${status}`} role="status" aria-live="polite">
-            {statusLabel[status]}
-          </div>
-        </header>
 
         <section className="summary" aria-label="Protocol summary">
           <div>
@@ -1056,41 +1082,152 @@ export default function RobotInterfaceLab() {
             <pre>{JSON.stringify(protocol, null, 2)}</pre>
           </section>
         </div>
-      </main>
+        </main>
+      </div>
 
       <style jsx>{`
         .page {
           min-height: 100dvh;
-          padding: 22px;
-          color: #17202f;
-          background: #f4f7f6;
+          background: #09090b;
+          color: #fafafa;
           font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
             sans-serif;
         }
-        .topbar {
-          max-width: 1360px;
-          margin: 0 auto 16px;
-          display: grid;
-          grid-template-columns: auto minmax(0, 1fr) auto;
-          gap: 18px;
-          align-items: center;
+        .shell {
+          width: min(1360px, calc(100% - 44px));
+          margin: 0 auto;
         }
-        .brand {
-          min-height: 38px;
-          display: inline-flex;
+        .statusbar {
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 11px;
+          display: flex;
+          justify-content: space-between;
+          gap: 16px;
+          flex-wrap: wrap;
+          padding: 8px 24px;
+          border-bottom: 1px solid #27272a;
+          color: #71717a;
+        }
+        .statusbar :global(b) {
+          color: #3ecf9a;
+          font-weight: 600;
+        }
+        .topnav {
+          display: flex;
           align-items: center;
-          color: #245b62;
+          flex-wrap: wrap;
+          gap: 16px;
+          padding: 16px 0;
+          border-bottom: 1px solid #27272a;
+        }
+        .brandRow {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+        .logo {
+          font-size: 13px;
           font-weight: 800;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #fafafa;
           text-decoration: none;
         }
-        .roomLink {
-          margin-top: 6px;
-          color: #637085;
+        .sep {
+          color: #3f3f46;
+        }
+        .platform {
           font-size: 13px;
+          color: #a1a1aa;
+        }
+        .navLinks {
+          display: flex;
+          gap: 20px;
+          font-size: 13px;
+        }
+        .navLinks :global(a) {
+          color: #a1a1aa;
+          text-decoration: none;
+          font-weight: 600;
+        }
+        .navLinks :global(a:hover) {
+          color: #3ecf9a;
+        }
+        .navRight {
+          margin-left: auto;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+        .pills {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+        .pill {
+          font-size: 11px;
           font-weight: 700;
+          padding: 4px 10px;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
+          color: #a1a1aa;
+        }
+        .pill.on {
+          border-color: #3ecf9a;
+          color: #3ecf9a;
+        }
+        .simStatus {
+          min-width: 152px;
+          min-height: 30px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
+          background: #0c0c0e;
+          color: #a1a1aa;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 11px;
+          font-weight: 700;
+          padding: 0 10px;
+        }
+        .simStatus.running {
+          border-color: #3ecf9a;
+          color: #3ecf9a;
+          background: rgba(62, 207, 154, 0.08);
+        }
+        .simStatus.paused,
+        .simStatus.escalated {
+          border-color: #fbbf24;
+          color: #fbbf24;
+          background: rgba(251, 191, 36, 0.08);
+        }
+        .simStatus.completed {
+          border-color: #3ecf9a;
+          color: #3ecf9a;
+        }
+        .workspace {
+          padding: 22px 0 40px;
+        }
+        .pageIntro {
+          margin-bottom: 20px;
+        }
+        .cli {
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 12px;
+          color: #3ecf9a;
+          margin-bottom: 10px;
+        }
+        .roomLink {
+          margin-top: 8px;
+          color: #71717a;
+          font-size: 13px;
+          font-weight: 600;
         }
         .roomLink :global(a) {
-          color: #245b62;
+          color: #3ecf9a;
+          font-weight: 700;
         }
         h1,
         h2,
@@ -1113,36 +1250,12 @@ export default function RobotInterfaceLab() {
         }
         .kicker {
           margin-bottom: 4px;
-          color: #637085;
-          font-size: 12px;
-          font-weight: 800;
-          letter-spacing: 0;
+          color: #3ecf9a;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.04em;
           text-transform: uppercase;
-        }
-        .status {
-          min-width: 152px;
-          min-height: 38px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          border: 1px solid #cbd8d5;
-          border-radius: 8px;
-          background: #ffffff;
-          color: #263140;
-          font-weight: 800;
-        }
-        .status.running {
-          background: #17202f;
-          color: #f8fffb;
-        }
-        .status.paused,
-        .status.escalated {
-          border-color: #d8b15f;
-          background: #fff7e2;
-        }
-        .status.completed {
-          border-color: #8fc4aa;
-          background: #e6f7ef;
         }
         .summary {
           max-width: 1360px;
@@ -1150,12 +1263,13 @@ export default function RobotInterfaceLab() {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
           gap: 10px;
+          padding: 0 22px;
         }
         .summary div,
         .panel {
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
-          background: #ffffff;
+          border: 1px solid #27272a;
+          border-radius: 6px;
+          background: #0c0c0e;
         }
         .summary div {
           padding: 14px;
@@ -1163,9 +1277,10 @@ export default function RobotInterfaceLab() {
         .summary span {
           display: block;
           margin-bottom: 6px;
-          color: #637085;
-          font-size: 12px;
-          font-weight: 800;
+          color: #71717a;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 10px;
+          font-weight: 700;
           text-transform: uppercase;
         }
         .summary strong {
@@ -1173,7 +1288,7 @@ export default function RobotInterfaceLab() {
           margin-bottom: 6px;
         }
         .summary p {
-          color: #566477;
+          color: #a1a1aa;
           font-size: 13px;
           line-height: 1.45;
         }
@@ -1184,14 +1299,14 @@ export default function RobotInterfaceLab() {
           grid-template-columns: minmax(260px, 0.8fr) minmax(420px, 1.35fr) minmax(260px, 0.9fr);
           gap: 16px;
           align-items: stretch;
+          padding: 0 22px;
         }
         .experienceIntro,
-        .careRoom,
         .signalPanel,
         .adapterPanel {
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
-          background: #ffffff;
+          border: 1px solid #27272a;
+          border-radius: 6px;
+          background: #0c0c0e;
           padding: 18px;
         }
         .experienceIntro {
@@ -1206,16 +1321,20 @@ export default function RobotInterfaceLab() {
         .experienceIntro p,
         .signalPanel p,
         .adapterPanel p {
-          color: #566477;
+          color: #a1a1aa;
           line-height: 1.55;
         }
         .careRoom {
           grid-row: span 2;
           display: grid;
           gap: 12px;
+          border: 1px solid #27272a;
+          border-radius: 6px;
+          padding: 18px;
           background:
             linear-gradient(180deg, rgba(255, 255, 255, var(--light-opacity)), rgba(240, 247, 244, 0.96)),
             #eef5f2;
+          color: #17202f;
         }
         .roomHeader,
         .environmentMeters {
@@ -1413,8 +1532,9 @@ export default function RobotInterfaceLab() {
         }
         .signalPanel button {
           justify-self: start;
-          background: #17202f;
-          color: #ffffff;
+          background: #3ecf9a;
+          color: #09090b;
+          border-color: #3ecf9a;
         }
         .visionGrid {
           display: grid;
@@ -1423,6 +1543,7 @@ export default function RobotInterfaceLab() {
         }
         .adapterPanel pre {
           max-height: 310px;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
         }
         .layout {
           max-width: 1360px;
@@ -1431,6 +1552,7 @@ export default function RobotInterfaceLab() {
           grid-template-columns: minmax(320px, 0.9fr) minmax(360px, 1.1fr);
           gap: 16px;
           align-items: start;
+          padding: 0 22px;
         }
         .panel {
           padding: 18px;
@@ -1453,19 +1575,21 @@ export default function RobotInterfaceLab() {
           min-height: 44px;
           padding: 0 10px;
           text-align: left;
-          background: #fbfdfc;
+          background: #18181b;
+          border-color: #3f3f46;
+          color: #a1a1aa;
         }
         .activePreset {
-          border-color: #245b62;
-          background: #e6f7ef;
-          color: #245b62;
+          border-color: #3ecf9a;
+          background: rgba(62, 207, 154, 0.1);
+          color: #3ecf9a;
         }
         .field {
           display: grid;
           gap: 7px;
-          color: #3d4959;
+          color: #a1a1aa;
           font-size: 13px;
-          font-weight: 800;
+          font-weight: 700;
         }
         .field + .field,
         .fieldGrid,
@@ -1477,9 +1601,9 @@ export default function RobotInterfaceLab() {
           margin-top: 14px;
         }
         .note {
-          color: #637085;
+          color: #71717a;
           font-size: 12px;
-          font-weight: 700;
+          font-weight: 600;
           line-height: 1.35;
         }
         .fieldGrid {
@@ -1492,10 +1616,10 @@ export default function RobotInterfaceLab() {
         textarea {
           width: 100%;
           min-height: 40px;
-          border: 1px solid #cbd8d5;
-          border-radius: 8px;
-          background: #fbfdfc;
-          color: #17202f;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
+          background: #18181b;
+          color: #fafafa;
           font: inherit;
         }
         input,
@@ -1513,7 +1637,7 @@ export default function RobotInterfaceLab() {
         select:focus,
         textarea:focus,
         button:focus {
-          outline: 2px solid #245b62;
+          outline: 2px solid #3ecf9a;
           outline-offset: 2px;
         }
         .inlineInput {
@@ -1523,9 +1647,9 @@ export default function RobotInterfaceLab() {
           align-items: center;
         }
         .inlineInput span {
-          color: #637085;
+          color: #71717a;
           font-size: 13px;
-          font-weight: 700;
+          font-weight: 600;
         }
         .sliders {
           display: grid;
@@ -1539,17 +1663,17 @@ export default function RobotInterfaceLab() {
           display: flex;
           justify-content: space-between;
           gap: 12px;
-          color: #3d4959;
+          color: #a1a1aa;
           font-size: 13px;
-          font-weight: 800;
+          font-weight: 700;
         }
         input[type="range"] {
           padding: 0;
-          accent-color: #245b62;
+          accent-color: #3ecf9a;
         }
         .optionSection {
           padding-top: 14px;
-          border-top: 1px solid #edf1f0;
+          border-top: 1px solid #27272a;
         }
         .checks {
           display: grid;
@@ -1566,16 +1690,16 @@ export default function RobotInterfaceLab() {
           grid-template-columns: 18px minmax(0, 1fr);
           gap: 10px;
           align-items: center;
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
           padding: 10px;
-          background: #fbfdfc;
+          background: #18181b;
           font-size: 13px;
         }
         .check input {
           min-height: auto;
           width: 16px;
-          accent-color: #245b62;
+          accent-color: #3ecf9a;
         }
         .check b,
         .check small {
@@ -1583,19 +1707,20 @@ export default function RobotInterfaceLab() {
         }
         .check small {
           margin-top: 2px;
-          color: #637085;
+          color: #71717a;
           line-height: 1.25;
         }
         .scenario {
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
           padding: 14px;
-          background: #fbfdfc;
+          background: #18181b;
         }
         .scenario span {
-          color: #637085;
-          font-size: 12px;
-          font-weight: 800;
+          color: #71717a;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 10px;
+          font-weight: 700;
           text-transform: uppercase;
         }
         .scenario strong {
@@ -1604,7 +1729,7 @@ export default function RobotInterfaceLab() {
           font-size: 18px;
         }
         .scenario p {
-          color: #566477;
+          color: #a1a1aa;
           line-height: 1.45;
         }
         .progressWrap {
@@ -1612,17 +1737,18 @@ export default function RobotInterfaceLab() {
           margin: 14px 0 8px;
           overflow: hidden;
           border-radius: 999px;
-          background: #e5ecea;
+          background: #27272a;
         }
         .progressWrap div {
           height: 100%;
           border-radius: inherit;
-          background: #245b62;
+          background: #3ecf9a;
           transition: width 180ms ease;
         }
         .stepText {
           font-size: 13px;
-          font-weight: 800;
+          font-weight: 700;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
         }
         .simButtons,
         .injectors {
@@ -1633,18 +1759,18 @@ export default function RobotInterfaceLab() {
         }
         button {
           min-height: 40px;
-          border: 1px solid #cbd8d5;
-          border-radius: 8px;
-          background: #ffffff;
-          color: #17202f;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
+          background: #18181b;
+          color: #fafafa;
           cursor: pointer;
           font: inherit;
-          font-weight: 800;
+          font-weight: 700;
           padding: 0 12px;
         }
         button:hover:not(:disabled) {
-          border-color: #245b62;
-          color: #245b62;
+          border-color: #3ecf9a;
+          color: #3ecf9a;
         }
         button:disabled {
           cursor: not-allowed;
@@ -1660,8 +1786,12 @@ export default function RobotInterfaceLab() {
           margin-bottom: 0;
         }
         .simButtons button:first-child {
-          background: #17202f;
-          color: #ffffff;
+          background: #3ecf9a;
+          color: #09090b;
+          border-color: #3ecf9a;
+        }
+        .simButtons button:first-child:hover:not(:disabled) {
+          color: #09090b;
         }
         .commandStack {
           display: grid;
@@ -1673,10 +1803,12 @@ export default function RobotInterfaceLab() {
           grid-template-columns: 30px minmax(0, 1fr);
           gap: 10px;
           align-items: center;
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
           padding: 10px;
-          background: #ffffff;
+          background: #18181b;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 12px;
         }
         .command span {
           width: 30px;
@@ -1685,23 +1817,23 @@ export default function RobotInterfaceLab() {
           align-items: center;
           justify-content: center;
           border-radius: 999px;
-          background: #edf1f0;
-          font-weight: 800;
+          background: #27272a;
+          font-weight: 700;
         }
         .command small {
           display: block;
           margin-top: 2px;
-          color: #637085;
+          color: #71717a;
         }
         .command.active {
-          border-color: #245b62;
+          border-color: #3ecf9a;
         }
         .command.done {
-          background: #eef8f3;
+          background: rgba(62, 207, 154, 0.08);
         }
         .empty {
-          color: #637085;
-          font-weight: 700;
+          color: #71717a;
+          font-weight: 600;
         }
         .audit,
         .protocol {
@@ -1712,7 +1844,7 @@ export default function RobotInterfaceLab() {
         }
         .intelligenceIntro {
           max-width: 760px;
-          color: #566477;
+          color: #a1a1aa;
           line-height: 1.55;
         }
         .intelligenceActions {
@@ -1722,8 +1854,13 @@ export default function RobotInterfaceLab() {
           margin: 14px 0;
         }
         .primaryAction {
-          background: #17202f;
-          color: #ffffff;
+          background: #3ecf9a;
+          color: #09090b;
+          border-color: #3ecf9a;
+        }
+        .primaryAction:hover:not(:disabled) {
+          color: #09090b;
+          border-color: #3ecf9a;
         }
         .intelligenceBody {
           display: grid;
@@ -1731,7 +1868,7 @@ export default function RobotInterfaceLab() {
           gap: 16px;
           align-items: start;
           padding-top: 14px;
-          border-top: 1px solid #edf1f0;
+          border-top: 1px solid #27272a;
         }
         .intelligenceColumn {
           display: grid;
@@ -1742,12 +1879,13 @@ export default function RobotInterfaceLab() {
           margin-top: 6px;
         }
         .planMeta {
-          color: #637085;
+          color: #71717a;
           font-size: 12px;
-          font-weight: 700;
+          font-weight: 600;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
         }
         .planParagraph {
-          color: #566477;
+          color: #a1a1aa;
           font-size: 13px;
           line-height: 1.5;
         }
@@ -1760,31 +1898,33 @@ export default function RobotInterfaceLab() {
           grid-template-columns: 58px minmax(0, 1fr);
           gap: 10px;
           align-items: start;
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
           padding: 10px;
-          background: #fbfdfc;
+          background: #18181b;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 12px;
         }
         .planStep span {
-          color: #245b62;
+          color: #3ecf9a;
           font-size: 12px;
-          font-weight: 800;
+          font-weight: 700;
         }
         .planStep small {
           display: block;
           margin-top: 2px;
-          color: #637085;
+          color: #71717a;
           line-height: 1.35;
         }
         .validationOk {
-          color: #1f6b46;
+          color: #3ecf9a;
           font-size: 13px;
-          font-weight: 800;
+          font-weight: 700;
         }
         .validationIssues {
-          color: #8a5a12;
+          color: #fbbf24;
           font-size: 13px;
-          font-weight: 800;
+          font-weight: 700;
         }
         .issueList,
         .questionList {
@@ -1792,7 +1932,7 @@ export default function RobotInterfaceLab() {
           padding-left: 18px;
           display: grid;
           gap: 6px;
-          color: #566477;
+          color: #a1a1aa;
           font-size: 13px;
           line-height: 1.45;
         }
@@ -1808,26 +1948,26 @@ export default function RobotInterfaceLab() {
           grid-template-columns: 72px minmax(0, 1fr);
           gap: 10px;
           align-items: start;
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
           padding: 10px;
-          background: #fbfdfc;
+          background: #18181b;
         }
         .flag span {
           font-size: 11px;
-          font-weight: 800;
+          font-weight: 700;
           text-transform: uppercase;
-          color: #637085;
+          color: #71717a;
         }
         .flag.warning {
-          border-color: #d8b15f;
-          background: #fff7e2;
+          border-color: #fbbf24;
+          background: rgba(251, 191, 36, 0.08);
         }
         .flag.warning span {
-          color: #8a5a12;
+          color: #fbbf24;
         }
         .flag p {
-          color: #566477;
+          color: #a1a1aa;
           font-size: 13px;
           line-height: 1.4;
         }
@@ -1855,53 +1995,67 @@ export default function RobotInterfaceLab() {
           grid-template-columns: 58px minmax(0, 1fr) auto;
           gap: 10px;
           align-items: start;
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
           padding: 10px;
-          background: #fbfdfc;
+          background: #18181b;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 12px;
         }
         .logItem time,
         .logItem span {
-          color: #637085;
-          font-size: 12px;
-          font-weight: 800;
+          color: #71717a;
+          font-size: 11px;
+          font-weight: 700;
         }
         .logItem p {
           margin-top: 3px;
-          color: #566477;
-          font-size: 13px;
+          color: #a1a1aa;
+          font-size: 12px;
           line-height: 1.35;
         }
         pre {
           max-height: 520px;
           margin: 0;
           overflow: auto;
-          border-radius: 8px;
-          background: #17202f;
-          color: #e9f5f1;
+          border-radius: 4px;
+          border: 1px solid #27272a;
+          background: #0c0c0e;
+          color: #e4e4e7;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
           font-size: 12px;
           line-height: 1.55;
           padding: 14px;
           white-space: pre-wrap;
         }
         @media (max-width: 980px) {
-          .topbar,
+          .topnav,
           .layout,
           .summary,
           .experience,
           .intelligenceBody {
             grid-template-columns: 1fr;
           }
+          .navRight {
+            width: 100%;
+            margin-left: 0;
+            justify-content: space-between;
+          }
           .careRoom {
             grid-row: auto;
           }
-          .status {
-            justify-self: start;
-          }
         }
         @media (max-width: 640px) {
-          .page {
-            padding: 14px;
+          .shell {
+            width: min(100% - 28px, 1360px);
+          }
+          .workspace {
+            padding: 14px 0 32px;
+          }
+          .summary,
+          .experience,
+          .layout {
+            padding: 0 14px;
           }
           h1 {
             font-size: 26px;

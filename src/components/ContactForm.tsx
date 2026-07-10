@@ -1,11 +1,133 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-export default function ContactForm() {
+type Lang = "sv" | "en" | "es";
+
+type Props = {
+  lang?: Lang;
+};
+
+export default function ContactForm({ lang = "en" }: Props) {
   const [state, setState] = useState<"idle" | "sending" | "ok" | "error">("idle");
   const [msg, setMsg] = useState("");
   const router = useRouter();
+
+  const T = useMemo(
+    () => ({
+      sv: {
+        intro:
+          "För integritet: håll meddelanden allmänna och undvik kliniska journaler, identifierande barnuppgifter eller akut vårdinformation.",
+        privacy: "Integritet",
+        name: "Namn",
+        namePlaceholder: "Ditt namn",
+        email: "E-post",
+        emailPlaceholder: "du@exempel.se",
+        interest: "Vad är du intresserad av?",
+        chooseOne: "Välj ett",
+        interests: [
+          "Vårdgivarintervju",
+          "Feedback om observationsmetoden",
+          "NL-VISION-prototyp",
+          "Forskningssamarbete",
+          "Etik eller tillgänglighet",
+          "Allmän förfrågan",
+        ],
+        interestValues: [
+          "Caregiver interview",
+          "Observation method feedback",
+          "NL-VISION prototype",
+          "Research collaboration",
+          "Ethics or accessibility",
+          "General inquiry",
+        ],
+        message: "Meddelande",
+        messagePlaceholder: "Berätta kort om ditt sammanhang för omsorg, forskning eller samarbete...",
+        consentBefore: "Jag samtycker till att bli kontaktad via e-post. Jag har läst ",
+        consentAfter: ".",
+        privacyPolicy: "Integritetspolicy",
+        send: "Skicka meddelande",
+        sending: "Skickar…",
+        errorDefault: "Vi kunde inte skicka ditt meddelande. Försök igen.",
+        networkError: "Nätverksfel. Försök igen.",
+      },
+      en: {
+        intro:
+          "For privacy, keep messages general and avoid clinical records, identifying child data, or urgent care information.",
+        privacy: "Privacy",
+        name: "Name",
+        namePlaceholder: "Your name",
+        email: "Email",
+        emailPlaceholder: "you@example.com",
+        interest: "What are you interested in?",
+        chooseOne: "Choose one",
+        interests: [
+          "Caregiver interview",
+          "Observation method feedback",
+          "NL-VISION prototype",
+          "Research collaboration",
+          "Ethics or accessibility",
+          "General inquiry",
+        ],
+        interestValues: [
+          "Caregiver interview",
+          "Observation method feedback",
+          "NL-VISION prototype",
+          "Research collaboration",
+          "Ethics or accessibility",
+          "General inquiry",
+        ],
+        message: "Message",
+        messagePlaceholder: "Tell us a bit about your care, research, or collaboration context...",
+        consentBefore: "I consent to being contacted by email. I've read the ",
+        consentAfter: ".",
+        privacyPolicy: "Privacy Policy",
+        send: "Send message",
+        sending: "Sending…",
+        errorDefault: "We couldn't send your message. Please try again.",
+        networkError: "Network error. Please try again.",
+      },
+      es: {
+        intro:
+          "Por privacidad, mantén los mensajes generales y evita registros clínicos, datos identificables de menores o información de cuidado urgente.",
+        privacy: "Privacidad",
+        name: "Nombre",
+        namePlaceholder: "Tu nombre",
+        email: "Correo",
+        emailPlaceholder: "tu@ejemplo.com",
+        interest: "¿En qué estás interesada/o?",
+        chooseOne: "Elige una opción",
+        interests: [
+          "Entrevista con cuidadora",
+          "Feedback del método de observación",
+          "Prototipo NL-VISION",
+          "Colaboración en investigación",
+          "Ética o accesibilidad",
+          "Consulta general",
+        ],
+        interestValues: [
+          "Caregiver interview",
+          "Observation method feedback",
+          "NL-VISION prototype",
+          "Research collaboration",
+          "Ethics or accessibility",
+          "General inquiry",
+        ],
+        message: "Mensaje",
+        messagePlaceholder: "Cuéntanos brevemente tu contexto de cuidado, investigación o colaboración...",
+        consentBefore: "Consiento ser contactada/o por correo. He leído la ",
+        consentAfter: ".",
+        privacyPolicy: "Política de privacidad",
+        send: "Enviar mensaje",
+        sending: "Enviando…",
+        errorDefault: "No pudimos enviar tu mensaje. Inténtalo de nuevo.",
+        networkError: "Error de red. Inténtalo de nuevo.",
+      },
+    }),
+    []
+  );
+
+  const copy = T[lang];
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -15,9 +137,7 @@ export default function ContactForm() {
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    // Web3Forms — tu access key pública
     formData.append("access_key", "5b50cf71-36b1-4445-8d7a-f9a7a98cc4f6");
-    // Metadatos
     const interest = (formData.get("interest") as string) || "General inquiry";
     formData.append("subject", `Neuroljus — ${interest}`);
     formData.append("from_name", "Neuroljus Website");
@@ -30,9 +150,10 @@ export default function ContactForm() {
       }).then((r) => r.json());
 
       if (res.success) {
-        try { form.reset(); } catch {}
-        await new Promise((r) => setTimeout(r, 150)); // opcional
-        // Redirección segura
+        try {
+          form.reset();
+        } catch {}
+        await new Promise((r) => setTimeout(r, 150));
         if (typeof window !== "undefined") {
           window.location.assign("/thanks");
         } else {
@@ -41,28 +162,23 @@ export default function ContactForm() {
         return;
       } else {
         setState("error");
-        setMsg(res.message || "We couldn’t send your message. Please try again.");
+        setMsg(res.message || copy.errorDefault);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setState("error");
-      setMsg(err?.message || "Network error. Please try again.");
+      const message = err instanceof Error ? err.message : copy.networkError;
+      setMsg(message || copy.networkError);
     }
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <h1 className="text-3xl md:text-4xl font-semibold mb-4">Contact</h1>
-      <p className="text-sm text-gray-600 mb-6">
-        Caregiver conversations, observation-method feedback, research collaboration,
-        ethics, and accessibility inquiries are welcome.
-        For privacy, keep messages general and avoid clinical records, identifying child
-        data, or urgent care information.
-        See our{" "}
-        <Link href="/privacy" className="underline">Privacy</Link>.
+    <div className="form">
+      <p className="intro">
+        {copy.intro}{" "}
+        <Link href="/privacy">{copy.privacy}</Link>.
       </p>
 
-      <form onSubmit={onSubmit} className="space-y-4">
-        {/* Honeypot anti-spam */}
+      <form onSubmit={onSubmit} className="fields">
         <div className="hidden" aria-hidden>
           <label>
             Leave this field empty
@@ -70,85 +186,172 @@ export default function ContactForm() {
           </label>
         </div>
 
-        <div>
-          <label className="block text-sm mb-1">Name</label>
+        <label className="field">
+          <span>{copy.name}</span>
           <input
             name="name"
             required
             maxLength={120}
             autoComplete="name"
-            className="w-full rounded-xl border p-3 outline-none focus:ring"
-            placeholder="Your name"
+            placeholder={copy.namePlaceholder}
           />
-        </div>
+        </label>
 
-        <div>
-          <label className="block text-sm mb-1">Email</label>
+        <label className="field">
+          <span>{copy.email}</span>
           <input
             type="email"
             name="email"
             required
             maxLength={160}
             autoComplete="email"
-            className="w-full rounded-xl border p-3 outline-none focus:ring"
-            placeholder="you@example.com"
+            placeholder={copy.emailPlaceholder}
           />
-        </div>
+        </label>
 
-        <div>
-          <label className="block text-sm mb-1">What are you interested in?</label>
-          <select
-            name="interest"
-            required
-            className="w-full rounded-xl border p-3 outline-none focus:ring bg-white"
-            defaultValue=""
-          >
+        <label className="field">
+          <span>{copy.interest}</span>
+          <select name="interest" required defaultValue="">
             <option value="" disabled>
-              Choose one
+              {copy.chooseOne}
             </option>
-            <option value="Caregiver interview">Caregiver interview</option>
-            <option value="Observation method feedback">Observation method feedback</option>
-            <option value="NL-VISION prototype">NL-VISION prototype</option>
-            <option value="Research collaboration">Research collaboration</option>
-            <option value="Ethics or accessibility">Ethics or accessibility</option>
-            <option value="General inquiry">General inquiry</option>
+            {copy.interests.map((label, index) => (
+              <option key={copy.interestValues[index]} value={copy.interestValues[index]}>
+                {label}
+              </option>
+            ))}
           </select>
-        </div>
+        </label>
 
-        <div>
-          <label className="block text-sm mb-1">Message</label>
+        <label className="field">
+          <span>{copy.message}</span>
           <textarea
             name="message"
             required
             rows={6}
             maxLength={3000}
-            className="w-full rounded-xl border p-3 outline-none focus:ring"
-            placeholder="Tell us a bit about your care, research, or collaboration context..."
+            placeholder={copy.messagePlaceholder}
           />
-        </div>
+        </label>
 
-        <label className="flex items-start gap-2 text-sm">
-          <input type="checkbox" required className="mt-1" />
+        <label className="consent">
+          <input type="checkbox" required />
           <span>
-            I consent to being contacted by email. I’ve read the{" "}
-            <Link href="/privacy" className="underline">Privacy Policy</Link>.
+            {copy.consentBefore}
+            <Link href="/privacy">{copy.privacyPolicy}</Link>
+            {copy.consentAfter}
           </span>
         </label>
 
-        <button
-          type="submit"
-          disabled={state === "sending"}
-          className="px-5 py-3 rounded-2xl bg-black text-white hover:opacity-90 disabled:opacity-50"
-        >
-          {state === "sending" ? "Sending…" : "Send message"}
+        <button type="submit" disabled={state === "sending"} className="submit">
+          {state === "sending" ? copy.sending : copy.send}
         </button>
 
-        {msg && (
-          <p className={`text-sm ${state === "ok" ? "text-green-700" : "text-red-700"}`}>
-            {msg}
-          </p>
-        )}
+        {msg && <p className={`feedback ${state}`}>{msg}</p>}
       </form>
+
+      <style jsx>{`
+        .form {
+          display: grid;
+          gap: 20px;
+        }
+        .intro {
+          margin: 0;
+          font-size: 14px;
+          line-height: 1.6;
+          color: #a1a1aa;
+        }
+        .intro :global(a) {
+          color: #3ecf9a;
+          font-weight: 700;
+          text-decoration: none;
+        }
+        .fields {
+          display: grid;
+          gap: 16px;
+        }
+        .field {
+          display: grid;
+          gap: 8px;
+        }
+        .field span {
+          font-size: 13px;
+          font-weight: 700;
+          color: #a1a1aa;
+        }
+        input,
+        select,
+        textarea {
+          width: 100%;
+          min-height: 44px;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
+          background: #18181b;
+          color: #fafafa;
+          font: inherit;
+          padding: 0 12px;
+        }
+        textarea {
+          min-height: 140px;
+          padding-top: 12px;
+          resize: vertical;
+          line-height: 1.5;
+        }
+        input:focus,
+        select:focus,
+        textarea:focus,
+        button:focus {
+          outline: 2px solid #3ecf9a;
+          outline-offset: 2px;
+        }
+        .consent {
+          display: grid;
+          grid-template-columns: 18px 1fr;
+          gap: 10px;
+          align-items: start;
+          font-size: 13px;
+          color: #a1a1aa;
+          line-height: 1.5;
+        }
+        .consent input {
+          min-height: auto;
+          width: 16px;
+          margin-top: 3px;
+          accent-color: #3ecf9a;
+        }
+        .consent :global(a) {
+          color: #3ecf9a;
+          font-weight: 700;
+          text-decoration: none;
+        }
+        .submit {
+          justify-self: start;
+          min-height: 44px;
+          padding: 0 24px;
+          border: none;
+          border-radius: 4px;
+          background: #3ecf9a;
+          color: #09090b;
+          font: inherit;
+          font-size: 13px;
+          font-weight: 800;
+          cursor: pointer;
+        }
+        .submit:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+        .feedback {
+          margin: 0;
+          font-size: 13px;
+        }
+        .feedback.error {
+          color: #f87171;
+        }
+        .hidden {
+          display: none;
+        }
+      `}</style>
     </div>
   );
 }

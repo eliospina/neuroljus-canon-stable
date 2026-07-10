@@ -1,7 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { CSSProperties } from "react";
 import type {
   AdapterTarget,
   Command,
@@ -297,19 +296,20 @@ export default function FutureCareRoom() {
   const robotDistance = completedCommands.has("step_back")
     ? environment.distance
     : Math.max(0.7, environment.distance - 0.7);
-  const robotTravel = Math.min(168, Math.round(robotDistance * 44));
   const cardVisible =
     cueType !== "none" &&
     (completedCommands.has("offer_visual_card") || currentCommand === "offer_visual_card");
   const caregiverNotified =
     completedCommands.has("notify_caregiver") || status === "escalated" || status === "completed";
 
-  const roomStyle = {
-    "--light-level": `${sceneLight}%`,
-    "--light-opacity": `${0.2 + sceneLight / 150}`,
-    "--sound-opacity": `${Math.max(0.12, sceneSound / 100)}`,
-    "--robot-travel": `${robotTravel}px`,
-  } as CSSProperties;
+  // Scene geometry: person stands at x=185; the robot keeps its distance to the right.
+  const robotX = Math.min(615, 275 + robotDistance * 85);
+  const dimOpacity = ((100 - sceneLight) / 100) * 0.38;
+  const glowOpacity = 0.15 + (sceneLight / 100) * 0.8;
+  const soundOpacity = 0.12 + (sceneSound / 100) * 0.78;
+  const robotActing = Boolean(currentCommand);
+  const activeStepIndex =
+    (status === "playing" || status === "paused") && stepIndex < steps.length ? stepIndex : -1;
 
   const observationText = `Light at ${sceneLight}%, sound at ${sceneSound}%, interface holding ${robotDistance.toFixed(
     1
@@ -348,30 +348,56 @@ export default function FutureCareRoom() {
         <title>Future Care Room - Neuroljus</title>
         <meta
           name="description"
-          content="An interactive care room where lived care becomes structured intelligence: shape a real situation, watch Neuroljus form a protocol, and see how a future assistive robot would receive it."
+          content="An interactive care room where lived care becomes structured intelligence: shape a real situation, watch Neuroljus form a protocol, and see how an assistive robot receives it."
         />
+        <meta name="theme-color" content="#09090b" />
       </Head>
 
-      <main className="page">
-        <header className="topbar">
-          <Link href="/" className="brand">
-            Neuroljus
-          </Link>
-          <div>
-            <p className="kicker">Interactive experience · local protocol engine · adapter-ready</p>
+      <div className="page">
+        <div className="statusbar" aria-hidden="true">
+          <span>
+            neuroljus://local · <b>care_command_protocol_v0</b> · audit=on · network=off
+          </span>
+          <span>latency 0ms · deterministic · caregiver_authority=true</span>
+        </div>
+
+        <header className="shell topnav" role="banner">
+          <div className="brandRow">
+            <Link href="/" className="logo">
+              Neuroljus
+            </Link>
+            <span className="sep">/</span>
+            <span className="platform">Care Room</span>
+          </div>
+          <nav className="navLinks" aria-label="Labs">
+            <Link href="/labs/robot-interface">Protocol Workspace</Link>
+            <Link href="/">Platform</Link>
+          </nav>
+          <div className="navRight">
+            <div className="pills" role="group" aria-label="Platform layers">
+              <span className="pill on">runtime</span>
+              <span className="pill">protocol</span>
+              <span className="pill">adapters</span>
+              <span className="pill">audit</span>
+            </div>
+            <div className={`simStatus ${status}`} role="status" aria-live="polite">
+              {statusLabels[status]}
+            </div>
+          </div>
+        </header>
+
+        <main className="workspace">
+          <div className="pageIntro shell">
+            <p className="cli">$ neuroljus care-room --live</p>
             <h1>Future Care Room</h1>
             <p className="crossLink">
               Want the full protocol workspace?{" "}
               <Link href="/labs/robot-interface">Open the Robot Care Interface</Link>
             </p>
           </div>
-          <div className={`status ${status}`} role="status" aria-live="polite">
-            {statusLabels[status]}
-          </div>
-        </header>
 
         <section className="hero">
-          <h2>Neuroljus turns lived care into structured intelligence for future assistive systems.</h2>
+          <h2>Neuroljus turns lived care into structured intelligence for assistive systems.</h2>
           <div className="pathRibbon" aria-label="How the room works">
             {pathStages.map((stage, index) => (
               <span key={stage} className="pathStage">
@@ -486,6 +512,7 @@ export default function FutureCareRoom() {
                   </option>
                 ))}
               </select>
+              <span className="fieldHint">{supportInterpretation[supportLevel]}</span>
             </label>
 
             <div className="actions">
@@ -507,11 +534,12 @@ export default function FutureCareRoom() {
             </div>
           </aside>
 
-          <div className="room" style={roomStyle} aria-label="Care room scene">
+          <div className="room" aria-label="Care room scene">
             <div className="roomTop">
               <div>
                 <span>Situation</span>
                 <strong>{preset.name}</strong>
+                <p className="goal">{preset.careGoal}</p>
               </div>
               <div className="meters">
                 <div>
@@ -530,35 +558,153 @@ export default function FutureCareRoom() {
             </div>
 
             <div className="roomCanvas">
-              <div className="windowGlow" />
-              <div className="soundField">
-                <span />
-                <span />
-                <span />
-              </div>
+              <svg
+                className="sceneSvg"
+                viewBox="0 0 760 400"
+                preserveAspectRatio="xMidYMax meet"
+                role="img"
+                aria-label={observationText}
+              >
+                <defs>
+                  <linearGradient id="fcrWall" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#eef5ee" />
+                    <stop offset="100%" stopColor="#dce9df" />
+                  </linearGradient>
+                  <linearGradient id="fcrFloor" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#e3d4b4" />
+                    <stop offset="100%" stopColor="#d7c4a0" />
+                  </linearGradient>
+                  <radialGradient id="fcrWindowGlow">
+                    <stop offset="0%" stopColor="#ffd98a" stopOpacity="0.9" />
+                    <stop offset="100%" stopColor="#ffd98a" stopOpacity="0" />
+                  </radialGradient>
+                  <radialGradient id="fcrLampGlow">
+                    <stop offset="0%" stopColor="#ffe3a1" stopOpacity="0.85" />
+                    <stop offset="100%" stopColor="#ffe3a1" stopOpacity="0" />
+                  </radialGradient>
+                </defs>
 
-              <div className="personSpace">
-                <div className="personMarker">
-                  <span />
-                </div>
-                <p>Person</p>
-              </div>
+                {/* room */}
+                <rect x="0" y="0" width="760" height="300" fill="url(#fcrWall)" />
+                <rect x="0" y="300" width="760" height="100" fill="url(#fcrFloor)" />
+                <line x1="0" y1="300" x2="760" y2="300" stroke="#c3ae87" strokeWidth="2" />
 
-              <div className={`caregiverUnit ${supportLevel}`}>
-                <div className="caregiverMarker">
-                  <span />
-                </div>
-                <p>{supportLevel === "remote" ? "Caregiver · remote" : "Caregiver"}</p>
-              </div>
+                {/* window with daylight that follows the light level */}
+                <circle
+                  cx="120"
+                  cy="112"
+                  r="150"
+                  fill="url(#fcrWindowGlow)"
+                  style={{ opacity: glowOpacity, transition: "opacity 500ms ease" }}
+                />
+                <rect x="62" y="48" width="116" height="128" rx="8" fill="#fff8e6" stroke="#d8c39a" strokeWidth="2" />
+                <line x1="120" y1="50" x2="120" y2="174" stroke="#d8c39a" strokeWidth="2" />
+                <line x1="64" y1="112" x2="176" y2="112" stroke="#d8c39a" strokeWidth="2" />
+                <rect x="54" y="176" width="132" height="8" rx="3" fill="#d8c39a" />
 
-              <div className={currentCommand ? "robotUnit acting" : "robotUnit"}>
-                <div className="robotHead">
-                  <span />
-                  <span />
-                </div>
-                <div className="robotBody" />
-                <p>Care interface</p>
-              </div>
+                {/* pendant lamp */}
+                <line x1="430" y1="0" x2="430" y2="40" stroke="#9aa8a4" strokeWidth="2" />
+                <path d="M 412 40 L 448 40 L 440 58 L 420 58 Z" fill="#b89a6a" />
+                <circle
+                  cx="430"
+                  cy="64"
+                  r="6"
+                  fill="#ffe3a1"
+                  style={{ opacity: 0.25 + (sceneLight / 100) * 0.75, transition: "opacity 500ms ease" }}
+                />
+                <ellipse
+                  cx="430"
+                  cy="330"
+                  rx="92"
+                  ry="16"
+                  fill="url(#fcrLampGlow)"
+                  style={{ opacity: (sceneLight / 100) * 0.5, transition: "opacity 500ms ease" }}
+                />
+
+                {/* ambient sound source */}
+                <g
+                  transform="translate(664, 84)"
+                  style={{ opacity: soundOpacity, transition: "opacity 500ms ease" }}
+                >
+                  <circle cx="0" cy="0" r="4" fill="#6b7f92" />
+                  <path d="M 10 -12 a 16 16 0 0 1 0 24" fill="none" stroke="#6b7f92" strokeWidth="3" strokeLinecap="round" />
+                  <path d="M 20 -22 a 30 30 0 0 1 0 44" fill="none" stroke="#6b7f92" strokeWidth="3" strokeLinecap="round" />
+                  <path d="M 30 -32 a 44 44 0 0 1 0 64" fill="none" stroke="#6b7f92" strokeWidth="3" strokeLinecap="round" />
+                </g>
+
+                {/* dusk overlay: the room darkens as light goes down */}
+                <rect
+                  x="0"
+                  y="0"
+                  width="760"
+                  height="400"
+                  fill="#242b3d"
+                  pointerEvents="none"
+                  style={{ opacity: dimOpacity, transition: "opacity 500ms ease" }}
+                />
+
+                {/* person */}
+                <g transform="translate(185, 0)">
+                  <circle className="breatheHalo" cx="0" cy="286" r="54" fill="rgba(36, 91, 98, 0.14)" />
+                  <ellipse cx="0" cy="328" rx="42" ry="8" fill="rgba(45, 62, 58, 0.14)" />
+                  <circle cx="0" cy="252" r="15" fill="#245b62" />
+                  <rect x="-19" y="270" width="38" height="54" rx="17" fill="#245b62" />
+                  <text className="sceneLabel" x="0" y="356" textAnchor="middle">
+                    Person
+                  </text>
+                </g>
+
+                {/* caregiver: position follows the presence setting */}
+                {supportLevel === "remote" ? (
+                  <g transform="translate(668, 190)">
+                    <rect x="-44" y="-34" width="88" height="74" rx="10" fill="rgba(255, 255, 255, 0.85)" stroke="#7c8ca1" strokeDasharray="5 4" strokeWidth="1.5" />
+                    <circle cx="0" cy="-12" r="9" fill="#405064" />
+                    <rect x="-11" y="0" width="22" height="26" rx="9" fill="#405064" />
+                    <text className="sceneLabel" x="0" y="54" textAnchor="middle">
+                      Caregiver · remote
+                    </text>
+                  </g>
+                ) : (
+                  <g
+                    style={{
+                      transform:
+                        supportLevel === "hands_on"
+                          ? "translate(104px, 0px) scale(1)"
+                          : "translate(66px, -40px) scale(0.85)",
+                      transition: "transform 400ms ease",
+                    }}
+                  >
+                    <ellipse cx="0" cy="328" rx="34" ry="7" fill="rgba(45, 62, 58, 0.12)" />
+                    <circle cx="0" cy="258" r="13" fill="#405064" />
+                    <rect x="-16" y="274" width="32" height="50" rx="14" fill="#405064" />
+                    <text className="sceneLabel" x="0" y="356" textAnchor="middle">
+                      Caregiver
+                    </text>
+                  </g>
+                )}
+
+                {/* robot: keeps the preauthorized distance */}
+                <g style={{ transform: `translateX(${robotX}px)`, transition: "transform 600ms ease" }}>
+                  <g className={robotActing ? "robotFigure acting" : "robotFigure"}>
+                    {robotActing && (
+                      <circle className="robotPulse" cx="0" cy="288" r="54" fill="none" stroke="#245b62" strokeWidth="2" />
+                    )}
+                    <ellipse cx="0" cy="330" rx="34" ry="7" fill="rgba(45, 62, 58, 0.14)" />
+                    <line x1="0" y1="250" x2="0" y2="236" stroke="#182231" strokeWidth="3" />
+                    <circle className={robotActing ? "robotBeacon on" : "robotBeacon"} cx="0" cy="231" r="5" fill="#3ecf9a" />
+                    <rect x="-26" y="250" width="52" height="34" rx="10" fill="#182231" />
+                    <circle className="robotEye" cx="-10" cy="267" r="5" fill="#5fe0b7" />
+                    <circle className="robotEye" cx="10" cy="267" r="5" fill="#5fe0b7" />
+                    <rect x="-22" y="288" width="44" height="36" rx="12" fill="#223047" />
+                    <rect x="-8" y="296" width="16" height="6" rx="3" fill="#3ecf9a" opacity="0.85" />
+                    <circle cx="-13" cy="327" r="6" fill="#182231" />
+                    <circle cx="13" cy="327" r="6" fill="#182231" />
+                    <text className="sceneLabel" x="0" y="356" textAnchor="middle">
+                      Robot · care interface
+                    </text>
+                  </g>
+                </g>
+              </svg>
 
               {cardVisible && (
                 <div className="visualCard">
@@ -599,38 +745,78 @@ export default function FutureCareRoom() {
             </div>
           </div>
 
-          <aside className="panel liveFlow" aria-label="Live care intelligence" aria-live="polite">
-            <p className="kicker">Live care intelligence</p>
-            <div className="flowCard">
-              <span>1 · Observation</span>
-              <p>{observationText}</p>
+          <aside className="machinePanel" aria-label="Machine layer" aria-live="polite">
+            <p className="mKicker">Machine layer · live translation</p>
+            <h3 className="mTitle">What the machine receives</h3>
+            <p className="mIntro">
+              The warm room on the left is what the caregiver shapes. This is the
+              same moment, translated — as the routine plays, each action lights
+              up its line.
+            </p>
+
+            <div className="mMeta">
+              <span>protocol</span>
+              <b>care_command_protocol_v0</b>
+              <span>scenario</span>
+              <b>{scenario}</b>
+              <span>plan</span>
+              <b>
+                {steps.length} steps · {preset.duration} min
+              </b>
+              <span>presence</span>
+              <b>{supportLevel}</b>
             </div>
-            <div className="flowCard">
-              <span>2 · Care interpretation</span>
-              <p>{preset.careGoal}</p>
-              <p className="soft">{supportInterpretation[supportLevel]}</p>
+
+            <div className="streamBlock">
+              <p className="mLabel">planned_sequence</p>
+              {steps.map((step, index) => {
+                const state =
+                  index < stepIndex ? "done" : index === activeStepIndex ? "active" : "pending";
+                return (
+                  <div key={step.command} className={`mLine ${state}`}>
+                    <i>{state === "done" ? "✓" : state === "active" ? "▸" : "·"}</i>
+                    <code>
+                      +{step.offsetMinutes}m {step.command}
+                    </code>
+                    <span>{step.durationMinutes}m</span>
+                  </div>
+                );
+              })}
             </div>
-            <div className="flowCard">
-              <span>3 · Protocol</span>
-              <p>
-                {steps.length} preauthorized steps over {preset.duration} minutes ·{" "}
-                {preset.exceptions.length} safety exceptions · local audit trail.
+
+            <div className="streamBlock">
+              <p className="mLabel">safety_exceptions · always win</p>
+              {preset.exceptions.map((exception) => (
+                <div
+                  key={exception}
+                  className={
+                    status === "escalated" && exception === "rejection_signal"
+                      ? "mLine exception fired"
+                      : "mLine exception"
+                  }
+                >
+                  <i>{status === "escalated" && exception === "rejection_signal" ? "!!" : "◦"}</i>
+                  <code>{exception} → stop, hand back to caregiver</code>
+                </div>
+              ))}
+            </div>
+
+            <div className="mFoot">
+              <span>
+                status: <b>{status}</b>
+              </span>
+              <span>
+                caregiver_notified: <b>{caregiverNotified ? "true" : "false"}</b>
+              </span>
+            </div>
+            {plan.attentionFlags.some((flag) => flag.severity === "warning") && (
+              <p className="mWarn">
+                ⚠ {plan.attentionFlags.find((flag) => flag.severity === "warning")?.message}
               </p>
-              {plan.attentionFlags.some((flag) => flag.severity === "warning") && (
-                <p className="warn">
-                  {plan.attentionFlags.find((flag) => flag.severity === "warning")?.message}
-                </p>
-              )}
-            </div>
-            <div className="flowCard">
-              <span>4 · Robot adapter</span>
-              <p>
-                The same protocol maps to ROS2, MQTT, HTTP, or offline review —
-                adapter-ready JSON that preserves the caregiver&apos;s settings.
-              </p>
-            </div>
-            <button className="primaryAction" onClick={generateProtocol}>
-              {protocolOpen ? "Regenerate protocol" : "Generate protocol"}
+            )}
+
+            <button className="generateBtn" onClick={generateProtocol}>
+              {protocolOpen ? "Regenerate full protocol" : "Generate full protocol"}
             </button>
           </aside>
         </section>
@@ -642,7 +828,7 @@ export default function FutureCareRoom() {
           </div>
           <div>
             <strong>Protocols travel</strong>
-            <p>The same envelope can support families, municipalities, research, and future assistive robots.</p>
+            <p>The same envelope can support families, municipalities, research, and assistive robots.</p>
           </div>
           <div>
             <strong>Local and open</strong>
@@ -670,11 +856,11 @@ export default function FutureCareRoom() {
 
           <div
             ref={protocolRef}
-            className={justGenerated ? "panel protocolLayer generated" : "panel protocolLayer"}
+            className={justGenerated ? "protocolLayer generated" : "protocolLayer"}
             aria-label="Protocol layer"
           >
             <p className="kicker">Protocol layer</p>
-            <h3>What a future robot would receive</h3>
+            <h3>What the robot receives</h3>
 
             {protocolOpen ? (
               <>
@@ -736,20 +922,156 @@ export default function FutureCareRoom() {
           <p>
             Everything on this page runs locally in your browser: no external API,
             no personal data. This is how Neuroljus works — lived care, structured
-            into protocols that people, researchers, and future assistive systems
+            into protocols that people, researchers, and assistive systems
             can trust.
           </p>
         </footer>
-      </main>
+        </main>
+      </div>
 
       <style jsx>{`
         .page {
           min-height: 100dvh;
-          padding: 22px;
-          color: #17202f;
-          background: #f4f7f6;
+          background: #09090b;
+          color: #fafafa;
           font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
             sans-serif;
+        }
+        .shell {
+          width: min(1360px, calc(100% - 44px));
+          margin: 0 auto;
+        }
+        .statusbar {
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 11px;
+          display: flex;
+          justify-content: space-between;
+          gap: 16px;
+          flex-wrap: wrap;
+          padding: 8px 24px;
+          border-bottom: 1px solid #27272a;
+          color: #71717a;
+        }
+        .statusbar :global(b) {
+          color: #3ecf9a;
+          font-weight: 600;
+        }
+        .topnav {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 16px;
+          padding: 16px 0;
+          border-bottom: 1px solid #27272a;
+        }
+        .brandRow {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+        .logo {
+          font-size: 13px;
+          font-weight: 800;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #fafafa;
+          text-decoration: none;
+        }
+        .sep {
+          color: #3f3f46;
+        }
+        .platform {
+          font-size: 13px;
+          color: #a1a1aa;
+        }
+        .navLinks {
+          display: flex;
+          gap: 20px;
+          font-size: 13px;
+        }
+        .navLinks :global(a) {
+          color: #a1a1aa;
+          text-decoration: none;
+          font-weight: 600;
+        }
+        .navLinks :global(a:hover) {
+          color: #3ecf9a;
+        }
+        .navRight {
+          margin-left: auto;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+        .pills {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+        .pill {
+          font-size: 11px;
+          font-weight: 700;
+          padding: 4px 10px;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
+          color: #a1a1aa;
+        }
+        .pill.on {
+          border-color: #3ecf9a;
+          color: #3ecf9a;
+        }
+        .simStatus {
+          min-width: 168px;
+          min-height: 30px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
+          background: #0c0c0e;
+          color: #a1a1aa;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 11px;
+          font-weight: 700;
+          padding: 0 10px;
+        }
+        .simStatus.playing {
+          border-color: #3ecf9a;
+          color: #3ecf9a;
+          background: rgba(62, 207, 154, 0.08);
+        }
+        .simStatus.paused,
+        .simStatus.escalated {
+          border-color: #fbbf24;
+          color: #fbbf24;
+          background: rgba(251, 191, 36, 0.08);
+        }
+        .simStatus.completed {
+          border-color: #3ecf9a;
+          color: #3ecf9a;
+        }
+        .workspace {
+          padding: 22px 0 40px;
+        }
+        .pageIntro {
+          margin-bottom: 18px;
+        }
+        .cli {
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 12px;
+          color: #3ecf9a;
+          margin-bottom: 10px;
+        }
+        .crossLink {
+          margin-top: 8px;
+          color: #71717a;
+          font-size: 13px;
+          font-weight: 600;
+        }
+        .crossLink :global(a) {
+          color: #3ecf9a;
+          font-weight: 700;
         }
         h1,
         h2,
@@ -778,77 +1100,31 @@ export default function FutureCareRoom() {
         }
         .kicker {
           margin-bottom: 4px;
-          color: #637085;
-          font-size: 12px;
-          font-weight: 800;
-          text-transform: uppercase;
-        }
-        .topbar {
-          max-width: 1360px;
-          margin: 0 auto 18px;
-          display: grid;
-          grid-template-columns: auto minmax(0, 1fr) auto;
-          gap: 18px;
-          align-items: center;
-        }
-        .brand {
-          min-height: 38px;
-          display: inline-flex;
-          align-items: center;
-          color: #245b62;
-          font-weight: 800;
-          text-decoration: none;
-        }
-        .crossLink {
-          margin-top: 6px;
-          color: #637085;
-          font-size: 13px;
+          color: #3ecf9a;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 11px;
           font-weight: 700;
-        }
-        .crossLink :global(a) {
-          color: #245b62;
-        }
-        .status {
-          min-width: 168px;
-          min-height: 38px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          border: 1px solid #cbd8d5;
-          border-radius: 8px;
-          background: #ffffff;
-          font-weight: 800;
-          padding: 0 12px;
-        }
-        .status.playing {
-          background: #17202f;
-          color: #f8fffb;
-        }
-        .status.paused,
-        .status.escalated {
-          border-color: #d8b15f;
-          background: #fff7e2;
-        }
-        .status.completed {
-          border-color: #8fc4aa;
-          background: #e6f7ef;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
         }
         .hero {
           max-width: 1360px;
           margin: 0 auto 14px;
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
-          background: #ffffff;
+          border: 1px solid #27272a;
+          border-radius: 6px;
+          background: #0c0c0e;
           padding: 18px 22px;
           display: flex;
           flex-wrap: wrap;
           align-items: center;
           justify-content: space-between;
           gap: 14px;
+          width: min(1360px, calc(100% - 44px));
         }
         .hero h2 {
           max-width: 720px;
-          color: #17202f;
+          color: #fafafa;
+          font-size: 20px;
         }
         .pathRibbon {
           display: flex;
@@ -862,23 +1138,23 @@ export default function FutureCareRoom() {
           gap: 6px;
         }
         .pathStage b {
-          border: 1px solid #d8e1df;
+          border: 1px solid #3f3f46;
           border-radius: 999px;
-          background: #fbfdfc;
-          color: #566477;
+          background: #18181b;
+          color: #a1a1aa;
           font-size: 12px;
-          font-weight: 800;
+          font-weight: 700;
           padding: 6px 12px;
           white-space: nowrap;
           transition: all 220ms ease;
         }
         .pathStage b.active {
-          border-color: #245b62;
-          background: #e6f7ef;
-          color: #245b62;
+          border-color: #3ecf9a;
+          background: rgba(62, 207, 154, 0.1);
+          color: #3ecf9a;
         }
         .pathStage i {
-          color: #9aa8a4;
+          color: #52525b;
           font-style: normal;
           font-weight: 800;
         }
@@ -889,30 +1165,32 @@ export default function FutureCareRoom() {
           flex-wrap: wrap;
           align-items: center;
           gap: 8px;
+          padding: 0 22px;
         }
         .scenarioLabel {
-          color: #637085;
-          font-size: 12px;
-          font-weight: 800;
+          color: #71717a;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 10px;
+          font-weight: 700;
           text-transform: uppercase;
           margin-right: 4px;
         }
         .scenarioChip {
-          border: 1px solid #d8e1df;
+          border: 1px solid #3f3f46;
           border-radius: 999px;
-          background: #ffffff;
+          background: #18181b;
           padding: 10px 16px;
           cursor: pointer;
           font: inherit;
-          font-weight: 800;
+          font-weight: 700;
           font-size: 13px;
-          color: #17202f;
+          color: #a1a1aa;
           min-height: 40px;
         }
         .scenarioChip.active {
-          border-color: #245b62;
-          background: #245b62;
-          color: #f8fffb;
+          border-color: #3ecf9a;
+          background: #3ecf9a;
+          color: #09090b;
         }
         .stage {
           max-width: 1360px;
@@ -921,11 +1199,12 @@ export default function FutureCareRoom() {
           grid-template-columns: minmax(260px, 0.85fr) minmax(420px, 1.5fr) minmax(280px, 0.95fr);
           gap: 16px;
           align-items: stretch;
+          padding: 0 22px;
         }
         .panel {
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
-          background: #ffffff;
+          border: 1px solid #27272a;
+          border-radius: 6px;
+          background: #0c0c0e;
           padding: 18px;
         }
         .controls {
@@ -941,36 +1220,42 @@ export default function FutureCareRoom() {
           display: flex;
           justify-content: space-between;
           gap: 12px;
-          color: #3d4959;
+          color: #a1a1aa;
           font-size: 13px;
-          font-weight: 800;
+          font-weight: 700;
         }
         .field {
           display: grid;
           gap: 7px;
-          color: #3d4959;
+          color: #a1a1aa;
           font-size: 13px;
-          font-weight: 800;
+          font-weight: 700;
+        }
+        .fieldHint {
+          color: #71717a;
+          font-size: 12px;
+          font-weight: 600;
+          line-height: 1.4;
         }
         input[type="range"] {
           width: 100%;
           padding: 0;
-          accent-color: #245b62;
+          accent-color: #3ecf9a;
         }
         select {
           width: 100%;
           min-height: 40px;
-          border: 1px solid #cbd8d5;
-          border-radius: 8px;
-          background: #fbfdfc;
-          color: #17202f;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
+          background: #18181b;
+          color: #fafafa;
           font: inherit;
           padding: 0 10px;
         }
         select:focus,
         button:focus,
         input:focus {
-          outline: 2px solid #245b62;
+          outline: 2px solid #3ecf9a;
           outline-offset: 2px;
         }
         .actions {
@@ -980,41 +1265,41 @@ export default function FutureCareRoom() {
         }
         button {
           min-height: 40px;
-          border: 1px solid #cbd8d5;
-          border-radius: 8px;
-          background: #ffffff;
-          color: #17202f;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
+          background: #18181b;
+          color: #fafafa;
           cursor: pointer;
           font: inherit;
-          font-weight: 800;
+          font-weight: 700;
           padding: 0 12px;
         }
         button:hover:not(:disabled) {
-          border-color: #245b62;
-          color: #245b62;
+          border-color: #3ecf9a;
+          color: #3ecf9a;
         }
         button:disabled {
           cursor: not-allowed;
           opacity: 0.5;
         }
         .primaryAction {
-          background: #17202f;
-          color: #ffffff;
+          background: #3ecf9a;
+          border-color: #3ecf9a;
+          color: #09090b;
         }
         .primaryAction:hover:not(:disabled) {
-          color: #ffffff;
-          border-color: #17202f;
+          color: #09090b;
+          border-color: #3ecf9a;
           opacity: 0.92;
         }
         .room {
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
+          border: 1px solid #27272a;
+          border-radius: 6px;
           padding: 18px;
           display: grid;
           gap: 12px;
-          background:
-            linear-gradient(180deg, rgba(255, 255, 255, var(--light-opacity)), rgba(240, 247, 244, 0.96)),
-            #eef5f2;
+          background: #ffffff;
+          color: #17202f;
         }
         .roomTop {
           display: flex;
@@ -1025,7 +1310,6 @@ export default function FutureCareRoom() {
         }
         .roomTop span,
         .meters span,
-        .flowCard span,
         .visualCard span,
         .noticeCard span {
           color: #637085;
@@ -1037,6 +1321,14 @@ export default function FutureCareRoom() {
           display: block;
           color: #245b62;
         }
+        .goal {
+          margin-top: 3px;
+          max-width: 380px;
+          color: #637085;
+          font-size: 12px;
+          font-weight: 600;
+          line-height: 1.4;
+        }
         .meters {
           display: grid;
           grid-template-columns: repeat(3, auto);
@@ -1045,7 +1337,7 @@ export default function FutureCareRoom() {
         .meters div {
           border: 1px solid #d8e1df;
           border-radius: 8px;
-          background: rgba(255, 255, 255, 0.72);
+          background: #fbfdfc;
           padding: 8px 12px;
         }
         .meters b {
@@ -1054,162 +1346,37 @@ export default function FutureCareRoom() {
         }
         .roomCanvas {
           position: relative;
-          min-height: 360px;
           overflow: hidden;
           border: 1px solid #cbd8d5;
           border-radius: 8px;
-          background:
-            linear-gradient(180deg, rgba(255, 255, 255, var(--light-opacity)), rgba(221, 235, 232, 0.96)),
-            linear-gradient(90deg, #dfece8, #f6fbf8);
+          background: #dce9df;
         }
-        .windowGlow {
-          position: absolute;
-          top: 22px;
-          left: 22px;
-          width: 128px;
-          height: 88px;
-          border: 1px solid rgba(36, 91, 98, 0.18);
-          border-radius: 8px;
-          background: rgba(255, 246, 210, var(--light-opacity));
-          box-shadow: 0 0 38px rgba(255, 230, 150, var(--light-opacity));
+        .sceneSvg {
+          display: block;
+          width: 100%;
+          height: auto;
         }
-        .soundField {
-          position: absolute;
-          right: 22px;
-          top: 28px;
-          width: 112px;
-          height: 80px;
-          opacity: var(--sound-opacity);
-        }
-        .soundField span {
-          position: absolute;
-          right: 0;
-          border: 2px solid rgba(36, 91, 98, 0.38);
-          border-left: 0;
-          border-radius: 0 999px 999px 0;
-        }
-        .soundField span:nth-child(1) {
-          width: 34px;
-          height: 28px;
-          top: 26px;
-        }
-        .soundField span:nth-child(2) {
-          width: 62px;
-          height: 52px;
-          top: 14px;
-        }
-        .soundField span:nth-child(3) {
-          width: 94px;
-          height: 76px;
-          top: 2px;
-        }
-        .personSpace {
-          position: absolute;
-          left: 64px;
-          bottom: 34px;
-          display: grid;
-          gap: 8px;
-          justify-items: center;
-          color: #405064;
-          font-weight: 800;
+        .sceneSvg :global(.sceneLabel) {
+          fill: #3d4959;
           font-size: 12px;
+          font-weight: 700;
         }
-        .personMarker {
-          width: 88px;
-          height: 88px;
-          display: grid;
-          place-items: center;
-          border: 1px solid rgba(36, 91, 98, 0.28);
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 0.72);
-          box-shadow: 0 0 0 26px rgba(36, 91, 98, 0.07);
+        .sceneSvg :global(.breatheHalo) {
           animation: breathe 5s ease-in-out infinite;
         }
         @keyframes breathe {
           0%,
           100% {
-            box-shadow: 0 0 0 22px rgba(36, 91, 98, 0.06);
+            opacity: 0.55;
           }
           50% {
-            box-shadow: 0 0 0 30px rgba(36, 91, 98, 0.1);
+            opacity: 1;
           }
         }
-        .personMarker span {
-          width: 36px;
-          height: 50px;
-          border-radius: 999px 999px 12px 12px;
-          background: #245b62;
-        }
-        .caregiverUnit {
-          position: absolute;
-          display: grid;
-          gap: 6px;
-          justify-items: center;
-          color: #405064;
-          font-weight: 800;
-          font-size: 12px;
-          transition: left 300ms ease, top 300ms ease, opacity 300ms ease;
-        }
-        .caregiverUnit.hands_on {
-          left: 158px;
-          bottom: 44px;
-        }
-        .caregiverUnit.nearby {
-          left: 44px;
-          top: 138px;
-        }
-        .caregiverUnit.remote {
-          right: 24px;
-          top: 128px;
-          opacity: 0.75;
-        }
-        .caregiverMarker {
-          width: 58px;
-          height: 58px;
-          display: grid;
-          place-items: center;
-          border: 1px solid rgba(64, 80, 100, 0.35);
-          border-radius: 999px;
-          background: rgba(255, 255, 255, 0.8);
-        }
-        .caregiverUnit.remote .caregiverMarker {
-          border-style: dashed;
-        }
-        .caregiverMarker span {
-          width: 24px;
-          height: 34px;
-          border-radius: 999px 999px 10px 10px;
-          background: #405064;
-        }
-        .robotUnit {
-          position: absolute;
-          left: calc(200px + var(--robot-travel));
-          bottom: 34px;
-          display: grid;
-          gap: 7px;
-          justify-items: center;
-          color: #17202f;
-          font-size: 12px;
-          font-weight: 800;
-          transition: left 400ms ease;
-        }
-        .robotHead {
-          width: 72px;
-          height: 50px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 10px;
-          border: 2px solid #17202f;
-          border-radius: 8px;
-          background: #ffffff;
-        }
-        .robotHead span {
-          width: 9px;
-          height: 9px;
-          border-radius: 999px;
-          background: #245b62;
+        .sceneSvg :global(.robotEye) {
           animation: blink 6s ease-in-out infinite;
+          transform-box: fill-box;
+          transform-origin: center;
         }
         @keyframes blink {
           0%,
@@ -1222,11 +1389,7 @@ export default function FutureCareRoom() {
             transform: scaleY(0.15);
           }
         }
-        .robotUnit.acting .robotHead {
-          border-color: #245b62;
-          box-shadow: 0 0 0 4px rgba(36, 91, 98, 0.14);
-        }
-        .robotUnit.acting {
+        .sceneSvg :global(.robotFigure.acting) {
           animation: bob 1.1s ease-in-out infinite;
         }
         @keyframes bob {
@@ -1238,19 +1401,36 @@ export default function FutureCareRoom() {
             transform: translateY(-4px);
           }
         }
-        @media (prefers-reduced-motion: reduce) {
-          .personMarker,
-          .robotHead span,
-          .robotUnit.acting {
-            animation: none;
+        .sceneSvg :global(.robotPulse) {
+          animation: pulse 1.6s ease-out infinite;
+          transform-box: fill-box;
+          transform-origin: center;
+        }
+        @keyframes pulse {
+          0% {
+            transform: scale(0.8);
+            opacity: 0.5;
+          }
+          100% {
+            transform: scale(1.15);
+            opacity: 0;
           }
         }
-        .robotBody {
-          width: 54px;
-          height: 44px;
-          border: 2px solid #17202f;
-          border-radius: 8px;
-          background: #e6f7ef;
+        .sceneSvg :global(.robotBeacon) {
+          opacity: 0.35;
+        }
+        .sceneSvg :global(.robotBeacon.on) {
+          opacity: 1;
+          animation: breathe 1.6s ease-in-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .sceneSvg :global(.breatheHalo),
+          .sceneSvg :global(.robotEye),
+          .sceneSvg :global(.robotFigure.acting),
+          .sceneSvg :global(.robotPulse),
+          .sceneSvg :global(.robotBeacon.on) {
+            animation: none;
+          }
         }
         .visualCard,
         .noticeCard {
@@ -1283,7 +1463,7 @@ export default function FutureCareRoom() {
           align-items: center;
           border: 1px solid #d8e1df;
           border-radius: 8px;
-          background: rgba(255, 255, 255, 0.82);
+          background: #fbfdfc;
           padding: 10px 14px;
         }
         .nowBar span {
@@ -1318,31 +1498,145 @@ export default function FutureCareRoom() {
           background: #245b62;
           transition: width 300ms ease;
         }
-        .liveFlow {
+        .machinePanel {
           display: grid;
-          gap: 10px;
+          gap: 12px;
           align-content: start;
-        }
-        .flowCard {
-          border: 1px solid #d8e1df;
+          border: 1px solid #1e2c40;
           border-radius: 8px;
-          background: #fbfdfc;
-          padding: 12px;
+          background: linear-gradient(180deg, #0c1524, #0a111d);
+          padding: 18px;
+          color: #d9e6f2;
+          font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
         }
-        .flowCard p {
-          margin-top: 5px;
-          color: #3d4959;
-          font-size: 13px;
-          line-height: 1.5;
-          font-weight: 600;
-        }
-        .flowCard .soft {
-          color: #637085;
-          font-weight: 600;
-        }
-        .flowCard .warn {
-          color: #8a5a12;
+        .mKicker {
+          color: #6e87a3;
+          font-size: 11px;
           font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+        .mTitle {
+          color: #f2f7fb;
+          font-size: 15px;
+        }
+        .mIntro {
+          color: #8fa6bd;
+          font-size: 12px;
+          line-height: 1.55;
+        }
+        .mMeta {
+          display: grid;
+          grid-template-columns: auto minmax(0, 1fr);
+          gap: 4px 12px;
+          border: 1px solid #1e2c40;
+          border-radius: 8px;
+          background: rgba(20, 32, 50, 0.55);
+          padding: 10px 12px;
+          font-size: 12px;
+        }
+        .mMeta span {
+          color: #6e87a3;
+        }
+        .mMeta b {
+          color: #d9e6f2;
+          font-weight: 600;
+          overflow-wrap: anywhere;
+        }
+        .streamBlock {
+          display: grid;
+          gap: 3px;
+        }
+        .mLabel {
+          margin-bottom: 3px;
+          color: #6e87a3;
+          font-size: 11px;
+          letter-spacing: 0.06em;
+        }
+        .mLine {
+          display: grid;
+          grid-template-columns: 16px minmax(0, 1fr) auto;
+          gap: 8px;
+          align-items: baseline;
+          border-left: 2px solid transparent;
+          border-radius: 4px;
+          padding: 4px 8px 4px 6px;
+          font-size: 12px;
+          color: #8fa6bd;
+          transition: background 250ms ease, color 250ms ease;
+        }
+        .mLine i {
+          font-style: normal;
+          text-align: center;
+        }
+        .mLine code {
+          font-family: inherit;
+          overflow-wrap: anywhere;
+        }
+        .mLine span {
+          color: #56718c;
+        }
+        .mLine.done {
+          color: #7fd6b6;
+        }
+        .mLine.done i {
+          color: #3ecf9a;
+        }
+        .mLine.active {
+          border-left-color: #3ecf9a;
+          background: rgba(62, 207, 154, 0.12);
+          color: #eafff7;
+        }
+        .mLine.active i {
+          color: #3ecf9a;
+          animation: streamTick 1s steps(2, start) infinite;
+        }
+        @keyframes streamTick {
+          to {
+            opacity: 0.25;
+          }
+        }
+        .mLine.exception {
+          color: #d9b16b;
+        }
+        .mLine.exception.fired {
+          border-left-color: #ff8f6b;
+          background: rgba(255, 143, 107, 0.14);
+          color: #ffd3c2;
+        }
+        .mFoot {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px 16px;
+          border-top: 1px solid #1e2c40;
+          padding-top: 10px;
+          font-size: 12px;
+          color: #6e87a3;
+        }
+        .mFoot b {
+          color: #d9e6f2;
+          font-weight: 600;
+        }
+        .mWarn {
+          color: #e0b566;
+          font-size: 12px;
+          line-height: 1.5;
+        }
+        .generateBtn {
+          border: 1px solid #2c8f6d;
+          border-radius: 8px;
+          background: #16543f;
+          color: #d9fff0;
+          font-family: inherit;
+        }
+        .generateBtn:hover:not(:disabled) {
+          border-color: #3ecf9a;
+          color: #eafff7;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .mLine.active i {
+            animation: none;
+          }
         }
         .whyRow {
           max-width: 1360px;
@@ -1414,17 +1708,47 @@ export default function FutureCareRoom() {
           font-size: 13px;
           line-height: 1.35;
         }
+        .protocolLayer {
+          border: 1px solid #1e2c40;
+          border-radius: 8px;
+          background: linear-gradient(180deg, #0c1524, #0a111d);
+          padding: 18px;
+          color: #d9e6f2;
+        }
+        .protocolLayer .kicker {
+          color: #6e87a3;
+        }
+        .protocolLayer h3 {
+          color: #f2f7fb;
+        }
+        .protocolLayer h4 {
+          color: #6e87a3;
+        }
+        .protocolLayer button {
+          border-color: #2a3b52;
+          background: #12203a;
+          color: #d9e6f2;
+        }
+        .protocolLayer button:hover:not(:disabled) {
+          border-color: #3ecf9a;
+          color: #eafff7;
+        }
+        .protocolLayer select {
+          border-color: #2a3b52;
+          background: #12203a;
+          color: #d9e6f2;
+        }
         .protocolLayer.generated {
           animation: settle 1.6s ease;
         }
         @keyframes settle {
           0% {
-            border-color: #245b62;
-            box-shadow: 0 0 0 4px rgba(36, 91, 98, 0.18);
+            border-color: #3ecf9a;
+            box-shadow: 0 0 0 4px rgba(62, 207, 154, 0.25);
           }
           100% {
-            border-color: #d8e1df;
-            box-shadow: 0 0 0 0 rgba(36, 91, 98, 0);
+            border-color: #1e2c40;
+            box-shadow: 0 0 0 0 rgba(62, 207, 154, 0);
           }
         }
         .readyRow {
@@ -1443,24 +1767,24 @@ export default function FutureCareRoom() {
           padding: 5px 12px;
         }
         .readyChip.ok {
-          border: 1px solid #8fc4aa;
-          background: #e6f7ef;
-          color: #1f6b46;
+          border: 1px solid #2c8f6d;
+          background: rgba(62, 207, 154, 0.14);
+          color: #7fd6b6;
         }
         .readyChip.warn {
-          border: 1px solid #d8b15f;
-          background: #fff7e2;
-          color: #8a5a12;
+          border: 1px solid #b98c3f;
+          background: rgba(224, 181, 102, 0.14);
+          color: #e0b566;
         }
         .planMeta {
-          color: #637085;
+          color: #6e87a3;
           font-size: 12px;
           font-weight: 700;
         }
         .planParagraph {
-          color: #566477;
+          color: #b9c9d9;
           font-size: 13px;
-          line-height: 1.5;
+          line-height: 1.55;
           margin-bottom: 8px;
         }
         .questionList {
@@ -1468,7 +1792,7 @@ export default function FutureCareRoom() {
           padding-left: 18px;
           display: grid;
           gap: 6px;
-          color: #566477;
+          color: #b9c9d9;
           font-size: 13px;
           line-height: 1.45;
         }
@@ -1488,8 +1812,11 @@ export default function FutureCareRoom() {
           font-size: 13px;
           font-weight: 600;
         }
+        .protocolLayer .soft {
+          color: #8fa6bd;
+        }
         .emptyState {
-          color: #566477;
+          color: #8fa6bd;
           font-size: 14px;
           line-height: 1.55;
         }
@@ -1497,9 +1824,10 @@ export default function FutureCareRoom() {
           max-height: 420px;
           margin: 10px 0 0;
           overflow: auto;
+          border: 1px solid #1e2c40;
           border-radius: 8px;
-          background: #17202f;
-          color: #e9f5f1;
+          background: #060d16;
+          color: #cde8dd;
           font-size: 12px;
           line-height: 1.55;
           padding: 14px;
@@ -1508,12 +1836,12 @@ export default function FutureCareRoom() {
         .foot {
           max-width: 1360px;
           margin: 0 auto;
-          border-top: 1px solid #d8e1df;
-          padding-top: 16px;
+          border-top: 1px solid #27272a;
+          padding: 16px 22px 0;
         }
         .foot p {
           max-width: 860px;
-          color: #637085;
+          color: #71717a;
           font-size: 13px;
           line-height: 1.6;
         }
@@ -1521,31 +1849,38 @@ export default function FutureCareRoom() {
           .stage {
             grid-template-columns: 1fr;
           }
+          .room {
+            order: -1;
+          }
         }
         @media (max-width: 980px) {
-          .topbar,
+          .topnav,
           .lower {
             grid-template-columns: 1fr;
           }
-          .status {
-            justify-self: start;
+          .navRight {
+            width: 100%;
+            margin-left: 0;
+            justify-content: space-between;
           }
         }
         @media (max-width: 640px) {
-          .page {
-            padding: 14px;
+          .shell,
+          .hero,
+          .scenarioRow,
+          .stage {
+            width: min(100% - 28px, 1360px);
+            padding-left: 0;
+            padding-right: 0;
+          }
+          .workspace {
+            padding: 14px 0 32px;
           }
           h1 {
             font-size: 26px;
           }
           h2 {
             font-size: 20px;
-          }
-          .roomCanvas {
-            min-height: 320px;
-          }
-          .robotUnit {
-            left: min(calc(140px + var(--robot-travel)), calc(100% - 110px));
           }
           .visualCard,
           .noticeCard {
