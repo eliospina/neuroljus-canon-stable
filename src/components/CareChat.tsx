@@ -15,14 +15,14 @@ type Lang = "sv" | "en" | "es";
 const T: Record<Lang, Record<string, string>> = {
   sv: {
     title: "Care Chat",
-    subtitle: "Empatisk AI-assistent (icke-diagnostisk)",
+    subtitle: "AI-stöd för omsorgsobservation",
     placeholder: "Skriv din fråga här…",
     send: "Skicka",
     thinking: "Tänker…",
     quick1: "Vad bör jag observera om jag misstänker smärta?",
     quick2: "Behöver vi sänka stimuli?",
     quick3: "Vilka nästa steg föreslår du?",
-    disclaimer: "Detta är stödjande information – ingen medicinsk diagnos.",
+    disclaimer: "Organiserar observationer och omsorgsfrågor. Vid akut oro eller ihållande smärta, kontakta vården.",
     notesPlaceholder: "Vårdgivarens anteckningar (valfritt, privat)",
     error: "Jag har tekniska problem just nu. Försök igen om en liten stund.",
     engineOpenAI: "AI: OpenAI",
@@ -30,14 +30,14 @@ const T: Record<Lang, Record<string, string>> = {
   },
   en: {
     title: "Care Chat",
-    subtitle: "Empathic AI assistant (non-diagnostic)",
+    subtitle: "AI support for care observation",
     placeholder: "Type your question here…",
     send: "Send",
     thinking: "Thinking…",
     quick1: "What should I observe if I suspect pain?",
     quick2: "Should we lower stimulation?",
     quick3: "What next steps do you suggest?",
-    disclaimer: "Supportive information only — no medical diagnosis.",
+    disclaimer: "Organizes observations and care questions. For urgent concern or persistent pain, contact healthcare.",
     notesPlaceholder: "Caregiver notes (optional, private)",
     error: "I'm having technical trouble right now. Please try again in a moment.",
     engineOpenAI: "AI: OpenAI",
@@ -45,14 +45,14 @@ const T: Record<Lang, Record<string, string>> = {
   },
   es: {
     title: "Care Chat",
-    subtitle: "Asistente empático de IA (no diagnóstico)",
+    subtitle: "Apoyo de IA para observación cuidadora",
     placeholder: "Escribe tu pregunta aquí…",
     send: "Enviar",
     thinking: "Pensando…",
     quick1: "¿Qué debo observar si sospecho dolor?",
     quick2: "¿Debemos reducir estímulos?",
     quick3: "¿Qué próximos pasos sugieres?",
-    disclaimer: "Información de apoyo — no diagnóstico médico.",
+    disclaimer: "Organiza observaciones y preguntas de cuidado. Ante urgencia o dolor persistente, contacta salud.",
     notesPlaceholder: "Notas del cuidador (opcional, privado)",
     error: "Tengo un problema técnico ahora mismo. Inténtalo de nuevo en un momento.",
     engineOpenAI: "IA: OpenAI",
@@ -62,11 +62,11 @@ const T: Record<Lang, Record<string, string>> = {
 
 const GREETING: Record<Lang, string> = {
   sv:
-    "Hej. Jag är Neuroljus AI, ett icke-diagnostiskt stöd för att organisera vårdgivarens observationer, sammanhang och frågor. Jag tolkar inte inre tillstånd, ställer inte diagnos och ersätter inte professionell vård. Berätta vad du såg, vad som hände före och efter, och vad som fortfarande är oklart, så hjälper jag dig att strukturera reflektionen.",
+    "Hej. Jag är Neuroljus AI. Jag hjälper dig att ordna observationer, sammanhang, rutiner och omsorgsfrågor. Berätta vad du såg, vad som hände före och efter, och vad du vill förstå bättre, så strukturerar vi det till klarare nästa steg.",
   en:
-    "Hello. I’m Neuroljus AI, a non-diagnostic support tool for organizing caregiver observations, context, and questions. I do not interpret inner states, diagnose, or replace professional care. Share what you observed, what happened before and after, and what remains uncertain, and I’ll help structure the reflection.",
+    "Hello. I’m Neuroljus AI. I help organize observations, context, routines, and care questions. Share what you noticed, what happened before and after, and what you want to understand better, and we will structure it into clearer next steps.",
   es:
-    "Hola. Soy Neuroljus AI, un apoyo no diagnóstico para organizar observaciones de cuidadores, contexto y preguntas. No interpreto estados internos, no diagnostico y no reemplazo atención profesional. Comparte qué observaste, qué pasó antes y después, y qué sigue siendo incierto; te ayudaré a estructurar la reflexión.",
+    "Hola. Soy Neuroljus AI. Te ayudo a ordenar observaciones, contexto, rutinas y preguntas de cuidado. Cuéntame qué viste, qué ocurrió antes y después, y qué quieres comprender mejor; lo estructuramos en próximos pasos más claros.",
 };
 
 const greetingValues = new Set(Object.values(GREETING));
