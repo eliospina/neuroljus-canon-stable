@@ -6,6 +6,7 @@ import type {
   AdapterTarget,
   Command,
   Environment,
+  PlannedStep,
   ScenarioId,
 } from "@/lib/careProtocol/types";
 import {
@@ -89,7 +90,13 @@ export default function FutureCareRoom() {
   const [copied, setCopied] = useState(false);
   const [packetCopied, setPacketCopied] = useState(false);
   const [justGenerated, setJustGenerated] = useState(false);
+  // The sequence is frozen when Play is pressed so live control changes
+  // cannot stall the run timer or fabricate completed steps in the timeline.
+  const [runSteps, setRunSteps] = useState<PlannedStep[] | null>(null);
   const protocolRef = useRef<HTMLDivElement | null>(null);
+  const copiedTimer = useRef<number | null>(null);
+  const packetCopiedTimer = useRef<number | null>(null);
+  const generatedTimer = useRef<number | null>(null);
   const [timeline, setTimeline] = useState<TimelineEntry[]>([
     {
       id: 1,
@@ -164,6 +171,7 @@ export default function FutureCareRoom() {
     const next = scenarioPresets[id];
     setScenario(id);
     setEnvironment(next.environment);
+    setRunSteps(null);
     setStatus("idle");
     setStepIndex(0);
     addTimeline("caregiver", `${next.name} chosen`, next.careGoal);
@@ -171,6 +179,7 @@ export default function FutureCareRoom() {
 
   function playRoutine() {
     if (steps.length === 0) return;
+    setRunSteps(steps);
     setStepIndex(0);
     setStatus("playing");
     addTimeline("caregiver", "Routine started", `${preset.name} plays through ${steps.length} preauthorized steps`);
@@ -187,6 +196,7 @@ export default function FutureCareRoom() {
   }
 
   function resetRoom() {
+    setRunSteps(null);
     setStatus("idle");
     setStepIndex(0);
     addTimeline("caregiver", "Room reset", "the room returned to its ready state");
@@ -212,7 +222,8 @@ export default function FutureCareRoom() {
     setProtocolOpen(true);
     setGeneratedAt(nowStamp());
     setJustGenerated(true);
-    window.setTimeout(() => setJustGenerated(false), 1800);
+    if (generatedTimer.current) window.clearTimeout(generatedTimer.current);
+    generatedTimer.current = window.setTimeout(() => setJustGenerated(false), 1800);
     window.setTimeout(() => {
       protocolRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 60);
@@ -230,7 +241,8 @@ export default function FutureCareRoom() {
       await navigator.clipboard.writeText(JSON.stringify(exportDocument, null, 2));
       setCopied(true);
       addTimeline("caregiver", "Protocol copied", "care_command_protocol_v0 copied to the clipboard");
-      window.setTimeout(() => setCopied(false), 1500);
+      if (copiedTimer.current) window.clearTimeout(copiedTimer.current);
+      copiedTimer.current = window.setTimeout(() => setCopied(false), 1500);
     } catch {
       addTimeline("neuroljus", "Copy failed", "browser clipboard was unavailable");
     }
@@ -243,7 +255,8 @@ export default function FutureCareRoom() {
       );
       setPacketCopied(true);
       addTimeline("caregiver", "Adapter packet copied", `${adapterLabels[adapterTarget]} packet copied`);
-      window.setTimeout(() => setPacketCopied(false), 1500);
+      if (packetCopiedTimer.current) window.clearTimeout(packetCopiedTimer.current);
+      packetCopiedTimer.current = window.setTimeout(() => setPacketCopied(false), 1500);
     } catch {
       addTimeline("neuroljus", "Copy failed", "browser clipboard was unavailable");
     }
@@ -262,41 +275,56 @@ export default function FutureCareRoom() {
     addTimeline("caregiver", "Protocol downloaded", "care_command_protocol_v0 exported as a JSON file");
   }
 
+  const activeSteps = runSteps ?? steps;
+
   useEffect(() => {
     if (status !== "playing") return;
 
-    if (stepIndex >= steps.length) {
+    if (stepIndex >= activeSteps.length) {
       setStatus("completed");
       addTimeline("protocol", "Routine complete", "every preauthorized step executed inside the protocol");
       return;
     }
 
     const timer = window.setTimeout(() => {
-      const step = steps[stepIndex];
+      const step = activeSteps[stepIndex];
       addTimeline("robot", commandLabels[step.command], step.reason);
       setStepIndex((current) => current + 1);
     }, STEP_INTERVAL_MS);
 
     return () => window.clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status, stepIndex, steps]);
+  }, [status, stepIndex, activeSteps]);
+
+  useEffect(() => {
+    return () => {
+      if (copiedTimer.current) window.clearTimeout(copiedTimer.current);
+      if (packetCopiedTimer.current) window.clearTimeout(packetCopiedTimer.current);
+      if (generatedTimer.current) window.clearTimeout(generatedTimer.current);
+    };
+  }, []);
 
   const completedCommands = useMemo(
-    () => new Set(steps.slice(0, stepIndex).map((step) => step.command)),
-    [steps, stepIndex]
+    () => new Set(activeSteps.slice(0, stepIndex).map((step) => step.command)),
+    [activeSteps, stepIndex]
   );
   const currentCommand =
-    status === "playing" && stepIndex < steps.length ? steps[stepIndex].command : undefined;
+    status === "playing" && stepIndex < activeSteps.length
+      ? activeSteps[stepIndex].command
+      : undefined;
 
+  // The "before" state is clamped so it never crosses the target:
+  // lowering light/sound must never display an increase, and stepping
+  // back must never display the robot moving closer.
   const sceneLight = completedCommands.has("lower_light")
     ? environment.light
-    : Math.min(82, environment.light + 36);
+    : Math.max(environment.light, Math.min(82, environment.light + 36));
   const sceneSound = completedCommands.has("reduce_sound")
     ? environment.sound
-    : Math.min(78, environment.sound + 38);
+    : Math.max(environment.sound, Math.min(78, environment.sound + 38));
   const robotDistance = completedCommands.has("step_back")
     ? environment.distance
-    : Math.max(0.7, environment.distance - 0.7);
+    : Math.min(environment.distance, Math.max(0.7, environment.distance - 0.7));
   const robotTravel = Math.min(168, Math.round(robotDistance * 44));
   const cardVisible =
     cueType !== "none" &&
@@ -316,9 +344,9 @@ export default function FutureCareRoom() {
   )} m of space at a ${environment.pace} pace.`;
 
   const suggestedStep = currentCommand
-    ? steps[stepIndex]
-    : steps.length > 0
-      ? steps[0]
+    ? activeSteps[stepIndex]
+    : activeSteps.length > 0
+      ? activeSteps[0]
       : undefined;
 
   const actionText =
@@ -332,7 +360,8 @@ export default function FutureCareRoom() {
             ? `${commandLabels[suggestedStep.command]} — ${suggestedStep.reason}.`
             : "No preauthorized steps for this configuration.";
 
-  const progress = steps.length === 0 ? 0 : Math.min(100, Math.round((stepIndex / steps.length) * 100));
+  const progress =
+    activeSteps.length === 0 ? 0 : Math.min(100, Math.round((stepIndex / activeSteps.length) * 100));
 
   const pathStages = ["Observation", "Care interpretation", "Protocol", "Robot adapter"];
   const activeStage =
@@ -582,7 +611,7 @@ export default function FutureCareRoom() {
               </div>
               {steps.length > 0 && (
                 <b className="stepCount">
-                  {Math.min(stepIndex + (status === "playing" ? 1 : 0), steps.length)}/{steps.length}
+                  {Math.min(stepIndex + (status === "playing" ? 1 : 0), activeSteps.length)}/{activeSteps.length}
                 </b>
               )}
             </div>
@@ -683,7 +712,10 @@ export default function FutureCareRoom() {
                     {plan.validation.valid ? "Protocol ready" : "Needs attention"}
                   </span>
                   {generatedAt && (
-                    <p className="planMeta">Generated at {generatedAt} from the room as configured.</p>
+                    <p className="planMeta">
+                      Last generated at {generatedAt}. The protocol below follows the room live as
+                      you shape it.
+                    </p>
                   )}
                 </div>
                 {plan.explanation.map((paragraph, index) => (

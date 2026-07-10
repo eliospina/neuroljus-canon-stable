@@ -21,7 +21,7 @@ export default function Home() {
   const T = useMemo(
     () => ({
       sv: {
-        seoTitle: "NeuroLjus - care intelligence for future health and care",
+        seoTitle: "NeuroLjus - omsorgsintelligens för framtidens hälsa och omsorg",
         seoDesc:
           "Neuroljus är en forskningsförberedd plattform för omsorgsintelligens, vardagsobservation, öppna protokoll och framtida AI- och robotikstöd inom vård och omsorg.",
         primaryNav: "Primär",

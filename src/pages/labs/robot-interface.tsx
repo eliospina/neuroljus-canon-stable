@@ -104,7 +104,19 @@ export default function RobotInterfaceLab() {
   ]);
 
   const nextId = useRef(2);
-  const activeCommands = commands;
+  const copiedTimer = useRef<number | null>(null);
+  const packetCopiedTimer = useRef<number | null>(null);
+  // A replay runs the generated plan's sequence without touching the
+  // caregiver-authored allowed-commands configuration.
+  const [replayCommands, setReplayCommands] = useState<Command[] | null>(null);
+  const activeCommands = replayCommands ?? commands;
+
+  useEffect(() => {
+    return () => {
+      if (copiedTimer.current) window.clearTimeout(copiedTimer.current);
+      if (packetCopiedTimer.current) window.clearTimeout(packetCopiedTimer.current);
+    };
+  }, []);
 
   const protocol = useMemo(
     () => ({
@@ -204,6 +216,7 @@ export default function RobotInterfaceLab() {
     setEnvironment(preset.environment);
     setCommands(preset.commands);
     setExceptions(preset.exceptions);
+    setReplayCommands(null);
     setStatus("idle");
     setStepIndex(0);
     addLog("caregiver", "load_scenario", `${preset.name} scenario loaded`);
@@ -238,11 +251,12 @@ export default function RobotInterfaceLab() {
   }
 
   function startRoutine() {
-    if (activeCommands.length === 0) {
+    if (commands.length === 0) {
       addLog("system", "routine_blocked", "at least one allowed command is required");
       return;
     }
 
+    setReplayCommands(null);
     setStepIndex(0);
     setStatus("running");
     addLog("caregiver", "start_routine", `${routineName || "Untitled routine"} started`);
@@ -254,6 +268,7 @@ export default function RobotInterfaceLab() {
   }
 
   function resetRoutine() {
+    setReplayCommands(null);
     setStatus("idle");
     setStepIndex(0);
     addLog("caregiver", "reset_protocol_run", "routine returned to idle state");
@@ -274,7 +289,13 @@ export default function RobotInterfaceLab() {
       | "timeout reached"
       | "routine completes"
   ) {
+    const routineActive = status === "running" || status === "paused";
+
     if (label === "routine completes") {
+      if (!routineActive) {
+        addLog("system", "event_ignored", "no active routine run to complete");
+        return;
+      }
       completeRoutine("manual completion event added to protocol run");
       return;
     }
@@ -283,6 +304,11 @@ export default function RobotInterfaceLab() {
     const command = exception ? exception : "event";
 
     addLog("protocol", command, `${label} event added`);
+
+    if (!routineActive) {
+      addLog("neuroljus", "event_logged", "event recorded; no active routine run to interrupt");
+      return;
+    }
 
     if (exception && exceptions.includes(exception)) {
       setStatus(exception === "caregiver_pause" ? "paused" : "escalated");
@@ -301,7 +327,8 @@ export default function RobotInterfaceLab() {
       await navigator.clipboard.writeText(JSON.stringify(protocol, null, 2));
       setCopied(true);
       addLog("caregiver", "copy_protocol", "open protocol copied for adaptation");
-      window.setTimeout(() => setCopied(false), 1500);
+      if (copiedTimer.current) window.clearTimeout(copiedTimer.current);
+      copiedTimer.current = window.setTimeout(() => setCopied(false), 1500);
     } catch {
       addLog("system", "copy_failed", "browser clipboard was unavailable");
     }
@@ -363,7 +390,8 @@ export default function RobotInterfaceLab() {
       );
       setPacketCopied(true);
       addLog("caregiver", "copy_adapter_packet", `${adapterLabels[adapterTarget]} packet copied`);
-      window.setTimeout(() => setPacketCopied(false), 1500);
+      if (packetCopiedTimer.current) window.clearTimeout(packetCopiedTimer.current);
+      packetCopiedTimer.current = window.setTimeout(() => setPacketCopied(false), 1500);
     } catch {
       addLog("system", "copy_failed", "browser clipboard was unavailable");
     }
@@ -371,7 +399,7 @@ export default function RobotInterfaceLab() {
 
   function replayPlan() {
     if (!plan || plan.steps.length === 0) return;
-    setCommands(plan.steps.map((step) => step.command));
+    setReplayCommands(plan.steps.map((step) => step.command));
     setStepIndex(0);
     setStatus("running");
     addLog("caregiver", "replay_plan", "generated protocol sequence replayed in the simulator");
@@ -401,9 +429,18 @@ export default function RobotInterfaceLab() {
   );
   const currentCommand =
     status === "running" && stepIndex < activeCommands.length ? activeCommands[stepIndex] : undefined;
-  const sceneLight = completedCommands.has("lower_light") ? environment.light : Math.min(82, environment.light + 36);
-  const sceneSound = completedCommands.has("reduce_sound") ? environment.sound : Math.min(78, environment.sound + 38);
-  const robotDistance = completedCommands.has("step_back") ? environment.distance : Math.max(0.7, environment.distance - 0.7);
+  // The "before" state is clamped so it never crosses the target:
+  // lowering light/sound must never display an increase, and stepping
+  // back must never display the robot moving closer.
+  const sceneLight = completedCommands.has("lower_light")
+    ? environment.light
+    : Math.max(environment.light, Math.min(82, environment.light + 36));
+  const sceneSound = completedCommands.has("reduce_sound")
+    ? environment.sound
+    : Math.max(environment.sound, Math.min(78, environment.sound + 38));
+  const robotDistance = completedCommands.has("step_back")
+    ? environment.distance
+    : Math.min(environment.distance, Math.max(0.7, environment.distance - 0.7));
   const robotTravel = Math.min(188, Math.round(robotDistance * 48));
   const cardVisible = completedCommands.has("offer_visual_card") || currentCommand === "offer_visual_card";
   const caregiverNotified =
