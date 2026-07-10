@@ -1,19 +1,20 @@
 import Head from "next/head";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import SiteLayout, { useLang } from "@/components/SiteLayout";
 
 export default function About() {
-  const [lang, setLang] = useState<"sv" | "en" | "es">("es");
+  const [lang, setLang] = useLang("es");
 
   useEffect(() => {
     try {
-      const browserLang = navigator.language?.toLowerCase();
+      if (window.localStorage.getItem("nl_lang")) return;
+      const browserLang = navigator.language?.toLowerCase() || "";
       if (browserLang.startsWith("sv")) setLang("sv");
       else if (browserLang.startsWith("en")) setLang("en");
-      else setLang("es");
     } catch {
-      setLang("es");
+      /* keep default */
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const content = {
@@ -135,7 +136,7 @@ Varje autistisk person är ett unikt universum. Jag hjälper till att bära obse
   const isEN = lang === "en";
 
   return (
-    <>
+    <SiteLayout lang={lang} onLangChange={setLang}>
       <Head>
         <title>{`${t.title} | NeuroLjus`}</title>
         <meta name="description" content={t.subtitle} />
@@ -143,34 +144,6 @@ Varje autistisk person är ett unikt universum. Jag hjälper till att bära obse
 
       <div style={styles.page}>
         <div style={styles.container}>
-          {/* Header */}
-          <header style={styles.header}>
-            <a href="/" style={styles.brand}>
-              <Image
-                src="/brand/neuroljus-logo.svg"
-                alt="NeuroLjus"
-                width={36}
-                height={36}
-                priority
-                style={styles.logo}
-              />
-              <span style={styles.brandName}>NeuroLjus</span>
-            </a>
-
-            <nav style={styles.nav}>
-              <a href="/labs/nl-vision" style={styles.navLink}>Demo</a>
-              <a href="/about" style={{...styles.navLink, fontWeight: 700}}>
-                {isSV ? "Om" : isEN ? "About" : "Sobre"}
-              </a>
-            </nav>
-
-            <div style={styles.langToggle}>
-              <button onClick={() => setLang("es")} style={{...styles.langBtn, fontWeight: lang === "es" ? 700 : 400}}>ES</button>
-              <button onClick={() => setLang("en")} style={{...styles.langBtn, fontWeight: lang === "en" ? 700 : 400}}>EN</button>
-              <button onClick={() => setLang("sv")} style={{...styles.langBtn, fontWeight: lang === "sv" ? 700 : 400}}>SV</button>
-            </div>
-          </header>
-
           {/* Hero */}
           <section style={styles.hero}>
             <h1 style={styles.h1}>{t.title}</h1>
@@ -230,70 +203,23 @@ Varje autistisk person är ett unikt universum. Jag hjälper till att bära obse
             <a href={`mailto:${t.email}`} style={styles.email}>{t.email}</a>
           </section>
 
-          <footer style={styles.footer}>
-            <p>NeuroLjus © 2024 — {isSV ? "Byggt med empati och AI" : isEN ? "Built with empathy and AI" : "Construido con empatía e IA"}</p>
-          </footer>
+          <p style={styles.footerNote}>
+            {isSV ? "Byggt med empati och AI" : isEN ? "Built with empathy and AI" : "Construido con empatía e IA"}
+          </p>
         </div>
       </div>
-    </>
+    </SiteLayout>
   );
 }
 
 const styles: Record<string, React.CSSProperties> = {
   page: {
-    minHeight: "100dvh",
-    background: "radial-gradient(1200px 700px at 20% 10%, rgba(94,230,164,0.18), transparent 60%), radial-gradient(900px 600px at 80% 20%, rgba(124,227,247,0.18), transparent 60%), radial-gradient(1200px 900px at 50% 120%, rgba(166,133,247,0.18), transparent 60%), #1E1F3B",
-    color: "#fff",
-    fontFamily: "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
+    color: "var(--nl-text)",
   },
   container: {
-    maxWidth: 800,
+    maxWidth: 820,
     margin: "0 auto",
-    padding: "22px",
-  },
-  header: {
-    display: "flex",
-    alignItems: "center",
-    gap: 12,
-    marginBottom: 40,
-  },
-  brand: {
-    display: "flex",
-    alignItems: "center",
-    gap: 12,
-    textDecoration: "none",
-    color: "#fff",
-  },
-  logo: {
-    filter: "drop-shadow(0 0 10px rgba(124,227,247,0.25))",
-  },
-  brandName: {
-    fontWeight: 700,
-    fontSize: 18,
-  },
-  nav: {
-    marginLeft: "auto",
-    display: "flex",
-    gap: 14,
-  },
-  navLink: {
-    color: "#cfe7ff",
-    textDecoration: "none",
-    fontSize: 14,
-  },
-  langToggle: {
-    display: "flex",
-    gap: 8,
-    marginLeft: 8,
-  },
-  langBtn: {
-    background: "transparent",
-    color: "#cfe7ff",
-    border: "1px solid #4a507e",
-    borderRadius: 8,
-    padding: "6px 10px",
-    cursor: "pointer",
-    fontSize: 13,
+    padding: "40px 22px 22px",
   },
   hero: {
     textAlign: "center",

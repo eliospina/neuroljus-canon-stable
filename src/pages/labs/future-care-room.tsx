@@ -2,6 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
+import SiteLayout from "@/components/SiteLayout";
 import type {
   AdapterTarget,
   Command,
@@ -381,407 +382,394 @@ export default function FutureCareRoom() {
         />
       </Head>
 
-      <main className="page">
-        <header className="topbar">
-          <Link href="/" className="brand">
-            Neuroljus
-          </Link>
-          <div>
-            <p className="kicker">Interactive experience · local protocol engine · adapter-ready</p>
-            <h1>Future Care Room</h1>
-            <p className="crossLink">
-              Want the full protocol workspace?{" "}
-              <Link href="/labs/robot-interface">Open the Robot Care Interface</Link>
-            </p>
-          </div>
-          <div className={`status ${status}`} role="status" aria-live="polite">
-            {statusLabels[status]}
-          </div>
-        </header>
+      <SiteLayout>
+        <div className="page">
+          <header className="pageHead">
+            <div>
+              <p className="kicker">Interactive experience · local protocol engine · adapter-ready</p>
+              <h1>Future Care Room</h1>
+              <p className="crossLink">
+                Want the full protocol workspace?{" "}
+                <Link href="/labs/robot-interface">Open the Robot Care Interface</Link>
+              </p>
+            </div>
+            <div className={`status ${status}`} role="status" aria-live="polite">
+              {statusLabels[status]}
+            </div>
+          </header>
 
-        <section className="hero">
-          <h2>Neuroljus turns lived care into structured intelligence for future assistive systems.</h2>
-          <div className="pathRibbon" aria-label="How the room works">
-            {pathStages.map((stage, index) => (
-              <span key={stage} className="pathStage">
-                <b className={index === activeStage ? "active" : ""}>{stage}</b>
-                {index < pathStages.length - 1 && <i aria-hidden="true">→</i>}
-              </span>
+          <section className="hero">
+            <h2>Neuroljus turns lived care into structured intelligence for future assistive systems.</h2>
+            <div className="pathRibbon" aria-label="How the room works">
+              {pathStages.map((stage, index) => (
+                <span key={stage} className="pathStage">
+                  <b className={index === activeStage ? "active" : ""}>{stage}</b>
+                  {index < pathStages.length - 1 && <i aria-hidden="true">→</i>}
+                </span>
+              ))}
+            </div>
+          </section>
+
+          <section className="scenarioRow" aria-label="Care situations">
+            <span className="scenarioLabel">Choose a situation</span>
+            {scenarioOrder.map((id) => (
+              <button
+                key={id}
+                onClick={() => applyScenario(id)}
+                className={scenario === id ? "scenarioChip active" : "scenarioChip"}
+                aria-pressed={scenario === id}
+                title={scenarioPresets[id].careGoal}
+              >
+                {scenarioPresets[id].name}
+              </button>
             ))}
-          </div>
-        </section>
+          </section>
 
-        <section className="scenarioRow" aria-label="Care situations">
-          <span className="scenarioLabel">Choose a situation</span>
-          {scenarioOrder.map((id) => (
-            <button
-              key={id}
-              onClick={() => applyScenario(id)}
-              className={scenario === id ? "scenarioChip active" : "scenarioChip"}
-              aria-pressed={scenario === id}
-              title={scenarioPresets[id].careGoal}
-            >
-              {scenarioPresets[id].name}
-            </button>
-          ))}
-        </section>
+          <section className="stage">
+            <aside className="panel controls" aria-label="Room controls">
+              <p className="kicker">Shape the room</p>
+              <h3>Care controls</h3>
 
-        <section className="stage">
-          <aside className="panel controls" aria-label="Room controls">
-            <p className="kicker">Shape the room</p>
-            <h3>Care controls</h3>
+              <label className="slider">
+                <span>
+                  Light <b>{environment.light}%</b>
+                </span>
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  value={environment.light}
+                  onChange={(event) =>
+                    setEnvironment((current) => ({ ...current, light: Number(event.target.value) }))
+                  }
+                />
+              </label>
+              <label className="slider">
+                <span>
+                  Sound <b>{environment.sound}%</b>
+                </span>
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  value={environment.sound}
+                  onChange={(event) =>
+                    setEnvironment((current) => ({ ...current, sound: Number(event.target.value) }))
+                  }
+                />
+              </label>
+              <label className="slider">
+                <span>
+                  Robot distance <b>{environment.distance.toFixed(1)}m</b>
+                </span>
+                <input
+                  type="range"
+                  min={0.5}
+                  max={4}
+                  step={0.1}
+                  value={environment.distance}
+                  onChange={(event) =>
+                    setEnvironment((current) => ({ ...current, distance: Number(event.target.value) }))
+                  }
+                />
+              </label>
 
-            <label className="slider">
-              <span>
-                Light <b>{environment.light}%</b>
-              </span>
-              <input
-                type="range"
-                min={0}
-                max={100}
-                value={environment.light}
-                onChange={(event) =>
-                  setEnvironment((current) => ({ ...current, light: Number(event.target.value) }))
-                }
-              />
-            </label>
-            <label className="slider">
-              <span>
-                Sound <b>{environment.sound}%</b>
-              </span>
-              <input
-                type="range"
-                min={0}
-                max={100}
-                value={environment.sound}
-                onChange={(event) =>
-                  setEnvironment((current) => ({ ...current, sound: Number(event.target.value) }))
-                }
-              />
-            </label>
-            <label className="slider">
-              <span>
-                Robot distance <b>{environment.distance.toFixed(1)}m</b>
-              </span>
-              <input
-                type="range"
-                min={0.5}
-                max={4}
-                step={0.1}
-                value={environment.distance}
-                onChange={(event) =>
-                  setEnvironment((current) => ({ ...current, distance: Number(event.target.value) }))
-                }
-              />
-            </label>
+              <label className="field">
+                Pace
+                <select
+                  value={environment.pace}
+                  onChange={(event) =>
+                    setEnvironment((current) => ({
+                      ...current,
+                      pace: event.target.value as Environment["pace"],
+                    }))
+                  }
+                >
+                  <option value="slow">Slow</option>
+                  <option value="steady">Steady</option>
+                  <option value="adaptive">Adaptive</option>
+                </select>
+              </label>
 
-            <label className="field">
-              Pace
-              <select
-                value={environment.pace}
-                onChange={(event) =>
-                  setEnvironment((current) => ({
-                    ...current,
-                    pace: event.target.value as Environment["pace"],
-                  }))
-                }
+              <label className="field">
+                Visual cue
+                <select value={cueType} onChange={(event) => setCueType(event.target.value as CueType)}>
+                  {(Object.keys(cueLabels) as CueType[]).map((cue) => (
+                    <option key={cue} value={cue}>
+                      {cueLabels[cue]}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="field">
+                Caregiver presence
+                <select
+                  value={supportLevel}
+                  onChange={(event) => setSupportLevel(event.target.value as SupportLevel)}
+                >
+                  {(Object.keys(supportLabels) as SupportLevel[]).map((level) => (
+                    <option key={level} value={level}>
+                      {supportLabels[level]}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <div className="actions">
+                <button className="primaryAction" onClick={playRoutine} disabled={status === "playing" || steps.length === 0}>
+                  Play routine
+                </button>
+                <button onClick={togglePause} disabled={status !== "playing" && status !== "paused"}>
+                  {status === "paused" ? "Resume" : "Pause"}
+                </button>
+                <button onClick={resetRoom}>Reset</button>
+              </div>
+              <div className="actions">
+                <button onClick={personRejects} disabled={status !== "playing" && status !== "paused"}>
+                  Person rejects
+                </button>
+                <button onClick={caregiverPauses} disabled={status !== "playing"}>
+                  Caregiver pauses
+                </button>
+              </div>
+            </aside>
+
+            <div className="room" style={roomStyle} aria-label="Care room scene">
+              <div className="roomTop">
+                <div>
+                  <span>Situation</span>
+                  <strong>{preset.name}</strong>
+                </div>
+                <div className="meters">
+                  <div>
+                    <span>Light</span>
+                    <b>{sceneLight}%</b>
+                  </div>
+                  <div>
+                    <span>Sound</span>
+                    <b>{sceneSound}%</b>
+                  </div>
+                  <div>
+                    <span>Space</span>
+                    <b>{robotDistance.toFixed(1)}m</b>
+                  </div>
+                </div>
+              </div>
+
+              <div className="roomCanvas">
+                <div className="windowGlow" />
+                <div className="soundField">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+
+                <div className="personSpace">
+                  <div className="personMarker">
+                    <span />
+                  </div>
+                  <p>Person</p>
+                </div>
+
+                <div className={`caregiverUnit ${supportLevel}`}>
+                  <div className="caregiverMarker">
+                    <span />
+                  </div>
+                  <p>{supportLevel === "remote" ? "Caregiver · remote" : "Caregiver"}</p>
+                </div>
+
+                <div className={currentCommand ? "robotUnit acting" : "robotUnit"}>
+                  <div className="robotHead">
+                    <span />
+                    <span />
+                  </div>
+                  <div className="robotBody" />
+                  <p>Care interface</p>
+                </div>
+
+                {cardVisible && (
+                  <div className="visualCard">
+                    <span>Visual support</span>
+                    <strong>{cueText}</strong>
+                  </div>
+                )}
+                {caregiverNotified && (
+                  <div className="noticeCard">
+                    <span>Caregiver notice</span>
+                    <strong>{status === "completed" ? "Routine complete" : "Review requested"}</strong>
+                  </div>
+                )}
+              </div>
+
+              <div className="nowBar" aria-live="polite">
+                <span>Now</span>
+                <div>
+                  <strong>{currentCommand ? commandLabels[currentCommand] : statusLabels[status]}</strong>
+                  <p>{actionText}</p>
+                </div>
+                {steps.length > 0 && (
+                  <b className="stepCount">
+                    {Math.min(stepIndex + (status === "playing" ? 1 : 0), activeSteps.length)}/{activeSteps.length}
+                  </b>
+                )}
+              </div>
+
+              <div
+                className="progressWrap"
+                role="progressbar"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={progress}
+                aria-label="Routine progress"
               >
-                <option value="slow">Slow</option>
-                <option value="steady">Steady</option>
-                <option value="adaptive">Adaptive</option>
-              </select>
-            </label>
+                <div style={{ width: `${progress}%` }} />
+              </div>
+            </div>
 
-            <label className="field">
-              Visual cue
-              <select value={cueType} onChange={(event) => setCueType(event.target.value as CueType)}>
-                {(Object.keys(cueLabels) as CueType[]).map((cue) => (
-                  <option key={cue} value={cue}>
-                    {cueLabels[cue]}
-                  </option>
+            <aside className="panel liveFlow" aria-label="Live care intelligence" aria-live="polite">
+              <p className="kicker">Live care intelligence</p>
+              <div className="flowCard">
+                <span>1 · Observation</span>
+                <p>{observationText}</p>
+              </div>
+              <div className="flowCard">
+                <span>2 · Care interpretation</span>
+                <p>{preset.careGoal}</p>
+                <p className="soft">{supportInterpretation[supportLevel]}</p>
+              </div>
+              <div className="flowCard">
+                <span>3 · Protocol</span>
+                <p>
+                  {steps.length} preauthorized steps over {preset.duration} minutes ·{" "}
+                  {preset.exceptions.length} safety exceptions · local audit trail.
+                </p>
+                {plan.attentionFlags.some((flag) => flag.severity === "warning") && (
+                  <p className="warn">
+                    {plan.attentionFlags.find((flag) => flag.severity === "warning")?.message}
+                  </p>
+                )}
+              </div>
+              <div className="flowCard">
+                <span>4 · Robot adapter</span>
+                <p>
+                  The same protocol maps to ROS2, MQTT, HTTP, or offline review —
+                  adapter-ready JSON that preserves the caregiver&apos;s settings.
+                </p>
+              </div>
+              <button className="primaryAction" onClick={generateProtocol}>
+                {protocolOpen ? "Regenerate protocol" : "Generate protocol"}
+              </button>
+            </aside>
+          </section>
+
+          <section className="whyRow" aria-label="Why this matters">
+            <div>
+              <strong>Care knowledge becomes protocol</strong>
+              <p>What a caregiver knows about one person becomes a structured, repeatable routine.</p>
+            </div>
+            <div>
+              <strong>Protocols travel</strong>
+              <p>The same envelope can support families, municipalities, research, and future assistive robots.</p>
+            </div>
+            <div>
+              <strong>Local and open</strong>
+              <p>Everything runs in your browser and exports adapter-ready JSON. No external API, no personal data.</p>
+            </div>
+          </section>
+
+          <section className="lower">
+            <div className="panel timeline" aria-label="Timeline of actions">
+              <p className="kicker">Timeline</p>
+              <h3>What just happened in the room</h3>
+              <div className="timelineList">
+                {timeline.map((entry) => (
+                  <article key={entry.id} className={`timelineItem ${entry.actor}`}>
+                    <time>{entry.time}</time>
+                    <div>
+                      <strong>{entry.label}</strong>
+                      <p>{entry.detail}</p>
+                    </div>
+                    <span>{entry.actor}</span>
+                  </article>
                 ))}
-              </select>
-            </label>
-
-            <label className="field">
-              Caregiver presence
-              <select
-                value={supportLevel}
-                onChange={(event) => setSupportLevel(event.target.value as SupportLevel)}
-              >
-                {(Object.keys(supportLabels) as SupportLevel[]).map((level) => (
-                  <option key={level} value={level}>
-                    {supportLabels[level]}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <div className="actions">
-              <button className="primaryAction" onClick={playRoutine} disabled={status === "playing" || steps.length === 0}>
-                Play routine
-              </button>
-              <button onClick={togglePause} disabled={status !== "playing" && status !== "paused"}>
-                {status === "paused" ? "Resume" : "Pause"}
-              </button>
-              <button onClick={resetRoom}>Reset</button>
-            </div>
-            <div className="actions">
-              <button onClick={personRejects} disabled={status !== "playing" && status !== "paused"}>
-                Person rejects
-              </button>
-              <button onClick={caregiverPauses} disabled={status !== "playing"}>
-                Caregiver pauses
-              </button>
-            </div>
-          </aside>
-
-          <div className="room" style={roomStyle} aria-label="Care room scene">
-            <div className="roomTop">
-              <div>
-                <span>Situation</span>
-                <strong>{preset.name}</strong>
               </div>
-              <div className="meters">
-                <div>
-                  <span>Light</span>
-                  <b>{sceneLight}%</b>
-                </div>
-                <div>
-                  <span>Sound</span>
-                  <b>{sceneSound}%</b>
-                </div>
-                <div>
-                  <span>Space</span>
-                  <b>{robotDistance.toFixed(1)}m</b>
-                </div>
-              </div>
-            </div>
-
-            <div className="roomCanvas">
-              <div className="windowGlow" />
-              <div className="soundField">
-                <span />
-                <span />
-                <span />
-              </div>
-
-              <div className="personSpace">
-                <div className="personMarker">
-                  <span />
-                </div>
-                <p>Person</p>
-              </div>
-
-              <div className={`caregiverUnit ${supportLevel}`}>
-                <div className="caregiverMarker">
-                  <span />
-                </div>
-                <p>{supportLevel === "remote" ? "Caregiver · remote" : "Caregiver"}</p>
-              </div>
-
-              <div className={currentCommand ? "robotUnit acting" : "robotUnit"}>
-                <div className="robotHead">
-                  <span />
-                  <span />
-                </div>
-                <div className="robotBody" />
-                <p>Care interface</p>
-              </div>
-
-              {cardVisible && (
-                <div className="visualCard">
-                  <span>Visual support</span>
-                  <strong>{cueText}</strong>
-                </div>
-              )}
-              {caregiverNotified && (
-                <div className="noticeCard">
-                  <span>Caregiver notice</span>
-                  <strong>{status === "completed" ? "Routine complete" : "Review requested"}</strong>
-                </div>
-              )}
-            </div>
-
-            <div className="nowBar" aria-live="polite">
-              <span>Now</span>
-              <div>
-                <strong>{currentCommand ? commandLabels[currentCommand] : statusLabels[status]}</strong>
-                <p>{actionText}</p>
-              </div>
-              {steps.length > 0 && (
-                <b className="stepCount">
-                  {Math.min(stepIndex + (status === "playing" ? 1 : 0), activeSteps.length)}/{activeSteps.length}
-                </b>
-              )}
             </div>
 
             <div
-              className="progressWrap"
-              role="progressbar"
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-valuenow={progress}
-              aria-label="Routine progress"
+              ref={protocolRef}
+              className={justGenerated ? "panel protocolLayer generated" : "panel protocolLayer"}
+              aria-label="Protocol layer"
             >
-              <div style={{ width: `${progress}%` }} />
-            </div>
-          </div>
+              <p className="kicker">Protocol layer</p>
+              <h3>What a future robot would receive</h3>
 
-          <aside className="panel liveFlow" aria-label="Live care intelligence" aria-live="polite">
-            <p className="kicker">Live care intelligence</p>
-            <div className="flowCard">
-              <span>1 · Observation</span>
-              <p>{observationText}</p>
-            </div>
-            <div className="flowCard">
-              <span>2 · Care interpretation</span>
-              <p>{preset.careGoal}</p>
-              <p className="soft">{supportInterpretation[supportLevel]}</p>
-            </div>
-            <div className="flowCard">
-              <span>3 · Protocol</span>
-              <p>
-                {steps.length} preauthorized steps over {preset.duration} minutes ·{" "}
-                {preset.exceptions.length} safety exceptions · local audit trail.
-              </p>
-              {plan.attentionFlags.some((flag) => flag.severity === "warning") && (
-                <p className="warn">
-                  {plan.attentionFlags.find((flag) => flag.severity === "warning")?.message}
+              {protocolOpen ? (
+                <>
+                  <div className="readyRow">
+                    <span className={plan.validation.valid ? "readyChip ok" : "readyChip warn"}>
+                      {plan.validation.valid ? "Protocol ready" : "Needs attention"}
+                    </span>
+                    {generatedAt && (
+                      <p className="planMeta">
+                        Last generated at {generatedAt}. The protocol below follows the room live as
+                        you shape it.
+                      </p>
+                    )}
+                  </div>
+                  {plan.explanation.map((paragraph, index) => (
+                    <p key={index} className="planParagraph">
+                      {paragraph}
+                    </p>
+                  ))}
+
+                  {plan.reflectionQuestions.length > 0 && (
+                    <>
+                      <h4>Reflection for the caregiver</h4>
+                      <ul className="questionList">
+                        {plan.reflectionQuestions.slice(0, 3).map((question) => (
+                          <li key={question}>{question}</li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
+
+                  <div className="exportRow">
+                    <button onClick={copyJson}>{copied ? "Copied" : "Copy JSON"}</button>
+                    <button onClick={downloadJson}>Download JSON</button>
+                    <button onClick={copyPacket}>{packetCopied ? "Copied" : "Copy adapter packet"}</button>
+                    <select
+                      value={adapterTarget}
+                      onChange={(event) => setAdapterTarget(event.target.value as AdapterTarget)}
+                      aria-label="Adapter packet target"
+                    >
+                      {(Object.keys(adapterLabels) as AdapterTarget[]).map((target) => (
+                        <option key={target} value={target}>
+                          {adapterLabels[target]}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <p className="soft">{adapterTransports[adapterTarget]}.</p>
+                  <pre>{JSON.stringify(plan.adapterPackets[adapterTarget], null, 2)}</pre>
+                </>
+              ) : (
+                <p className="emptyState">
+                  Generate the protocol to see the exact JSON this room produces —
+                  the same envelope a ROS2, MQTT, HTTP, or offline adapter would
+                  receive, with the caregiver&apos;s settings preserved.
                 </p>
               )}
             </div>
-            <div className="flowCard">
-              <span>4 · Robot adapter</span>
-              <p>
-                The same protocol maps to ROS2, MQTT, HTTP, or offline review —
-                adapter-ready JSON that preserves the caregiver&apos;s settings.
-              </p>
-            </div>
-            <button className="primaryAction" onClick={generateProtocol}>
-              {protocolOpen ? "Regenerate protocol" : "Generate protocol"}
-            </button>
-          </aside>
-        </section>
-
-        <section className="whyRow" aria-label="Why this matters">
-          <div>
-            <strong>Care knowledge becomes protocol</strong>
-            <p>What a caregiver knows about one person becomes a structured, repeatable routine.</p>
-          </div>
-          <div>
-            <strong>Protocols travel</strong>
-            <p>The same envelope can support families, municipalities, research, and future assistive robots.</p>
-          </div>
-          <div>
-            <strong>Local and open</strong>
-            <p>Everything runs in your browser and exports adapter-ready JSON. No external API, no personal data.</p>
-          </div>
-        </section>
-
-        <section className="lower">
-          <div className="panel timeline" aria-label="Timeline of actions">
-            <p className="kicker">Timeline</p>
-            <h3>What just happened in the room</h3>
-            <div className="timelineList">
-              {timeline.map((entry) => (
-                <article key={entry.id} className={`timelineItem ${entry.actor}`}>
-                  <time>{entry.time}</time>
-                  <div>
-                    <strong>{entry.label}</strong>
-                    <p>{entry.detail}</p>
-                  </div>
-                  <span>{entry.actor}</span>
-                </article>
-              ))}
-            </div>
-          </div>
-
-          <div
-            ref={protocolRef}
-            className={justGenerated ? "panel protocolLayer generated" : "panel protocolLayer"}
-            aria-label="Protocol layer"
-          >
-            <p className="kicker">Protocol layer</p>
-            <h3>What a future robot would receive</h3>
-
-            {protocolOpen ? (
-              <>
-                <div className="readyRow">
-                  <span className={plan.validation.valid ? "readyChip ok" : "readyChip warn"}>
-                    {plan.validation.valid ? "Protocol ready" : "Needs attention"}
-                  </span>
-                  {generatedAt && (
-                    <p className="planMeta">
-                      Last generated at {generatedAt}. The protocol below follows the room live as
-                      you shape it.
-                    </p>
-                  )}
-                </div>
-                {plan.explanation.map((paragraph, index) => (
-                  <p key={index} className="planParagraph">
-                    {paragraph}
-                  </p>
-                ))}
-
-                {plan.reflectionQuestions.length > 0 && (
-                  <>
-                    <h4>Reflection for the caregiver</h4>
-                    <ul className="questionList">
-                      {plan.reflectionQuestions.slice(0, 3).map((question) => (
-                        <li key={question}>{question}</li>
-                      ))}
-                    </ul>
-                  </>
-                )}
-
-                <div className="exportRow">
-                  <button onClick={copyJson}>{copied ? "Copied" : "Copy JSON"}</button>
-                  <button onClick={downloadJson}>Download JSON</button>
-                  <button onClick={copyPacket}>{packetCopied ? "Copied" : "Copy adapter packet"}</button>
-                  <select
-                    value={adapterTarget}
-                    onChange={(event) => setAdapterTarget(event.target.value as AdapterTarget)}
-                    aria-label="Adapter packet target"
-                  >
-                    {(Object.keys(adapterLabels) as AdapterTarget[]).map((target) => (
-                      <option key={target} value={target}>
-                        {adapterLabels[target]}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <p className="soft">{adapterTransports[adapterTarget]}.</p>
-                <pre>{JSON.stringify(plan.adapterPackets[adapterTarget], null, 2)}</pre>
-              </>
-            ) : (
-              <p className="emptyState">
-                Generate the protocol to see the exact JSON this room produces —
-                the same envelope a ROS2, MQTT, HTTP, or offline adapter would
-                receive, with the caregiver&apos;s settings preserved.
-              </p>
-            )}
-          </div>
-        </section>
-
-        <footer className="foot">
-          <p>
-            Everything on this page runs locally in your browser: no external API,
-            no personal data. This is how Neuroljus works — lived care, structured
-            into protocols that people, researchers, and future assistive systems
-            can trust.
-          </p>
-        </footer>
-      </main>
+          </section>
+        </div>
+      </SiteLayout>
 
       <style jsx>{`
         .page {
-          min-height: 100dvh;
-          padding: 22px;
-          color: #17202f;
-          background: #f4f7f6;
-          font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-            sans-serif;
+          padding: 26px 22px 8px;
+          color: var(--nl-text);
+          font-family: var(--nl-font);
         }
         h1,
         h2,
@@ -794,6 +782,8 @@ export default function FutureCareRoom() {
         h1 {
           font-size: 30px;
           line-height: 1.05;
+          letter-spacing: -0.01em;
+          color: var(--nl-text);
         }
         h2 {
           font-size: 24px;
@@ -806,39 +796,38 @@ export default function FutureCareRoom() {
           margin-top: 6px;
           font-size: 13px;
           text-transform: uppercase;
-          color: #637085;
+          letter-spacing: 0.08em;
+          color: var(--nl-text-faint);
         }
         .kicker {
           margin-bottom: 4px;
-          color: #637085;
+          color: var(--nl-aurora-a);
           font-size: 12px;
           font-weight: 800;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
         }
-        .topbar {
+        .pageHead {
           max-width: 1360px;
           margin: 0 auto 18px;
           display: grid;
-          grid-template-columns: auto minmax(0, 1fr) auto;
+          grid-template-columns: minmax(0, 1fr) auto;
           gap: 18px;
           align-items: center;
         }
-        .brand {
-          min-height: 38px;
-          display: inline-flex;
-          align-items: center;
-          color: #245b62;
-          font-weight: 800;
-          text-decoration: none;
-        }
         .crossLink {
           margin-top: 6px;
-          color: #637085;
+          color: var(--nl-text-dim);
           font-size: 13px;
           font-weight: 700;
         }
         .crossLink :global(a) {
-          color: #245b62;
+          color: var(--nl-aurora-b);
+          text-decoration: none;
+          border-bottom: 1px solid rgba(124, 227, 247, 0.4);
+        }
+        .crossLink :global(a:hover) {
+          border-bottom-color: var(--nl-aurora-b);
         }
         .status {
           min-width: 168px;
@@ -846,31 +835,44 @@ export default function FutureCareRoom() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          border: 1px solid #cbd8d5;
-          border-radius: 8px;
-          background: #ffffff;
+          border: 1px solid var(--nl-border-strong);
+          border-radius: 999px;
+          background: var(--nl-surface-strong);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          color: var(--nl-text);
           font-weight: 800;
-          padding: 0 12px;
+          padding: 0 14px;
         }
         .status.playing {
-          background: #17202f;
-          color: #f8fffb;
+          border-color: transparent;
+          background: var(--nl-aurora-grad);
+          color: var(--nl-on-aurora);
+          box-shadow: 0 8px 28px rgba(94, 230, 164, 0.25);
         }
-        .status.paused,
+        .status.paused {
+          border-color: rgba(247, 201, 110, 0.5);
+          background: rgba(247, 201, 110, 0.12);
+          color: #ffd89a;
+        }
         .status.escalated {
-          border-color: #d8b15f;
-          background: #fff7e2;
+          border-color: rgba(255, 138, 122, 0.55);
+          background: rgba(255, 120, 100, 0.13);
+          color: #ffb3a6;
         }
         .status.completed {
-          border-color: #8fc4aa;
-          background: #e6f7ef;
+          border-color: rgba(94, 230, 164, 0.5);
+          background: rgba(94, 230, 164, 0.12);
+          color: #8ef0bf;
         }
         .hero {
           max-width: 1360px;
           margin: 0 auto 14px;
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
-          background: #ffffff;
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius);
+          background: var(--nl-surface);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
           padding: 18px 22px;
           display: flex;
           flex-wrap: wrap;
@@ -880,7 +882,7 @@ export default function FutureCareRoom() {
         }
         .hero h2 {
           max-width: 720px;
-          color: #17202f;
+          color: var(--nl-text);
         }
         .pathRibbon {
           display: flex;
@@ -894,10 +896,10 @@ export default function FutureCareRoom() {
           gap: 6px;
         }
         .pathStage b {
-          border: 1px solid #d8e1df;
+          border: 1px solid var(--nl-border);
           border-radius: 999px;
-          background: #fbfdfc;
-          color: #566477;
+          background: var(--nl-surface);
+          color: var(--nl-text-dim);
           font-size: 12px;
           font-weight: 800;
           padding: 6px 12px;
@@ -905,12 +907,12 @@ export default function FutureCareRoom() {
           transition: all 220ms ease;
         }
         .pathStage b.active {
-          border-color: #245b62;
-          background: #e6f7ef;
-          color: #245b62;
+          border-color: rgba(94, 230, 164, 0.55);
+          background: rgba(94, 230, 164, 0.14);
+          color: #8ef0bf;
         }
         .pathStage i {
-          color: #9aa8a4;
+          color: var(--nl-text-faint);
           font-style: normal;
           font-weight: 800;
         }
@@ -923,28 +925,37 @@ export default function FutureCareRoom() {
           gap: 8px;
         }
         .scenarioLabel {
-          color: #637085;
+          color: var(--nl-text-faint);
           font-size: 12px;
           font-weight: 800;
+          letter-spacing: 0.08em;
           text-transform: uppercase;
           margin-right: 4px;
         }
         .scenarioChip {
-          border: 1px solid #d8e1df;
+          border: 1px solid var(--nl-border-strong);
           border-radius: 999px;
-          background: #ffffff;
+          background: var(--nl-surface);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
           padding: 10px 16px;
           cursor: pointer;
           font: inherit;
           font-weight: 800;
           font-size: 13px;
-          color: #17202f;
+          color: var(--nl-text);
           min-height: 40px;
+          transition: border-color 160ms ease, background 160ms ease;
+        }
+        .scenarioChip:hover {
+          border-color: var(--nl-aurora-b);
+          background: var(--nl-surface-strong);
         }
         .scenarioChip.active {
-          border-color: #245b62;
-          background: #245b62;
-          color: #f8fffb;
+          border-color: transparent;
+          background: var(--nl-aurora-grad);
+          color: var(--nl-on-aurora);
+          box-shadow: 0 8px 28px rgba(94, 230, 164, 0.22);
         }
         .stage {
           max-width: 1360px;
@@ -955,9 +966,11 @@ export default function FutureCareRoom() {
           align-items: stretch;
         }
         .panel {
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
-          background: #ffffff;
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius);
+          background: var(--nl-surface);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
           padding: 18px;
         }
         .controls {
@@ -973,36 +986,39 @@ export default function FutureCareRoom() {
           display: flex;
           justify-content: space-between;
           gap: 12px;
-          color: #3d4959;
+          color: var(--nl-text-dim);
           font-size: 13px;
           font-weight: 800;
+        }
+        .slider b {
+          color: var(--nl-text);
         }
         .field {
           display: grid;
           gap: 7px;
-          color: #3d4959;
+          color: var(--nl-text-dim);
           font-size: 13px;
           font-weight: 800;
         }
         input[type="range"] {
           width: 100%;
           padding: 0;
-          accent-color: #245b62;
+          accent-color: var(--nl-aurora-b);
         }
         select {
           width: 100%;
           min-height: 40px;
-          border: 1px solid #cbd8d5;
-          border-radius: 8px;
-          background: #fbfdfc;
-          color: #17202f;
+          border: 1px solid var(--nl-border-strong);
+          border-radius: var(--nl-radius-sm);
+          background: var(--nl-bg-raised);
+          color: var(--nl-text);
           font: inherit;
           padding: 0 10px;
         }
         select:focus,
         button:focus,
         input:focus {
-          outline: 2px solid #245b62;
+          outline: 2px solid var(--nl-aurora-b);
           outline-offset: 2px;
         }
         .actions {
@@ -1012,41 +1028,48 @@ export default function FutureCareRoom() {
         }
         button {
           min-height: 40px;
-          border: 1px solid #cbd8d5;
-          border-radius: 8px;
-          background: #ffffff;
-          color: #17202f;
+          border: 1px solid var(--nl-border-strong);
+          border-radius: 999px;
+          background: var(--nl-surface);
+          color: var(--nl-text);
           cursor: pointer;
           font: inherit;
           font-weight: 800;
-          padding: 0 12px;
+          padding: 0 14px;
+          transition: border-color 160ms ease, background 160ms ease;
         }
         button:hover:not(:disabled) {
-          border-color: #245b62;
-          color: #245b62;
+          border-color: var(--nl-aurora-b);
+          background: var(--nl-surface-strong);
         }
         button:disabled {
           cursor: not-allowed;
-          opacity: 0.5;
+          opacity: 0.45;
         }
         .primaryAction {
-          background: #17202f;
-          color: #ffffff;
+          border-color: transparent;
+          background: var(--nl-aurora-grad);
+          color: var(--nl-on-aurora);
         }
         .primaryAction:hover:not(:disabled) {
-          color: #ffffff;
-          border-color: #17202f;
-          opacity: 0.92;
+          border-color: transparent;
+          background: var(--nl-aurora-grad);
+          box-shadow: 0 10px 30px rgba(94, 230, 164, 0.25);
         }
         .room {
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius);
           padding: 18px;
           display: grid;
           gap: 12px;
           background:
-            linear-gradient(180deg, rgba(255, 255, 255, var(--light-opacity)), rgba(240, 247, 244, 0.96)),
-            #eef5f2;
+            radial-gradient(
+              540px 320px at 20% 0%,
+              rgba(255, 199, 120, calc(var(--light-opacity) * 0.12)),
+              transparent 70%
+            ),
+            var(--nl-bg-raised);
+          box-shadow: var(--nl-shadow);
         }
         .roomTop {
           display: flex;
@@ -1060,14 +1083,15 @@ export default function FutureCareRoom() {
         .flowCard span,
         .visualCard span,
         .noticeCard span {
-          color: #637085;
+          color: var(--nl-text-faint);
           font-size: 11px;
           font-weight: 800;
+          letter-spacing: 0.08em;
           text-transform: uppercase;
         }
         .roomTop strong {
           display: block;
-          color: #245b62;
+          color: var(--nl-aurora-b);
         }
         .meters {
           display: grid;
@@ -1075,24 +1099,30 @@ export default function FutureCareRoom() {
           gap: 8px;
         }
         .meters div {
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
-          background: rgba(255, 255, 255, 0.72);
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius-sm);
+          background: var(--nl-surface);
           padding: 8px 12px;
         }
         .meters b {
           display: block;
           margin-top: 2px;
+          color: var(--nl-text);
         }
         .roomCanvas {
           position: relative;
           min-height: 360px;
           overflow: hidden;
-          border: 1px solid #cbd8d5;
-          border-radius: 8px;
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius-sm);
           background:
-            linear-gradient(180deg, rgba(255, 255, 255, var(--light-opacity)), rgba(221, 235, 232, 0.96)),
-            linear-gradient(90deg, #dfece8, #f6fbf8);
+            radial-gradient(
+              420px 300px at 16% 20%,
+              rgba(255, 196, 110, calc(var(--light-opacity) * 0.28)),
+              transparent 65%
+            ),
+            linear-gradient(180deg, rgba(148, 184, 224, 0.06), rgba(2, 8, 20, 0.4)),
+            var(--nl-bg-raised);
         }
         .windowGlow {
           position: absolute;
@@ -1100,10 +1130,10 @@ export default function FutureCareRoom() {
           left: 22px;
           width: 128px;
           height: 88px;
-          border: 1px solid rgba(36, 91, 98, 0.18);
-          border-radius: 8px;
-          background: rgba(255, 246, 210, var(--light-opacity));
-          box-shadow: 0 0 38px rgba(255, 230, 150, var(--light-opacity));
+          border: 1px solid rgba(255, 214, 150, 0.35);
+          border-radius: var(--nl-radius-sm);
+          background: rgba(255, 205, 125, calc(var(--light-opacity) * 0.55));
+          box-shadow: 0 0 48px rgba(255, 186, 100, calc(var(--light-opacity) * 0.6));
         }
         .soundField {
           position: absolute;
@@ -1116,7 +1146,7 @@ export default function FutureCareRoom() {
         .soundField span {
           position: absolute;
           right: 0;
-          border: 2px solid rgba(36, 91, 98, 0.38);
+          border: 2px solid rgba(124, 227, 247, 0.55);
           border-left: 0;
           border-radius: 0 999px 999px 0;
         }
@@ -1142,7 +1172,7 @@ export default function FutureCareRoom() {
           display: grid;
           gap: 8px;
           justify-items: center;
-          color: #405064;
+          color: var(--nl-text-dim);
           font-weight: 800;
           font-size: 12px;
         }
@@ -1151,33 +1181,33 @@ export default function FutureCareRoom() {
           height: 88px;
           display: grid;
           place-items: center;
-          border: 1px solid rgba(36, 91, 98, 0.28);
+          border: 1px solid rgba(94, 230, 164, 0.4);
           border-radius: 999px;
-          background: rgba(255, 255, 255, 0.72);
-          box-shadow: 0 0 0 26px rgba(36, 91, 98, 0.07);
+          background: var(--nl-surface-strong);
+          box-shadow: 0 0 0 26px rgba(94, 230, 164, 0.06);
           animation: breathe 5s ease-in-out infinite;
         }
         @keyframes breathe {
           0%,
           100% {
-            box-shadow: 0 0 0 22px rgba(36, 91, 98, 0.06);
+            box-shadow: 0 0 0 22px rgba(94, 230, 164, 0.05);
           }
           50% {
-            box-shadow: 0 0 0 30px rgba(36, 91, 98, 0.1);
+            box-shadow: 0 0 0 30px rgba(94, 230, 164, 0.09);
           }
         }
         .personMarker span {
           width: 36px;
           height: 50px;
           border-radius: 999px 999px 12px 12px;
-          background: #245b62;
+          background: var(--nl-aurora-grad);
         }
         .caregiverUnit {
           position: absolute;
           display: grid;
           gap: 6px;
           justify-items: center;
-          color: #405064;
+          color: var(--nl-text-dim);
           font-weight: 800;
           font-size: 12px;
           transition: left 300ms ease, top 300ms ease, opacity 300ms ease;
@@ -1200,9 +1230,9 @@ export default function FutureCareRoom() {
           height: 58px;
           display: grid;
           place-items: center;
-          border: 1px solid rgba(64, 80, 100, 0.35);
+          border: 1px solid var(--nl-border-strong);
           border-radius: 999px;
-          background: rgba(255, 255, 255, 0.8);
+          background: var(--nl-surface-strong);
         }
         .caregiverUnit.remote .caregiverMarker {
           border-style: dashed;
@@ -1211,7 +1241,7 @@ export default function FutureCareRoom() {
           width: 24px;
           height: 34px;
           border-radius: 999px 999px 10px 10px;
-          background: #405064;
+          background: var(--nl-text-dim);
         }
         .robotUnit {
           position: absolute;
@@ -1220,7 +1250,7 @@ export default function FutureCareRoom() {
           display: grid;
           gap: 7px;
           justify-items: center;
-          color: #17202f;
+          color: var(--nl-text-dim);
           font-size: 12px;
           font-weight: 800;
           transition: left 400ms ease;
@@ -1232,15 +1262,16 @@ export default function FutureCareRoom() {
           align-items: center;
           justify-content: center;
           gap: 10px;
-          border: 2px solid #17202f;
-          border-radius: 8px;
-          background: #ffffff;
+          border: 2px solid var(--nl-border-strong);
+          border-radius: var(--nl-radius-sm);
+          background: var(--nl-bg-raised);
         }
         .robotHead span {
           width: 9px;
           height: 9px;
           border-radius: 999px;
-          background: #245b62;
+          background: var(--nl-aurora-b);
+          box-shadow: 0 0 10px rgba(124, 227, 247, 0.7);
           animation: blink 6s ease-in-out infinite;
         }
         @keyframes blink {
@@ -1255,8 +1286,8 @@ export default function FutureCareRoom() {
           }
         }
         .robotUnit.acting .robotHead {
-          border-color: #245b62;
-          box-shadow: 0 0 0 4px rgba(36, 91, 98, 0.14);
+          border-color: rgba(124, 227, 247, 0.7);
+          box-shadow: 0 0 0 4px rgba(124, 227, 247, 0.14);
         }
         .robotUnit.acting {
           animation: bob 1.1s ease-in-out infinite;
@@ -1273,26 +1304,29 @@ export default function FutureCareRoom() {
         @media (prefers-reduced-motion: reduce) {
           .personMarker,
           .robotHead span,
-          .robotUnit.acting {
+          .robotUnit.acting,
+          .protocolLayer.generated {
             animation: none;
           }
         }
         .robotBody {
           width: 54px;
           height: 44px;
-          border: 2px solid #17202f;
-          border-radius: 8px;
-          background: #e6f7ef;
+          border: 2px solid var(--nl-border-strong);
+          border-radius: var(--nl-radius-sm);
+          background: rgba(94, 230, 164, 0.12);
         }
         .visualCard,
         .noticeCard {
           position: absolute;
           max-width: 230px;
-          border: 1px solid rgba(23, 32, 47, 0.14);
-          border-radius: 8px;
-          background: rgba(255, 255, 255, 0.94);
+          border: 1px solid var(--nl-border-strong);
+          border-radius: var(--nl-radius-sm);
+          background: rgba(11, 20, 36, 0.88);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
           padding: 12px;
-          box-shadow: 0 16px 30px rgba(23, 32, 47, 0.12);
+          box-shadow: var(--nl-shadow);
         }
         .visualCard {
           left: 30px;
@@ -1307,33 +1341,36 @@ export default function FutureCareRoom() {
           display: block;
           margin-top: 5px;
           line-height: 1.3;
+          color: var(--nl-text);
         }
         .nowBar {
           display: grid;
           grid-template-columns: auto minmax(0, 1fr) auto;
           gap: 12px;
           align-items: center;
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
-          background: rgba(255, 255, 255, 0.82);
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius-sm);
+          background: var(--nl-surface);
           padding: 10px 14px;
         }
         .nowBar span {
-          color: #637085;
+          color: var(--nl-aurora-a);
           font-size: 11px;
           font-weight: 800;
+          letter-spacing: 0.08em;
           text-transform: uppercase;
         }
         .nowBar strong {
           display: block;
+          color: var(--nl-text);
         }
         .nowBar p {
-          color: #566477;
+          color: var(--nl-text-dim);
           font-size: 13px;
           line-height: 1.4;
         }
         .stepCount {
-          color: #245b62;
+          color: var(--nl-aurora-b);
           font-size: 13px;
           font-weight: 800;
           white-space: nowrap;
@@ -1342,12 +1379,14 @@ export default function FutureCareRoom() {
           height: 10px;
           overflow: hidden;
           border-radius: 999px;
-          background: #e5ecea;
+          background: var(--nl-surface-strong);
+          border: 1px solid var(--nl-border);
         }
         .progressWrap div {
           height: 100%;
           border-radius: inherit;
-          background: #245b62;
+          background: var(--nl-aurora-grad);
+          box-shadow: 0 0 14px rgba(94, 230, 164, 0.4);
           transition: width 300ms ease;
         }
         .liveFlow {
@@ -1356,24 +1395,24 @@ export default function FutureCareRoom() {
           align-content: start;
         }
         .flowCard {
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
-          background: #fbfdfc;
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius-sm);
+          background: var(--nl-surface);
           padding: 12px;
         }
         .flowCard p {
           margin-top: 5px;
-          color: #3d4959;
+          color: var(--nl-text-dim);
           font-size: 13px;
           line-height: 1.5;
           font-weight: 600;
         }
         .flowCard .soft {
-          color: #637085;
+          color: var(--nl-text-faint);
           font-weight: 600;
         }
         .flowCard .warn {
-          color: #8a5a12;
+          color: #ffd89a;
           font-weight: 700;
         }
         .whyRow {
@@ -1384,18 +1423,20 @@ export default function FutureCareRoom() {
           gap: 10px;
         }
         .whyRow div {
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
-          background: #ffffff;
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius);
+          background: var(--nl-surface);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
           padding: 14px;
         }
         .whyRow strong {
           display: block;
           margin-bottom: 5px;
-          color: #17202f;
+          color: var(--nl-text);
         }
         .whyRow p {
-          color: #566477;
+          color: var(--nl-text-dim);
           font-size: 13px;
           line-height: 1.5;
         }
@@ -1423,26 +1464,29 @@ export default function FutureCareRoom() {
           grid-template-columns: 58px minmax(0, 1fr) auto;
           gap: 10px;
           align-items: start;
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius-sm);
           padding: 10px;
-          background: #fbfdfc;
+          background: var(--nl-surface);
+        }
+        .timelineItem strong {
+          color: var(--nl-text);
         }
         .timelineItem.robot {
-          border-left: 3px solid #245b62;
+          border-left: 3px solid var(--nl-aurora-b);
         }
         .timelineItem.protocol {
-          border-left: 3px solid #d8b15f;
+          border-left: 3px solid rgba(247, 201, 110, 0.75);
         }
         .timelineItem time,
         .timelineItem span {
-          color: #637085;
+          color: var(--nl-text-faint);
           font-size: 12px;
           font-weight: 800;
         }
         .timelineItem p {
           margin-top: 3px;
-          color: #566477;
+          color: var(--nl-text-dim);
           font-size: 13px;
           line-height: 1.35;
         }
@@ -1451,12 +1495,12 @@ export default function FutureCareRoom() {
         }
         @keyframes settle {
           0% {
-            border-color: #245b62;
-            box-shadow: 0 0 0 4px rgba(36, 91, 98, 0.18);
+            border-color: var(--nl-aurora-b);
+            box-shadow: 0 0 0 4px rgba(124, 227, 247, 0.22);
           }
           100% {
-            border-color: #d8e1df;
-            box-shadow: 0 0 0 0 rgba(36, 91, 98, 0);
+            border-color: var(--nl-border);
+            box-shadow: 0 0 0 0 rgba(124, 227, 247, 0);
           }
         }
         .readyRow {
@@ -1475,22 +1519,22 @@ export default function FutureCareRoom() {
           padding: 5px 12px;
         }
         .readyChip.ok {
-          border: 1px solid #8fc4aa;
-          background: #e6f7ef;
-          color: #1f6b46;
+          border: 1px solid rgba(94, 230, 164, 0.5);
+          background: rgba(94, 230, 164, 0.12);
+          color: #8ef0bf;
         }
         .readyChip.warn {
-          border: 1px solid #d8b15f;
-          background: #fff7e2;
-          color: #8a5a12;
+          border: 1px solid rgba(247, 201, 110, 0.5);
+          background: rgba(247, 201, 110, 0.12);
+          color: #ffd89a;
         }
         .planMeta {
-          color: #637085;
+          color: var(--nl-text-faint);
           font-size: 12px;
           font-weight: 700;
         }
         .planParagraph {
-          color: #566477;
+          color: var(--nl-text-dim);
           font-size: 13px;
           line-height: 1.5;
           margin-bottom: 8px;
@@ -1500,7 +1544,7 @@ export default function FutureCareRoom() {
           padding-left: 18px;
           display: grid;
           gap: 6px;
-          color: #566477;
+          color: var(--nl-text-dim);
           font-size: 13px;
           line-height: 1.45;
         }
@@ -1516,12 +1560,12 @@ export default function FutureCareRoom() {
           width: auto;
         }
         .soft {
-          color: #637085;
+          color: var(--nl-text-faint);
           font-size: 13px;
           font-weight: 600;
         }
         .emptyState {
-          color: #566477;
+          color: var(--nl-text-dim);
           font-size: 14px;
           line-height: 1.55;
         }
@@ -1529,25 +1573,15 @@ export default function FutureCareRoom() {
           max-height: 420px;
           margin: 10px 0 0;
           overflow: auto;
-          border-radius: 8px;
-          background: #17202f;
-          color: #e9f5f1;
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius-sm);
+          background: rgba(2, 8, 20, 0.72);
+          color: #d5e8f5;
+          font-family: var(--nl-font-mono);
           font-size: 12px;
           line-height: 1.55;
           padding: 14px;
           white-space: pre-wrap;
-        }
-        .foot {
-          max-width: 1360px;
-          margin: 0 auto;
-          border-top: 1px solid #d8e1df;
-          padding-top: 16px;
-        }
-        .foot p {
-          max-width: 860px;
-          color: #637085;
-          font-size: 13px;
-          line-height: 1.6;
         }
         @media (max-width: 1100px) {
           .stage {
@@ -1555,7 +1589,7 @@ export default function FutureCareRoom() {
           }
         }
         @media (max-width: 980px) {
-          .topbar,
+          .pageHead,
           .lower {
             grid-template-columns: 1fr;
           }
@@ -1565,7 +1599,7 @@ export default function FutureCareRoom() {
         }
         @media (max-width: 640px) {
           .page {
-            padding: 14px;
+            padding: 18px 14px 4px;
           }
           h1 {
             font-size: 26px;

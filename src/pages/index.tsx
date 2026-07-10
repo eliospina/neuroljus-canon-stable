@@ -1,21 +1,21 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
-
-type Lang = "sv" | "en" | "es";
+import { useEffect, useMemo } from "react";
+import SiteLayout, { useLang } from "@/components/SiteLayout";
 
 export default function Home() {
-  const [lang, setLang] = useState<Lang>("en");
+  const [lang, setLang] = useLang("en");
 
   useEffect(() => {
     try {
+      if (window.localStorage.getItem("nl_lang")) return;
       const browserLang = navigator.language?.toLowerCase() || "";
       if (browserLang.startsWith("sv")) setLang("sv");
       else if (browserLang.startsWith("es")) setLang("es");
-      else setLang("en");
     } catch {
-      setLang("en");
+      /* keep default */
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const T = useMemo(
@@ -336,7 +336,7 @@ export default function Home() {
   const copy = T[lang];
 
   return (
-    <>
+    <SiteLayout lang={lang} onLangChange={setLang}>
       <Head>
         <title>{copy.seoTitle}</title>
         <meta name="description" content={copy.seoDesc} />
@@ -345,44 +345,11 @@ export default function Home() {
         <meta property="og:description" content={copy.seoDesc} />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="/brand/neuroljus-logo.svg" />
-        <meta name="theme-color" content="#f5faf7" />
+        <meta name="theme-color" content="#060b16" />
       </Head>
 
       <div className="page">
-        <header className="shell header" role="banner">
-          <a className="brand" href="/" aria-label="NeuroLjus home">
-            <Image
-              src="/brand/neuroljus-logo.svg"
-              alt="NeuroLjus"
-              width={42}
-              height={42}
-              priority
-              className="brandLogo"
-            />
-            <span className="brandName">NeuroLjus</span>
-          </a>
-
-          <nav className="nav" aria-label={copy.primaryNav}>
-            <a href="/labs/nl-vision">{copy.navDemo}</a>
-            <a href="/about">{copy.navAbout}</a>
-            <a href="#offer">{copy.navOffer}</a>
-            <a href="/contact">{copy.navContact}</a>
-          </nav>
-
-          <div className="langToggle" role="group" aria-label="Language">
-            <button onClick={() => setLang("es")} aria-pressed={lang === "es"}>
-              ES
-            </button>
-            <button onClick={() => setLang("en")} aria-pressed={lang === "en"}>
-              EN
-            </button>
-            <button onClick={() => setLang("sv")} aria-pressed={lang === "sv"}>
-              SV
-            </button>
-          </div>
-        </header>
-
-        <main>
+        <div>
           <section className="hero shell" aria-labelledby="hero-title">
             <div className="heroCopy">
               <p className="eyebrow">{copy.eyebrow}</p>
@@ -508,92 +475,26 @@ export default function Home() {
               </a>
             </div>
           </section>
-        </main>
-
-        <footer className="shell footer" role="contentinfo">
-          {copy.footer}
-        </footer>
+        </div>
       </div>
 
       <style jsx>{`
-        :global(html) {
-          scroll-behavior: smooth;
-        }
         .page {
-          min-height: 100dvh;
-          color: #17202f;
-          background:
-            linear-gradient(145deg, rgba(245, 250, 247, 0.96), rgba(235, 245, 245, 0.92)),
-            linear-gradient(90deg, #f5faf7 0%, #eef7f2 44%, #f3f0fb 100%);
-          font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-            sans-serif;
+          min-height: 60dvh;
+          color: var(--nl-text);
         }
         .shell {
-          width: min(1120px, calc(100% - 40px));
+          width: min(1160px, calc(100% - 40px));
           margin: 0 auto;
-        }
-        .header {
-          min-height: 76px;
-          display: flex;
-          align-items: center;
-          gap: 18px;
-        }
-        .brand {
-          display: inline-flex;
-          align-items: center;
-          gap: 12px;
-          color: inherit;
-          text-decoration: none;
-        }
-        .brandLogo {
-          filter: drop-shadow(0 8px 22px rgba(31, 111, 111, 0.18));
-        }
-        .brandName {
-          font-size: 18px;
-          font-weight: 760;
-        }
-        .nav {
-          margin-left: auto;
-          display: flex;
-          gap: 20px;
-          font-size: 14px;
-        }
-        .nav a,
-        .textCta {
-          color: #245b62;
-          font-weight: 700;
-          text-decoration: none;
-        }
-        .nav a:hover,
-        .textCta:hover {
-          text-decoration: underline;
-        }
-        .langToggle {
-          display: flex;
-          gap: 6px;
-        }
-        .langToggle button {
-          min-width: 42px;
-          min-height: 34px;
-          border: 1px solid rgba(36, 91, 98, 0.22);
-          border-radius: 8px;
-          background: rgba(255, 255, 255, 0.72);
-          color: #245b62;
-          cursor: pointer;
-          font-weight: 700;
-        }
-        .langToggle button[aria-pressed="true"] {
-          background: #17202f;
-          color: #f7fbf8;
         }
         .hero {
           position: relative;
-          min-height: 64vh;
+          min-height: 62vh;
           display: grid;
           grid-template-columns: minmax(0, 0.98fr) minmax(280px, 0.72fr);
           gap: 42px;
           align-items: center;
-          padding: 44px 0 32px;
+          padding: 60px 0 40px;
           overflow: hidden;
         }
         .heroCopy {
@@ -603,10 +504,10 @@ export default function Home() {
         .eyebrow,
         .sectionKicker {
           margin: 0 0 12px;
-          color: #6b4ea4;
+          color: var(--nl-aurora-a);
           font-size: 12px;
           font-weight: 800;
-          letter-spacing: 0;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
         }
         h1,
@@ -618,43 +519,61 @@ export default function Home() {
         h1 {
           margin: 0;
           max-width: 720px;
-          font-size: clamp(48px, 8vw, 102px);
+          font-size: clamp(52px, 8vw, 108px);
           line-height: 0.92;
-          letter-spacing: 0;
+          letter-spacing: -0.02em;
+          background: linear-gradient(120deg, var(--nl-text) 30%, var(--nl-aurora-b) 85%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
         }
         .subtitle {
           max-width: 720px;
           margin: 22px 0 0;
-          color: #405064;
+          color: var(--nl-text-dim);
           font-size: 21px;
-          line-height: 1.45;
+          line-height: 1.5;
         }
         .actions {
           display: flex;
           flex-wrap: wrap;
           align-items: center;
-          gap: 18px;
-          margin-top: 28px;
+          gap: 14px 18px;
+          margin-top: 30px;
         }
         .primaryCta {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          min-height: 44px;
-          padding: 0 18px;
-          border: 1px solid rgba(23, 32, 47, 0.14);
-          border-radius: 8px;
-          background: #17202f;
-          color: #f8fffb;
-          box-shadow: 0 10px 26px rgba(23, 32, 47, 0.16);
+          min-height: 46px;
+          padding: 0 22px;
+          border: none;
+          border-radius: 999px;
+          background: var(--nl-aurora-grad);
+          color: var(--nl-on-aurora);
+          box-shadow: 0 12px 32px rgba(94, 230, 164, 0.22);
           font-weight: 800;
           text-decoration: none;
+          transition: transform 160ms ease, box-shadow 160ms ease;
+        }
+        .primaryCta:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 16px 40px rgba(94, 230, 164, 0.3);
+        }
+        .textCta {
+          color: var(--nl-aurora-b);
+          font-weight: 700;
+          text-decoration: none;
+        }
+        .textCta:hover {
+          text-decoration: underline;
         }
         .status {
           max-width: 680px;
-          margin: 22px 0 0;
-          color: #5a6678;
+          margin: 24px 0 0;
+          color: var(--nl-text-faint);
           font-size: 14px;
+          line-height: 1.6;
         }
         .heroMark {
           display: flex;
@@ -663,17 +582,18 @@ export default function Home() {
           min-height: 360px;
         }
         .markImage {
-          width: min(100%, 480px);
+          width: min(100%, 460px);
           height: auto;
-          filter: drop-shadow(0 22px 48px rgba(31, 111, 111, 0.18));
+          filter: drop-shadow(0 0 60px rgba(94, 230, 164, 0.28))
+            drop-shadow(0 0 120px rgba(124, 227, 247, 0.18));
         }
         .thesisBand {
           display: grid;
           grid-template-columns: 0.74fr 1.26fr;
           gap: 38px;
-          padding: 34px 0;
-          border-top: 1px solid rgba(23, 32, 47, 0.12);
-          border-bottom: 1px solid rgba(23, 32, 47, 0.12);
+          padding: 36px 0;
+          border-top: 1px solid var(--nl-border);
+          border-bottom: 1px solid var(--nl-border);
         }
         .thesisBand h2,
         .offerIntro h2,
@@ -681,8 +601,9 @@ export default function Home() {
         .boundaryPanel h2,
         .collaborators h2 {
           margin: 0;
-          font-size: 28px;
+          font-size: 30px;
           line-height: 1.12;
+          letter-spacing: -0.01em;
         }
         .thesisBand p,
         .offerIntro p,
@@ -690,7 +611,7 @@ export default function Home() {
         .labPanel p,
         .collaborators p {
           margin: 0;
-          color: #405064;
+          color: var(--nl-text-dim);
           font-size: 17px;
           line-height: 1.62;
         }
@@ -698,52 +619,62 @@ export default function Home() {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 16px;
-          padding: 28px 0;
+          padding: 32px 0;
         }
         .actionBand {
           display: grid;
           grid-template-columns: 0.9fr 1.1fr;
           gap: 24px;
           align-items: start;
-          margin-bottom: 16px;
-          border: 1px solid rgba(23, 32, 47, 0.12);
-          border-radius: 8px;
-          background: #17202f;
-          color: #f8fffb;
-          padding: 26px;
+          margin-bottom: 20px;
+          border: 1px solid var(--nl-border-strong);
+          border-radius: var(--nl-radius);
+          background:
+            radial-gradient(600px 300px at 12% 0%, rgba(94, 230, 164, 0.12), transparent 65%),
+            var(--nl-bg-raised);
+          padding: 30px;
+          box-shadow: var(--nl-shadow);
         }
         .actionBand h2 {
           margin: 0;
-          font-size: 28px;
+          font-size: 30px;
           line-height: 1.12;
         }
         .actionBand p {
           margin: 12px 0 0;
-          color: #dbe8e3;
-          line-height: 1.58;
+          color: var(--nl-text-dim);
+          line-height: 1.6;
         }
         .actionBand .sectionKicker {
-          color: #9fe8cf;
+          color: var(--nl-aurora-a);
         }
         .actionBand ol {
           display: grid;
           gap: 12px;
           margin: 0;
           padding-left: 20px;
-          color: #eef8f3;
-          line-height: 1.5;
+          color: var(--nl-text);
+          line-height: 1.55;
         }
         .horizon article,
         .offerCard,
         .labPanel,
         .boundaryPanel {
-          border: 1px solid rgba(23, 32, 47, 0.12);
-          border-radius: 8px;
-          background: rgba(255, 255, 255, 0.64);
-          padding: 22px;
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius);
+          background: var(--nl-surface);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          padding: 24px;
+          transition: border-color 180ms ease, transform 180ms ease;
+        }
+        .horizon article:hover,
+        .offerCard:hover {
+          border-color: var(--nl-border-strong);
+          transform: translateY(-2px);
         }
         .horizon span {
-          color: #2f7f6f;
+          color: var(--nl-aurora-b);
           font-weight: 800;
           font-size: 13px;
         }
@@ -753,8 +684,8 @@ export default function Home() {
         }
         .horizon p {
           margin: 0;
-          color: #4f5f70;
-          line-height: 1.55;
+          color: var(--nl-text-dim);
+          line-height: 1.58;
         }
         .evidenceGrid {
           display: grid;
@@ -762,21 +693,21 @@ export default function Home() {
           gap: 16px;
         }
         .offerSection {
-          padding: 14px 0 28px;
+          padding: 18px 0 32px;
         }
         .offerIntro {
           max-width: 760px;
-          margin-bottom: 18px;
+          margin-bottom: 20px;
         }
         .offerGrid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
           gap: 16px;
         }
         .offerCard {
           display: flex;
           flex-direction: column;
-          min-height: 260px;
+          min-height: 250px;
         }
         .offerCard h3 {
           margin: 0 0 10px;
@@ -798,11 +729,11 @@ export default function Home() {
           gap: 10px;
           padding-left: 20px;
           margin: 16px 0 0;
-          color: #405064;
-          line-height: 1.5;
+          color: var(--nl-text-dim);
+          line-height: 1.55;
         }
         .collaborators {
-          padding: 38px 0 32px;
+          padding: 42px 0 36px;
         }
         .collaborators p {
           max-width: 820px;
@@ -814,26 +745,9 @@ export default function Home() {
           align-items: center;
           gap: 18px;
         }
-        .footer {
-          padding: 24px 0 34px;
-          color: #667286;
-          font-size: 13px;
-        }
         @media (max-width: 900px) {
           .shell {
-            width: min(100% - 28px, 1120px);
-          }
-          .header {
-            flex-wrap: wrap;
-            padding: 12px 0;
-          }
-          .nav {
-            order: 3;
-            width: 100%;
-            margin-left: 0;
-          }
-          .langToggle {
-            margin-left: auto;
+            width: min(100% - 28px, 1160px);
           }
           .hero,
           .thesisBand,
@@ -849,7 +763,7 @@ export default function Home() {
           .hero {
             min-height: auto;
             gap: 8px;
-            padding-top: 22px;
+            padding-top: 26px;
           }
           .subtitle {
             font-size: 18px;
@@ -859,10 +773,10 @@ export default function Home() {
             justify-content: flex-start;
           }
           .markImage {
-            width: min(260px, 70vw);
+            width: min(240px, 66vw);
           }
         }
       `}</style>
-    </>
+    </SiteLayout>
   );
 }

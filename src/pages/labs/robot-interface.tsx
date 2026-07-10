@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
+import SiteLayout from "@/components/SiteLayout";
 import type {
   AdapterTarget,
   AttentionFlagSeverity,
@@ -502,7 +503,7 @@ export default function RobotInterfaceLab() {
   };
 
   return (
-    <>
+    <SiteLayout>
       <Head>
         <title>Robot Care Interface Lab - Neuroljus</title>
         <meta
@@ -511,11 +512,8 @@ export default function RobotInterfaceLab() {
         />
       </Head>
 
-      <main className="page">
+      <div className="page">
         <header className="topbar">
-          <Link href="/" className="brand">
-            Neuroljus
-          </Link>
           <div>
             <p className="kicker">Local prototype · open protocol · adapter-ready</p>
             <h1>Robot Care Interface</h1>
@@ -1093,41 +1091,32 @@ export default function RobotInterfaceLab() {
             <pre>{JSON.stringify(protocol, null, 2)}</pre>
           </section>
         </div>
-      </main>
+      </div>
 
       <style jsx>{`
         .page {
           min-height: 100dvh;
           padding: 22px;
-          color: #17202f;
-          background: #f4f7f6;
-          font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-            sans-serif;
+          color: var(--nl-text);
+          background: transparent;
+          font-family: var(--nl-font);
         }
         .topbar {
           max-width: 1360px;
-          margin: 0 auto 16px;
+          margin: 24px auto 16px;
           display: grid;
-          grid-template-columns: auto minmax(0, 1fr) auto;
+          grid-template-columns: minmax(0, 1fr) auto;
           gap: 18px;
           align-items: center;
         }
-        .brand {
-          min-height: 38px;
-          display: inline-flex;
-          align-items: center;
-          color: #245b62;
-          font-weight: 800;
-          text-decoration: none;
-        }
         .roomLink {
           margin-top: 6px;
-          color: #637085;
+          color: var(--nl-text-dim);
           font-size: 13px;
           font-weight: 700;
         }
         .roomLink :global(a) {
-          color: #245b62;
+          color: var(--nl-aurora-b);
         }
         h1,
         h2,
@@ -1150,10 +1139,10 @@ export default function RobotInterfaceLab() {
         }
         .kicker {
           margin-bottom: 4px;
-          color: #637085;
+          color: var(--nl-aurora-a);
           font-size: 12px;
           font-weight: 800;
-          letter-spacing: 0;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
         }
         .status {
@@ -1162,24 +1151,27 @@ export default function RobotInterfaceLab() {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          border: 1px solid #cbd8d5;
-          border-radius: 8px;
-          background: #ffffff;
-          color: #263140;
+          border: 1px solid var(--nl-border-strong);
+          border-radius: var(--nl-radius-sm);
+          background: var(--nl-surface);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          color: var(--nl-text);
           font-weight: 800;
         }
         .status.running {
-          background: #17202f;
-          color: #f8fffb;
+          border-color: transparent;
+          background: var(--nl-aurora-grad);
+          color: var(--nl-on-aurora);
         }
         .status.paused,
         .status.escalated {
-          border-color: #d8b15f;
-          background: #fff7e2;
+          border-color: rgba(247, 201, 106, 0.5);
+          background: rgba(247, 201, 106, 0.14);
         }
         .status.completed {
-          border-color: #8fc4aa;
-          background: #e6f7ef;
+          border-color: rgba(94, 230, 164, 0.5);
+          background: rgba(94, 230, 164, 0.14);
         }
         .summary {
           max-width: 1360px;
@@ -1190,9 +1182,11 @@ export default function RobotInterfaceLab() {
         }
         .summary div,
         .panel {
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
-          background: #ffffff;
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius);
+          background: var(--nl-surface);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
         }
         .summary div {
           padding: 14px;
@@ -1200,7 +1194,7 @@ export default function RobotInterfaceLab() {
         .summary span {
           display: block;
           margin-bottom: 6px;
-          color: #637085;
+          color: var(--nl-text-dim);
           font-size: 12px;
           font-weight: 800;
           text-transform: uppercase;
@@ -1210,7 +1204,7 @@ export default function RobotInterfaceLab() {
           margin-bottom: 6px;
         }
         .summary p {
-          color: #566477;
+          color: var(--nl-text-dim);
           font-size: 13px;
           line-height: 1.45;
         }
@@ -1226,9 +1220,11 @@ export default function RobotInterfaceLab() {
         .careRoom,
         .signalPanel,
         .adapterPanel {
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
-          background: #ffffff;
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius);
+          background: var(--nl-surface);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
           padding: 18px;
         }
         .experienceIntro {
@@ -1243,7 +1239,7 @@ export default function RobotInterfaceLab() {
         .experienceIntro p,
         .signalPanel p,
         .adapterPanel p {
-          color: #566477;
+          color: var(--nl-text-dim);
           line-height: 1.55;
         }
         .careRoom {
@@ -1251,8 +1247,12 @@ export default function RobotInterfaceLab() {
           display: grid;
           gap: 12px;
           background:
-            linear-gradient(180deg, rgba(255, 255, 255, var(--light-opacity)), rgba(240, 247, 244, 0.96)),
-            #eef5f2;
+            linear-gradient(
+              180deg,
+              rgba(255, 236, 179, calc(var(--light-opacity) * 0.1)),
+              rgba(6, 11, 22, 0.55)
+            ),
+            var(--nl-bg-raised);
         }
         .roomHeader,
         .environmentMeters {
@@ -1267,13 +1267,13 @@ export default function RobotInterfaceLab() {
         .visionGrid span,
         .visualCard span,
         .noticeCard span {
-          color: #637085;
+          color: var(--nl-text-dim);
           font-size: 11px;
           font-weight: 800;
           text-transform: uppercase;
         }
         .roomHeader strong {
-          color: #245b62;
+          color: var(--nl-aurora-b);
         }
         .environmentMeters {
           display: grid;
@@ -1281,9 +1281,9 @@ export default function RobotInterfaceLab() {
         }
         .environmentMeters div,
         .visionGrid div {
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
-          background: rgba(255, 255, 255, 0.72);
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius-sm);
+          background: rgba(6, 11, 22, 0.45);
           padding: 10px;
         }
         .environmentMeters b,
@@ -1295,11 +1295,15 @@ export default function RobotInterfaceLab() {
           position: relative;
           min-height: 340px;
           overflow: hidden;
-          border: 1px solid #cbd8d5;
-          border-radius: 8px;
+          border: 1px solid var(--nl-border-strong);
+          border-radius: var(--nl-radius-sm);
           background:
-            linear-gradient(180deg, rgba(255, 255, 255, var(--light-opacity)), rgba(221, 235, 232, 0.96)),
-            linear-gradient(90deg, #dfece8, #f6fbf8);
+            linear-gradient(
+              180deg,
+              rgba(255, 236, 179, calc(var(--light-opacity) * 0.16)),
+              rgba(6, 11, 22, 0.72)
+            ),
+            linear-gradient(90deg, #0c1730, #0b1424);
         }
         .windowGlow {
           position: absolute;
@@ -1307,10 +1311,10 @@ export default function RobotInterfaceLab() {
           left: 22px;
           width: 128px;
           height: 88px;
-          border: 1px solid rgba(36, 91, 98, 0.18);
-          border-radius: 8px;
-          background: rgba(255, 246, 210, var(--light-opacity));
-          box-shadow: 0 0 38px rgba(255, 230, 150, var(--light-opacity));
+          border: 1px solid rgba(124, 227, 247, 0.28);
+          border-radius: var(--nl-radius-sm);
+          background: rgba(255, 236, 179, calc(var(--light-opacity) * 0.55));
+          box-shadow: 0 0 38px rgba(255, 224, 140, calc(var(--light-opacity) * 0.4));
         }
         .soundField {
           position: absolute;
@@ -1323,7 +1327,7 @@ export default function RobotInterfaceLab() {
         .soundField span {
           position: absolute;
           right: 0;
-          border: 2px solid rgba(36, 91, 98, 0.38);
+          border: 2px solid rgba(124, 227, 247, 0.55);
           border-left: 0;
           border-radius: 0 999px 999px 0;
         }
@@ -1349,7 +1353,7 @@ export default function RobotInterfaceLab() {
           display: grid;
           gap: 8px;
           justify-items: center;
-          color: #405064;
+          color: var(--nl-text-dim);
           font-weight: 800;
         }
         .personMarker {
@@ -1357,16 +1361,16 @@ export default function RobotInterfaceLab() {
           height: 92px;
           display: grid;
           place-items: center;
-          border: 1px solid rgba(36, 91, 98, 0.28);
+          border: 1px solid var(--nl-border-strong);
           border-radius: 999px;
-          background: rgba(255, 255, 255, 0.72);
-          box-shadow: 0 0 0 28px rgba(36, 91, 98, 0.07);
+          background: var(--nl-surface-strong);
+          box-shadow: 0 0 0 28px rgba(124, 227, 247, 0.07);
         }
         .personMarker span {
           width: 38px;
           height: 52px;
           border-radius: 999px 999px 12px 12px;
-          background: #245b62;
+          background: var(--nl-aurora-grad);
         }
         .robotUnit {
           position: absolute;
@@ -1375,7 +1379,7 @@ export default function RobotInterfaceLab() {
           display: grid;
           gap: 7px;
           justify-items: center;
-          color: #17202f;
+          color: var(--nl-text-dim);
           font-size: 12px;
           font-weight: 800;
           transition: left 240ms ease;
@@ -1387,32 +1391,32 @@ export default function RobotInterfaceLab() {
           align-items: center;
           justify-content: center;
           gap: 10px;
-          border: 2px solid #17202f;
-          border-radius: 8px;
-          background: #ffffff;
+          border: 2px solid var(--nl-border-strong);
+          border-radius: var(--nl-radius-sm);
+          background: var(--nl-bg-raised);
         }
         .robotHead span {
           width: 9px;
           height: 9px;
           border-radius: 999px;
-          background: #245b62;
+          background: var(--nl-aurora-a);
         }
         .robotBody {
           width: 58px;
           height: 46px;
-          border: 2px solid #17202f;
-          border-radius: 8px;
-          background: #e6f7ef;
+          border: 2px solid var(--nl-border-strong);
+          border-radius: var(--nl-radius-sm);
+          background: rgba(94, 230, 164, 0.14);
         }
         .visualCard,
         .noticeCard {
           position: absolute;
           max-width: 230px;
-          border: 1px solid rgba(23, 32, 47, 0.14);
-          border-radius: 8px;
-          background: rgba(255, 255, 255, 0.92);
+          border: 1px solid var(--nl-border-strong);
+          border-radius: var(--nl-radius-sm);
+          background: rgba(11, 20, 36, 0.92);
           padding: 12px;
-          box-shadow: 0 16px 30px rgba(23, 32, 47, 0.12);
+          box-shadow: var(--nl-shadow);
         }
         .visualCard {
           left: 34px;
@@ -1429,9 +1433,9 @@ export default function RobotInterfaceLab() {
           line-height: 1.25;
         }
         .activeEffect {
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
-          background: rgba(255, 255, 255, 0.76);
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius-sm);
+          background: rgba(6, 11, 22, 0.5);
           padding: 12px;
         }
         .activeEffect strong {
@@ -1439,7 +1443,7 @@ export default function RobotInterfaceLab() {
           margin: 4px 0;
         }
         .activeEffect p {
-          color: #566477;
+          color: var(--nl-text-dim);
           line-height: 1.45;
         }
         .signalPanel,
@@ -1450,8 +1454,9 @@ export default function RobotInterfaceLab() {
         }
         .signalPanel button {
           justify-self: start;
-          background: #17202f;
-          color: #ffffff;
+          border-color: transparent;
+          background: var(--nl-aurora-grad);
+          color: var(--nl-on-aurora);
         }
         .visionGrid {
           display: grid;
@@ -1490,17 +1495,17 @@ export default function RobotInterfaceLab() {
           min-height: 44px;
           padding: 0 10px;
           text-align: left;
-          background: #fbfdfc;
+          background: var(--nl-surface);
         }
         .activePreset {
-          border-color: #245b62;
-          background: #e6f7ef;
-          color: #245b62;
+          border-color: var(--nl-aurora-b);
+          background: rgba(94, 230, 164, 0.14);
+          color: var(--nl-aurora-b);
         }
         .field {
           display: grid;
           gap: 7px;
-          color: #3d4959;
+          color: var(--nl-text);
           font-size: 13px;
           font-weight: 800;
         }
@@ -1514,7 +1519,7 @@ export default function RobotInterfaceLab() {
           margin-top: 14px;
         }
         .note {
-          color: #637085;
+          color: var(--nl-text-dim);
           font-size: 12px;
           font-weight: 700;
           line-height: 1.35;
@@ -1529,9 +1534,9 @@ export default function RobotInterfaceLab() {
         textarea {
           width: 100%;
           min-height: 40px;
-          border: 1px solid #cbd8d5;
-          border-radius: 8px;
-          background: #fbfdfc;
+          border: 1px solid var(--nl-border-strong);
+          border-radius: var(--nl-radius-sm);
+          background: var(--nl-surface);
           color: #17202f;
           font: inherit;
         }
@@ -1560,7 +1565,7 @@ export default function RobotInterfaceLab() {
           align-items: center;
         }
         .inlineInput span {
-          color: #637085;
+          color: var(--nl-text-dim);
           font-size: 13px;
           font-weight: 700;
         }
@@ -1576,17 +1581,17 @@ export default function RobotInterfaceLab() {
           display: flex;
           justify-content: space-between;
           gap: 12px;
-          color: #3d4959;
+          color: var(--nl-text);
           font-size: 13px;
           font-weight: 800;
         }
         input[type="range"] {
           padding: 0;
-          accent-color: #245b62;
+          accent-color: var(--nl-aurora-a);
         }
         .optionSection {
           padding-top: 14px;
-          border-top: 1px solid #edf1f0;
+          border-top: 1px solid var(--nl-border);
         }
         .checks {
           display: grid;
@@ -1603,16 +1608,16 @@ export default function RobotInterfaceLab() {
           grid-template-columns: 18px minmax(0, 1fr);
           gap: 10px;
           align-items: center;
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius-sm);
           padding: 10px;
-          background: #fbfdfc;
+          background: var(--nl-surface);
           font-size: 13px;
         }
         .check input {
           min-height: auto;
           width: 16px;
-          accent-color: #245b62;
+          accent-color: var(--nl-aurora-a);
         }
         .check b,
         .check small {
@@ -1620,17 +1625,17 @@ export default function RobotInterfaceLab() {
         }
         .check small {
           margin-top: 2px;
-          color: #637085;
+          color: var(--nl-text-dim);
           line-height: 1.25;
         }
         .scenario {
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius-sm);
           padding: 14px;
-          background: #fbfdfc;
+          background: var(--nl-surface);
         }
         .scenario span {
-          color: #637085;
+          color: var(--nl-text-dim);
           font-size: 12px;
           font-weight: 800;
           text-transform: uppercase;
@@ -1641,7 +1646,7 @@ export default function RobotInterfaceLab() {
           font-size: 18px;
         }
         .scenario p {
-          color: #566477;
+          color: var(--nl-text-dim);
           line-height: 1.45;
         }
         .progressWrap {
@@ -1670,18 +1675,18 @@ export default function RobotInterfaceLab() {
         }
         button {
           min-height: 40px;
-          border: 1px solid #cbd8d5;
-          border-radius: 8px;
-          background: #ffffff;
-          color: #17202f;
+          border: 1px solid var(--nl-border-strong);
+          border-radius: var(--nl-radius-sm);
+          background: var(--nl-surface);
+          color: var(--nl-text);
           cursor: pointer;
           font: inherit;
           font-weight: 800;
           padding: 0 12px;
         }
         button:hover:not(:disabled) {
-          border-color: #245b62;
-          color: #245b62;
+          border-color: var(--nl-aurora-b);
+          color: var(--nl-aurora-b);
         }
         button:disabled {
           cursor: not-allowed;
@@ -1697,8 +1702,9 @@ export default function RobotInterfaceLab() {
           margin-bottom: 0;
         }
         .simButtons button:first-child {
-          background: #17202f;
-          color: #ffffff;
+          border-color: transparent;
+          background: var(--nl-aurora-grad);
+          color: var(--nl-on-aurora);
         }
         .commandStack {
           display: grid;
@@ -1710,8 +1716,8 @@ export default function RobotInterfaceLab() {
           grid-template-columns: 30px minmax(0, 1fr);
           gap: 10px;
           align-items: center;
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius-sm);
           padding: 10px;
           background: #ffffff;
         }
@@ -1722,22 +1728,22 @@ export default function RobotInterfaceLab() {
           align-items: center;
           justify-content: center;
           border-radius: 999px;
-          background: #edf1f0;
+          background: var(--nl-surface-strong);
           font-weight: 800;
         }
         .command small {
           display: block;
           margin-top: 2px;
-          color: #637085;
+          color: var(--nl-text-dim);
         }
         .command.active {
-          border-color: #245b62;
+          border-color: var(--nl-aurora-b);
         }
         .command.done {
-          background: #eef8f3;
+          background: rgba(94, 230, 164, 0.12);
         }
         .empty {
-          color: #637085;
+          color: var(--nl-text-dim);
           font-weight: 700;
         }
         .audit,
@@ -1749,7 +1755,7 @@ export default function RobotInterfaceLab() {
         }
         .intelligenceIntro {
           max-width: 760px;
-          color: #566477;
+          color: var(--nl-text-dim);
           line-height: 1.55;
         }
         .intelligenceActions {
@@ -1759,8 +1765,9 @@ export default function RobotInterfaceLab() {
           margin: 14px 0;
         }
         .primaryAction {
-          background: #17202f;
-          color: #ffffff;
+          border-color: transparent;
+          background: var(--nl-aurora-grad);
+          color: var(--nl-on-aurora);
         }
         .intelligenceBody {
           display: grid;
@@ -1768,7 +1775,7 @@ export default function RobotInterfaceLab() {
           gap: 16px;
           align-items: start;
           padding-top: 14px;
-          border-top: 1px solid #edf1f0;
+          border-top: 1px solid var(--nl-border);
         }
         .intelligenceColumn {
           display: grid;
@@ -1779,12 +1786,12 @@ export default function RobotInterfaceLab() {
           margin-top: 6px;
         }
         .planMeta {
-          color: #637085;
+          color: var(--nl-text-dim);
           font-size: 12px;
           font-weight: 700;
         }
         .planParagraph {
-          color: #566477;
+          color: var(--nl-text-dim);
           font-size: 13px;
           line-height: 1.5;
         }
@@ -1797,29 +1804,29 @@ export default function RobotInterfaceLab() {
           grid-template-columns: 58px minmax(0, 1fr);
           gap: 10px;
           align-items: start;
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius-sm);
           padding: 10px;
-          background: #fbfdfc;
+          background: var(--nl-surface);
         }
         .planStep span {
-          color: #245b62;
+          color: var(--nl-aurora-b);
           font-size: 12px;
           font-weight: 800;
         }
         .planStep small {
           display: block;
           margin-top: 2px;
-          color: #637085;
+          color: var(--nl-text-dim);
           line-height: 1.35;
         }
         .validationOk {
-          color: #1f6b46;
+          color: var(--nl-aurora-a);
           font-size: 13px;
           font-weight: 800;
         }
         .validationIssues {
-          color: #8a5a12;
+          color: #f7c96a;
           font-size: 13px;
           font-weight: 800;
         }
@@ -1829,7 +1836,7 @@ export default function RobotInterfaceLab() {
           padding-left: 18px;
           display: grid;
           gap: 6px;
-          color: #566477;
+          color: var(--nl-text-dim);
           font-size: 13px;
           line-height: 1.45;
         }
@@ -1845,26 +1852,26 @@ export default function RobotInterfaceLab() {
           grid-template-columns: 72px minmax(0, 1fr);
           gap: 10px;
           align-items: start;
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius-sm);
           padding: 10px;
-          background: #fbfdfc;
+          background: var(--nl-surface);
         }
         .flag span {
           font-size: 11px;
           font-weight: 800;
           text-transform: uppercase;
-          color: #637085;
+          color: var(--nl-text-dim);
         }
         .flag.warning {
-          border-color: #d8b15f;
-          background: #fff7e2;
+          border-color: rgba(247, 201, 106, 0.5);
+          background: rgba(247, 201, 106, 0.14);
         }
         .flag.warning span {
-          color: #8a5a12;
+          color: #f7c96a;
         }
         .flag p {
-          color: #566477;
+          color: var(--nl-text-dim);
           font-size: 13px;
           line-height: 1.4;
         }
@@ -1892,20 +1899,20 @@ export default function RobotInterfaceLab() {
           grid-template-columns: 58px minmax(0, 1fr) auto;
           gap: 10px;
           align-items: start;
-          border: 1px solid #d8e1df;
-          border-radius: 8px;
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius-sm);
           padding: 10px;
-          background: #fbfdfc;
+          background: var(--nl-surface);
         }
         .logItem time,
         .logItem span {
-          color: #637085;
+          color: var(--nl-text-dim);
           font-size: 12px;
           font-weight: 800;
         }
         .logItem p {
           margin-top: 3px;
-          color: #566477;
+          color: var(--nl-text-dim);
           font-size: 13px;
           line-height: 1.35;
         }
@@ -1913,7 +1920,7 @@ export default function RobotInterfaceLab() {
           max-height: 520px;
           margin: 0;
           overflow: auto;
-          border-radius: 8px;
+          border-radius: var(--nl-radius-sm);
           background: #17202f;
           color: #e9f5f1;
           font-size: 12px;
@@ -1965,6 +1972,6 @@ export default function RobotInterfaceLab() {
           }
         }
       `}</style>
-    </>
+    </SiteLayout>
   );
 }
