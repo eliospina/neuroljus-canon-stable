@@ -21,11 +21,12 @@ jobs:
           echo "$CHANGED"
           # if any protected file is in the diff and token not present, fail
           for f in $PROTECTED; do
-            if echo "$CHANGED" | grep -qx "$f"; then
+            if echo "$CHANGED" | grep -qxF "$f"; then
               echo "Detected change in protected file: $f"
               # read all commit messages in the PR range
               MSGS=$(git log --pretty=format:%s origin/${{ github.base_ref }}..HEAD)
-              if ! echo "$MSGS" | grep -q "$OVERRIDE_TOKEN"; then
+              # -F: the token contains [] which would otherwise parse as a regex class
+              if ! echo "$MSGS" | grep -qF "$OVERRIDE_TOKEN"; then
                 echo "❌ Missing override token $OVERRIDE_TOKEN in commit messages."
                 echo "Add the token to one commit message only when you *intentionally* edit NL-VISION."
                 exit 1
