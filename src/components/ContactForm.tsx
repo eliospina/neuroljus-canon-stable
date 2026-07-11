@@ -52,7 +52,7 @@ export default function ContactForm() {
   return (
     <div className="max-w-2xl mx-auto">
       <h1 className="text-3xl md:text-4xl font-semibold mb-4">Contact</h1>
-      <p className="text-sm text-gray-600 mb-6">
+      <p className="text-sm text-[color:var(--nl-text-dim)] mb-6">
         Caregiver conversations, observation-method feedback, research collaboration,
         ethics, and accessibility inquiries are welcome.
         For privacy, keep messages general and avoid clinical records, identifying child
@@ -77,7 +77,7 @@ export default function ContactForm() {
             required
             maxLength={120}
             autoComplete="name"
-            className="w-full rounded-xl border p-3 outline-none focus:ring"
+            className="w-full rounded-xl border border-[color:var(--nl-border-strong)] bg-[color:var(--nl-surface)] p-3 text-[color:var(--nl-text)] placeholder:text-[color:var(--nl-text-faint)] outline-none focus:border-[color:var(--nl-aurora-b)]"
             placeholder="Your name"
           />
         </div>
@@ -90,7 +90,7 @@ export default function ContactForm() {
             required
             maxLength={160}
             autoComplete="email"
-            className="w-full rounded-xl border p-3 outline-none focus:ring"
+            className="w-full rounded-xl border border-[color:var(--nl-border-strong)] bg-[color:var(--nl-surface)] p-3 text-[color:var(--nl-text)] placeholder:text-[color:var(--nl-text-faint)] outline-none focus:border-[color:var(--nl-aurora-b)]"
             placeholder="you@example.com"
           />
         </div>
@@ -100,7 +100,7 @@ export default function ContactForm() {
           <select
             name="interest"
             required
-            className="w-full rounded-xl border p-3 outline-none focus:ring bg-white"
+            className="w-full rounded-xl border border-[color:var(--nl-border-strong)] bg-[color:var(--nl-bg-raised)] p-3 text-[color:var(--nl-text)] outline-none focus:border-[color:var(--nl-aurora-b)]"
             defaultValue=""
           >
             <option value="" disabled>
@@ -122,7 +122,7 @@ export default function ContactForm() {
             required
             rows={6}
             maxLength={3000}
-            className="w-full rounded-xl border p-3 outline-none focus:ring"
+            className="w-full rounded-xl border border-[color:var(--nl-border-strong)] bg-[color:var(--nl-surface)] p-3 text-[color:var(--nl-text)] placeholder:text-[color:var(--nl-text-faint)] outline-none focus:border-[color:var(--nl-aurora-b)]"
             placeholder="Tell us a bit about your care, research, or collaboration context..."
           />
         </div>
@@ -138,13 +138,13 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={state === "sending"}
-          className="px-5 py-3 rounded-2xl bg-black text-white hover:opacity-90 disabled:opacity-50"
+          className="nl-cta disabled:opacity-50"
         >
           {state === "sending" ? "Sending…" : "Send message"}
         </button>
 
         {msg && (
-          <p className={`text-sm ${state === "ok" ? "text-green-700" : "text-red-700"}`}>
+          <p className={`text-sm ${state === "ok" ? "text-[color:var(--nl-aurora-a)]" : "text-red-400"}`}>
             {msg}
           </p>
         )}

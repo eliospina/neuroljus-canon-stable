@@ -1,16 +1,15 @@
 # NeuroLjus — [neuroljus.com](https://neuroljus.com)
 
-Neuroljus is currently paused as an active product and maintained as a research/portfolio prototype.
+Neuroljus is an independent research project by Elizabeth Ospina: a research-ready care intelligence platform that turns lived caregiving knowledge — especially around non-speaking autism — into structured routines, local observations, and open protocols for future health, research, and assistive robotics.
 
-Neuroljus is an independent research and technical portfolio project by Elizabeth Ospina exploring privacy-first AI tools for caregiver observation, communication support, and long-horizon care intelligence in non-speaking autism.
-
-See [Board Decision 001](docs/board/decision-001-pause-active-product.md) for the active status.
+Focused development (website, local labs, protocol engine, research materials) is active under [Board Decision 002](docs/board/decision-002-adopt-care-intelligence-positioning.md). Institutional pilots, clinical workflows, and human validation still require the evidence and approvals in [Reopen Criteria](docs/board/reopen-criteria.md).
 
 **Stack:** Next.js 15 · React 19 · OpenAI (server-side) · deployed on Vercel.
 
 ## Strategic Status Documents
 
-- [Board Decision 001: Pause Active Product Development](docs/board/decision-001-pause-active-product.md)
+- [Board Decision 002: Adopt Care Intelligence Positioning](docs/board/decision-002-adopt-care-intelligence-positioning.md)
+- [Board Decision 001: Pause Active Product Development (historical)](docs/board/decision-001-pause-active-product.md)
 - [Founder Context and Project Thesis](docs/strategy/founder-context-and-project-thesis.md)
 - [Near-Term Action Vision](docs/strategy/near-term-action-vision.md)
 - [Offer Map](docs/strategy/offer-map.md)
@@ -42,11 +41,14 @@ Near-term research tools:
 ## What Neuroljus Offers Now
 
 - **Caregiver interviews** to learn how observation, handoffs, uncertainty, and respectful language work in real care settings.
-- **Observation Method v0** (`/observation-method`) to test structured, non-diagnostic caregiver notes over time.
-- **NL-VISION Lab** as a local prototype for optional visual signals and reflection, not interpretation.
+- **Observation Method v0** (`/observation-method`) to test structured caregiver notes over time.
+- **NL-VISION Lab** (`/labs/nl-vision`) as a local observation layer for optional visual signals, with live pattern-identification overlays.
+- **Future Care Room** (`/labs/future-care-room`) — an interactive care-room simulation where caregiver settings become a living care protocol.
+- **Robot Care Interface** (`/labs/robot-interface`) — the technical protocol workspace: routine builder, simulator, audit trail, adapter packets (ROS2/MQTT/HTTP/offline).
+- **Care protocol engine** (`src/lib/careProtocol/`) — deterministic, local, tested (`npm test`).
 - **Research collaboration** for ethics, privacy, accessibility, validation design, and future evidence-building.
 
-Neuroljus does not currently offer diagnosis, medical advice, clinical deployment, institutional pilots, robotics prototypes, or automated interpretation of autistic communication.
+Neuroljus does not currently offer diagnosis, medical advice, clinical deployment, institutional pilots, or automated interpretation of autistic communication. Diagnostic support is a future horizon to be built only with qualified research and care partners.
 
 ## Quick start
 ```bash
@@ -135,9 +137,9 @@ To set it up on a fresh Vercel project:
 
 ## Product Status
 
-Active product/app development is paused. No new feature development should continue until the board reopens product development under the criteria in `docs/board/decision-001-pause-active-product.md`.
+Focused development is active for the website, the local labs (NL-VISION, Robot Care Interface, Future Care Room), the care protocol engine, and research materials, under [Board Decision 002](docs/board/decision-002-adopt-care-intelligence-positioning.md).
 
-The repository, website, NL-VISION prototype, and contact page remain available as research/portfolio assets.
+Institutional pilots, clinical workflows, server-side features beyond the existing chat endpoint, and human validation remain gated by the evidence and approvals in `docs/board/reopen-criteria.md`.
 
 ## For Collaborators, Researchers, and Institutions
 

@@ -1,43 +1,44 @@
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
-
-type Lang = "sv" | "en" | "es";
+import { useEffect, useMemo } from "react";
+import SiteLayout, { useLang } from "@/components/SiteLayout";
 
 export default function Home() {
-  const [lang, setLang] = useState<Lang>("en");
+  const [lang, setLang] = useLang("en");
 
   useEffect(() => {
     try {
+      if (window.localStorage.getItem("nl_lang")) return;
       const browserLang = navigator.language?.toLowerCase() || "";
       if (browserLang.startsWith("sv")) setLang("sv");
       else if (browserLang.startsWith("es")) setLang("es");
-      else setLang("en");
     } catch {
-      setLang("en");
+      /* keep default */
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const T = useMemo(
     () => ({
       sv: {
-        seoTitle: "NeuroLjus - omsorgsintelligens genom design",
+        seoTitle: "NeuroLjus - omsorgsintelligens för framtidens hälsa och omsorg",
         seoDesc:
-          "Neuroljus designar integritetsförst omsorgsintelligens: observationsmetod, prototyper och en vetenskaplig väg mot framtida AI och omsorgsrobotik.",
+          "Neuroljus är en forskningsförberedd plattform för omsorgsintelligens, vardagsobservation, öppna protokoll och framtida AI- och robotikstöd inom vård och omsorg.",
         primaryNav: "Primär",
         coreKicker: "Kärna",
         horizonAria: "Forskningshorisont",
         collabKicker: "Samarbete",
-        eyebrow: "Omsorgsintelligens genom design · integritet · framtida omsorg",
+        eyebrow: "Omsorgsintelligens · svensk omsorgslogik · framtida hälsoteknik",
         title: "Neuroljus",
         subtitle:
-          "Neuroljus designar observationslagret för framtidens omsorgsintelligens: där vårdgivares kunskap blir strukturerat språk, etisk AI och en väg mot omsorgsrobotik.",
+          "Neuroljus omvandlar levd omsorgskunskap till strukturerade rutiner, lokala observationer och öppna protokoll för framtida hälsa, forskning och assisterande robotik.",
         cta: "Öppna NL-VISION",
+        futureRoomCta: "Gå in i Future Care Room",
         whitepaperCta: "Läs white paper",
         whitepaperHref: "https://doi.org/10.5281/zenodo.20775583",
         secondaryCta: "Läs projektets historia",
         status:
-          "Vi tror på visionen och bygger den del som kan byggas idag: språk, arkitektur, prototyp och vetenskaplig väg. Den etiska ramen är en del av att tänka stort och bygga något som kan hålla i längden.",
+          "Vi bygger de första lagren: språk, metod, lokal prototyp, öppna protokoll och forskningsväg. Visionen är större än en app: omsorgskunskap som en del av framtidens hälsoinfrastruktur.",
         navDemo: "Demo",
         navAbout: "Om",
         navOffer: "Nu",
@@ -48,7 +49,7 @@ export default function Home() {
           {
             title: "Vårdgivarintelligens",
             body:
-              "Vardagens omsorg innehåller expertis. Neuroljus börjar med att lyssna till observationer, överlämningar och osäkerhet så att levd kunskap kan bli designmaterial.",
+              "Vardagens omsorg innehåller expertis. Neuroljus gör observationer, överlämningar och osäkerhet till strukturerat designmaterial.",
             action: "Starta samtal",
             href: "/contact",
           },
@@ -62,77 +63,85 @@ export default function Home() {
           {
             title: "NL-VISION-labb",
             body:
-              "Ett lokalt prototyplabb för valfria visuella signaler. Det visar hur framtida omsorgsteknik kan designas med integritet från första raden kod.",
+              "Ett lokalt observationslager för valfria visuella signaler, byggt för integritet och framtida forskningsanknytning från första raden kod.",
             action: "Öppna labbet",
             href: "/labs/nl-vision",
           },
           {
+            title: "Future Care Room",
+            body:
+              "En interaktiv vårdrumssimulering där ljus, ljud, avstånd och rytm blir ett levande omsorgsprotokoll för framtida robot- och adapterarbete.",
+            action: "Gå in i rummet",
+            href: "/labs/future-care-room",
+          },
+          {
             title: "Klinisk-vetenskaplig förankring",
             body:
-              "Dialog med universitet, forskare, kliniska miljöer och etiska samarbetspartners som kan hjälpa Neuroljus växa med evidens.",
+              "Dialog med universitet, forskare och kliniska miljöer som kan hjälpa Neuroljus växa mot validerade lager för forskning, diagnostiskt stöd och omsorgsinfrastruktur.",
             action: "Starta dialog",
             href: "/contact",
           },
         ],
         offerFoot:
-          "Neuroljus är här för att tänka stort och börja rätt: med språk, observation, prototyp och forskningsdialog innan klinisk produkt, diagnos eller automatiserad tolkning.",
+          "Neuroljus börjar i vardagens omsorg och bygger för större integration: forskning, klinisk vetenskap, välfärdssystem, öppna protokoll och assisterande teknik.",
         thesisTitle: "Fött ur verklig omsorg",
         thesis:
           "Elizabeths erfarenhet som ekonom och vårdgivare är projektets grund: noggrann observation, systemförståelse, omsorgsarbete och respekt för det som inte alltid uttrycks genom tal.",
         horizonTitle: "Den långsiktiga frågan",
         horizon:
-          "Om framtidens omsorg en dag inkluderar AI och robotar, vem lär dem vad värdighet betyder? Neuroljus börjar där ansvaret är konkret: en person, ett sammanhang, en observation, ett nästa steg.",
+          "När framtidens omsorg inkluderar AI, sensorer och robotar behöver de lära sig från verklig omsorg: en person, ett sammanhang, en rutin, ett nästa steg.",
         modelTitle: "Inom-person över tid",
         model:
           "Neuroljus börjar med individuella mönster före universella svar om autism. Det utforskar hur strukturerade observationer över tid kan hjälpa vårdgivare se mer med omsorg och mindre gissning.",
         robotTitle: "Robotik som horisont",
         robot:
-          "Framtida robotar kan en dag stödja rutiner, miljö, trygg överföring och kommunikation. I Neuroljus får tekniken bara växa där samtycke, integritet, evidens och mänsklig närvaro följer med.",
+          "Assisterande robotik kan stödja rutiner, miljö, överföringar och kommunikation. Neuroljus bygger protokollen som gör sådant stöd begripligt, spårbart och anpassningsbart.",
         actionKicker: "Vägen framåt",
-        actionTitle: "En väg som tål granskning",
+        actionTitle: "Från vardagsomsorg till hälsoinfrastruktur",
         actionIntro:
-          "Arbetet nu är att designa med övertygelse och samtidigt hitta rätt institutionellt hem, rätt vetenskapliga ankare och rätt skydd innan Neuroljus närmar sig mänsklig validering.",
+          "Arbetet nu är att bygga de lager som gör omsorgskunskap användbar för familjer, kommuner, forskning, kliniska partners och framtida omsorgsteknik.",
         actionSteps: [
-          "Hålla NL-VISION lokalt, frivilligt, icke-diagnostiskt och tydligt märkt som prototyp.",
-          "Dela white paper med universitet och forskare som kan ge klinisk-vetenskaplig förankring.",
-          "Förbereda dataskydd, samtycke, riskanalys och etikprövning innan känslig mänsklig validering.",
-          "Bygga den arkitektur som kan bära en större framtid när evidens, partnerskap och ansvar är på plats.",
+          "Utveckla observations- och rutinverktyg som passar vardagens omsorg.",
+          "Göra protokoll portabla så att forskare, öppna projekt och framtida enheter kan bygga vidare.",
+          "Söka universitet och kliniska partners för lager som kräver validering, evidens och forskningsansvar.",
+          "Bygga integritet, samtycke, spårbarhet och lokal kontroll som tekniska egenskaper från början.",
         ],
-        boundariesTitle: "Nuvarande ram",
+        boundariesTitle: "Designprinciper",
         boundaries: [
-          "Idag stödjer Neuroljus reflektion, inte diagnos eller medicinska råd.",
-          "Kamerasignaler behandlas som tekniska observationer, inte som säkerhet om inre tillstånd.",
-          "Validering med människor eller känsliga data hör hemma i ett godkänt forskningsramverk.",
-          "Tekniken ska stödja människor, inte ersätta familj, vårdgivare eller professionell omsorg.",
-          "Alla framtida kliniska eller diagnostiska vägar kräver evidens, forskningsansvar, etik, dataskydd och reglering.",
+          "Vårdgivaren författar rutiner, sammanhang och mål.",
+          "Lokala observationer prioriterar integritet och kontroll nära personen.",
+          "Osäkerhet sparas som data så att systemet kan lära utan att låtsas veta mer än det vet.",
+          "Kliniska och diagnostiska lager utvecklas tillsammans med kvalificerade forsknings- och vårdpartners.",
+          "Familj, vårdgivare, professionell omsorg och framtida teknik ingår i samma stödnätverk.",
         ],
-        labTitle: "Nuvarande tekniska artefakt",
+        labTitle: "Aktuellt tekniskt lager",
         lab:
-          "NL-VISION är ett lokalt observationsdemo för ansikte, händer och enkla signaler. Signalerna är tekniska datapunkter, inte evidens för smärta, känslor, behov eller kommunikation.",
+          "NL-VISION är ett lokalt observationslager för ansikte, händer och enkla signaler. Det visar hur vardagsnära tekniska signaler kan struktureras för reflektion, forskning och framtida integration.",
         collabTitle: "För universitet, forskare och etiska samarbetspartners",
         collab:
-          "Neuroljus söker ett klinisk-vetenskapligt ankare: en miljö där levd erfarenhet, teknik, autismforskning, dataskydd och etik kan mötas i den takt som människorna bakom projektet förtjänar.",
+          "Neuroljus söker klinisk-vetenskapliga ankare: miljöer där levd erfarenhet, teknik, autismforskning, dataskydd och svensk omsorgslogik kan bli framtida hälsa- och omsorgsinfrastruktur.",
         footer:
           "Neuroljus är ett oberoende forsknings- och portfolioprojekt av Elizabeth Ospina.",
       },
       en: {
-        seoTitle: "NeuroLjus - care intelligence by design",
+        seoTitle: "NeuroLjus - care intelligence for future health and care",
         seoDesc:
-          "Neuroljus designs privacy-first care intelligence: observation method, prototypes, and a scientific path toward future AI and care robotics.",
+          "Neuroljus is a research-ready care intelligence platform for everyday observation, open protocols, and future AI and robotics support in health and care.",
         primaryNav: "Primary",
         coreKicker: "Core",
         horizonAria: "Research horizon",
         collabKicker: "Collaboration",
-        eyebrow: "Care intelligence by design · privacy · future care",
+        eyebrow: "Care intelligence · Swedish care logic · future health technology",
         title: "Neuroljus",
         subtitle:
-          "Neuroljus designs the observation layer for future care intelligence: where caregiver knowledge becomes structured language, ethical AI, and a path toward care robotics.",
+          "Neuroljus transforms lived caregiving knowledge into structured routines, local observations, and open protocols for future health, research, and assistive robotics.",
         cta: "Open NL-VISION",
+        futureRoomCta: "Enter the Future Care Room",
         whitepaperCta: "Read the white paper",
         whitepaperHref: "https://doi.org/10.5281/zenodo.20775583",
         secondaryCta: "Read the origin story",
         status:
-          "We believe in the vision and we are building the part that can be built today: language, architecture, prototype, and scientific path. The ethical framework is part of thinking at full scale and building something that can last.",
+          "We are building the first layers: language, method, local prototype, open protocols, and research path. The vision is larger than an app: caregiving knowledge as part of future health infrastructure.",
         navDemo: "Demo",
         navAbout: "About",
         navOffer: "Now",
@@ -143,7 +152,7 @@ export default function Home() {
           {
             title: "Caregiver intelligence",
             body:
-              "Everyday care contains expertise. Neuroljus begins by listening to observations, handoffs, and uncertainty so lived knowledge can become design material.",
+              "Everyday care contains expertise. Neuroljus turns observations, handoffs, and uncertainty into structured design material.",
             action: "Start a conversation",
             href: "/contact",
           },
@@ -157,77 +166,85 @@ export default function Home() {
           {
             title: "NL-VISION lab",
             body:
-              "A local prototype lab for optional visual signals. It shows how future care technology can be designed with privacy from the first line of code.",
+              "A local observation layer for optional visual signals, built for privacy and future research connection from the first line of code.",
             action: "Open the lab",
             href: "/labs/nl-vision",
           },
           {
+            title: "Future Care Room",
+            body:
+              "An interactive care-room simulation where light, sound, distance, and rhythm become a living care protocol for future robot and adapter work.",
+            action: "Enter the room",
+            href: "/labs/future-care-room",
+          },
+          {
             title: "Clinical-science anchor",
             body:
-              "Dialogue with universities, researchers, clinical environments, and ethical collaborators who can help Neuroljus grow with evidence.",
+              "Dialogue with universities, researchers, and clinical environments that can help Neuroljus grow toward validated layers for research, diagnostic support, and care infrastructure.",
             action: "Start a dialogue",
             href: "/contact",
           },
         ],
         offerFoot:
-          "Neuroljus is here to think at full scale and begin correctly: with language, observation, prototype, and research dialogue before clinical product, diagnosis, or automated interpretation.",
+          "Neuroljus begins in everyday care and builds toward larger integration: research, clinical science, welfare systems, open protocols, and assistive technology.",
         thesisTitle: "Born from real care",
         thesis:
           "Elizabeth's experience as an economist and caregiver is the project's foundation: careful observation, systems knowledge, care work, and respect for what is not always expressed through speech.",
         horizonTitle: "The long-term question",
         horizon:
-          "If future care one day includes AI and robots, who teaches them what dignity means? Neuroljus begins where responsibility is concrete: one person, one context, one observation, one next step.",
+          "When future care includes AI, sensors, and robots, they need to learn from real care: one person, one context, one routine, one next step.",
         modelTitle: "Within-person, over time",
         model:
           "Neuroljus begins with individual patterns before universal answers about autism. It explores whether structured observations over time can help caregivers see with more care and less guesswork.",
         robotTitle: "Robotics as a horizon",
         robot:
-          "Future robots may one day support routines, environment, safe handoffs, and communication. In Neuroljus, technology may only grow where consent, privacy, evidence, and human presence grow with it.",
+          "Assistive robotics can support routines, environments, handoffs, and communication. Neuroljus builds the protocols that make that support understandable, traceable, and adaptable.",
         actionKicker: "The path forward",
-        actionTitle: "A path that can stand up to review",
+        actionTitle: "From everyday care to health infrastructure",
         actionIntro:
-          "The work now is to design with conviction while finding the right institutional home, scientific anchor, and protections before Neuroljus approaches human validation.",
+          "The work now is to build the layers that make caregiving knowledge useful for families, municipalities, research, clinical partners, and future care technology.",
         actionSteps: [
-          "Keep NL-VISION local, optional, non-diagnostic, and clearly marked as a prototype.",
-          "Share the white paper with universities and researchers who can provide clinical-science grounding.",
-          "Prepare data protection, consent, risk review, and ethical review before sensitive human validation.",
-          "Build the architecture that can carry a larger future when evidence, partnership, and responsibility are in place.",
+          "Develop observation and routine tools that fit everyday care.",
+          "Make protocols portable so researchers, open projects, and future devices can build on them.",
+          "Seek university and clinical partners for layers that require validation, evidence, and research responsibility.",
+          "Build privacy, consent, traceability, and local control as technical properties from the beginning.",
         ],
-        boundariesTitle: "Current frame",
+        boundariesTitle: "Design principles",
         boundaries: [
-          "Today, Neuroljus supports reflection rather than diagnosis or medical advice.",
-          "Camera signals are treated as technical observations, not certainty about inner states.",
-          "Validation with people or sensitive data belongs inside an approved research framework.",
-          "The technology should support people, not replace family, caregivers, or professional care.",
-          "Any future clinical or diagnostic path requires evidence, research responsibility, ethics, data protection, and regulation.",
+          "The caregiver authors routines, context, and goals.",
+          "Local observations prioritize privacy and control near the person.",
+          "Uncertainty is preserved as data so the system can learn without pretending to know more than it knows.",
+          "Clinical and diagnostic layers are developed with qualified research and care partners.",
+          "Family, caregivers, professional care, and future technology belong to the same support network.",
         ],
-        labTitle: "Current technical artifact",
+        labTitle: "Current technical layer",
         lab:
-          "NL-VISION is a local observation demo for face, hands, and simple signals. Its signals are technical data points, not evidence of pain, emotion, needs, or communication.",
+          "NL-VISION is a local observation layer for face, hands, and simple signals. It shows how everyday technical signals can be structured for reflection, research, and future integration.",
         collabTitle: "For universities, researchers, and ethical collaborators",
         collab:
-          "Neuroljus is seeking a clinical-science anchor: a place where lived experience, technology, autism research, data protection, and ethics can meet at the pace the people behind this work deserve.",
+          "Neuroljus is seeking clinical-science anchors: environments where lived experience, technology, autism research, data protection, and Swedish care logic can become future health and care infrastructure.",
         footer:
           "Neuroljus is an independent research and portfolio project by Elizabeth Ospina.",
       },
       es: {
-        seoTitle: "NeuroLjus - inteligencia de cuidado por diseño",
+        seoTitle: "NeuroLjus - inteligencia de cuidado para salud y cuidado futuro",
         seoDesc:
-          "Neuroljus diseña inteligencia de cuidado centrada en privacidad: método de observación, prototipos y un camino científico hacia futura IA y robótica de cuidado.",
+          "Neuroljus es una plataforma de inteligencia del cuidado preparada para investigación, observación cotidiana, protocolos abiertos y futura IA y robótica al servicio de la salud y el cuidado.",
         primaryNav: "Principal",
         coreKicker: "Núcleo",
         horizonAria: "Horizonte de investigación",
         collabKicker: "Colaboración",
-        eyebrow: "Inteligencia de cuidado por diseño · privacidad · futuro del cuidado",
+        eyebrow: "Inteligencia del cuidado · lógica sueca de cuidado · salud futura",
         title: "Neuroljus",
         subtitle:
-          "Neuroljus diseña la capa de observación para la inteligencia de cuidado del futuro: donde el conocimiento de los cuidadores se convierte en lenguaje estructurado, IA ética y camino hacia robótica de cuidado.",
+          "Neuroljus transforma conocimiento cuidador vivido en rutinas estructuradas, observaciones locales y protocolos abiertos para futura salud, investigación y robótica asistiva.",
         cta: "Abrir NL-VISION",
+        futureRoomCta: "Entrar a Future Care Room",
         whitepaperCta: "Leer el white paper",
         whitepaperHref: "https://doi.org/10.5281/zenodo.20775583",
         secondaryCta: "Leer la historia",
         status:
-          "Creemos en la visión y estamos construyendo la parte que sí puede construirse hoy: lenguaje, arquitectura, prototipo y camino científico. El marco ético es parte de pensar en grande y construir algo que dure.",
+          "Estamos construyendo las primeras capas: lenguaje, método, prototipo local, protocolos abiertos y camino de investigación. La visión es más grande que una app: conocimiento cuidador como parte de la infraestructura futura de salud.",
         navDemo: "Demo",
         navAbout: "Sobre",
         navOffer: "Ahora",
@@ -238,7 +255,7 @@ export default function Home() {
           {
             title: "Inteligencia cuidadora",
             body:
-              "El cuidado cotidiano contiene experticia. Neuroljus empieza escuchando observaciones, traspasos e incertidumbre para convertir conocimiento vivido en material de diseño.",
+              "El cuidado cotidiano contiene experticia. Neuroljus convierte observaciones, traspasos e incertidumbre en material de diseño estructurado.",
             action: "Iniciar conversación",
             href: "/contact",
           },
@@ -252,56 +269,63 @@ export default function Home() {
           {
             title: "Laboratorio NL-VISION",
             body:
-              "Un prototipo local para señales visuales opcionales. Muestra cómo la tecnología futura de cuidado puede diseñarse con privacidad desde la primera línea de código.",
+              "Una capa local de observación para señales visuales opcionales, construida con privacidad y conexión futura a investigación desde la primera línea de código.",
             action: "Abrir el laboratorio",
             href: "/labs/nl-vision",
           },
           {
+            title: "Future Care Room",
+            body:
+              "Una simulación interactiva de una sala de cuidado donde luz, sonido, distancia y ritmo se convierten en un protocolo vivo para futuros robots y adaptadores.",
+            action: "Entrar a la sala",
+            href: "/labs/future-care-room",
+          },
+          {
             title: "Anclaje clínico-científico",
             body:
-              "Diálogo con universidades, investigadores, entornos clínicos y aliados éticos que puedan ayudar a Neuroljus a crecer con evidencia.",
+              "Diálogo con universidades, investigadores y entornos clínicos que puedan ayudar a Neuroljus a crecer hacia capas validadas de investigación, apoyo diagnóstico e infraestructura de cuidado.",
             action: "Iniciar diálogo",
             href: "/contact",
           },
         ],
         offerFoot:
-          "Neuroljus está aquí para pensar en grande y empezar correctamente: con lenguaje, observación, prototipo y diálogo de investigación antes de producto clínico, diagnóstico o interpretación automática.",
+          "Neuroljus empieza en el cuidado cotidiano y construye hacia una integración mayor: investigación, ciencia clínica, sistemas de bienestar, protocolos abiertos y tecnología asistiva.",
         thesisTitle: "Nacido del cuidado real",
         thesis:
           "La experiencia de Elizabeth como economista y cuidadora es el fundamento del proyecto: observación cuidadosa, conocimiento de sistemas, trabajo de cuidado y respeto por lo que no siempre se expresa con palabras.",
         horizonTitle: "La pregunta a largo plazo",
         horizon:
-          "Si el cuidado del futuro algún día incluye IA y robots, ¿quién les enseña lo que significa dignidad? Neuroljus empieza donde la responsabilidad es concreta: una persona, un contexto, una observación, un siguiente paso.",
+          "Cuando el cuidado del futuro incluya IA, sensores y robots, tendrán que aprender del cuidado real: una persona, un contexto, una rutina, un siguiente paso.",
         modelTitle: "Dentro de una persona, a través del tiempo",
         model:
           "Neuroljus empieza con patrones individuales antes que respuestas universales sobre el autismo. Explora si las observaciones estructuradas en el tiempo pueden ayudar a cuidadores a mirar con más cuidado y menos suposición.",
         robotTitle: "La robótica como horizonte",
         robot:
-          "Los robots futuros podrían apoyar rutinas, ambiente, traspasos seguros y comunicación. En Neuroljus, la tecnología solo debe crecer donde también crezcan el consentimiento, la privacidad, la evidencia y la presencia humana.",
+          "La robótica asistiva puede apoyar rutinas, entornos, traspasos y comunicación. Neuroljus construye los protocolos para que ese apoyo sea comprensible, trazable y adaptable.",
         actionKicker: "El camino ahora",
-        actionTitle: "Un camino que puede sostener revisión",
+        actionTitle: "Del cuidado cotidiano a infraestructura de salud",
         actionIntro:
-          "El trabajo ahora es diseñar con convicción mientras encontramos el hogar institucional correcto, el anclaje científico y las protecciones necesarias antes de acercarnos a una validación humana.",
+          "El trabajo ahora es construir las capas que vuelven útil el conocimiento cuidador para familias, comunas, investigación, aliados clínicos y futura tecnología de cuidado.",
         actionSteps: [
-          "Mantener NL-VISION local, opcional, no diagnóstico y claramente marcado como prototipo.",
-          "Compartir el white paper con universidades e investigadores que puedan dar base clínico-científica.",
-          "Preparar protección de datos, consentimiento, análisis de riesgos y revisión ética antes de una validación humana sensible.",
-          "Construir la arquitectura que pueda sostener una visión más grande cuando existan evidencia, alianzas y responsabilidad.",
+          "Desarrollar herramientas de observación y rutina que encajen en el cuidado cotidiano.",
+          "Hacer protocolos portables para que investigadores, proyectos abiertos y futuros dispositivos puedan construir encima.",
+          "Buscar universidades y aliados clínicos para capas que requieran validación, evidencia y responsabilidad investigadora.",
+          "Construir privacidad, consentimiento, trazabilidad y control local como propiedades técnicas desde el inicio.",
         ],
-        boundariesTitle: "Marco actual",
+        boundariesTitle: "Principios de diseño",
         boundaries: [
-          "Hoy Neuroljus acompaña reflexión, no diagnóstico ni consejo médico.",
-          "Las señales de cámara se tratan como observaciones técnicas, no como certeza sobre estados internos.",
-          "La validación con personas o datos sensibles pertenece a un marco de investigación aprobado.",
-          "La tecnología debe apoyar a las personas, no reemplazar familia, cuidadores ni atención profesional.",
-          "Cualquier camino clínico o diagnóstico futuro exige evidencia, responsabilidad investigadora, ética, protección de datos y regulación.",
+          "La cuidadora define rutinas, contexto y objetivos.",
+          "Las observaciones locales priorizan privacidad y control cerca de la persona.",
+          "La incertidumbre se conserva como dato para que el sistema aprenda sin fingir más certeza de la que tiene.",
+          "Las capas clínicas y diagnósticas se desarrollan con aliados cualificados de investigación y cuidado.",
+          "Familia, cuidadores, atención profesional y futura tecnología pertenecen a una misma red de apoyo.",
         ],
-        labTitle: "Artefacto técnico actual",
+        labTitle: "Capa técnica actual",
         lab:
-          "NL-VISION es una demo local de observación de rostro, manos y señales simples. Sus señales son datos técnicos, no evidencia de dolor, emociones, necesidades o comunicación.",
+          "NL-VISION es una capa local de observación de rostro, manos y señales simples. Muestra cómo señales técnicas de la vida cotidiana pueden estructurarse para reflexión, investigación e integración futura.",
         collabTitle: "Para universidades, investigadores y aliados éticos",
         collab:
-          "Neuroljus busca un anclaje clínico-científico: un lugar donde experiencia vivida, tecnología, investigación en autismo, protección de datos y ética puedan encontrarse al ritmo que merecen las personas detrás de este trabajo.",
+          "Neuroljus busca anclajes clínico-científicos: entornos donde experiencia vivida, tecnología, investigación en autismo, protección de datos y lógica sueca de cuidado puedan convertirse en infraestructura futura de salud y cuidado.",
         footer:
           "Neuroljus es un proyecto independiente de investigación y portafolio de Elizabeth Ospina.",
       },
@@ -312,7 +336,7 @@ export default function Home() {
   const copy = T[lang];
 
   return (
-    <>
+    <SiteLayout lang={lang} onLangChange={setLang}>
       <Head>
         <title>{copy.seoTitle}</title>
         <meta name="description" content={copy.seoDesc} />
@@ -321,44 +345,11 @@ export default function Home() {
         <meta property="og:description" content={copy.seoDesc} />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="/brand/neuroljus-logo.svg" />
-        <meta name="theme-color" content="#f5faf7" />
+        <meta name="theme-color" content="#060b16" />
       </Head>
 
       <div className="page">
-        <header className="shell header" role="banner">
-          <a className="brand" href="/" aria-label="NeuroLjus home">
-            <Image
-              src="/brand/neuroljus-logo.svg"
-              alt="NeuroLjus"
-              width={42}
-              height={42}
-              priority
-              className="brandLogo"
-            />
-            <span className="brandName">NeuroLjus</span>
-          </a>
-
-          <nav className="nav" aria-label={copy.primaryNav}>
-            <a href="/labs/nl-vision">{copy.navDemo}</a>
-            <a href="/about">{copy.navAbout}</a>
-            <a href="#offer">{copy.navOffer}</a>
-            <a href="/contact">{copy.navContact}</a>
-          </nav>
-
-          <div className="langToggle" role="group" aria-label="Language">
-            <button onClick={() => setLang("es")} aria-pressed={lang === "es"}>
-              ES
-            </button>
-            <button onClick={() => setLang("en")} aria-pressed={lang === "en"}>
-              EN
-            </button>
-            <button onClick={() => setLang("sv")} aria-pressed={lang === "sv"}>
-              SV
-            </button>
-          </div>
-        </header>
-
-        <main>
+        <div>
           <section className="hero shell" aria-labelledby="hero-title">
             <div className="heroCopy">
               <p className="eyebrow">{copy.eyebrow}</p>
@@ -367,6 +358,9 @@ export default function Home() {
               <div className="actions">
                 <a className="primaryCta" href="/labs/nl-vision">
                   {copy.cta}
+                </a>
+                <a className="textCta" href="/labs/future-care-room">
+                  {copy.futureRoomCta}
                 </a>
                 <a className="textCta" href="/about">
                   {copy.secondaryCta}
@@ -481,92 +475,26 @@ export default function Home() {
               </a>
             </div>
           </section>
-        </main>
-
-        <footer className="shell footer" role="contentinfo">
-          {copy.footer}
-        </footer>
+        </div>
       </div>
 
       <style jsx>{`
-        :global(html) {
-          scroll-behavior: smooth;
-        }
         .page {
-          min-height: 100dvh;
-          color: #17202f;
-          background:
-            linear-gradient(145deg, rgba(245, 250, 247, 0.96), rgba(235, 245, 245, 0.92)),
-            linear-gradient(90deg, #f5faf7 0%, #eef7f2 44%, #f3f0fb 100%);
-          font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-            sans-serif;
+          min-height: 60dvh;
+          color: var(--nl-text);
         }
         .shell {
-          width: min(1120px, calc(100% - 40px));
+          width: min(1160px, calc(100% - 40px));
           margin: 0 auto;
-        }
-        .header {
-          min-height: 76px;
-          display: flex;
-          align-items: center;
-          gap: 18px;
-        }
-        .brand {
-          display: inline-flex;
-          align-items: center;
-          gap: 12px;
-          color: inherit;
-          text-decoration: none;
-        }
-        .brandLogo {
-          filter: drop-shadow(0 8px 22px rgba(31, 111, 111, 0.18));
-        }
-        .brandName {
-          font-size: 18px;
-          font-weight: 760;
-        }
-        .nav {
-          margin-left: auto;
-          display: flex;
-          gap: 20px;
-          font-size: 14px;
-        }
-        .nav a,
-        .textCta {
-          color: #245b62;
-          font-weight: 700;
-          text-decoration: none;
-        }
-        .nav a:hover,
-        .textCta:hover {
-          text-decoration: underline;
-        }
-        .langToggle {
-          display: flex;
-          gap: 6px;
-        }
-        .langToggle button {
-          min-width: 42px;
-          min-height: 34px;
-          border: 1px solid rgba(36, 91, 98, 0.22);
-          border-radius: 8px;
-          background: rgba(255, 255, 255, 0.72);
-          color: #245b62;
-          cursor: pointer;
-          font-weight: 700;
-        }
-        .langToggle button[aria-pressed="true"] {
-          background: #17202f;
-          color: #f7fbf8;
         }
         .hero {
           position: relative;
-          min-height: 64vh;
+          min-height: 62vh;
           display: grid;
           grid-template-columns: minmax(0, 0.98fr) minmax(280px, 0.72fr);
           gap: 42px;
           align-items: center;
-          padding: 44px 0 32px;
+          padding: 60px 0 40px;
           overflow: hidden;
         }
         .heroCopy {
@@ -576,10 +504,10 @@ export default function Home() {
         .eyebrow,
         .sectionKicker {
           margin: 0 0 12px;
-          color: #6b4ea4;
+          color: var(--nl-aurora-a);
           font-size: 12px;
           font-weight: 800;
-          letter-spacing: 0;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
         }
         h1,
@@ -591,43 +519,61 @@ export default function Home() {
         h1 {
           margin: 0;
           max-width: 720px;
-          font-size: clamp(48px, 8vw, 102px);
+          font-size: clamp(52px, 8vw, 108px);
           line-height: 0.92;
-          letter-spacing: 0;
+          letter-spacing: -0.02em;
+          background: linear-gradient(120deg, var(--nl-text) 30%, var(--nl-aurora-b) 85%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
         }
         .subtitle {
           max-width: 720px;
           margin: 22px 0 0;
-          color: #405064;
+          color: var(--nl-text-dim);
           font-size: 21px;
-          line-height: 1.45;
+          line-height: 1.5;
         }
         .actions {
           display: flex;
           flex-wrap: wrap;
           align-items: center;
-          gap: 18px;
-          margin-top: 28px;
+          gap: 14px 18px;
+          margin-top: 30px;
         }
         .primaryCta {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          min-height: 44px;
-          padding: 0 18px;
-          border: 1px solid rgba(23, 32, 47, 0.14);
-          border-radius: 8px;
-          background: #17202f;
-          color: #f8fffb;
-          box-shadow: 0 10px 26px rgba(23, 32, 47, 0.16);
+          min-height: 46px;
+          padding: 0 22px;
+          border: none;
+          border-radius: 999px;
+          background: var(--nl-aurora-grad);
+          color: var(--nl-on-aurora);
+          box-shadow: 0 12px 32px rgba(94, 230, 164, 0.22);
           font-weight: 800;
           text-decoration: none;
+          transition: transform 160ms ease, box-shadow 160ms ease;
+        }
+        .primaryCta:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 16px 40px rgba(94, 230, 164, 0.3);
+        }
+        .textCta {
+          color: var(--nl-aurora-b);
+          font-weight: 700;
+          text-decoration: none;
+        }
+        .textCta:hover {
+          text-decoration: underline;
         }
         .status {
           max-width: 680px;
-          margin: 22px 0 0;
-          color: #5a6678;
+          margin: 24px 0 0;
+          color: var(--nl-text-faint);
           font-size: 14px;
+          line-height: 1.6;
         }
         .heroMark {
           display: flex;
@@ -636,17 +582,18 @@ export default function Home() {
           min-height: 360px;
         }
         .markImage {
-          width: min(100%, 480px);
+          width: min(100%, 460px);
           height: auto;
-          filter: drop-shadow(0 22px 48px rgba(31, 111, 111, 0.18));
+          filter: drop-shadow(0 0 60px rgba(94, 230, 164, 0.28))
+            drop-shadow(0 0 120px rgba(124, 227, 247, 0.18));
         }
         .thesisBand {
           display: grid;
           grid-template-columns: 0.74fr 1.26fr;
           gap: 38px;
-          padding: 34px 0;
-          border-top: 1px solid rgba(23, 32, 47, 0.12);
-          border-bottom: 1px solid rgba(23, 32, 47, 0.12);
+          padding: 36px 0;
+          border-top: 1px solid var(--nl-border);
+          border-bottom: 1px solid var(--nl-border);
         }
         .thesisBand h2,
         .offerIntro h2,
@@ -654,8 +601,9 @@ export default function Home() {
         .boundaryPanel h2,
         .collaborators h2 {
           margin: 0;
-          font-size: 28px;
+          font-size: 30px;
           line-height: 1.12;
+          letter-spacing: -0.01em;
         }
         .thesisBand p,
         .offerIntro p,
@@ -663,7 +611,7 @@ export default function Home() {
         .labPanel p,
         .collaborators p {
           margin: 0;
-          color: #405064;
+          color: var(--nl-text-dim);
           font-size: 17px;
           line-height: 1.62;
         }
@@ -671,52 +619,62 @@ export default function Home() {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
           gap: 16px;
-          padding: 28px 0;
+          padding: 32px 0;
         }
         .actionBand {
           display: grid;
           grid-template-columns: 0.9fr 1.1fr;
           gap: 24px;
           align-items: start;
-          margin-bottom: 16px;
-          border: 1px solid rgba(23, 32, 47, 0.12);
-          border-radius: 8px;
-          background: #17202f;
-          color: #f8fffb;
-          padding: 26px;
+          margin-bottom: 20px;
+          border: 1px solid var(--nl-border-strong);
+          border-radius: var(--nl-radius);
+          background:
+            radial-gradient(600px 300px at 12% 0%, rgba(94, 230, 164, 0.12), transparent 65%),
+            var(--nl-bg-raised);
+          padding: 30px;
+          box-shadow: var(--nl-shadow);
         }
         .actionBand h2 {
           margin: 0;
-          font-size: 28px;
+          font-size: 30px;
           line-height: 1.12;
         }
         .actionBand p {
           margin: 12px 0 0;
-          color: #dbe8e3;
-          line-height: 1.58;
+          color: var(--nl-text-dim);
+          line-height: 1.6;
         }
         .actionBand .sectionKicker {
-          color: #9fe8cf;
+          color: var(--nl-aurora-a);
         }
         .actionBand ol {
           display: grid;
           gap: 12px;
           margin: 0;
           padding-left: 20px;
-          color: #eef8f3;
-          line-height: 1.5;
+          color: var(--nl-text);
+          line-height: 1.55;
         }
         .horizon article,
         .offerCard,
         .labPanel,
         .boundaryPanel {
-          border: 1px solid rgba(23, 32, 47, 0.12);
-          border-radius: 8px;
-          background: rgba(255, 255, 255, 0.64);
-          padding: 22px;
+          border: 1px solid var(--nl-border);
+          border-radius: var(--nl-radius);
+          background: var(--nl-surface);
+          backdrop-filter: blur(14px);
+          -webkit-backdrop-filter: blur(14px);
+          padding: 24px;
+          transition: border-color 180ms ease, transform 180ms ease;
+        }
+        .horizon article:hover,
+        .offerCard:hover {
+          border-color: var(--nl-border-strong);
+          transform: translateY(-2px);
         }
         .horizon span {
-          color: #2f7f6f;
+          color: var(--nl-aurora-b);
           font-weight: 800;
           font-size: 13px;
         }
@@ -726,8 +684,8 @@ export default function Home() {
         }
         .horizon p {
           margin: 0;
-          color: #4f5f70;
-          line-height: 1.55;
+          color: var(--nl-text-dim);
+          line-height: 1.58;
         }
         .evidenceGrid {
           display: grid;
@@ -735,21 +693,21 @@ export default function Home() {
           gap: 16px;
         }
         .offerSection {
-          padding: 14px 0 28px;
+          padding: 18px 0 32px;
         }
         .offerIntro {
           max-width: 760px;
-          margin-bottom: 18px;
+          margin-bottom: 20px;
         }
         .offerGrid {
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
           gap: 16px;
         }
         .offerCard {
           display: flex;
           flex-direction: column;
-          min-height: 260px;
+          min-height: 250px;
         }
         .offerCard h3 {
           margin: 0 0 10px;
@@ -771,11 +729,11 @@ export default function Home() {
           gap: 10px;
           padding-left: 20px;
           margin: 16px 0 0;
-          color: #405064;
-          line-height: 1.5;
+          color: var(--nl-text-dim);
+          line-height: 1.55;
         }
         .collaborators {
-          padding: 38px 0 32px;
+          padding: 42px 0 36px;
         }
         .collaborators p {
           max-width: 820px;
@@ -787,26 +745,9 @@ export default function Home() {
           align-items: center;
           gap: 18px;
         }
-        .footer {
-          padding: 24px 0 34px;
-          color: #667286;
-          font-size: 13px;
-        }
         @media (max-width: 900px) {
           .shell {
-            width: min(100% - 28px, 1120px);
-          }
-          .header {
-            flex-wrap: wrap;
-            padding: 12px 0;
-          }
-          .nav {
-            order: 3;
-            width: 100%;
-            margin-left: 0;
-          }
-          .langToggle {
-            margin-left: auto;
+            width: min(100% - 28px, 1160px);
           }
           .hero,
           .thesisBand,
@@ -822,7 +763,7 @@ export default function Home() {
           .hero {
             min-height: auto;
             gap: 8px;
-            padding-top: 22px;
+            padding-top: 26px;
           }
           .subtitle {
             font-size: 18px;
@@ -832,10 +773,10 @@ export default function Home() {
             justify-content: flex-start;
           }
           .markImage {
-            width: min(260px, 70vw);
+            width: min(240px, 66vw);
           }
         }
       `}</style>
-    </>
+    </SiteLayout>
   );
 }

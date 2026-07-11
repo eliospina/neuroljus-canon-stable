@@ -2,4 +2,150 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body { height: 100%; }
+/*
+ * Neuroljus design tokens — dark technology with Nordic light.
+ * Every page derives its palette from these variables so the whole
+ * site reads as one system.
+ */
+:root {
+  /* Surfaces */
+  --nl-bg: #060b16;
+  --nl-bg-raised: #0b1424;
+  --nl-surface: rgba(148, 184, 224, 0.06);
+  --nl-surface-strong: rgba(148, 184, 224, 0.1);
+  --nl-border: rgba(148, 184, 224, 0.16);
+  --nl-border-strong: rgba(148, 184, 224, 0.28);
+
+  /* Aurora accent (brand) */
+  --nl-aurora-a: #5ee6a4;
+  --nl-aurora-b: #7ce3f7;
+  --nl-aurora-c: #a685f7;
+  --nl-aurora-grad: linear-gradient(135deg, var(--nl-aurora-a), var(--nl-aurora-b));
+  --nl-on-aurora: #06131f;
+
+  /* Text */
+  --nl-text: #e9f1fb;
+  --nl-text-dim: #a7b8cd;
+  --nl-text-faint: #7f90a8;
+
+  /* Shape & depth */
+  --nl-radius: 16px;
+  --nl-radius-sm: 10px;
+  --nl-shadow: 0 18px 50px rgba(2, 8, 20, 0.5);
+
+  /* Type */
+  --nl-font:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --nl-font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  color: var(--nl-text);
+  font-family: var(--nl-font);
+  background:
+    radial-gradient(1100px 700px at 18% -6%, rgba(94, 230, 164, 0.13), transparent 60%),
+    radial-gradient(900px 620px at 84% 4%, rgba(124, 227, 247, 0.12), transparent 60%),
+    radial-gradient(1300px 900px at 50% 118%, rgba(166, 133, 247, 0.12), transparent 62%),
+    var(--nl-bg);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(124, 227, 247, 0.32);
+  color: var(--nl-text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--nl-aurora-b);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Shared primitives used across pages */
+.nl-shell {
+  width: min(1160px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.nl-card {
+  background: var(--nl-surface);
+  border: 1px solid var(--nl-border);
+  border-radius: var(--nl-radius);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.nl-kicker {
+  color: var(--nl-aurora-a);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.nl-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 999px;
+  background: var(--nl-aurora-grad);
+  color: var(--nl-on-aurora);
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.nl-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 30px rgba(94, 230, 164, 0.25);
+}
+
+.nl-cta-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--nl-border-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--nl-text);
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.nl-cta-ghost:hover {
+  border-color: var(--nl-aurora-b);
+  background: var(--nl-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

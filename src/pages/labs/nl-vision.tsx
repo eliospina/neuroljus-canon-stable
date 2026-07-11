@@ -11,12 +11,13 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 import LiveVitals from "../../components/LiveVitals";
 import CareChat   from "../../components/CareChat";
 import Script     from "next/script";
+import SiteLayout from "@/components/SiteLayout";
 
 
 /* ---------- PAGE (scripts loading + Holistic component) ---------- */
 export default function NLVisionHolisticPage() {
   return (
-    <>
+    <SiteLayout>
       {/* MediaPipe Holistic from CDN */}
       <Script
         src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
@@ -53,7 +54,7 @@ export default function NLVisionHolisticPage() {
       <div style={{ marginTop: 24 }}>
         <CareChat />
       </div>
-    </>
+    </SiteLayout>
   );
 }
 type MetricSample = {
@@ -83,6 +84,15 @@ function NLVisionHolistic() {
   const [lowStim, setLowStim] = useState(false);
   const [mono, setMono] = useState(false);
   const [lowLight, setLowLight] = useState(false);
+  const [showFrames, setShowFrames] = useState(true);
+
+  // The Holistic onResults callback is created once at start(); it reads the
+  // live toggle values through this ref so switching a toggle mid-session
+  // takes effect immediately instead of freezing at start-time values.
+  const uiRef = useRef({ showPreview, lowStim, mono, lowLight, showFrames });
+  useEffect(() => {
+    uiRef.current = { showPreview, lowStim, mono, lowLight, showFrames };
+  }, [showPreview, lowStim, mono, lowLight, showFrames]);
 
   // Chat empathetic toggle
   const [showChat, setShowChat] = useState(false);
@@ -104,11 +114,63 @@ function NLVisionHolistic() {
     c.height = v.videoHeight || 720;
   };
 
-  const bgFilter = () => {
+  const bgFilter = (ui: { mono: boolean; lowLight: boolean }) => {
     const f: string[] = [];
-    if (mono) f.push("grayscale(100%)");
-    if (lowLight) f.push("brightness(70%)");
+    if (ui.mono) f.push("grayscale(100%)");
+    if (ui.lowLight) f.push("brightness(70%)");
     return f.length ? f.join(" ") : "none";
+  };
+
+  // Pattern-identification frame: corner brackets + label around a landmark
+  // cluster, the visible layer of what the tracker is actually locking onto.
+  const drawPatternFrame = (
+    ctx: CanvasRenderingContext2D,
+    lm: any[],
+    w: number,
+    h: number,
+    label: string,
+    color: string,
+    subtle: boolean
+  ) => {
+    if (!lm.length) return;
+    let minX = 1, minY = 1, maxX = 0, maxY = 0;
+    for (const p of lm) {
+      if (p.x < minX) minX = p.x;
+      if (p.y < minY) minY = p.y;
+      if (p.x > maxX) maxX = p.x;
+      if (p.y > maxY) maxY = p.y;
+    }
+    const padX = 0.03, padY = 0.04;
+    const x = Math.max(0, (minX - padX)) * w;
+    const y = Math.max(0, (minY - padY)) * h;
+    const x2 = Math.min(1, (maxX + padX)) * w;
+    const y2 = Math.min(1, (maxY + padY)) * h;
+    const bw = x2 - x, bh = y2 - y;
+    const corner = Math.max(14, Math.min(bw, bh) * 0.18);
+
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = subtle ? 1.5 : 2.5;
+    ctx.globalAlpha = subtle ? 0.55 : 0.9;
+    ctx.beginPath();
+    // corner brackets
+    ctx.moveTo(x, y + corner); ctx.lineTo(x, y); ctx.lineTo(x + corner, y);
+    ctx.moveTo(x2 - corner, y); ctx.lineTo(x2, y); ctx.lineTo(x2, y + corner);
+    ctx.moveTo(x2, y2 - corner); ctx.lineTo(x2, y2); ctx.lineTo(x2 - corner, y2);
+    ctx.moveTo(x + corner, y2); ctx.lineTo(x, y2); ctx.lineTo(x, y2 - corner);
+    ctx.stroke();
+
+    // label chip
+    const text = label;
+    ctx.font = "700 12px ui-monospace, SFMono-Regular, Menlo, monospace";
+    const tw = ctx.measureText(text).width;
+    const ly = Math.max(16, y - 8);
+    ctx.globalAlpha = subtle ? 0.5 : 0.85;
+    ctx.fillStyle = "rgba(4, 10, 20, 0.75)";
+    ctx.fillRect(x, ly - 12, tw + 12, 17);
+    ctx.fillStyle = color;
+    ctx.fillText(text, x + 6, ly + 1);
+    ctx.restore();
   };
 
   // utils
@@ -171,16 +233,17 @@ function NLVisionHolistic() {
 
       holistic.onResults((res: any) => {
         if (!ctx) return;
+        const ui = uiRef.current;
         ctx.save();
         ctx.clearRect(0, 0, c.width, c.height);
 
         // background
-        if (showPreview) {
-          ctx.filter = bgFilter();
+        if (ui.showPreview) {
+          ctx.filter = bgFilter(ui);
           ctx.drawImage(videoRef.current!, 0, 0, c.width, c.height);
           ctx.filter = "none";
         } else {
-          ctx.fillStyle = "rgba(0,0,0,0.78)";
+          ctx.fillStyle = "rgba(4, 9, 18, 0.85)";
           ctx.fillRect(0, 0, c.width, c.height);
         }
 
@@ -189,13 +252,23 @@ function NLVisionHolistic() {
         const lhLm   = res.leftHandLandmarks || [];
         const rhLm   = res.rightHandLandmarks || [];
 
-        const lineW = lowStim ? 2 : 3;
-        const dotR  = lowStim ? 1.2 : 1.6;
-        const colFace   = mono ? "#d9d0f5" : (lowStim ? "#c7b7f6" : "#A685F7");
-        const colHand   = mono ? "#cfd5dc" : (lowStim ? "#9bdff0" : "#7CE3F7");
-        const colHandPt = mono ? "#e3e7ee" : (lowStim ? "#88dcb0" : "#5EE6A4");
+        const lineW = ui.lowStim ? 2 : 3;
+        const dotR  = ui.lowStim ? 1.2 : 1.6;
+        const colFace   = ui.mono ? "#d9d0f5" : (ui.lowStim ? "#c7b7f6" : "#A685F7");
+        const colHand   = ui.mono ? "#cfd5dc" : (ui.lowStim ? "#9bdff0" : "#7CE3F7");
+        const colHandPt = ui.mono ? "#e3e7ee" : (ui.lowStim ? "#88dcb0" : "#5EE6A4");
 
-        if (faceLm.length) (window as any).drawLandmarks(ctx, faceLm, { color: colFace, radius: dotR });
+        if (faceLm.length) {
+          // full face mesh: the visible pattern layer of the tracker
+          const mesh = (window as any).FACEMESH_TESSELATION;
+          if (mesh && !ui.lowStim) {
+            (window as any).drawConnectors(ctx, faceLm, mesh, {
+              color: ui.mono ? "rgba(217,208,245,0.28)" : "rgba(166,133,247,0.32)",
+              lineWidth: 0.5,
+            });
+          }
+          (window as any).drawLandmarks(ctx, faceLm, { color: colFace, radius: dotR });
+        }
         if (lhLm.length) {
           (window as any).drawConnectors(ctx, lhLm, (window as any).HAND_CONNECTIONS, { color: colHand, lineWidth: lineW });
           (window as any).drawLandmarks(ctx, lhLm, { color: colHandPt, radius: dotR });
@@ -203,6 +276,14 @@ function NLVisionHolistic() {
         if (rhLm.length) {
           (window as any).drawConnectors(ctx, rhLm, (window as any).HAND_CONNECTIONS, { color: colHand, lineWidth: lineW });
           (window as any).drawLandmarks(ctx, rhLm, { color: colHandPt, radius: dotR });
+        }
+
+        // pattern-identification frames (corner brackets + labels)
+        if (ui.showFrames) {
+          const subtle = ui.lowStim;
+          if (faceLm.length) drawPatternFrame(ctx, faceLm, c.width, c.height, "FACE · TRACKING", colFace, subtle);
+          if (lhLm.length)   drawPatternFrame(ctx, lhLm, c.width, c.height, "HAND · L", colHand, subtle);
+          if (rhLm.length)   drawPatternFrame(ctx, rhLm, c.width, c.height, "HAND · R", colHand, subtle);
         }
 
         // per-frame analytics
@@ -364,6 +445,26 @@ function NLVisionHolistic() {
       <h1 style={S.h1}>NL-VISION · Holistic</h1>
       <p style={S.sub}>Observation prototype · Face + Hands · On-device metrics</p>
 
+      <section style={S.robotCard} aria-label="Robot Care Interface demo">
+        <div>
+          <p style={S.robotKicker}>Next lab · care robotics</p>
+          <h2 style={S.robotTitle}>From observation to care protocol</h2>
+          <p style={S.robotText}>
+            NL-VISION explores local observation signals. Robot Care Interface turns
+            caregiver-authored routines into an open protocol for future robots,
+            devices, and care environments.
+          </p>
+        </div>
+        <div style={S.robotActions}>
+          <a href="/labs/robot-interface" style={S.robotPrimary}>
+            Open Robot Demo
+          </a>
+          <a href="/" style={S.robotSecondary}>
+            View public vision
+          </a>
+        </div>
+      </section>
+
       <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 10 }}>
         {!running ? <button onClick={start} style={S.btn}>Start Camera</button>
                   : <button onClick={stop}  style={S.btn}>Stop</button>}
@@ -372,6 +473,7 @@ function NLVisionHolistic() {
 
       <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap", marginBottom: 8 }}>
         <label style={S.toggle}><input type="checkbox" checked={showPreview} onChange={e=>setShowPreview(e.target.checked)} /> Show preview</label>
+        <label style={S.toggle}><input type="checkbox" checked={showFrames} onChange={e=>setShowFrames(e.target.checked)} /> Pattern frames</label>
         <label style={S.toggle}><input type="checkbox" checked={lowStim} onChange={e=>setLowStim(e.target.checked)} /> Low-stimulus</label>
         <label style={S.toggle}><input type="checkbox" checked={mono} onChange={e=>setMono(e.target.checked)} /> Monochrome</label>
         <label style={S.toggle}><input type="checkbox" checked={lowLight} onChange={e=>setLowLight(e.target.checked)} /> Low-light</label>
@@ -406,19 +508,58 @@ const avgOrUndef = (arr:any[]) => arr.length ? arr.reduce((a:number,b:number)=>a
 /* ---------- styles ---------- */
 const S: Record<string, any> = {
   page: {
-    minHeight: "100vh",
-    background:
-      "radial-gradient(1200px 700px at 20% 10%, rgba(94,230,164,0.18), transparent 60%)," +
-      "radial-gradient(900px 600px at 80% 20%, rgba(124,227,247,0.18), transparent 60%)," +
-      "radial-gradient(1200px 900px at 50% 120%, rgba(166,133,247,0.18), transparent 60%)," +
-      "#1E1F3B",
-    color: "#fff",
-    fontFamily:
-      'ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial',
-    display: "flex", flexDirection: "column", alignItems: "center", padding: 18,
+    color: "var(--nl-text)",
+    display: "flex", flexDirection: "column", alignItems: "center", padding: "28px 18px 18px",
   },
   h1: { fontSize: 26, margin: "8px 0 0" },
   sub: { fontSize: 14, opacity: 0.9, margin: "6px 0 12px" },
+  robotCard: {
+    width: "min(92vw, 960px)",
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+    gap: 18,
+    alignItems: "center",
+    border: "1px solid rgba(255,255,255,0.16)",
+    borderRadius: 14,
+    background: "rgba(255,255,255,0.07)",
+    padding: 16,
+    margin: "2px 0 14px",
+  },
+  robotKicker: {
+    margin: "0 0 5px",
+    color: "#9fe8cf",
+    fontSize: 12,
+    fontWeight: 800,
+    letterSpacing: 0,
+    textTransform: "uppercase",
+  },
+  robotTitle: { margin: "0 0 6px", fontSize: 18, lineHeight: 1.2 },
+  robotText: { margin: 0, color: "#d9e5f2", fontSize: 14, lineHeight: 1.5 },
+  robotActions: { display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" },
+  robotPrimary: {
+    minHeight: 40,
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "0 13px",
+    borderRadius: 10,
+    background: "linear-gradient(135deg,#5EE6A4,#7CE3F7)",
+    color: "#0b1220",
+    fontWeight: 800,
+    textDecoration: "none",
+  },
+  robotSecondary: {
+    minHeight: 40,
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "0 13px",
+    border: "1px solid rgba(255,255,255,0.22)",
+    borderRadius: 10,
+    color: "#cfe7ff",
+    fontWeight: 800,
+    textDecoration: "none",
+  },
   btn: {
     padding: 12, background: "linear-gradient(135deg,#5EE6A4,#7CE3F7)",
     border: "none", borderRadius: 10, color: "#0b1220", fontWeight: 700, cursor: "pointer",

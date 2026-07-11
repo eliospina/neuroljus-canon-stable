@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
+import SiteLayout from "@/components/SiteLayout";
 
 const sections = [
   {
@@ -46,45 +47,40 @@ const sections = [
 
 export default function ObservationMethod() {
   return (
-    <>
+    <SiteLayout>
       <Head>
         <title>Observation Method v0 - Neuroljus</title>
         <meta
           name="description"
-          content="A non-diagnostic caregiver observation method for documenting context, uncertainty, and within-person patterns over time."
+          content="A caregiver observation method for documenting context, uncertainty, responses, and within-person patterns over time."
         />
       </Head>
 
-      <main className="mx-auto max-w-4xl px-5 py-14 text-slate-900">
-        <Link href="/" className="text-sm font-semibold text-teal-800 underline">
-          Neuroljus
-        </Link>
-        <p className="mt-8 text-xs font-bold uppercase tracking-normal text-violet-700">
-          Observation Method v0
-        </p>
+      <div className="mx-auto max-w-4xl px-5 py-14">
+        <p className="nl-kicker">Observation Method v0</p>
         <h1 className="mt-3 text-4xl font-semibold tracking-tight">
-          Better observations first
+          Care observations that can become knowledge
         </h1>
-        <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-700">
-          This is a simple, non-diagnostic way to help caregivers document what happened,
-          the surrounding context, their interpretation, uncertainty, and what helped.
+        <p className="mt-5 max-w-2xl text-lg leading-8 text-[color:var(--nl-text-dim)]">
+          A simple structure for documenting what happened, the surrounding context,
+          the caregiver's interpretation, uncertainty, and what helped.
         </p>
 
-        <section className="mt-8 rounded-lg border border-slate-200 bg-slate-50 p-5">
+        <section className="mt-8 nl-card p-6">
           <h2 className="text-lg font-semibold">Care frame</h2>
-          <p className="mt-2 leading-7 text-slate-700">
-            This method keeps observation, interpretation, and uncertainty separate.
-            It helps caregivers review patterns over time while leaving pain, emotion,
-            intention, diagnosis, needs, and inner states to appropriate human and
-            clinical judgment.
+          <p className="mt-2 leading-7 text-[color:var(--nl-text-dim)]">
+            This method keeps observation, interpretation, and uncertainty separate so
+            daily care can become clearer over time. Repeated entries help caregivers,
+            families, and future research partners review patterns with more context
+            and less noise.
           </p>
         </section>
 
         <div className="mt-8 grid gap-4 md:grid-cols-2">
           {sections.map((section) => (
-            <section key={section.title} className="rounded-lg border border-slate-200 p-5">
+            <section key={section.title} className="nl-card p-6">
               <h2 className="text-lg font-semibold">{section.title}</h2>
-              <ul className="mt-3 list-disc space-y-2 pl-5 leading-7 text-slate-700">
+              <ul className="mt-3 list-disc space-y-2 pl-5 leading-7 text-[color:var(--nl-text-dim)]">
                 {section.items.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
@@ -93,9 +89,9 @@ export default function ObservationMethod() {
           ))}
         </div>
 
-        <section className="mt-8 rounded-lg border border-slate-200 bg-white p-5">
+        <section className="mt-8 nl-card p-6">
           <h2 className="text-lg font-semibold">How to test it</h2>
-          <ol className="mt-3 list-decimal space-y-2 pl-5 leading-7 text-slate-700">
+          <ol className="mt-3 list-decimal space-y-2 pl-5 leading-7 text-[color:var(--nl-text-dim)]">
             <li>Choose one repeated situation.</li>
             <li>Write three to five entries using the same structure.</li>
             <li>Review only what repeats, what changes, what helps, and what remains uncertain.</li>
@@ -106,18 +102,18 @@ export default function ObservationMethod() {
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
             href="/contact"
-            className="inline-flex min-h-11 items-center rounded-lg bg-slate-950 px-5 font-bold text-white"
+            className="nl-cta"
           >
             Share feedback
           </Link>
           <Link
             href="/labs/nl-vision"
-            className="inline-flex min-h-11 items-center rounded-lg border border-slate-300 px-5 font-bold text-teal-900"
+            className="nl-cta-ghost"
           >
             Explore NL-VISION
           </Link>
         </div>
-      </main>
-    </>
+      </div>
+    </SiteLayout>
   );
 }
