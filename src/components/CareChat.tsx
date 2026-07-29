@@ -62,11 +62,11 @@ const T: Record<Lang, Record<string, string>> = {
 
 const GREETING: Record<Lang, string> = {
   sv:
-    "Hej. Jag är Neuroljus AI. Jag hjälper dig att ordna observationer, sammanhang, rutiner och omsorgsfrågor. Berätta vad du såg, vad som hände före och efter, och vad du vill förstå bättre, så strukturerar vi det till klarare nästa steg.",
+    "Hej. Jag är Neuroljus Care Reflection. Jag hjälper dig att strukturera det du ser — gester, sammanhang, osäkerhet — utan att låtsas läsa någons inre. Om du misstänker smärta: beskriv vad du såg, vad som lindrade, vad som förvärrade. För portalens verkliga steg: NL-VISION → Care Room → protokoll.",
   en:
-    "Hello. I’m Neuroljus AI. I help organize observations, context, routines, and care questions. Share what you noticed, what happened before and after, and what you want to understand better, and we will structure it into clearer next steps.",
+    "Hello. I’m Neuroljus Care Reflection. I help structure what you see — gestures, context, uncertainty — without pretending to read anyone’s inner world. If you suspect pain: describe what you saw, what eased it, what worsened it. For this portal’s real path: NL-VISION → Care Room → protocol.",
   es:
-    "Hola. Soy Neuroljus AI. Te ayudo a ordenar observaciones, contexto, rutinas y preguntas de cuidado. Cuéntame qué viste, qué ocurrió antes y después, y qué quieres comprender mejor; lo estructuramos en próximos pasos más claros.",
+    "Hola. Soy Neuroljus Care Reflection. Te ayudo a estructurar lo que ves — gestos, contexto, incertidumbre — sin fingir leer el mundo interior de nadie. Si sospechas dolor: describe qué viste, qué alivió, qué empeoró. El camino real de este portal: NL-VISION → Care Room → protocolo.",
 };
 
 const greetingValues = new Set(Object.values(GREETING));

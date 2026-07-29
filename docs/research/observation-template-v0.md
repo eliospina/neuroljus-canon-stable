@@ -49,6 +49,20 @@ Routine context:
 - food/sleep/medication context if generally relevant and appropriate:
 - change from normal routine:
 
+## Possible Discomfort / Pain (caregiver witness)
+
+This section is **not** a diagnosis. It records what a caregiver witnessed and what seemed to help or harm.
+
+Observed gestures (hand to body area, protective posture, changed gait, vocal change):
+
+What seemed to ease it:
+
+What seemed to worsen it:
+
+Uncertainty remaining:
+
+If concern is severe or persistent: contact healthcare. Neuroljus does not replace medical judgment.
+
 ## Caregiver Interpretation
 
 What do you think may have been happening?
