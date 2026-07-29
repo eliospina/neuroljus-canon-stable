@@ -1,0 +1,41 @@
+---
+description: Neuroljus Care OS design system — dark platform aesthetic for all public pages
+globs: src/**/*.tsx
+alwaysApply: false
+---
+
+# Neuroljus Care OS Design System
+
+Public pages use one visual language: **deployable care infrastructure**, not a marketing site.
+
+## Core palette (Care OS)
+
+- Background: `#09090b` (page), `#0c0c0e` (panels), `#18181b` (console header)
+- Borders: `#27272a`, `#3f3f46`
+- Text primary: `#fafafa` · secondary: `#a1a1aa` · dim: `#71717a`
+- Terminal accent: `#3ecf9a` (active, links, CTAs on dark)
+- Warning: `#fbbf24` · danger: `#f87171`
+- Sans: `ui-sans-serif, system-ui, …` for UI chrome
+- Mono: `ui-monospace, "SF Mono", Menlo, Consolas` for protocol/console layers
+
+## Layout patterns
+
+- Status bar top: `neuroljus://local · care_command_protocol_v0 · audit=on · network=off`
+- Nav: `NEUROLJUS / Platform name` + module pills (runtime, protocol, adapters, audit)
+- Hero: CLI prompt (`$ neuroljus status --all`) + large headline + one subline
+- Metrics strip: 4 numbers in monospace
+- Console block: sidebar tabs + protocol stream (monospace)
+- Module cards: `MOD.*` id, title, path link
+- CTA band: green border + `OPEN WORKSPACE` button
+
+## Care Room exception
+
+Inside labs/future-care-room, the **scene** may stay warm (SVG room) but the **page chrome** should match Care OS dark frame where possible.
+
+## Hard rules
+
+- Present tense copy: "the robot receives", not "a future robot would receive"
+- No purple kickers, no light-gradient landing backgrounds, no stock Tailwind on public pages
+- Trilingual: every user-facing string in SV / EN / ES
+- `prefers-reduced-motion` for animations
+- No medical or diagnostic claims; caregiver always in charge

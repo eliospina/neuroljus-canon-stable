@@ -1,14 +1,12 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { CSSProperties } from "react";
-import SiteLayout from "@/components/SiteLayout";
 import type {
   AdapterTarget,
   Command,
   Environment,
-  PlannedStep,
   ScenarioId,
+  VisionSnapshot,
 } from "@/lib/careProtocol/types";
 import {
   adapterLabels,
@@ -17,12 +15,16 @@ import {
   commandLabels,
 } from "@/lib/careProtocol/planner";
 import { scenarioOrder, scenarioPresets } from "@/lib/careProtocol/scenarios";
+import { readLatestLocalVisionSnapshot } from "@/lib/careProtocol/nlVisionBridge";
 
 type RoomStatus = "idle" | "playing" | "paused" | "escalated" | "completed";
 
 type CueType = "now_next" | "step_sequence" | "calm_image" | "none";
 
 type SupportLevel = "hands_on" | "nearby" | "remote";
+
+/** Guided thesis demo — present tense, no time-travel slider. */
+type StoryPhase = "off" | "caregiver" | "robot" | "recipients" | "done";
 
 type TimelineEntry = {
   id: number;
@@ -31,6 +33,58 @@ type TimelineEntry = {
   label: string;
   detail: string;
 };
+
+const storyCopy: Record<
+  Exclude<StoryPhase, "off">,
+  { kicker: string; title: string; body: string; next: string }
+> = {
+  caregiver: {
+    kicker: "Story · 1 / 3",
+    title: "You are the caregiver",
+    body: "Evening transition. Shape light, sound, and distance. Play the routine. Watch lived care become a protocol — still under your authority.",
+    next: "Continue — you are the robot",
+  },
+  robot: {
+    kicker: "Story · 2 / 3",
+    title: "You are the robot",
+    body: "Controls lock. You only execute preauthorized steps. Feel a safety exception: person rejects, or caregiver pause. The human stays in charge.",
+    next: "Continue — one protocol, many recipients",
+  },
+  recipients: {
+    kicker: "Story · 3 / 3",
+    title: "One protocol, many recipients",
+    body: "The same caregiver-authored envelope reaches a substitute caregiver, a smart home, or an assistive robot. Present tense. Same audit trail.",
+    next: "Finish story",
+  },
+  done: {
+    kicker: "Story · complete",
+    title: "Thesis demonstrated",
+    body: "Observation → caregiver judgment → portable protocol → human override. No cloud required. Open free exploration whenever you want.",
+    next: "Exit story mode",
+  },
+};
+
+const recipientCards: Array<{
+  id: AdapterTarget;
+  title: string;
+  detail: string;
+}> = [
+  {
+    id: "offline",
+    title: "Substitute caregiver",
+    detail: "Offline review packet — handoff notes without a device.",
+  },
+  {
+    id: "mqtt",
+    title: "Smart home",
+    detail: "MQTT packet — light, sound, and cues in the room fabric.",
+  },
+  {
+    id: "ros2",
+    title: "Assistive robot",
+    detail: "ROS2 packet — the same steps, distance, and safety exceptions.",
+  },
+];
 
 const cueLabels: Record<CueType, string> = {
   now_next: "Now / Next card",
@@ -91,13 +145,7 @@ export default function FutureCareRoom() {
   const [copied, setCopied] = useState(false);
   const [packetCopied, setPacketCopied] = useState(false);
   const [justGenerated, setJustGenerated] = useState(false);
-  // The sequence is frozen when Play is pressed so live control changes
-  // cannot stall the run timer or fabricate completed steps in the timeline.
-  const [runSteps, setRunSteps] = useState<PlannedStep[] | null>(null);
   const protocolRef = useRef<HTMLDivElement | null>(null);
-  const copiedTimer = useRef<number | null>(null);
-  const packetCopiedTimer = useRef<number | null>(null);
-  const generatedTimer = useRef<number | null>(null);
   const [timeline, setTimeline] = useState<TimelineEntry[]>([
     {
       id: 1,
@@ -107,8 +155,12 @@ export default function FutureCareRoom() {
       detail: "Choose a situation, shape the room, and watch the protocol form.",
     },
   ]);
+  const [visionSnapshot, setVisionSnapshot] = useState<VisionSnapshot | null>(null);
+  const [storyPhase, setStoryPhase] = useState<StoryPhase>("off");
   const nextId = useRef(2);
 
+  const controlsLocked = storyPhase === "robot";
+  const storyActive = storyPhase !== "off";
   const preset = scenarioPresets[scenario];
 
   const cueText = useMemo(() => {
@@ -140,9 +192,9 @@ export default function FutureCareRoom() {
         environment,
         allowedCommands,
         safetyExceptions: preset.exceptions,
-        visionContext: null,
+        visionContext: visionSnapshot,
       }),
-    [scenario, preset, cueText, environment, allowedCommands]
+    [scenario, preset, cueText, environment, allowedCommands, visionSnapshot]
   );
 
   const steps = plan.steps;
@@ -169,24 +221,110 @@ export default function FutureCareRoom() {
   }
 
   function applyScenario(id: ScenarioId) {
+    if (storyActive && storyPhase !== "caregiver") return;
     const next = scenarioPresets[id];
     setScenario(id);
     setEnvironment(next.environment);
-    setRunSteps(null);
     setStatus("idle");
     setStepIndex(0);
     addTimeline("caregiver", `${next.name} chosen`, next.careGoal);
   }
 
+  function startStoryMode() {
+    const evening = scenarioPresets.evening_transition;
+    setScenario("evening_transition");
+    setEnvironment(evening.environment);
+    setCueType("now_next");
+    setSupportLevel("nearby");
+    setStatus("idle");
+    setStepIndex(0);
+    setProtocolOpen(false);
+    setStoryPhase("caregiver");
+    addTimeline(
+      "neuroljus",
+      "Story mode started",
+      "Evening transition · caregiver first · present tense · no time slider"
+    );
+  }
+
+  function advanceStory() {
+    if (storyPhase === "caregiver") {
+      setStoryPhase("robot");
+      setStatus("idle");
+      setStepIndex(0);
+      window.setTimeout(() => {
+        setStepIndex(0);
+        setStatus("playing");
+      }, 80);
+      addTimeline(
+        "neuroljus",
+        "You are the robot",
+        "Controls locked. Only safety exceptions and caregiver pause remain."
+      );
+      return;
+    }
+    if (storyPhase === "robot") {
+      setStatus("idle");
+      setStepIndex(0);
+      setProtocolOpen(true);
+      setGeneratedAt(nowStamp());
+      setStoryPhase("recipients");
+      addTimeline(
+        "protocol",
+        "One protocol, many recipients",
+        "Same envelope for substitute caregiver, smart home, and assistive robot"
+      );
+      return;
+    }
+    if (storyPhase === "recipients") {
+      setStoryPhase("done");
+      addTimeline("neuroljus", "Story complete", "Thesis shown without cloud intelligence");
+      return;
+    }
+    exitStoryMode();
+  }
+
+  function exitStoryMode() {
+    setStoryPhase("off");
+    setStatus("idle");
+    setStepIndex(0);
+    addTimeline("caregiver", "Story mode exited", "Free exploration restored");
+  }
+
+  function importVisionSignals() {
+    const snapshot = readLatestLocalVisionSnapshot(
+      typeof window !== "undefined" ? window.localStorage : null
+    );
+    if (!snapshot) {
+      addTimeline(
+        "neuroljus",
+        "No local signal yet",
+        "Open NL-VISION, run the camera briefly, then attach the raw local sample here."
+      );
+      return;
+    }
+    setVisionSnapshot(snapshot);
+    addTimeline(
+      "caregiver",
+      "NL-VISION signal attached",
+      "Raw local movement signals only — not emotion, not diagnosis. Caregiver interprets."
+    );
+  }
+
+  function clearVisionSignals() {
+    setVisionSnapshot(null);
+    addTimeline("caregiver", "Vision context cleared", "Protocol returns to scenario defaults without camera context.");
+  }
+
   function playRoutine() {
-    if (steps.length === 0) return;
-    setRunSteps(steps);
+    if (steps.length === 0 || controlsLocked) return;
     setStepIndex(0);
     setStatus("playing");
     addTimeline("caregiver", "Routine started", `${preset.name} plays through ${steps.length} preauthorized steps`);
   }
 
   function togglePause() {
+    if (controlsLocked) return;
     if (status === "playing") {
       setStatus("paused");
       addTimeline("caregiver", "Routine paused", "caregiver paused the routine manually");
@@ -197,7 +335,7 @@ export default function FutureCareRoom() {
   }
 
   function resetRoom() {
-    setRunSteps(null);
+    if (controlsLocked) return;
     setStatus("idle");
     setStepIndex(0);
     addTimeline("caregiver", "Room reset", "the room returned to its ready state");
@@ -223,8 +361,7 @@ export default function FutureCareRoom() {
     setProtocolOpen(true);
     setGeneratedAt(nowStamp());
     setJustGenerated(true);
-    if (generatedTimer.current) window.clearTimeout(generatedTimer.current);
-    generatedTimer.current = window.setTimeout(() => setJustGenerated(false), 1800);
+    window.setTimeout(() => setJustGenerated(false), 1800);
     window.setTimeout(() => {
       protocolRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }, 60);
@@ -242,8 +379,7 @@ export default function FutureCareRoom() {
       await navigator.clipboard.writeText(JSON.stringify(exportDocument, null, 2));
       setCopied(true);
       addTimeline("caregiver", "Protocol copied", "care_command_protocol_v0 copied to the clipboard");
-      if (copiedTimer.current) window.clearTimeout(copiedTimer.current);
-      copiedTimer.current = window.setTimeout(() => setCopied(false), 1500);
+      window.setTimeout(() => setCopied(false), 1500);
     } catch {
       addTimeline("neuroljus", "Copy failed", "browser clipboard was unavailable");
     }
@@ -256,8 +392,7 @@ export default function FutureCareRoom() {
       );
       setPacketCopied(true);
       addTimeline("caregiver", "Adapter packet copied", `${adapterLabels[adapterTarget]} packet copied`);
-      if (packetCopiedTimer.current) window.clearTimeout(packetCopiedTimer.current);
-      packetCopiedTimer.current = window.setTimeout(() => setPacketCopied(false), 1500);
+      window.setTimeout(() => setPacketCopied(false), 1500);
     } catch {
       addTimeline("neuroljus", "Copy failed", "browser clipboard was unavailable");
     }
@@ -276,78 +411,64 @@ export default function FutureCareRoom() {
     addTimeline("caregiver", "Protocol downloaded", "care_command_protocol_v0 exported as a JSON file");
   }
 
-  const activeSteps = runSteps ?? steps;
-
   useEffect(() => {
     if (status !== "playing") return;
 
-    if (stepIndex >= activeSteps.length) {
+    if (stepIndex >= steps.length) {
       setStatus("completed");
       addTimeline("protocol", "Routine complete", "every preauthorized step executed inside the protocol");
       return;
     }
 
     const timer = window.setTimeout(() => {
-      const step = activeSteps[stepIndex];
+      const step = steps[stepIndex];
       addTimeline("robot", commandLabels[step.command], step.reason);
       setStepIndex((current) => current + 1);
     }, STEP_INTERVAL_MS);
 
     return () => window.clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status, stepIndex, activeSteps]);
-
-  useEffect(() => {
-    return () => {
-      if (copiedTimer.current) window.clearTimeout(copiedTimer.current);
-      if (packetCopiedTimer.current) window.clearTimeout(packetCopiedTimer.current);
-      if (generatedTimer.current) window.clearTimeout(generatedTimer.current);
-    };
-  }, []);
+  }, [status, stepIndex, steps]);
 
   const completedCommands = useMemo(
-    () => new Set(activeSteps.slice(0, stepIndex).map((step) => step.command)),
-    [activeSteps, stepIndex]
+    () => new Set(steps.slice(0, stepIndex).map((step) => step.command)),
+    [steps, stepIndex]
   );
   const currentCommand =
-    status === "playing" && stepIndex < activeSteps.length
-      ? activeSteps[stepIndex].command
-      : undefined;
+    status === "playing" && stepIndex < steps.length ? steps[stepIndex].command : undefined;
 
-  // The "before" state is clamped so it never crosses the target:
-  // lowering light/sound must never display an increase, and stepping
-  // back must never display the robot moving closer.
   const sceneLight = completedCommands.has("lower_light")
     ? environment.light
-    : Math.max(environment.light, Math.min(82, environment.light + 36));
+    : Math.min(82, environment.light + 36);
   const sceneSound = completedCommands.has("reduce_sound")
     ? environment.sound
-    : Math.max(environment.sound, Math.min(78, environment.sound + 38));
+    : Math.min(78, environment.sound + 38);
   const robotDistance = completedCommands.has("step_back")
     ? environment.distance
     : Math.min(environment.distance, Math.max(0.7, environment.distance - 0.7));
-  const robotTravel = Math.min(168, Math.round(robotDistance * 44));
   const cardVisible =
     cueType !== "none" &&
     (completedCommands.has("offer_visual_card") || currentCommand === "offer_visual_card");
   const caregiverNotified =
     completedCommands.has("notify_caregiver") || status === "escalated" || status === "completed";
 
-  const roomStyle = {
-    "--light-level": `${sceneLight}%`,
-    "--light-opacity": `${0.2 + sceneLight / 150}`,
-    "--sound-opacity": `${Math.max(0.12, sceneSound / 100)}`,
-    "--robot-travel": `${robotTravel}px`,
-  } as CSSProperties;
+  // Scene geometry: person stands at x=185; the robot keeps its distance to the right.
+  const robotX = Math.min(615, 275 + robotDistance * 85);
+  const dimOpacity = ((100 - sceneLight) / 100) * 0.38;
+  const glowOpacity = 0.15 + (sceneLight / 100) * 0.8;
+  const soundOpacity = 0.12 + (sceneSound / 100) * 0.78;
+  const robotActing = Boolean(currentCommand);
+  const activeStepIndex =
+    (status === "playing" || status === "paused") && stepIndex < steps.length ? stepIndex : -1;
 
   const observationText = `Light at ${sceneLight}%, sound at ${sceneSound}%, interface holding ${robotDistance.toFixed(
     1
   )} m of space at a ${environment.pace} pace.`;
 
   const suggestedStep = currentCommand
-    ? activeSteps[stepIndex]
-    : activeSteps.length > 0
-      ? activeSteps[0]
+    ? steps[stepIndex]
+    : steps.length > 0
+      ? steps[0]
       : undefined;
 
   const actionText =
@@ -361,10 +482,9 @@ export default function FutureCareRoom() {
             ? `${commandLabels[suggestedStep.command]} — ${suggestedStep.reason}.`
             : "No preauthorized steps for this configuration.";
 
-  const progress =
-    activeSteps.length === 0 ? 0 : Math.min(100, Math.round((stepIndex / activeSteps.length) * 100));
+  const progress = steps.length === 0 ? 0 : Math.min(100, Math.round((stepIndex / steps.length) * 100));
 
-  const pathStages = ["Observation", "Care interpretation", "Protocol", "Robot adapter"];
+  const pathStages = ["Observation", "Caregiver interpretation", "Protocol", "Robot adapter"];
   const activeStage =
     status === "playing" || status === "paused" || status === "escalated" || status === "completed"
       ? 3
@@ -378,398 +498,944 @@ export default function FutureCareRoom() {
         <title>Future Care Room - Neuroljus</title>
         <meta
           name="description"
-          content="An interactive care room where lived care becomes structured intelligence: shape a real situation, watch Neuroljus form a protocol, and see how a future assistive robot would receive it."
+          content="An interactive care room where lived care becomes structured intelligence: shape a real situation, watch Neuroljus form a protocol, and see how an assistive robot receives it."
         />
+        <meta name="theme-color" content="#09090b" />
       </Head>
 
-      <SiteLayout>
-        <div className="page">
-          <header className="pageHead">
-            <div>
-              <p className="kicker">Interactive experience · local protocol engine · adapter-ready</p>
-              <h1>Future Care Room</h1>
-              <p className="crossLink">
-                Want the full protocol workspace?{" "}
-                <Link href="/labs/robot-interface">Open the Robot Care Interface</Link>
-              </p>
+      <div className="page">
+        <div className="statusbar" aria-hidden="true">
+          <span>
+            neuroljus://local · <b>care_command_protocol_v0</b> · audit=on · network=off
+          </span>
+          <span>latency 0ms · deterministic · caregiver_authority=true</span>
+        </div>
+
+        <header className="shell topnav" role="banner">
+          <div className="brandRow">
+            <Link href="/" className="logo">
+              Neuroljus
+            </Link>
+            <span className="sep">/</span>
+            <span className="platform">Care Room</span>
+          </div>
+          <nav className="navLinks" aria-label="Labs">
+            <Link href="/labs/robot-interface">Protocol Workspace</Link>
+            <Link href="/">Platform</Link>
+          </nav>
+          <div className="navRight">
+            <div className="pills" role="group" aria-label="Platform layers">
+              <span className="pill on">runtime</span>
+              <span className="pill">protocol</span>
+              <span className="pill">adapters</span>
+              <span className="pill">audit</span>
             </div>
-            <div className={`status ${status}`} role="status" aria-live="polite">
+            <div className={`simStatus ${status}`} role="status" aria-live="polite">
               {statusLabels[status]}
             </div>
-          </header>
+          </div>
+        </header>
 
-          <section className="hero">
-            <h2>Neuroljus turns lived care into structured intelligence for future assistive systems.</h2>
-            <div className="pathRibbon" aria-label="How the room works">
-              {pathStages.map((stage, index) => (
-                <span key={stage} className="pathStage">
-                  <b className={index === activeStage ? "active" : ""}>{stage}</b>
-                  {index < pathStages.length - 1 && <i aria-hidden="true">→</i>}
-                </span>
-              ))}
-            </div>
-          </section>
-
-          <section className="scenarioRow" aria-label="Care situations">
-            <span className="scenarioLabel">Choose a situation</span>
-            {scenarioOrder.map((id) => (
-              <button
-                key={id}
-                onClick={() => applyScenario(id)}
-                className={scenario === id ? "scenarioChip active" : "scenarioChip"}
-                aria-pressed={scenario === id}
-                title={scenarioPresets[id].careGoal}
-              >
-                {scenarioPresets[id].name}
+        <main className="workspace">
+          <div className="pageIntro shell">
+            <p className="cli">$ neuroljus care-room --live</p>
+            <h1>Future Care Room</h1>
+            <p className="crossLink">
+              Want the full protocol workspace?{" "}
+              <Link href="/labs/robot-interface">Open the Robot Care Interface</Link>
+            </p>
+            {!storyActive ? (
+              <button type="button" className="storyStart" onClick={startStoryMode}>
+                Start Story Mode · evening transition
               </button>
+            ) : null}
+          </div>
+
+          {storyPhase !== "off" ? (
+            <section className="storyPanel shell" aria-label="Story mode">
+              <p className="storyKicker">{storyCopy[storyPhase].kicker}</p>
+              <h2>{storyCopy[storyPhase].title}</h2>
+              <p>{storyCopy[storyPhase].body}</p>
+              {storyPhase === "robot" && (
+                <p className="storyLock" role="status">
+                  Controls locked · you execute protocol only · try “Person rejects”
+                </p>
+              )}
+              {storyPhase === "recipients" && (
+                <div className="recipientGrid">
+                  {recipientCards.map((card) => (
+                    <button
+                      key={card.id}
+                      type="button"
+                      className={adapterTarget === card.id ? "recipientCard on" : "recipientCard"}
+                      onClick={() => {
+                        setAdapterTarget(card.id);
+                        addTimeline("caregiver", `${card.title} selected`, card.detail);
+                      }}
+                    >
+                      <strong>{card.title}</strong>
+                      <span>{card.detail}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+              <div className="storyActions">
+                <button type="button" className="storyNext" onClick={advanceStory}>
+                  {storyCopy[storyPhase].next}
+                </button>
+                <button type="button" className="storyExit" onClick={exitStoryMode}>
+                  Exit story
+                </button>
+              </div>
+            </section>
+          ) : null}
+
+        <section className="hero">
+          <h2>Neuroljus turns lived care into structured intelligence for assistive systems.</h2>
+          <div className="pathRibbon" aria-label="How the room works">
+            {pathStages.map((stage, index) => (
+              <span key={stage} className="pathStage">
+                <b className={index === activeStage ? "active" : ""}>{stage}</b>
+                {index < pathStages.length - 1 && <i aria-hidden="true">→</i>}
+              </span>
             ))}
-          </section>
+          </div>
+        </section>
 
-          <section className="stage">
-            <aside className="panel controls" aria-label="Room controls">
-              <p className="kicker">Shape the room</p>
-              <h3>Care controls</h3>
+        <section className="scenarioRow" aria-label="Care situations">
+          <span className="scenarioLabel">Choose a situation</span>
+          {scenarioOrder.map((id) => (
+            <button
+              key={id}
+              onClick={() => applyScenario(id)}
+              className={scenario === id ? "scenarioChip active" : "scenarioChip"}
+              aria-pressed={scenario === id}
+              title={scenarioPresets[id].careGoal}
+              disabled={controlsLocked || (storyActive && id !== "evening_transition")}
+            >
+              {scenarioPresets[id].name}
+            </button>
+          ))}
+        </section>
 
-              <label className="slider">
-                <span>
-                  Light <b>{environment.light}%</b>
-                </span>
-                <input
-                  type="range"
-                  min={0}
-                  max={100}
-                  value={environment.light}
-                  onChange={(event) =>
-                    setEnvironment((current) => ({ ...current, light: Number(event.target.value) }))
-                  }
-                />
-              </label>
-              <label className="slider">
-                <span>
-                  Sound <b>{environment.sound}%</b>
-                </span>
-                <input
-                  type="range"
-                  min={0}
-                  max={100}
-                  value={environment.sound}
-                  onChange={(event) =>
-                    setEnvironment((current) => ({ ...current, sound: Number(event.target.value) }))
-                  }
-                />
-              </label>
-              <label className="slider">
-                <span>
-                  Robot distance <b>{environment.distance.toFixed(1)}m</b>
-                </span>
-                <input
-                  type="range"
-                  min={0.5}
-                  max={4}
-                  step={0.1}
-                  value={environment.distance}
-                  onChange={(event) =>
-                    setEnvironment((current) => ({ ...current, distance: Number(event.target.value) }))
-                  }
-                />
-              </label>
+        <section className="stage">
+          <aside className="panel controls" aria-label="Room controls">
+            <p className="kicker">{controlsLocked ? "Robot mode · locked" : "Shape the room"}</p>
+            <h3>Care controls</h3>
 
-              <label className="field">
-                Pace
-                <select
-                  value={environment.pace}
-                  onChange={(event) =>
-                    setEnvironment((current) => ({
-                      ...current,
-                      pace: event.target.value as Environment["pace"],
-                    }))
-                  }
-                >
-                  <option value="slow">Slow</option>
-                  <option value="steady">Steady</option>
-                  <option value="adaptive">Adaptive</option>
-                </select>
-              </label>
+            <label className="slider">
+              <span>
+                Light <b>{environment.light}%</b>
+              </span>
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={environment.light}
+                disabled={controlsLocked}
+                onChange={(event) =>
+                  setEnvironment((current) => ({ ...current, light: Number(event.target.value) }))
+                }
+              />
+            </label>
+            <label className="slider">
+              <span>
+                Sound <b>{environment.sound}%</b>
+              </span>
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={environment.sound}
+                disabled={controlsLocked}
+                onChange={(event) =>
+                  setEnvironment((current) => ({ ...current, sound: Number(event.target.value) }))
+                }
+              />
+            </label>
+            <label className="slider">
+              <span>
+                Robot distance <b>{environment.distance.toFixed(1)}m</b>
+              </span>
+              <input
+                type="range"
+                min={0.5}
+                max={4}
+                step={0.1}
+                value={environment.distance}
+                disabled={controlsLocked}
+                onChange={(event) =>
+                  setEnvironment((current) => ({ ...current, distance: Number(event.target.value) }))
+                }
+              />
+            </label>
 
-              <label className="field">
-                Visual cue
-                <select value={cueType} onChange={(event) => setCueType(event.target.value as CueType)}>
-                  {(Object.keys(cueLabels) as CueType[]).map((cue) => (
-                    <option key={cue} value={cue}>
-                      {cueLabels[cue]}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <label className="field">
-                Caregiver presence
-                <select
-                  value={supportLevel}
-                  onChange={(event) => setSupportLevel(event.target.value as SupportLevel)}
-                >
-                  {(Object.keys(supportLabels) as SupportLevel[]).map((level) => (
-                    <option key={level} value={level}>
-                      {supportLabels[level]}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <div className="actions">
-                <button className="primaryAction" onClick={playRoutine} disabled={status === "playing" || steps.length === 0}>
-                  Play routine
-                </button>
-                <button onClick={togglePause} disabled={status !== "playing" && status !== "paused"}>
-                  {status === "paused" ? "Resume" : "Pause"}
-                </button>
-                <button onClick={resetRoom}>Reset</button>
-              </div>
-              <div className="actions">
-                <button onClick={personRejects} disabled={status !== "playing" && status !== "paused"}>
-                  Person rejects
-                </button>
-                <button onClick={caregiverPauses} disabled={status !== "playing"}>
-                  Caregiver pauses
-                </button>
-              </div>
-            </aside>
-
-            <div className="room" style={roomStyle} aria-label="Care room scene">
-              <div className="roomTop">
-                <div>
-                  <span>Situation</span>
-                  <strong>{preset.name}</strong>
-                </div>
-                <div className="meters">
-                  <div>
-                    <span>Light</span>
-                    <b>{sceneLight}%</b>
-                  </div>
-                  <div>
-                    <span>Sound</span>
-                    <b>{sceneSound}%</b>
-                  </div>
-                  <div>
-                    <span>Space</span>
-                    <b>{robotDistance.toFixed(1)}m</b>
-                  </div>
-                </div>
-              </div>
-
-              <div className="roomCanvas">
-                <div className="windowGlow" />
-                <div className="soundField">
-                  <span />
-                  <span />
-                  <span />
-                </div>
-
-                <div className="personSpace">
-                  <div className="personMarker">
-                    <span />
-                  </div>
-                  <p>Person</p>
-                </div>
-
-                <div className={`caregiverUnit ${supportLevel}`}>
-                  <div className="caregiverMarker">
-                    <span />
-                  </div>
-                  <p>{supportLevel === "remote" ? "Caregiver · remote" : "Caregiver"}</p>
-                </div>
-
-                <div className={currentCommand ? "robotUnit acting" : "robotUnit"}>
-                  <div className="robotHead">
-                    <span />
-                    <span />
-                  </div>
-                  <div className="robotBody" />
-                  <p>Care interface</p>
-                </div>
-
-                {cardVisible && (
-                  <div className="visualCard">
-                    <span>Visual support</span>
-                    <strong>{cueText}</strong>
-                  </div>
-                )}
-                {caregiverNotified && (
-                  <div className="noticeCard">
-                    <span>Caregiver notice</span>
-                    <strong>{status === "completed" ? "Routine complete" : "Review requested"}</strong>
-                  </div>
-                )}
-              </div>
-
-              <div className="nowBar" aria-live="polite">
-                <span>Now</span>
-                <div>
-                  <strong>{currentCommand ? commandLabels[currentCommand] : statusLabels[status]}</strong>
-                  <p>{actionText}</p>
-                </div>
-                {steps.length > 0 && (
-                  <b className="stepCount">
-                    {Math.min(stepIndex + (status === "playing" ? 1 : 0), activeSteps.length)}/{activeSteps.length}
-                  </b>
-                )}
-              </div>
-
-              <div
-                className="progressWrap"
-                role="progressbar"
-                aria-valuemin={0}
-                aria-valuemax={100}
-                aria-valuenow={progress}
-                aria-label="Routine progress"
+            <label className="field">
+              Pace
+              <select
+                value={environment.pace}
+                disabled={controlsLocked}
+                onChange={(event) =>
+                  setEnvironment((current) => ({
+                    ...current,
+                    pace: event.target.value as Environment["pace"],
+                  }))
+                }
               >
-                <div style={{ width: `${progress}%` }} />
-              </div>
-            </div>
+                <option value="slow">Slow</option>
+                <option value="steady">Steady</option>
+                <option value="adaptive">Adaptive</option>
+              </select>
+            </label>
 
-            <aside className="panel liveFlow" aria-label="Live care intelligence" aria-live="polite">
-              <p className="kicker">Live care intelligence</p>
-              <div className="flowCard">
-                <span>1 · Observation</span>
-                <p>{observationText}</p>
-              </div>
-              <div className="flowCard">
-                <span>2 · Care interpretation</span>
-                <p>{preset.careGoal}</p>
-                <p className="soft">{supportInterpretation[supportLevel]}</p>
-              </div>
-              <div className="flowCard">
-                <span>3 · Protocol</span>
-                <p>
-                  {steps.length} preauthorized steps over {preset.duration} minutes ·{" "}
-                  {preset.exceptions.length} safety exceptions · local audit trail.
-                </p>
-                {plan.attentionFlags.some((flag) => flag.severity === "warning") && (
-                  <p className="warn">
-                    {plan.attentionFlags.find((flag) => flag.severity === "warning")?.message}
-                  </p>
-                )}
-              </div>
-              <div className="flowCard">
-                <span>4 · Robot adapter</span>
-                <p>
-                  The same protocol maps to ROS2, MQTT, HTTP, or offline review —
-                  adapter-ready JSON that preserves the caregiver&apos;s settings.
-                </p>
-              </div>
-              <button className="primaryAction" onClick={generateProtocol}>
-                {protocolOpen ? "Regenerate protocol" : "Generate protocol"}
-              </button>
-            </aside>
-          </section>
-
-          <section className="whyRow" aria-label="Why this matters">
-            <div>
-              <strong>Care knowledge becomes protocol</strong>
-              <p>What a caregiver knows about one person becomes a structured, repeatable routine.</p>
-            </div>
-            <div>
-              <strong>Protocols travel</strong>
-              <p>The same envelope can support families, municipalities, research, and future assistive robots.</p>
-            </div>
-            <div>
-              <strong>Local and open</strong>
-              <p>Everything runs in your browser and exports adapter-ready JSON. No external API, no personal data.</p>
-            </div>
-          </section>
-
-          <section className="lower">
-            <div className="panel timeline" aria-label="Timeline of actions">
-              <p className="kicker">Timeline</p>
-              <h3>What just happened in the room</h3>
-              <div className="timelineList">
-                {timeline.map((entry) => (
-                  <article key={entry.id} className={`timelineItem ${entry.actor}`}>
-                    <time>{entry.time}</time>
-                    <div>
-                      <strong>{entry.label}</strong>
-                      <p>{entry.detail}</p>
-                    </div>
-                    <span>{entry.actor}</span>
-                  </article>
+            <label className="field">
+              Visual cue
+              <select
+                value={cueType}
+                disabled={controlsLocked}
+                onChange={(event) => setCueType(event.target.value as CueType)}
+              >
+                {(Object.keys(cueLabels) as CueType[]).map((cue) => (
+                  <option key={cue} value={cue}>
+                    {cueLabels[cue]}
+                  </option>
                 ))}
+              </select>
+            </label>
+
+            <label className="field">
+              Caregiver presence
+              <select
+                value={supportLevel}
+                disabled={controlsLocked}
+                onChange={(event) => setSupportLevel(event.target.value as SupportLevel)}
+              >
+                {(Object.keys(supportLabels) as SupportLevel[]).map((level) => (
+                  <option key={level} value={level}>
+                    {supportLabels[level]}
+                  </option>
+                ))}
+              </select>
+              <span className="fieldHint">{supportInterpretation[supportLevel]}</span>
+            </label>
+
+            <div className="actions">
+              <button
+                className="primaryAction"
+                onClick={playRoutine}
+                disabled={controlsLocked || status === "playing" || steps.length === 0}
+              >
+                Play routine
+              </button>
+              <button
+                onClick={togglePause}
+                disabled={controlsLocked || (status !== "playing" && status !== "paused")}
+              >
+                {status === "paused" ? "Resume" : "Pause"}
+              </button>
+              <button onClick={resetRoom} disabled={controlsLocked}>
+                Reset
+              </button>
+            </div>
+            <div className="actions">
+              <button onClick={personRejects} disabled={status !== "playing" && status !== "paused"}>
+                Person rejects
+              </button>
+              <button onClick={caregiverPauses} disabled={status !== "playing"}>
+                Caregiver pauses
+              </button>
+            </div>
+          </aside>
+
+          <div className="room" aria-label="Care room scene">
+            <div className="roomTop">
+              <div>
+                <span>Situation</span>
+                <strong>{preset.name}</strong>
+                <p className="goal">{preset.careGoal}</p>
               </div>
+              <div className="meters">
+                <div>
+                  <span>Light</span>
+                  <b>{sceneLight}%</b>
+                </div>
+                <div>
+                  <span>Sound</span>
+                  <b>{sceneSound}%</b>
+                </div>
+                <div>
+                  <span>Space</span>
+                  <b>{robotDistance.toFixed(1)}m</b>
+                </div>
+              </div>
+            </div>
+
+            <div className="roomCanvas">
+              <svg
+                className="sceneSvg"
+                viewBox="0 0 760 400"
+                preserveAspectRatio="xMidYMax meet"
+                role="img"
+                aria-label={observationText}
+              >
+                <defs>
+                  <linearGradient id="fcrWall" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#eef5ee" />
+                    <stop offset="100%" stopColor="#dce9df" />
+                  </linearGradient>
+                  <linearGradient id="fcrFloor" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#e3d4b4" />
+                    <stop offset="100%" stopColor="#d7c4a0" />
+                  </linearGradient>
+                  <radialGradient id="fcrWindowGlow">
+                    <stop offset="0%" stopColor="#ffd98a" stopOpacity="0.9" />
+                    <stop offset="100%" stopColor="#ffd98a" stopOpacity="0" />
+                  </radialGradient>
+                  <radialGradient id="fcrLampGlow">
+                    <stop offset="0%" stopColor="#ffe3a1" stopOpacity="0.85" />
+                    <stop offset="100%" stopColor="#ffe3a1" stopOpacity="0" />
+                  </radialGradient>
+                </defs>
+
+                {/* room */}
+                <rect x="0" y="0" width="760" height="300" fill="url(#fcrWall)" />
+                <rect x="0" y="300" width="760" height="100" fill="url(#fcrFloor)" />
+                <line x1="0" y1="300" x2="760" y2="300" stroke="#c3ae87" strokeWidth="2" />
+
+                {/* window with daylight that follows the light level */}
+                <circle
+                  cx="120"
+                  cy="112"
+                  r="150"
+                  fill="url(#fcrWindowGlow)"
+                  style={{ opacity: glowOpacity, transition: "opacity 500ms ease" }}
+                />
+                <rect x="62" y="48" width="116" height="128" rx="8" fill="#fff8e6" stroke="#d8c39a" strokeWidth="2" />
+                <line x1="120" y1="50" x2="120" y2="174" stroke="#d8c39a" strokeWidth="2" />
+                <line x1="64" y1="112" x2="176" y2="112" stroke="#d8c39a" strokeWidth="2" />
+                <rect x="54" y="176" width="132" height="8" rx="3" fill="#d8c39a" />
+
+                {/* pendant lamp */}
+                <line x1="430" y1="0" x2="430" y2="40" stroke="#9aa8a4" strokeWidth="2" />
+                <path d="M 412 40 L 448 40 L 440 58 L 420 58 Z" fill="#b89a6a" />
+                <circle
+                  cx="430"
+                  cy="64"
+                  r="6"
+                  fill="#ffe3a1"
+                  style={{ opacity: 0.25 + (sceneLight / 100) * 0.75, transition: "opacity 500ms ease" }}
+                />
+                <ellipse
+                  cx="430"
+                  cy="330"
+                  rx="92"
+                  ry="16"
+                  fill="url(#fcrLampGlow)"
+                  style={{ opacity: (sceneLight / 100) * 0.5, transition: "opacity 500ms ease" }}
+                />
+
+                {/* ambient sound source */}
+                <g
+                  transform="translate(664, 84)"
+                  style={{ opacity: soundOpacity, transition: "opacity 500ms ease" }}
+                >
+                  <circle cx="0" cy="0" r="4" fill="#6b7f92" />
+                  <path d="M 10 -12 a 16 16 0 0 1 0 24" fill="none" stroke="#6b7f92" strokeWidth="3" strokeLinecap="round" />
+                  <path d="M 20 -22 a 30 30 0 0 1 0 44" fill="none" stroke="#6b7f92" strokeWidth="3" strokeLinecap="round" />
+                  <path d="M 30 -32 a 44 44 0 0 1 0 64" fill="none" stroke="#6b7f92" strokeWidth="3" strokeLinecap="round" />
+                </g>
+
+                {/* dusk overlay: the room darkens as light goes down */}
+                <rect
+                  x="0"
+                  y="0"
+                  width="760"
+                  height="400"
+                  fill="#242b3d"
+                  pointerEvents="none"
+                  style={{ opacity: dimOpacity, transition: "opacity 500ms ease" }}
+                />
+
+                {/* person */}
+                <g transform="translate(185, 0)">
+                  <circle className="breatheHalo" cx="0" cy="286" r="54" fill="rgba(36, 91, 98, 0.14)" />
+                  <ellipse cx="0" cy="328" rx="42" ry="8" fill="rgba(45, 62, 58, 0.14)" />
+                  <circle cx="0" cy="252" r="15" fill="#245b62" />
+                  <rect x="-19" y="270" width="38" height="54" rx="17" fill="#245b62" />
+                  <text className="sceneLabel" x="0" y="356" textAnchor="middle">
+                    Person
+                  </text>
+                </g>
+
+                {/* caregiver: position follows the presence setting */}
+                {supportLevel === "remote" ? (
+                  <g transform="translate(668, 190)">
+                    <rect x="-44" y="-34" width="88" height="74" rx="10" fill="rgba(255, 255, 255, 0.85)" stroke="#7c8ca1" strokeDasharray="5 4" strokeWidth="1.5" />
+                    <circle cx="0" cy="-12" r="9" fill="#405064" />
+                    <rect x="-11" y="0" width="22" height="26" rx="9" fill="#405064" />
+                    <text className="sceneLabel" x="0" y="54" textAnchor="middle">
+                      Caregiver · remote
+                    </text>
+                  </g>
+                ) : (
+                  <g
+                    style={{
+                      transform:
+                        supportLevel === "hands_on"
+                          ? "translate(104px, 0px) scale(1)"
+                          : "translate(66px, -40px) scale(0.85)",
+                      transition: "transform 400ms ease",
+                    }}
+                  >
+                    <ellipse cx="0" cy="328" rx="34" ry="7" fill="rgba(45, 62, 58, 0.12)" />
+                    <circle cx="0" cy="258" r="13" fill="#405064" />
+                    <rect x="-16" y="274" width="32" height="50" rx="14" fill="#405064" />
+                    <text className="sceneLabel" x="0" y="356" textAnchor="middle">
+                      Caregiver
+                    </text>
+                  </g>
+                )}
+
+                {/* robot: keeps the preauthorized distance */}
+                <g style={{ transform: `translateX(${robotX}px)`, transition: "transform 600ms ease" }}>
+                  <g className={robotActing ? "robotFigure acting" : "robotFigure"}>
+                    {robotActing && (
+                      <circle className="robotPulse" cx="0" cy="288" r="54" fill="none" stroke="#245b62" strokeWidth="2" />
+                    )}
+                    <ellipse cx="0" cy="330" rx="34" ry="7" fill="rgba(45, 62, 58, 0.14)" />
+                    <line x1="0" y1="250" x2="0" y2="236" stroke="#182231" strokeWidth="3" />
+                    <circle className={robotActing ? "robotBeacon on" : "robotBeacon"} cx="0" cy="231" r="5" fill="#3ecf9a" />
+                    <rect x="-26" y="250" width="52" height="34" rx="10" fill="#182231" />
+                    <circle className="robotEye" cx="-10" cy="267" r="5" fill="#5fe0b7" />
+                    <circle className="robotEye" cx="10" cy="267" r="5" fill="#5fe0b7" />
+                    <rect x="-22" y="288" width="44" height="36" rx="12" fill="#223047" />
+                    <rect x="-8" y="296" width="16" height="6" rx="3" fill="#3ecf9a" opacity="0.85" />
+                    <circle cx="-13" cy="327" r="6" fill="#182231" />
+                    <circle cx="13" cy="327" r="6" fill="#182231" />
+                    <text className="sceneLabel" x="0" y="356" textAnchor="middle">
+                      Robot · care interface
+                    </text>
+                  </g>
+                </g>
+              </svg>
+
+              {cardVisible && (
+                <div className="visualCard">
+                  <span>Visual support</span>
+                  <strong>{cueText}</strong>
+                </div>
+              )}
+              {caregiverNotified && (
+                <div className="noticeCard">
+                  <span>Caregiver notice</span>
+                  <strong>{status === "completed" ? "Routine complete" : "Review requested"}</strong>
+                </div>
+              )}
+            </div>
+
+            <div className="nowBar" aria-live="polite">
+              <span>Now</span>
+              <div>
+                <strong>{currentCommand ? commandLabels[currentCommand] : statusLabels[status]}</strong>
+                <p>{actionText}</p>
+              </div>
+              {steps.length > 0 && (
+                <b className="stepCount">
+                  {Math.min(stepIndex + (status === "playing" ? 1 : 0), steps.length)}/{steps.length}
+                </b>
+              )}
             </div>
 
             <div
-              ref={protocolRef}
-              className={justGenerated ? "panel protocolLayer generated" : "panel protocolLayer"}
-              aria-label="Protocol layer"
+              className="progressWrap"
+              role="progressbar"
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={progress}
+              aria-label="Routine progress"
             >
-              <p className="kicker">Protocol layer</p>
-              <h3>What a future robot would receive</h3>
+              <div style={{ width: `${progress}%` }} />
+            </div>
+          </div>
 
-              {protocolOpen ? (
-                <>
-                  <div className="readyRow">
-                    <span className={plan.validation.valid ? "readyChip ok" : "readyChip warn"}>
-                      {plan.validation.valid ? "Protocol ready" : "Needs attention"}
-                    </span>
-                    {generatedAt && (
-                      <p className="planMeta">
-                        Last generated at {generatedAt}. The protocol below follows the room live as
-                        you shape it.
-                      </p>
-                    )}
+          <aside className="machinePanel" aria-label="Machine layer" aria-live="polite">
+            <p className="mKicker">Machine layer · live mapping</p>
+            <h3 className="mTitle">What the machine receives</h3>
+            <p className="mIntro">
+              The warm room on the left is what the caregiver shapes. This is the
+              same moment, structured as protocol — as the routine plays, each action lights
+              up its line.
+            </p>
+
+            <div className="mMeta">
+              <span>protocol</span>
+              <b>care_command_protocol_v0</b>
+              <span>scenario</span>
+              <b>{scenario}</b>
+              <span>plan</span>
+              <b>
+                {steps.length} steps · {preset.duration} min
+              </b>
+              <span>presence</span>
+              <b>{supportLevel}</b>
+              <span>vision</span>
+              <b>{visionSnapshot ? "attached" : "none"}</b>
+            </div>
+
+            <div className="signalBridge" aria-label="NL-VISION signal bridge">
+              <p className="mLabel">signal_bridge · nlvision_holistic_v0</p>
+              <p className="signalNote">
+                Optional raw local signals from the camera lab. Landmarks and numbers only —
+                the caregiver keeps interpretation. Not emotion AI.
+              </p>
+              <div className="signalActions">
+                <button type="button" className="signalBtn" onClick={importVisionSignals} disabled={controlsLocked}>
+                  Attach local signal
+                </button>
+                {visionSnapshot && (
+                  <button type="button" className="signalBtn ghost" onClick={clearVisionSignals} disabled={controlsLocked}>
+                    Clear
+                  </button>
+                )}
+                <Link href="/labs/nl-vision" className="signalLink">
+                  Open NL-VISION
+                </Link>
+              </div>
+              {visionSnapshot ? (
+                <div className="signalGrid">
+                  <div>
+                    <span>face</span>
+                    <strong>{visionSnapshot.faceDetected ? "detected" : "none"}</strong>
                   </div>
-                  {plan.explanation.map((paragraph, index) => (
-                    <p key={index} className="planParagraph">
-                      {paragraph}
-                    </p>
-                  ))}
-
-                  {plan.reflectionQuestions.length > 0 && (
-                    <>
-                      <h4>Reflection for the caregiver</h4>
-                      <ul className="questionList">
-                        {plan.reflectionQuestions.slice(0, 3).map((question) => (
-                          <li key={question}>{question}</li>
-                        ))}
-                      </ul>
-                    </>
-                  )}
-
-                  <div className="exportRow">
-                    <button onClick={copyJson}>{copied ? "Copied" : "Copy JSON"}</button>
-                    <button onClick={downloadJson}>Download JSON</button>
-                    <button onClick={copyPacket}>{packetCopied ? "Copied" : "Copy adapter packet"}</button>
-                    <select
-                      value={adapterTarget}
-                      onChange={(event) => setAdapterTarget(event.target.value as AdapterTarget)}
-                      aria-label="Adapter packet target"
-                    >
-                      {(Object.keys(adapterLabels) as AdapterTarget[]).map((target) => (
-                        <option key={target} value={target}>
-                          {adapterLabels[target]}
-                        </option>
-                      ))}
-                    </select>
+                  <div>
+                    <span>hands_avg</span>
+                    <strong>{visionSnapshot.handsAvg.toFixed(2)}</strong>
                   </div>
-                  <p className="soft">{adapterTransports[adapterTarget]}.</p>
-                  <pre>{JSON.stringify(plan.adapterPackets[adapterTarget], null, 2)}</pre>
-                </>
+                  <div>
+                    <span>near_face</span>
+                    <strong>{Math.round(visionSnapshot.handNearPct * 100)}%</strong>
+                  </div>
+                  <div>
+                    <span>movement</span>
+                    <strong>{visionSnapshot.movement.toFixed(4)}</strong>
+                  </div>
+                  <div>
+                    <span>blinks/min</span>
+                    <strong>{visionSnapshot.blinksPerMin}</strong>
+                  </div>
+                </div>
               ) : (
-                <p className="emptyState">
-                  Generate the protocol to see the exact JSON this room produces —
-                  the same envelope a ROS2, MQTT, HTTP, or offline adapter would
-                  receive, with the caregiver&apos;s settings preserved.
-                </p>
+                <p className="signalEmpty">No local sample attached.</p>
               )}
             </div>
-          </section>
-        </div>
-      </SiteLayout>
+
+            <div className="streamBlock">
+              <p className="mLabel">planned_sequence</p>
+              {steps.map((step, index) => {
+                const state =
+                  index < stepIndex ? "done" : index === activeStepIndex ? "active" : "pending";
+                return (
+                  <div key={step.command} className={`mLine ${state}`}>
+                    <i>{state === "done" ? "✓" : state === "active" ? "▸" : "·"}</i>
+                    <code>
+                      +{step.offsetMinutes}m {step.command}
+                    </code>
+                    <span>{step.durationMinutes}m</span>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="streamBlock">
+              <p className="mLabel">safety_exceptions · always win</p>
+              {preset.exceptions.map((exception) => (
+                <div
+                  key={exception}
+                  className={
+                    status === "escalated" && exception === "rejection_signal"
+                      ? "mLine exception fired"
+                      : "mLine exception"
+                  }
+                >
+                  <i>{status === "escalated" && exception === "rejection_signal" ? "!!" : "◦"}</i>
+                  <code>{exception} → stop, hand back to caregiver</code>
+                </div>
+              ))}
+            </div>
+
+            <div className="mFoot">
+              <span>
+                status: <b>{status}</b>
+              </span>
+              <span>
+                caregiver_notified: <b>{caregiverNotified ? "true" : "false"}</b>
+              </span>
+            </div>
+            {plan.attentionFlags.some((flag) => flag.severity === "warning") && (
+              <p className="mWarn">
+                ⚠ {plan.attentionFlags.find((flag) => flag.severity === "warning")?.message}
+              </p>
+            )}
+
+            <button className="generateBtn" onClick={generateProtocol}>
+              {protocolOpen ? "Regenerate full protocol" : "Generate full protocol"}
+            </button>
+          </aside>
+        </section>
+
+        <section className="whyRow" aria-label="Why this matters">
+          <div>
+            <strong>Care knowledge becomes protocol</strong>
+            <p>What a caregiver knows about one person becomes a structured, repeatable routine.</p>
+          </div>
+          <div>
+            <strong>Protocols travel</strong>
+            <p>The same envelope can support families, municipalities, research, and assistive robots.</p>
+          </div>
+          <div>
+            <strong>Local and open</strong>
+            <p>Everything runs in your browser and exports adapter-ready JSON. No external API, no personal data.</p>
+          </div>
+        </section>
+
+        <section className="lower">
+          <div className="panel timeline" aria-label="Timeline of actions">
+            <p className="kicker">Timeline</p>
+            <h3>What just happened in the room</h3>
+            <div className="timelineList">
+              {timeline.map((entry) => (
+                <article key={entry.id} className={`timelineItem ${entry.actor}`}>
+                  <time>{entry.time}</time>
+                  <div>
+                    <strong>{entry.label}</strong>
+                    <p>{entry.detail}</p>
+                  </div>
+                  <span>{entry.actor}</span>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <div
+            ref={protocolRef}
+            className={justGenerated ? "protocolLayer generated" : "protocolLayer"}
+            aria-label="Protocol layer"
+          >
+            <p className="kicker">Protocol layer</p>
+            <h3>What the robot receives</h3>
+
+            {protocolOpen ? (
+              <>
+                <div className="readyRow">
+                  <span className={plan.validation.valid ? "readyChip ok" : "readyChip warn"}>
+                    {plan.validation.valid ? "Protocol ready" : "Needs attention"}
+                  </span>
+                  {generatedAt && (
+                    <p className="planMeta">Generated at {generatedAt} from the room as configured.</p>
+                  )}
+                </div>
+                {plan.explanation.map((paragraph, index) => (
+                  <p key={index} className="planParagraph">
+                    {paragraph}
+                  </p>
+                ))}
+
+                {plan.reflectionQuestions.length > 0 && (
+                  <>
+                    <h4>Reflection for the caregiver</h4>
+                    <ul className="questionList">
+                      {plan.reflectionQuestions.slice(0, 3).map((question) => (
+                        <li key={question}>{question}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+
+                <div className="exportRow">
+                  <button onClick={copyJson}>{copied ? "Copied" : "Copy JSON"}</button>
+                  <button onClick={downloadJson}>Download JSON</button>
+                  <button onClick={copyPacket}>{packetCopied ? "Copied" : "Copy adapter packet"}</button>
+                  <select
+                    value={adapterTarget}
+                    onChange={(event) => setAdapterTarget(event.target.value as AdapterTarget)}
+                    aria-label="Adapter packet target"
+                  >
+                    {(Object.keys(adapterLabels) as AdapterTarget[]).map((target) => (
+                      <option key={target} value={target}>
+                        {adapterLabels[target]}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <p className="soft">{adapterTransports[adapterTarget]}.</p>
+                <pre>{JSON.stringify(plan.adapterPackets[adapterTarget], null, 2)}</pre>
+              </>
+            ) : (
+              <p className="emptyState">
+                Generate the protocol to see the exact JSON this room produces —
+                the same envelope a ROS2, MQTT, HTTP, or offline adapter would
+                receive, with the caregiver&apos;s settings preserved.
+              </p>
+            )}
+          </div>
+        </section>
+
+        <footer className="foot">
+          <p>
+            Everything on this page runs locally in your browser: no external API,
+            no personal data. This is how Neuroljus works — lived care, structured
+            into protocols that people, researchers, and assistive systems
+            can trust.
+          </p>
+        </footer>
+        </main>
+      </div>
 
       <style jsx>{`
         .page {
-          padding: 26px 22px 8px;
-          color: var(--nl-text);
-          font-family: var(--nl-font);
+          min-height: 100dvh;
+          background: #09090b;
+          color: #fafafa;
+          font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+            sans-serif;
+        }
+        .shell {
+          width: min(1360px, calc(100% - 44px));
+          margin: 0 auto;
+        }
+        .statusbar {
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 11px;
+          display: flex;
+          justify-content: space-between;
+          gap: 16px;
+          flex-wrap: wrap;
+          padding: 8px 24px;
+          border-bottom: 1px solid #27272a;
+          color: #71717a;
+        }
+        .statusbar :global(b) {
+          color: #3ecf9a;
+          font-weight: 600;
+        }
+        .topnav {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 16px;
+          padding: 16px 0;
+          border-bottom: 1px solid #27272a;
+        }
+        .brandRow {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+        .logo {
+          font-size: 13px;
+          font-weight: 800;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #fafafa;
+          text-decoration: none;
+        }
+        .sep {
+          color: #3f3f46;
+        }
+        .platform {
+          font-size: 13px;
+          color: #a1a1aa;
+        }
+        .navLinks {
+          display: flex;
+          gap: 20px;
+          font-size: 13px;
+        }
+        .navLinks :global(a) {
+          color: #a1a1aa;
+          text-decoration: none;
+          font-weight: 600;
+        }
+        .navLinks :global(a:hover) {
+          color: #3ecf9a;
+        }
+        .navRight {
+          margin-left: auto;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+        .pills {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+        .pill {
+          font-size: 11px;
+          font-weight: 700;
+          padding: 4px 10px;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
+          color: #a1a1aa;
+        }
+        .pill.on {
+          border-color: #3ecf9a;
+          color: #3ecf9a;
+        }
+        .simStatus {
+          min-width: 168px;
+          min-height: 30px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
+          background: #0c0c0e;
+          color: #a1a1aa;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 11px;
+          font-weight: 700;
+          padding: 0 10px;
+        }
+        .simStatus.playing {
+          border-color: #3ecf9a;
+          color: #3ecf9a;
+          background: rgba(62, 207, 154, 0.08);
+        }
+        .simStatus.paused,
+        .simStatus.escalated {
+          border-color: #fbbf24;
+          color: #fbbf24;
+          background: rgba(251, 191, 36, 0.08);
+        }
+        .simStatus.completed {
+          border-color: #3ecf9a;
+          color: #3ecf9a;
+        }
+        .workspace {
+          padding: 22px 0 40px;
+        }
+        .pageIntro {
+          margin-bottom: 18px;
+        }
+        .cli {
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 12px;
+          color: #3ecf9a;
+          margin-bottom: 10px;
+        }
+        .crossLink {
+          margin-top: 8px;
+          color: #71717a;
+          font-size: 13px;
+          font-weight: 600;
+        }
+        .crossLink :global(a) {
+          color: #3ecf9a;
+          font-weight: 700;
+        }
+        .storyStart {
+          margin-top: 16px;
+          border: 1px solid #3ecf9a;
+          background: #3ecf9a;
+          color: #09090b;
+          border-radius: 4px;
+          min-height: 42px;
+          padding: 0 16px;
+          font-size: 13px;
+          font-weight: 800;
+          cursor: pointer;
+        }
+        .storyPanel {
+          margin: 0 auto 18px;
+          border: 1px solid #3f3f46;
+          border-radius: 6px;
+          background: #0c0c0e;
+          padding: 18px 20px;
+          display: grid;
+          gap: 10px;
+        }
+        .storyKicker {
+          color: #3ecf9a;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 11px;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+        }
+        .storyPanel h2 {
+          font-size: 22px;
+        }
+        .storyPanel > p {
+          color: #a1a1aa;
+          font-size: 14px;
+          line-height: 1.55;
+          max-width: 68ch;
+        }
+        .storyLock {
+          border: 1px solid #fbbf24;
+          background: rgba(251, 191, 36, 0.08);
+          color: #fbbf24;
+          border-radius: 4px;
+          padding: 10px 12px;
+          font-size: 13px;
+          font-weight: 700;
+        }
+        .recipientGrid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 10px;
+        }
+        .recipientCard {
+          display: grid;
+          gap: 6px;
+          text-align: left;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
+          background: #18181b;
+          color: #fafafa;
+          padding: 12px;
+          cursor: pointer;
+        }
+        .recipientCard.on {
+          border-color: #3ecf9a;
+          background: rgba(62, 207, 154, 0.08);
+        }
+        .recipientCard strong {
+          font-size: 14px;
+        }
+        .recipientCard span {
+          color: #a1a1aa;
+          font-size: 12px;
+          line-height: 1.45;
+        }
+        .storyActions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-top: 4px;
+        }
+        .storyNext {
+          border: 1px solid #3ecf9a;
+          background: #3ecf9a;
+          color: #09090b;
+          border-radius: 4px;
+          min-height: 40px;
+          padding: 0 14px;
+          font-size: 12px;
+          font-weight: 800;
+          cursor: pointer;
+        }
+        .storyExit {
+          border: 1px solid #3f3f46;
+          background: transparent;
+          color: #a1a1aa;
+          border-radius: 4px;
+          min-height: 40px;
+          padding: 0 14px;
+          font-size: 12px;
+          font-weight: 700;
+          cursor: pointer;
         }
         h1,
         h2,
@@ -782,8 +1448,6 @@ export default function FutureCareRoom() {
         h1 {
           font-size: 30px;
           line-height: 1.05;
-          letter-spacing: -0.01em;
-          color: var(--nl-text);
         }
         h2 {
           font-size: 24px;
@@ -796,93 +1460,35 @@ export default function FutureCareRoom() {
           margin-top: 6px;
           font-size: 13px;
           text-transform: uppercase;
-          letter-spacing: 0.08em;
-          color: var(--nl-text-faint);
+          color: #637085;
         }
         .kicker {
           margin-bottom: 4px;
-          color: var(--nl-aurora-a);
-          font-size: 12px;
-          font-weight: 800;
-          letter-spacing: 0.14em;
-          text-transform: uppercase;
-        }
-        .pageHead {
-          max-width: 1360px;
-          margin: 0 auto 18px;
-          display: grid;
-          grid-template-columns: minmax(0, 1fr) auto;
-          gap: 18px;
-          align-items: center;
-        }
-        .crossLink {
-          margin-top: 6px;
-          color: var(--nl-text-dim);
-          font-size: 13px;
+          color: #3ecf9a;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 11px;
           font-weight: 700;
-        }
-        .crossLink :global(a) {
-          color: var(--nl-aurora-b);
-          text-decoration: none;
-          border-bottom: 1px solid rgba(124, 227, 247, 0.4);
-        }
-        .crossLink :global(a:hover) {
-          border-bottom-color: var(--nl-aurora-b);
-        }
-        .status {
-          min-width: 168px;
-          min-height: 38px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          border: 1px solid var(--nl-border-strong);
-          border-radius: 999px;
-          background: var(--nl-surface-strong);
-          backdrop-filter: blur(14px);
-          -webkit-backdrop-filter: blur(14px);
-          color: var(--nl-text);
-          font-weight: 800;
-          padding: 0 14px;
-        }
-        .status.playing {
-          border-color: transparent;
-          background: var(--nl-aurora-grad);
-          color: var(--nl-on-aurora);
-          box-shadow: 0 8px 28px rgba(94, 230, 164, 0.25);
-        }
-        .status.paused {
-          border-color: rgba(247, 201, 110, 0.5);
-          background: rgba(247, 201, 110, 0.12);
-          color: #ffd89a;
-        }
-        .status.escalated {
-          border-color: rgba(255, 138, 122, 0.55);
-          background: rgba(255, 120, 100, 0.13);
-          color: #ffb3a6;
-        }
-        .status.completed {
-          border-color: rgba(94, 230, 164, 0.5);
-          background: rgba(94, 230, 164, 0.12);
-          color: #8ef0bf;
+          letter-spacing: 0.04em;
+          text-transform: uppercase;
         }
         .hero {
           max-width: 1360px;
           margin: 0 auto 14px;
-          border: 1px solid var(--nl-border);
-          border-radius: var(--nl-radius);
-          background: var(--nl-surface);
-          backdrop-filter: blur(14px);
-          -webkit-backdrop-filter: blur(14px);
+          border: 1px solid #27272a;
+          border-radius: 6px;
+          background: #0c0c0e;
           padding: 18px 22px;
           display: flex;
           flex-wrap: wrap;
           align-items: center;
           justify-content: space-between;
           gap: 14px;
+          width: min(1360px, calc(100% - 44px));
         }
         .hero h2 {
           max-width: 720px;
-          color: var(--nl-text);
+          color: #fafafa;
+          font-size: 20px;
         }
         .pathRibbon {
           display: flex;
@@ -896,23 +1502,23 @@ export default function FutureCareRoom() {
           gap: 6px;
         }
         .pathStage b {
-          border: 1px solid var(--nl-border);
+          border: 1px solid #3f3f46;
           border-radius: 999px;
-          background: var(--nl-surface);
-          color: var(--nl-text-dim);
+          background: #18181b;
+          color: #a1a1aa;
           font-size: 12px;
-          font-weight: 800;
+          font-weight: 700;
           padding: 6px 12px;
           white-space: nowrap;
           transition: all 220ms ease;
         }
         .pathStage b.active {
-          border-color: rgba(94, 230, 164, 0.55);
-          background: rgba(94, 230, 164, 0.14);
-          color: #8ef0bf;
+          border-color: #3ecf9a;
+          background: rgba(62, 207, 154, 0.1);
+          color: #3ecf9a;
         }
         .pathStage i {
-          color: var(--nl-text-faint);
+          color: #52525b;
           font-style: normal;
           font-weight: 800;
         }
@@ -923,39 +1529,32 @@ export default function FutureCareRoom() {
           flex-wrap: wrap;
           align-items: center;
           gap: 8px;
+          padding: 0 22px;
         }
         .scenarioLabel {
-          color: var(--nl-text-faint);
-          font-size: 12px;
-          font-weight: 800;
-          letter-spacing: 0.08em;
+          color: #71717a;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 10px;
+          font-weight: 700;
           text-transform: uppercase;
           margin-right: 4px;
         }
         .scenarioChip {
-          border: 1px solid var(--nl-border-strong);
+          border: 1px solid #3f3f46;
           border-radius: 999px;
-          background: var(--nl-surface);
-          backdrop-filter: blur(14px);
-          -webkit-backdrop-filter: blur(14px);
+          background: #18181b;
           padding: 10px 16px;
           cursor: pointer;
           font: inherit;
-          font-weight: 800;
+          font-weight: 700;
           font-size: 13px;
-          color: var(--nl-text);
+          color: #a1a1aa;
           min-height: 40px;
-          transition: border-color 160ms ease, background 160ms ease;
-        }
-        .scenarioChip:hover {
-          border-color: var(--nl-aurora-b);
-          background: var(--nl-surface-strong);
         }
         .scenarioChip.active {
-          border-color: transparent;
-          background: var(--nl-aurora-grad);
-          color: var(--nl-on-aurora);
-          box-shadow: 0 8px 28px rgba(94, 230, 164, 0.22);
+          border-color: #3ecf9a;
+          background: #3ecf9a;
+          color: #09090b;
         }
         .stage {
           max-width: 1360px;
@@ -964,13 +1563,12 @@ export default function FutureCareRoom() {
           grid-template-columns: minmax(260px, 0.85fr) minmax(420px, 1.5fr) minmax(280px, 0.95fr);
           gap: 16px;
           align-items: stretch;
+          padding: 0 22px;
         }
         .panel {
-          border: 1px solid var(--nl-border);
-          border-radius: var(--nl-radius);
-          background: var(--nl-surface);
-          backdrop-filter: blur(14px);
-          -webkit-backdrop-filter: blur(14px);
+          border: 1px solid #27272a;
+          border-radius: 6px;
+          background: #0c0c0e;
           padding: 18px;
         }
         .controls {
@@ -986,39 +1584,42 @@ export default function FutureCareRoom() {
           display: flex;
           justify-content: space-between;
           gap: 12px;
-          color: var(--nl-text-dim);
+          color: #a1a1aa;
           font-size: 13px;
-          font-weight: 800;
-        }
-        .slider b {
-          color: var(--nl-text);
+          font-weight: 700;
         }
         .field {
           display: grid;
           gap: 7px;
-          color: var(--nl-text-dim);
+          color: #a1a1aa;
           font-size: 13px;
-          font-weight: 800;
+          font-weight: 700;
+        }
+        .fieldHint {
+          color: #71717a;
+          font-size: 12px;
+          font-weight: 600;
+          line-height: 1.4;
         }
         input[type="range"] {
           width: 100%;
           padding: 0;
-          accent-color: var(--nl-aurora-b);
+          accent-color: #3ecf9a;
         }
         select {
           width: 100%;
           min-height: 40px;
-          border: 1px solid var(--nl-border-strong);
-          border-radius: var(--nl-radius-sm);
-          background: var(--nl-bg-raised);
-          color: var(--nl-text);
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
+          background: #18181b;
+          color: #fafafa;
           font: inherit;
           padding: 0 10px;
         }
         select:focus,
         button:focus,
         input:focus {
-          outline: 2px solid var(--nl-aurora-b);
+          outline: 2px solid #3ecf9a;
           outline-offset: 2px;
         }
         .actions {
@@ -1028,48 +1629,41 @@ export default function FutureCareRoom() {
         }
         button {
           min-height: 40px;
-          border: 1px solid var(--nl-border-strong);
-          border-radius: 999px;
-          background: var(--nl-surface);
-          color: var(--nl-text);
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
+          background: #18181b;
+          color: #fafafa;
           cursor: pointer;
           font: inherit;
-          font-weight: 800;
-          padding: 0 14px;
-          transition: border-color 160ms ease, background 160ms ease;
+          font-weight: 700;
+          padding: 0 12px;
         }
         button:hover:not(:disabled) {
-          border-color: var(--nl-aurora-b);
-          background: var(--nl-surface-strong);
+          border-color: #3ecf9a;
+          color: #3ecf9a;
         }
         button:disabled {
           cursor: not-allowed;
-          opacity: 0.45;
+          opacity: 0.5;
         }
         .primaryAction {
-          border-color: transparent;
-          background: var(--nl-aurora-grad);
-          color: var(--nl-on-aurora);
+          background: #3ecf9a;
+          border-color: #3ecf9a;
+          color: #09090b;
         }
         .primaryAction:hover:not(:disabled) {
-          border-color: transparent;
-          background: var(--nl-aurora-grad);
-          box-shadow: 0 10px 30px rgba(94, 230, 164, 0.25);
+          color: #09090b;
+          border-color: #3ecf9a;
+          opacity: 0.92;
         }
         .room {
-          border: 1px solid var(--nl-border);
-          border-radius: var(--nl-radius);
+          border: 1px solid #27272a;
+          border-radius: 6px;
           padding: 18px;
           display: grid;
           gap: 12px;
-          background:
-            radial-gradient(
-              540px 320px at 20% 0%,
-              rgba(255, 199, 120, calc(var(--light-opacity) * 0.12)),
-              transparent 70%
-            ),
-            var(--nl-bg-raised);
-          box-shadow: var(--nl-shadow);
+          background: #ffffff;
+          color: #17202f;
         }
         .roomTop {
           display: flex;
@@ -1080,18 +1674,24 @@ export default function FutureCareRoom() {
         }
         .roomTop span,
         .meters span,
-        .flowCard span,
         .visualCard span,
         .noticeCard span {
-          color: var(--nl-text-faint);
+          color: #637085;
           font-size: 11px;
           font-weight: 800;
-          letter-spacing: 0.08em;
           text-transform: uppercase;
         }
         .roomTop strong {
           display: block;
-          color: var(--nl-aurora-b);
+          color: #245b62;
+        }
+        .goal {
+          margin-top: 3px;
+          max-width: 380px;
+          color: #637085;
+          font-size: 12px;
+          font-weight: 600;
+          line-height: 1.4;
         }
         .meters {
           display: grid;
@@ -1099,180 +1699,48 @@ export default function FutureCareRoom() {
           gap: 8px;
         }
         .meters div {
-          border: 1px solid var(--nl-border);
-          border-radius: var(--nl-radius-sm);
-          background: var(--nl-surface);
+          border: 1px solid #d8e1df;
+          border-radius: 8px;
+          background: #fbfdfc;
           padding: 8px 12px;
         }
         .meters b {
           display: block;
           margin-top: 2px;
-          color: var(--nl-text);
         }
         .roomCanvas {
           position: relative;
-          min-height: 360px;
           overflow: hidden;
-          border: 1px solid var(--nl-border);
-          border-radius: var(--nl-radius-sm);
-          background:
-            radial-gradient(
-              420px 300px at 16% 20%,
-              rgba(255, 196, 110, calc(var(--light-opacity) * 0.28)),
-              transparent 65%
-            ),
-            linear-gradient(180deg, rgba(148, 184, 224, 0.06), rgba(2, 8, 20, 0.4)),
-            var(--nl-bg-raised);
+          border: 1px solid #cbd8d5;
+          border-radius: 8px;
+          background: #dce9df;
         }
-        .windowGlow {
-          position: absolute;
-          top: 22px;
-          left: 22px;
-          width: 128px;
-          height: 88px;
-          border: 1px solid rgba(255, 214, 150, 0.35);
-          border-radius: var(--nl-radius-sm);
-          background: rgba(255, 205, 125, calc(var(--light-opacity) * 0.55));
-          box-shadow: 0 0 48px rgba(255, 186, 100, calc(var(--light-opacity) * 0.6));
+        .sceneSvg {
+          display: block;
+          width: 100%;
+          height: auto;
         }
-        .soundField {
-          position: absolute;
-          right: 22px;
-          top: 28px;
-          width: 112px;
-          height: 80px;
-          opacity: var(--sound-opacity);
-        }
-        .soundField span {
-          position: absolute;
-          right: 0;
-          border: 2px solid rgba(124, 227, 247, 0.55);
-          border-left: 0;
-          border-radius: 0 999px 999px 0;
-        }
-        .soundField span:nth-child(1) {
-          width: 34px;
-          height: 28px;
-          top: 26px;
-        }
-        .soundField span:nth-child(2) {
-          width: 62px;
-          height: 52px;
-          top: 14px;
-        }
-        .soundField span:nth-child(3) {
-          width: 94px;
-          height: 76px;
-          top: 2px;
-        }
-        .personSpace {
-          position: absolute;
-          left: 64px;
-          bottom: 34px;
-          display: grid;
-          gap: 8px;
-          justify-items: center;
-          color: var(--nl-text-dim);
-          font-weight: 800;
+        .sceneSvg :global(.sceneLabel) {
+          fill: #3d4959;
           font-size: 12px;
+          font-weight: 700;
         }
-        .personMarker {
-          width: 88px;
-          height: 88px;
-          display: grid;
-          place-items: center;
-          border: 1px solid rgba(94, 230, 164, 0.4);
-          border-radius: 999px;
-          background: var(--nl-surface-strong);
-          box-shadow: 0 0 0 26px rgba(94, 230, 164, 0.06);
+        .sceneSvg :global(.breatheHalo) {
           animation: breathe 5s ease-in-out infinite;
         }
         @keyframes breathe {
           0%,
           100% {
-            box-shadow: 0 0 0 22px rgba(94, 230, 164, 0.05);
+            opacity: 0.55;
           }
           50% {
-            box-shadow: 0 0 0 30px rgba(94, 230, 164, 0.09);
+            opacity: 1;
           }
         }
-        .personMarker span {
-          width: 36px;
-          height: 50px;
-          border-radius: 999px 999px 12px 12px;
-          background: var(--nl-aurora-grad);
-        }
-        .caregiverUnit {
-          position: absolute;
-          display: grid;
-          gap: 6px;
-          justify-items: center;
-          color: var(--nl-text-dim);
-          font-weight: 800;
-          font-size: 12px;
-          transition: left 300ms ease, top 300ms ease, opacity 300ms ease;
-        }
-        .caregiverUnit.hands_on {
-          left: 158px;
-          bottom: 44px;
-        }
-        .caregiverUnit.nearby {
-          left: 44px;
-          top: 138px;
-        }
-        .caregiverUnit.remote {
-          right: 24px;
-          top: 128px;
-          opacity: 0.75;
-        }
-        .caregiverMarker {
-          width: 58px;
-          height: 58px;
-          display: grid;
-          place-items: center;
-          border: 1px solid var(--nl-border-strong);
-          border-radius: 999px;
-          background: var(--nl-surface-strong);
-        }
-        .caregiverUnit.remote .caregiverMarker {
-          border-style: dashed;
-        }
-        .caregiverMarker span {
-          width: 24px;
-          height: 34px;
-          border-radius: 999px 999px 10px 10px;
-          background: var(--nl-text-dim);
-        }
-        .robotUnit {
-          position: absolute;
-          left: calc(200px + var(--robot-travel));
-          bottom: 34px;
-          display: grid;
-          gap: 7px;
-          justify-items: center;
-          color: var(--nl-text-dim);
-          font-size: 12px;
-          font-weight: 800;
-          transition: left 400ms ease;
-        }
-        .robotHead {
-          width: 72px;
-          height: 50px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 10px;
-          border: 2px solid var(--nl-border-strong);
-          border-radius: var(--nl-radius-sm);
-          background: var(--nl-bg-raised);
-        }
-        .robotHead span {
-          width: 9px;
-          height: 9px;
-          border-radius: 999px;
-          background: var(--nl-aurora-b);
-          box-shadow: 0 0 10px rgba(124, 227, 247, 0.7);
+        .sceneSvg :global(.robotEye) {
           animation: blink 6s ease-in-out infinite;
+          transform-box: fill-box;
+          transform-origin: center;
         }
         @keyframes blink {
           0%,
@@ -1285,11 +1753,7 @@ export default function FutureCareRoom() {
             transform: scaleY(0.15);
           }
         }
-        .robotUnit.acting .robotHead {
-          border-color: rgba(124, 227, 247, 0.7);
-          box-shadow: 0 0 0 4px rgba(124, 227, 247, 0.14);
-        }
-        .robotUnit.acting {
+        .sceneSvg :global(.robotFigure.acting) {
           animation: bob 1.1s ease-in-out infinite;
         }
         @keyframes bob {
@@ -1301,32 +1765,46 @@ export default function FutureCareRoom() {
             transform: translateY(-4px);
           }
         }
-        @media (prefers-reduced-motion: reduce) {
-          .personMarker,
-          .robotHead span,
-          .robotUnit.acting,
-          .protocolLayer.generated {
-            animation: none;
+        .sceneSvg :global(.robotPulse) {
+          animation: pulse 1.6s ease-out infinite;
+          transform-box: fill-box;
+          transform-origin: center;
+        }
+        @keyframes pulse {
+          0% {
+            transform: scale(0.8);
+            opacity: 0.5;
+          }
+          100% {
+            transform: scale(1.15);
+            opacity: 0;
           }
         }
-        .robotBody {
-          width: 54px;
-          height: 44px;
-          border: 2px solid var(--nl-border-strong);
-          border-radius: var(--nl-radius-sm);
-          background: rgba(94, 230, 164, 0.12);
+        .sceneSvg :global(.robotBeacon) {
+          opacity: 0.35;
+        }
+        .sceneSvg :global(.robotBeacon.on) {
+          opacity: 1;
+          animation: breathe 1.6s ease-in-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .sceneSvg :global(.breatheHalo),
+          .sceneSvg :global(.robotEye),
+          .sceneSvg :global(.robotFigure.acting),
+          .sceneSvg :global(.robotPulse),
+          .sceneSvg :global(.robotBeacon.on) {
+            animation: none;
+          }
         }
         .visualCard,
         .noticeCard {
           position: absolute;
           max-width: 230px;
-          border: 1px solid var(--nl-border-strong);
-          border-radius: var(--nl-radius-sm);
-          background: rgba(11, 20, 36, 0.88);
-          backdrop-filter: blur(14px);
-          -webkit-backdrop-filter: blur(14px);
+          border: 1px solid rgba(23, 32, 47, 0.14);
+          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.94);
           padding: 12px;
-          box-shadow: var(--nl-shadow);
+          box-shadow: 0 16px 30px rgba(23, 32, 47, 0.12);
         }
         .visualCard {
           left: 30px;
@@ -1341,36 +1819,33 @@ export default function FutureCareRoom() {
           display: block;
           margin-top: 5px;
           line-height: 1.3;
-          color: var(--nl-text);
         }
         .nowBar {
           display: grid;
           grid-template-columns: auto minmax(0, 1fr) auto;
           gap: 12px;
           align-items: center;
-          border: 1px solid var(--nl-border);
-          border-radius: var(--nl-radius-sm);
-          background: var(--nl-surface);
+          border: 1px solid #d8e1df;
+          border-radius: 8px;
+          background: #fbfdfc;
           padding: 10px 14px;
         }
         .nowBar span {
-          color: var(--nl-aurora-a);
+          color: #637085;
           font-size: 11px;
           font-weight: 800;
-          letter-spacing: 0.08em;
           text-transform: uppercase;
         }
         .nowBar strong {
           display: block;
-          color: var(--nl-text);
         }
         .nowBar p {
-          color: var(--nl-text-dim);
+          color: #566477;
           font-size: 13px;
           line-height: 1.4;
         }
         .stepCount {
-          color: var(--nl-aurora-b);
+          color: #245b62;
           font-size: 13px;
           font-weight: 800;
           white-space: nowrap;
@@ -1379,41 +1854,222 @@ export default function FutureCareRoom() {
           height: 10px;
           overflow: hidden;
           border-radius: 999px;
-          background: var(--nl-surface-strong);
-          border: 1px solid var(--nl-border);
+          background: #e5ecea;
         }
         .progressWrap div {
           height: 100%;
           border-radius: inherit;
-          background: var(--nl-aurora-grad);
-          box-shadow: 0 0 14px rgba(94, 230, 164, 0.4);
+          background: #245b62;
           transition: width 300ms ease;
         }
-        .liveFlow {
+        .machinePanel {
+          display: grid;
+          gap: 12px;
+          align-content: start;
+          border: 1px solid #1e2c40;
+          border-radius: 8px;
+          background: linear-gradient(180deg, #0c1524, #0a111d);
+          padding: 18px;
+          color: #d9e6f2;
+          font-family: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+        }
+        .mKicker {
+          color: #6e87a3;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+        }
+        .mTitle {
+          color: #f2f7fb;
+          font-size: 15px;
+        }
+        .mIntro {
+          color: #8fa6bd;
+          font-size: 12px;
+          line-height: 1.55;
+        }
+        .mMeta {
+          display: grid;
+          grid-template-columns: auto minmax(0, 1fr);
+          gap: 4px 12px;
+          border: 1px solid #1e2c40;
+          border-radius: 8px;
+          background: rgba(20, 32, 50, 0.55);
+          padding: 10px 12px;
+          font-size: 12px;
+        }
+        .mMeta span {
+          color: #6e87a3;
+        }
+        .mMeta b {
+          color: #d9e6f2;
+          font-weight: 600;
+          overflow-wrap: anywhere;
+        }
+        .signalBridge {
           display: grid;
           gap: 10px;
-          align-content: start;
-        }
-        .flowCard {
-          border: 1px solid var(--nl-border);
-          border-radius: var(--nl-radius-sm);
-          background: var(--nl-surface);
+          border: 1px solid #1e2c40;
+          border-radius: 8px;
+          background: rgba(20, 32, 50, 0.55);
           padding: 12px;
         }
-        .flowCard p {
-          margin-top: 5px;
-          color: var(--nl-text-dim);
-          font-size: 13px;
-          line-height: 1.5;
-          font-weight: 600;
+        .signalNote {
+          margin: 0;
+          color: #8aa0b8;
+          font-size: 12px;
+          line-height: 1.45;
         }
-        .flowCard .soft {
-          color: var(--nl-text-faint);
-          font-weight: 600;
+        .signalActions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          align-items: center;
         }
-        .flowCard .warn {
-          color: #ffd89a;
+        .signalBtn {
+          border: 1px solid #3ecf9a;
+          background: #3ecf9a;
+          color: #04120c;
+          border-radius: 6px;
+          padding: 8px 12px;
+          font-size: 12px;
           font-weight: 700;
+          cursor: pointer;
+        }
+        .signalBtn.ghost {
+          background: transparent;
+          color: #9ec9b8;
+          border-color: #2a4a40;
+        }
+        .signalLink {
+          color: #3ecf9a;
+          font-size: 12px;
+          text-decoration: underline;
+          text-underline-offset: 3px;
+        }
+        .signalGrid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+        }
+        .signalGrid div {
+          display: grid;
+          gap: 2px;
+          border: 1px solid #24344a;
+          border-radius: 6px;
+          padding: 8px;
+        }
+        .signalGrid span {
+          color: #6e87a3;
+          font-size: 10px;
+          letter-spacing: 0.04em;
+          text-transform: lowercase;
+        }
+        .signalGrid strong {
+          color: #e8f2fb;
+          font-size: 13px;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        }
+        .signalEmpty {
+          margin: 0;
+          color: #6e87a3;
+          font-size: 12px;
+        }
+        .streamBlock {
+          display: grid;
+          gap: 3px;
+        }
+        .mLabel {
+          margin-bottom: 3px;
+          color: #6e87a3;
+          font-size: 11px;
+          letter-spacing: 0.06em;
+        }
+        .mLine {
+          display: grid;
+          grid-template-columns: 16px minmax(0, 1fr) auto;
+          gap: 8px;
+          align-items: baseline;
+          border-left: 2px solid transparent;
+          border-radius: 4px;
+          padding: 4px 8px 4px 6px;
+          font-size: 12px;
+          color: #8fa6bd;
+          transition: background 250ms ease, color 250ms ease;
+        }
+        .mLine i {
+          font-style: normal;
+          text-align: center;
+        }
+        .mLine code {
+          font-family: inherit;
+          overflow-wrap: anywhere;
+        }
+        .mLine span {
+          color: #56718c;
+        }
+        .mLine.done {
+          color: #7fd6b6;
+        }
+        .mLine.done i {
+          color: #3ecf9a;
+        }
+        .mLine.active {
+          border-left-color: #3ecf9a;
+          background: rgba(62, 207, 154, 0.12);
+          color: #eafff7;
+        }
+        .mLine.active i {
+          color: #3ecf9a;
+          animation: streamTick 1s steps(2, start) infinite;
+        }
+        @keyframes streamTick {
+          to {
+            opacity: 0.25;
+          }
+        }
+        .mLine.exception {
+          color: #d9b16b;
+        }
+        .mLine.exception.fired {
+          border-left-color: #ff8f6b;
+          background: rgba(255, 143, 107, 0.14);
+          color: #ffd3c2;
+        }
+        .mFoot {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px 16px;
+          border-top: 1px solid #1e2c40;
+          padding-top: 10px;
+          font-size: 12px;
+          color: #6e87a3;
+        }
+        .mFoot b {
+          color: #d9e6f2;
+          font-weight: 600;
+        }
+        .mWarn {
+          color: #e0b566;
+          font-size: 12px;
+          line-height: 1.5;
+        }
+        .generateBtn {
+          border: 1px solid #2c8f6d;
+          border-radius: 8px;
+          background: #16543f;
+          color: #d9fff0;
+          font-family: inherit;
+        }
+        .generateBtn:hover:not(:disabled) {
+          border-color: #3ecf9a;
+          color: #eafff7;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .mLine.active i {
+            animation: none;
+          }
         }
         .whyRow {
           max-width: 1360px;
@@ -1423,20 +2079,18 @@ export default function FutureCareRoom() {
           gap: 10px;
         }
         .whyRow div {
-          border: 1px solid var(--nl-border);
-          border-radius: var(--nl-radius);
-          background: var(--nl-surface);
-          backdrop-filter: blur(14px);
-          -webkit-backdrop-filter: blur(14px);
+          border: 1px solid #d8e1df;
+          border-radius: 8px;
+          background: #ffffff;
           padding: 14px;
         }
         .whyRow strong {
           display: block;
           margin-bottom: 5px;
-          color: var(--nl-text);
+          color: #17202f;
         }
         .whyRow p {
-          color: var(--nl-text-dim);
+          color: #566477;
           font-size: 13px;
           line-height: 1.5;
         }
@@ -1464,43 +2118,70 @@ export default function FutureCareRoom() {
           grid-template-columns: 58px minmax(0, 1fr) auto;
           gap: 10px;
           align-items: start;
-          border: 1px solid var(--nl-border);
-          border-radius: var(--nl-radius-sm);
+          border: 1px solid #d8e1df;
+          border-radius: 8px;
           padding: 10px;
-          background: var(--nl-surface);
-        }
-        .timelineItem strong {
-          color: var(--nl-text);
+          background: #fbfdfc;
         }
         .timelineItem.robot {
-          border-left: 3px solid var(--nl-aurora-b);
+          border-left: 3px solid #245b62;
         }
         .timelineItem.protocol {
-          border-left: 3px solid rgba(247, 201, 110, 0.75);
+          border-left: 3px solid #d8b15f;
         }
         .timelineItem time,
         .timelineItem span {
-          color: var(--nl-text-faint);
+          color: #637085;
           font-size: 12px;
           font-weight: 800;
         }
         .timelineItem p {
           margin-top: 3px;
-          color: var(--nl-text-dim);
+          color: #566477;
           font-size: 13px;
           line-height: 1.35;
+        }
+        .protocolLayer {
+          border: 1px solid #1e2c40;
+          border-radius: 8px;
+          background: linear-gradient(180deg, #0c1524, #0a111d);
+          padding: 18px;
+          color: #d9e6f2;
+        }
+        .protocolLayer .kicker {
+          color: #6e87a3;
+        }
+        .protocolLayer h3 {
+          color: #f2f7fb;
+        }
+        .protocolLayer h4 {
+          color: #6e87a3;
+        }
+        .protocolLayer button {
+          border-color: #2a3b52;
+          background: #12203a;
+          color: #d9e6f2;
+        }
+        .protocolLayer button:hover:not(:disabled) {
+          border-color: #3ecf9a;
+          color: #eafff7;
+        }
+        .protocolLayer select {
+          border-color: #2a3b52;
+          background: #12203a;
+          color: #d9e6f2;
         }
         .protocolLayer.generated {
           animation: settle 1.6s ease;
         }
         @keyframes settle {
           0% {
-            border-color: var(--nl-aurora-b);
-            box-shadow: 0 0 0 4px rgba(124, 227, 247, 0.22);
+            border-color: #3ecf9a;
+            box-shadow: 0 0 0 4px rgba(62, 207, 154, 0.25);
           }
           100% {
-            border-color: var(--nl-border);
-            box-shadow: 0 0 0 0 rgba(124, 227, 247, 0);
+            border-color: #1e2c40;
+            box-shadow: 0 0 0 0 rgba(62, 207, 154, 0);
           }
         }
         .readyRow {
@@ -1519,24 +2200,24 @@ export default function FutureCareRoom() {
           padding: 5px 12px;
         }
         .readyChip.ok {
-          border: 1px solid rgba(94, 230, 164, 0.5);
-          background: rgba(94, 230, 164, 0.12);
-          color: #8ef0bf;
+          border: 1px solid #2c8f6d;
+          background: rgba(62, 207, 154, 0.14);
+          color: #7fd6b6;
         }
         .readyChip.warn {
-          border: 1px solid rgba(247, 201, 110, 0.5);
-          background: rgba(247, 201, 110, 0.12);
-          color: #ffd89a;
+          border: 1px solid #b98c3f;
+          background: rgba(224, 181, 102, 0.14);
+          color: #e0b566;
         }
         .planMeta {
-          color: var(--nl-text-faint);
+          color: #6e87a3;
           font-size: 12px;
           font-weight: 700;
         }
         .planParagraph {
-          color: var(--nl-text-dim);
+          color: #b9c9d9;
           font-size: 13px;
-          line-height: 1.5;
+          line-height: 1.55;
           margin-bottom: 8px;
         }
         .questionList {
@@ -1544,7 +2225,7 @@ export default function FutureCareRoom() {
           padding-left: 18px;
           display: grid;
           gap: 6px;
-          color: var(--nl-text-dim);
+          color: #b9c9d9;
           font-size: 13px;
           line-height: 1.45;
         }
@@ -1560,12 +2241,15 @@ export default function FutureCareRoom() {
           width: auto;
         }
         .soft {
-          color: var(--nl-text-faint);
+          color: #637085;
           font-size: 13px;
           font-weight: 600;
         }
+        .protocolLayer .soft {
+          color: #8fa6bd;
+        }
         .emptyState {
-          color: var(--nl-text-dim);
+          color: #8fa6bd;
           font-size: 14px;
           line-height: 1.55;
         }
@@ -1573,45 +2257,66 @@ export default function FutureCareRoom() {
           max-height: 420px;
           margin: 10px 0 0;
           overflow: auto;
-          border: 1px solid var(--nl-border);
-          border-radius: var(--nl-radius-sm);
-          background: rgba(2, 8, 20, 0.72);
-          color: #d5e8f5;
-          font-family: var(--nl-font-mono);
+          border: 1px solid #1e2c40;
+          border-radius: 8px;
+          background: #060d16;
+          color: #cde8dd;
           font-size: 12px;
           line-height: 1.55;
           padding: 14px;
           white-space: pre-wrap;
         }
+        .foot {
+          max-width: 1360px;
+          margin: 0 auto;
+          border-top: 1px solid #27272a;
+          padding: 16px 22px 0;
+        }
+        .foot p {
+          max-width: 860px;
+          color: #71717a;
+          font-size: 13px;
+          line-height: 1.6;
+        }
         @media (max-width: 1100px) {
           .stage {
             grid-template-columns: 1fr;
           }
+          .room {
+            order: -1;
+          }
         }
         @media (max-width: 980px) {
-          .pageHead,
+          .topnav,
           .lower {
             grid-template-columns: 1fr;
           }
-          .status {
-            justify-self: start;
+          .navRight {
+            width: 100%;
+            margin-left: 0;
+            justify-content: space-between;
           }
         }
         @media (max-width: 640px) {
-          .page {
-            padding: 18px 14px 4px;
+          .shell,
+          .hero,
+          .scenarioRow,
+          .stage {
+            width: min(100% - 28px, 1360px);
+            padding-left: 0;
+            padding-right: 0;
+          }
+          .recipientGrid {
+            grid-template-columns: 1fr;
+          }
+          .workspace {
+            padding: 14px 0 32px;
           }
           h1 {
             font-size: 26px;
           }
           h2 {
             font-size: 20px;
-          }
-          .roomCanvas {
-            min-height: 320px;
-          }
-          .robotUnit {
-            left: min(calc(140px + var(--robot-travel)), calc(100% - 110px));
           }
           .visualCard,
           .noticeCard {

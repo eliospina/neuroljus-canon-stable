@@ -1,333 +1,242 @@
 import Head from "next/head";
-import Image from "next/image";
-import { useEffect, useMemo } from "react";
-import SiteLayout, { useLang } from "@/components/SiteLayout";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+
+type Lang = "sv" | "en" | "es";
+
+const modules = [
+  {
+    id: "MOD.CARE_ROOM",
+    href: "/labs/future-care-room",
+    path: "/labs/future-care-room",
+  },
+  {
+    id: "MOD.PROTOCOL_WS",
+    href: "/labs/robot-interface",
+    path: "/labs/robot-interface",
+  },
+  {
+    id: "MOD.VISION",
+    href: "/labs/nl-vision",
+    path: "/labs/nl-vision",
+  },
+  {
+    id: "MOD.OBSERVATION",
+    href: "/observation-method",
+    path: "/observation-method",
+  },
+] as const;
 
 export default function Home() {
-  const [lang, setLang] = useLang("en");
+  const [lang, setLang] = useState<Lang>("en");
 
   useEffect(() => {
     try {
-      if (window.localStorage.getItem("nl_lang")) return;
       const browserLang = navigator.language?.toLowerCase() || "";
       if (browserLang.startsWith("sv")) setLang("sv");
       else if (browserLang.startsWith("es")) setLang("es");
+      else setLang("en");
     } catch {
-      /* keep default */
+      setLang("en");
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const T = useMemo(
     () => ({
       sv: {
-        seoTitle: "NeuroLjus - omsorgsintelligens för framtidens hälsa och omsorg",
+        seoTitle: "Neuroljus — omsorgsintelligens som infrastruktur",
         seoDesc:
-          "Neuroljus är en forskningsförberedd plattform för omsorgsintelligens, vardagsobservation, öppna protokoll och framtida AI- och robotikstöd inom vård och omsorg.",
-        primaryNav: "Primär",
-        coreKicker: "Kärna",
-        horizonAria: "Forskningshorisont",
-        collabKicker: "Samarbete",
-        eyebrow: "Omsorgsintelligens · svensk omsorgslogik · framtida hälsoteknik",
-        title: "Neuroljus",
-        subtitle:
-          "Neuroljus omvandlar levd omsorgskunskap till strukturerade rutiner, lokala observationer och öppna protokoll för framtida hälsa, forskning och assisterande robotik.",
-        cta: "Öppna NL-VISION",
-        futureRoomCta: "Gå in i Future Care Room",
-        whitepaperCta: "Läs white paper",
-        whitepaperHref: "https://doi.org/10.5281/zenodo.20775583",
-        secondaryCta: "Läs projektets historia",
-        status:
-          "Vi bygger de första lagren: språk, metod, lokal prototyp, öppna protokoll och forskningsväg. Visionen är större än en app: omsorgskunskap som en del av framtidens hälsoinfrastruktur.",
-        navDemo: "Demo",
+          "Levd omsorg blir strukturerade protokoll. Lokalt, deterministiskt, adapter-klart. Vårdgivaren behåller alltid kontrollen.",
+        statusRight: "latency 0ms · deterministiskt · caregiver_authority=true",
+        platform: "Omsorgsintelligensplattform",
+        navLabs: "Labs",
         navAbout: "Om",
-        navOffer: "Nu",
         navContact: "Kontakt",
-        offerKicker: "Vad vi designar nu",
-        offerTitle: "Första lagret i framtidens omsorgsintelligens",
-        offers: [
-          {
-            title: "Vårdgivarintelligens",
-            body:
-              "Vardagens omsorg innehåller expertis. Neuroljus gör observationer, överlämningar och osäkerhet till strukturerat designmaterial.",
-            action: "Starta samtal",
-            href: "/contact",
-          },
-          {
-            title: "Observationsmetod v0",
-            body:
-              "En första struktur för att skilja vad som hände, sammanhanget, vårdgivarens tolkning, osäkerhet och vad som faktiskt hjälpte.",
-            action: "Testa mallen",
-            href: "/observation-method",
-          },
-          {
-            title: "NL-VISION-labb",
-            body:
-              "Ett lokalt observationslager för valfria visuella signaler, byggt för integritet och framtida forskningsanknytning från första raden kod.",
-            action: "Öppna labbet",
-            href: "/labs/nl-vision",
-          },
-          {
-            title: "Future Care Room",
-            body:
-              "En interaktiv vårdrumssimulering där ljus, ljud, avstånd och rytm blir ett levande omsorgsprotokoll för framtida robot- och adapterarbete.",
-            action: "Gå in i rummet",
-            href: "/labs/future-care-room",
-          },
-          {
-            title: "Klinisk-vetenskaplig förankring",
-            body:
-              "Dialog med universitet, forskare och kliniska miljöer som kan hjälpa Neuroljus växa mot validerade lager för forskning, diagnostiskt stöd och omsorgsinfrastruktur.",
-            action: "Starta dialog",
-            href: "/contact",
-          },
-        ],
-        offerFoot:
-          "Neuroljus börjar i vardagens omsorg och bygger för större integration: forskning, klinisk vetenskap, välfärdssystem, öppna protokoll och assisterande teknik.",
-        thesisTitle: "Fött ur verklig omsorg",
-        thesis:
-          "Elizabeths erfarenhet som ekonom och vårdgivare är projektets grund: noggrann observation, systemförståelse, omsorgsarbete och respekt för det som inte alltid uttrycks genom tal.",
-        horizonTitle: "Den långsiktiga frågan",
-        horizon:
-          "När framtidens omsorg inkluderar AI, sensorer och robotar behöver de lära sig från verklig omsorg: en person, ett sammanhang, en rutin, ett nästa steg.",
-        modelTitle: "Inom-person över tid",
-        model:
-          "Neuroljus börjar med individuella mönster före universella svar om autism. Det utforskar hur strukturerade observationer över tid kan hjälpa vårdgivare se mer med omsorg och mindre gissning.",
-        robotTitle: "Robotik som horisont",
-        robot:
-          "Assisterande robotik kan stödja rutiner, miljö, överföringar och kommunikation. Neuroljus bygger protokollen som gör sådant stöd begripligt, spårbart och anpassningsbart.",
-        actionKicker: "Vägen framåt",
-        actionTitle: "Från vardagsomsorg till hälsoinfrastruktur",
-        actionIntro:
-          "Arbetet nu är att bygga de lager som gör omsorgskunskap användbar för familjer, kommuner, forskning, kliniska partners och framtida omsorgsteknik.",
-        actionSteps: [
-          "Utveckla observations- och rutinverktyg som passar vardagens omsorg.",
-          "Göra protokoll portabla så att forskare, öppna projekt och framtida enheter kan bygga vidare.",
-          "Söka universitet och kliniska partners för lager som kräver validering, evidens och forskningsansvar.",
-          "Bygga integritet, samtycke, spårbarhet och lokal kontroll som tekniska egenskaper från början.",
-        ],
-        boundariesTitle: "Designprinciper",
-        boundaries: [
+        pillRuntime: "runtime",
+        pillProtocol: "protocol",
+        pillAdapters: "adapters",
+        pillAudit: "audit",
+        cli: "$ neuroljus status --all",
+        heroTitle: "Omsorgsintelligens",
+        heroDim: "som distribuerbar infrastruktur.",
+        heroSub:
+          "Levda protokoll. Lokal körning. Adapter-klar export. Vårdgivaren behåller root-access hela tiden.",
+        m1: "scenariopresets",
+        m2: "kommandotyper",
+        m3: "adaptermål",
+        m4: "externa API-anrop",
+        streamLabel: "protocol_stream",
+        streamMeta: "evening_transition · presence=nearby · status=ready",
+        sideSequence: "planned_sequence",
+        sideExceptions: "safety_exceptions",
+        sideAdapters: "adapter_packets",
+        sideAudit: "audit_trail",
+        sideValidation: "validation",
+        lineProtocol: "protocol:",
+        lineAuthored: "caregiver_authored:",
+        lineTrue: "true",
+        line1: "+0.0m  reduce_sound",
+        line1note: "// sensorisk belastning först",
+        line2: "+2.9m  lower_light",
+        line2note: "// mål 35%",
+        line3: "+5.7m  step_back",
+        line3note: "// håll 1,5 m avstånd",
+        line4: "+8.6m  offer_visual_card",
+        ex1: "rejection_signal → STOP · notify_caregiver",
+        ex2: "caregiver_pause → STOP · hand_back",
+        modulesTitle: "Distribuerade moduler",
+        modCareTitle: "Care Room",
+        modCareBody: "Interaktiv miljösimulering + Story Mode. Ljus, ljud, avstånd → levande protokoll.",
+        modProtoTitle: "Protocol Workspace",
+        modProtoBody: "Bygg, validera, exportera. Fullt care_command_protocol_v0-kuvert.",
+        modVisionTitle: "NL-VISION",
+        modVisionBody: "Lokalt observationslager. Valfria visuella signaler. Integritet först.",
+        modObsTitle: "Observation Method",
+        modObsBody: "Struktur för vad som hände, sammanhang, tolkning och osäkerhet.",
+        principlesTitle: "Designprinciper",
+        principles: [
           "Vårdgivaren författar rutiner, sammanhang och mål.",
           "Lokala observationer prioriterar integritet och kontroll nära personen.",
-          "Osäkerhet sparas som data så att systemet kan lära utan att låtsas veta mer än det vet.",
-          "Kliniska och diagnostiska lager utvecklas tillsammans med kvalificerade forsknings- och vårdpartners.",
-          "Familj, vårdgivare, professionell omsorg och framtida teknik ingår i samma stödnätverk.",
+          "Osäkerhet sparas som data — systemet låtsas inte veta mer än det vet.",
+          "Kliniska lager utvecklas med kvalificerade forsknings- och vårdpartners.",
         ],
-        labTitle: "Aktuellt tekniskt lager",
-        lab:
-          "NL-VISION är ett lokalt observationslager för ansikte, händer och enkla signaler. Det visar hur vardagsnära tekniska signaler kan struktureras för reflektion, forskning och framtida integration.",
-        collabTitle: "För universitet, forskare och etiska samarbetspartners",
-        collab:
-          "Neuroljus söker klinisk-vetenskapliga ankare: miljöer där levd erfarenhet, teknik, autismforskning, dataskydd och svensk omsorgslogik kan bli framtida hälsa- och omsorgsinfrastruktur.",
-        footer:
-          "Neuroljus är ett oberoende forsknings- och portfolioprojekt av Elizabeth Ospina.",
+        ctaTitle: "Distribuera ett protokoll.",
+        ctaSub: "Ingen registrering. Inget moln. Öppna workspace och exportera.",
+        ctaBtn: "ÖPPNA WORKSPACE",
+        ctaHref: "/labs/robot-interface",
+        whitepaper: "White paper",
+        whitepaperHref: "https://doi.org/10.5281/zenodo.20775583",
+        footer: "Neuroljus — oberoende forsknings- och portfolioprojekt av Elizabeth Ospina.",
       },
       en: {
-        seoTitle: "NeuroLjus - care intelligence for future health and care",
+        seoTitle: "Neuroljus — care intelligence as infrastructure",
         seoDesc:
-          "Neuroljus is a research-ready care intelligence platform for everyday observation, open protocols, and future AI and robotics support in health and care.",
-        primaryNav: "Primary",
-        coreKicker: "Core",
-        horizonAria: "Research horizon",
-        collabKicker: "Collaboration",
-        eyebrow: "Care intelligence · Swedish care logic · future health technology",
-        title: "Neuroljus",
-        subtitle:
-          "Neuroljus transforms lived caregiving knowledge into structured routines, local observations, and open protocols for future health, research, and assistive robotics.",
-        cta: "Open NL-VISION",
-        futureRoomCta: "Enter the Future Care Room",
-        whitepaperCta: "Read the white paper",
-        whitepaperHref: "https://doi.org/10.5281/zenodo.20775583",
-        secondaryCta: "Read the origin story",
-        status:
-          "We are building the first layers: language, method, local prototype, open protocols, and research path. The vision is larger than an app: caregiving knowledge as part of future health infrastructure.",
-        navDemo: "Demo",
+          "Lived care becomes structured protocols. Local, deterministic, adapter-ready. The caregiver always retains control.",
+        statusRight: "latency 0ms · deterministic · caregiver_authority=true",
+        platform: "Care Intelligence Platform",
+        navLabs: "Labs",
         navAbout: "About",
-        navOffer: "Now",
         navContact: "Contact",
-        offerKicker: "What we design now",
-        offerTitle: "The first layer of future care intelligence",
-        offers: [
-          {
-            title: "Caregiver intelligence",
-            body:
-              "Everyday care contains expertise. Neuroljus turns observations, handoffs, and uncertainty into structured design material.",
-            action: "Start a conversation",
-            href: "/contact",
-          },
-          {
-            title: "Observation method v0",
-            body:
-              "A first structure for separating what happened, the context, caregiver interpretation, uncertainty, and what actually helped.",
-            action: "Try the template",
-            href: "/observation-method",
-          },
-          {
-            title: "NL-VISION lab",
-            body:
-              "A local observation layer for optional visual signals, built for privacy and future research connection from the first line of code.",
-            action: "Open the lab",
-            href: "/labs/nl-vision",
-          },
-          {
-            title: "Future Care Room",
-            body:
-              "An interactive care-room simulation where light, sound, distance, and rhythm become a living care protocol for future robot and adapter work.",
-            action: "Enter the room",
-            href: "/labs/future-care-room",
-          },
-          {
-            title: "Clinical-science anchor",
-            body:
-              "Dialogue with universities, researchers, and clinical environments that can help Neuroljus grow toward validated layers for research, diagnostic support, and care infrastructure.",
-            action: "Start a dialogue",
-            href: "/contact",
-          },
-        ],
-        offerFoot:
-          "Neuroljus begins in everyday care and builds toward larger integration: research, clinical science, welfare systems, open protocols, and assistive technology.",
-        thesisTitle: "Born from real care",
-        thesis:
-          "Elizabeth's experience as an economist and caregiver is the project's foundation: careful observation, systems knowledge, care work, and respect for what is not always expressed through speech.",
-        horizonTitle: "The long-term question",
-        horizon:
-          "When future care includes AI, sensors, and robots, they need to learn from real care: one person, one context, one routine, one next step.",
-        modelTitle: "Within-person, over time",
-        model:
-          "Neuroljus begins with individual patterns before universal answers about autism. It explores whether structured observations over time can help caregivers see with more care and less guesswork.",
-        robotTitle: "Robotics as a horizon",
-        robot:
-          "Assistive robotics can support routines, environments, handoffs, and communication. Neuroljus builds the protocols that make that support understandable, traceable, and adaptable.",
-        actionKicker: "The path forward",
-        actionTitle: "From everyday care to health infrastructure",
-        actionIntro:
-          "The work now is to build the layers that make caregiving knowledge useful for families, municipalities, research, clinical partners, and future care technology.",
-        actionSteps: [
-          "Develop observation and routine tools that fit everyday care.",
-          "Make protocols portable so researchers, open projects, and future devices can build on them.",
-          "Seek university and clinical partners for layers that require validation, evidence, and research responsibility.",
-          "Build privacy, consent, traceability, and local control as technical properties from the beginning.",
-        ],
-        boundariesTitle: "Design principles",
-        boundaries: [
+        pillRuntime: "runtime",
+        pillProtocol: "protocol",
+        pillAdapters: "adapters",
+        pillAudit: "audit",
+        cli: "$ neuroljus status --all",
+        heroTitle: "Care intelligence",
+        heroDim: "as deployable infrastructure.",
+        heroSub:
+          "Lived protocols. Local execution. Adapter-ready output. The caregiver retains root access at all times.",
+        m1: "scenario presets",
+        m2: "command types",
+        m3: "adapter targets",
+        m4: "external API calls",
+        streamLabel: "protocol_stream",
+        streamMeta: "evening_transition · presence=nearby · status=ready",
+        sideSequence: "planned_sequence",
+        sideExceptions: "safety_exceptions",
+        sideAdapters: "adapter_packets",
+        sideAudit: "audit_trail",
+        sideValidation: "validation",
+        lineProtocol: "protocol:",
+        lineAuthored: "caregiver_authored:",
+        lineTrue: "true",
+        line1: "+0.0m  reduce_sound",
+        line1note: "// sensory load first",
+        line2: "+2.9m  lower_light",
+        line2note: "// target 35%",
+        line3: "+5.7m  step_back",
+        line3note: "// hold 1.5m space",
+        line4: "+8.6m  offer_visual_card",
+        ex1: "rejection_signal → STOP · notify_caregiver",
+        ex2: "caregiver_pause → STOP · hand_back",
+        modulesTitle: "Deployed modules",
+        modCareTitle: "Care Room",
+        modCareBody: "Interactive environment simulation + Story Mode. Light, sound, distance → live protocol.",
+        modProtoTitle: "Protocol Workspace",
+        modProtoBody: "Build, validate, export. Full care_command_protocol_v0 envelope.",
+        modVisionTitle: "NL-VISION",
+        modVisionBody: "Local observation layer. Optional visual signals. Privacy-first.",
+        modObsTitle: "Observation Method",
+        modObsBody: "Structure for what happened, context, interpretation, and uncertainty.",
+        principlesTitle: "Design principles",
+        principles: [
           "The caregiver authors routines, context, and goals.",
           "Local observations prioritize privacy and control near the person.",
-          "Uncertainty is preserved as data so the system can learn without pretending to know more than it knows.",
-          "Clinical and diagnostic layers are developed with qualified research and care partners.",
-          "Family, caregivers, professional care, and future technology belong to the same support network.",
+          "Uncertainty is preserved as data — the system never pretends to know more than it knows.",
+          "Clinical layers are developed with qualified research and care partners.",
         ],
-        labTitle: "Current technical layer",
-        lab:
-          "NL-VISION is a local observation layer for face, hands, and simple signals. It shows how everyday technical signals can be structured for reflection, research, and future integration.",
-        collabTitle: "For universities, researchers, and ethical collaborators",
-        collab:
-          "Neuroljus is seeking clinical-science anchors: environments where lived experience, technology, autism research, data protection, and Swedish care logic can become future health and care infrastructure.",
-        footer:
-          "Neuroljus is an independent research and portfolio project by Elizabeth Ospina.",
+        ctaTitle: "Deploy a protocol.",
+        ctaSub: "No signup. No cloud. Open the workspace and export.",
+        ctaBtn: "OPEN WORKSPACE",
+        ctaHref: "/labs/robot-interface",
+        whitepaper: "White paper",
+        whitepaperHref: "https://doi.org/10.5281/zenodo.20775583",
+        footer: "Neuroljus — independent research and portfolio project by Elizabeth Ospina.",
       },
       es: {
-        seoTitle: "NeuroLjus - inteligencia de cuidado para salud y cuidado futuro",
+        seoTitle: "Neuroljus — inteligencia del cuidado como infraestructura",
         seoDesc:
-          "Neuroljus es una plataforma de inteligencia del cuidado preparada para investigación, observación cotidiana, protocolos abiertos y futura IA y robótica al servicio de la salud y el cuidado.",
-        primaryNav: "Principal",
-        coreKicker: "Núcleo",
-        horizonAria: "Horizonte de investigación",
-        collabKicker: "Colaboración",
-        eyebrow: "Inteligencia del cuidado · lógica sueca de cuidado · salud futura",
-        title: "Neuroljus",
-        subtitle:
-          "Neuroljus transforma conocimiento cuidador vivido en rutinas estructuradas, observaciones locales y protocolos abiertos para futura salud, investigación y robótica asistiva.",
-        cta: "Abrir NL-VISION",
-        futureRoomCta: "Entrar a Future Care Room",
-        whitepaperCta: "Leer el white paper",
-        whitepaperHref: "https://doi.org/10.5281/zenodo.20775583",
-        secondaryCta: "Leer la historia",
-        status:
-          "Estamos construyendo las primeras capas: lenguaje, método, prototipo local, protocolos abiertos y camino de investigación. La visión es más grande que una app: conocimiento cuidador como parte de la infraestructura futura de salud.",
-        navDemo: "Demo",
+          "El cuidado vivido se convierte en protocolos estructurados. Local, determinista, listo para adaptadores. La cuidadora siempre retiene el control.",
+        statusRight: "latency 0ms · determinista · caregiver_authority=true",
+        platform: "Plataforma de inteligencia del cuidado",
+        navLabs: "Labs",
         navAbout: "Sobre",
-        navOffer: "Ahora",
         navContact: "Contacto",
-        offerKicker: "Lo que diseñamos ahora",
-        offerTitle: "La primera capa de la inteligencia de cuidado futura",
-        offers: [
-          {
-            title: "Inteligencia cuidadora",
-            body:
-              "El cuidado cotidiano contiene experticia. Neuroljus convierte observaciones, traspasos e incertidumbre en material de diseño estructurado.",
-            action: "Iniciar conversación",
-            href: "/contact",
-          },
-          {
-            title: "Método de observación v0",
-            body:
-              "Una primera estructura para separar qué pasó, el contexto, la interpretación del cuidador, la incertidumbre y qué ayudó realmente.",
-            action: "Probar la plantilla",
-            href: "/observation-method",
-          },
-          {
-            title: "Laboratorio NL-VISION",
-            body:
-              "Una capa local de observación para señales visuales opcionales, construida con privacidad y conexión futura a investigación desde la primera línea de código.",
-            action: "Abrir el laboratorio",
-            href: "/labs/nl-vision",
-          },
-          {
-            title: "Future Care Room",
-            body:
-              "Una simulación interactiva de una sala de cuidado donde luz, sonido, distancia y ritmo se convierten en un protocolo vivo para futuros robots y adaptadores.",
-            action: "Entrar a la sala",
-            href: "/labs/future-care-room",
-          },
-          {
-            title: "Anclaje clínico-científico",
-            body:
-              "Diálogo con universidades, investigadores y entornos clínicos que puedan ayudar a Neuroljus a crecer hacia capas validadas de investigación, apoyo diagnóstico e infraestructura de cuidado.",
-            action: "Iniciar diálogo",
-            href: "/contact",
-          },
-        ],
-        offerFoot:
-          "Neuroljus empieza en el cuidado cotidiano y construye hacia una integración mayor: investigación, ciencia clínica, sistemas de bienestar, protocolos abiertos y tecnología asistiva.",
-        thesisTitle: "Nacido del cuidado real",
-        thesis:
-          "La experiencia de Elizabeth como economista y cuidadora es el fundamento del proyecto: observación cuidadosa, conocimiento de sistemas, trabajo de cuidado y respeto por lo que no siempre se expresa con palabras.",
-        horizonTitle: "La pregunta a largo plazo",
-        horizon:
-          "Cuando el cuidado del futuro incluya IA, sensores y robots, tendrán que aprender del cuidado real: una persona, un contexto, una rutina, un siguiente paso.",
-        modelTitle: "Dentro de una persona, a través del tiempo",
-        model:
-          "Neuroljus empieza con patrones individuales antes que respuestas universales sobre el autismo. Explora si las observaciones estructuradas en el tiempo pueden ayudar a cuidadores a mirar con más cuidado y menos suposición.",
-        robotTitle: "La robótica como horizonte",
-        robot:
-          "La robótica asistiva puede apoyar rutinas, entornos, traspasos y comunicación. Neuroljus construye los protocolos para que ese apoyo sea comprensible, trazable y adaptable.",
-        actionKicker: "El camino ahora",
-        actionTitle: "Del cuidado cotidiano a infraestructura de salud",
-        actionIntro:
-          "El trabajo ahora es construir las capas que vuelven útil el conocimiento cuidador para familias, comunas, investigación, aliados clínicos y futura tecnología de cuidado.",
-        actionSteps: [
-          "Desarrollar herramientas de observación y rutina que encajen en el cuidado cotidiano.",
-          "Hacer protocolos portables para que investigadores, proyectos abiertos y futuros dispositivos puedan construir encima.",
-          "Buscar universidades y aliados clínicos para capas que requieran validación, evidencia y responsabilidad investigadora.",
-          "Construir privacidad, consentimiento, trazabilidad y control local como propiedades técnicas desde el inicio.",
-        ],
-        boundariesTitle: "Principios de diseño",
-        boundaries: [
+        pillRuntime: "runtime",
+        pillProtocol: "protocol",
+        pillAdapters: "adapters",
+        pillAudit: "audit",
+        cli: "$ neuroljus status --all",
+        heroTitle: "Inteligencia del cuidado",
+        heroDim: "como infraestructura desplegable.",
+        heroSub:
+          "Protocolos vividos. Ejecución local. Salida lista para adaptadores. La cuidadora retiene acceso root en todo momento.",
+        m1: "presets de escenario",
+        m2: "tipos de comando",
+        m3: "destinos adaptador",
+        m4: "llamadas API externas",
+        streamLabel: "protocol_stream",
+        streamMeta: "evening_transition · presence=nearby · status=ready",
+        sideSequence: "planned_sequence",
+        sideExceptions: "safety_exceptions",
+        sideAdapters: "adapter_packets",
+        sideAudit: "audit_trail",
+        sideValidation: "validation",
+        lineProtocol: "protocol:",
+        lineAuthored: "caregiver_authored:",
+        lineTrue: "true",
+        line1: "+0.0m  reduce_sound",
+        line1note: "// carga sensorial primero",
+        line2: "+2.9m  lower_light",
+        line2note: "// objetivo 35%",
+        line3: "+5.7m  step_back",
+        line3note: "// mantener 1,5 m",
+        line4: "+8.6m  offer_visual_card",
+        ex1: "rejection_signal → STOP · notify_caregiver",
+        ex2: "caregiver_pause → STOP · hand_back",
+        modulesTitle: "Módulos desplegados",
+        modCareTitle: "Care Room",
+        modCareBody: "Simulación interactiva + Story Mode. Luz, sonido, distancia → protocolo vivo.",
+        modProtoTitle: "Protocol Workspace",
+        modProtoBody: "Construir, validar, exportar. Sobre completo care_command_protocol_v0.",
+        modVisionTitle: "NL-VISION",
+        modVisionBody: "Capa local de observación. Señales visuales opcionales. Privacidad primero.",
+        modObsTitle: "Observation Method",
+        modObsBody: "Estructura para qué pasó, contexto, interpretación e incertidumbre.",
+        principlesTitle: "Principios de diseño",
+        principles: [
           "La cuidadora define rutinas, contexto y objetivos.",
           "Las observaciones locales priorizan privacidad y control cerca de la persona.",
-          "La incertidumbre se conserva como dato para que el sistema aprenda sin fingir más certeza de la que tiene.",
-          "Las capas clínicas y diagnósticas se desarrollan con aliados cualificados de investigación y cuidado.",
-          "Familia, cuidadores, atención profesional y futura tecnología pertenecen a una misma red de apoyo.",
+          "La incertidumbre se conserva como dato — el sistema no finge saber más de lo que sabe.",
+          "Las capas clínicas se desarrollan con aliados cualificados de investigación y cuidado.",
         ],
-        labTitle: "Capa técnica actual",
-        lab:
-          "NL-VISION es una capa local de observación de rostro, manos y señales simples. Muestra cómo señales técnicas de la vida cotidiana pueden estructurarse para reflexión, investigación e integración futura.",
-        collabTitle: "Para universidades, investigadores y aliados éticos",
-        collab:
-          "Neuroljus busca anclajes clínico-científicos: entornos donde experiencia vivida, tecnología, investigación en autismo, protección de datos y lógica sueca de cuidado puedan convertirse en infraestructura futura de salud y cuidado.",
-        footer:
-          "Neuroljus es un proyecto independiente de investigación y portafolio de Elizabeth Ospina.",
+        ctaTitle: "Despliega un protocolo.",
+        ctaSub: "Sin registro. Sin nube. Abre el workspace y exporta.",
+        ctaBtn: "ABRIR WORKSPACE",
+        ctaHref: "/labs/robot-interface",
+        whitepaper: "White paper",
+        whitepaperHref: "https://doi.org/10.5281/zenodo.20775583",
+        footer: "Neuroljus — proyecto independiente de investigación y portafolio de Elizabeth Ospina.",
       },
     }),
     []
@@ -335,8 +244,15 @@ export default function Home() {
 
   const copy = T[lang];
 
+  const moduleCopy = [
+    { title: copy.modCareTitle, body: copy.modCareBody },
+    { title: copy.modProtoTitle, body: copy.modProtoBody },
+    { title: copy.modVisionTitle, body: copy.modVisionBody },
+    { title: copy.modObsTitle, body: copy.modObsBody },
+  ];
+
   return (
-    <SiteLayout lang={lang} onLangChange={setLang}>
+    <>
       <Head>
         <title>{copy.seoTitle}</title>
         <meta name="description" content={copy.seoDesc} />
@@ -345,438 +261,551 @@ export default function Home() {
         <meta property="og:description" content={copy.seoDesc} />
         <meta property="og:type" content="website" />
         <meta property="og:image" content="/brand/neuroljus-logo.svg" />
-        <meta name="theme-color" content="#060b16" />
+        <meta name="theme-color" content="#09090b" />
       </Head>
 
       <div className="page">
-        <div>
-          <section className="hero shell" aria-labelledby="hero-title">
-            <div className="heroCopy">
-              <p className="eyebrow">{copy.eyebrow}</p>
-              <h1 id="hero-title">{copy.title}</h1>
-              <p className="subtitle">{copy.subtitle}</p>
-              <div className="actions">
-                <a className="primaryCta" href="/labs/nl-vision">
-                  {copy.cta}
-                </a>
-                <a className="textCta" href="/labs/future-care-room">
-                  {copy.futureRoomCta}
-                </a>
-                <a className="textCta" href="/about">
-                  {copy.secondaryCta}
-                </a>
-                <a className="textCta" href={copy.whitepaperHref}>
-                  {copy.whitepaperCta}
-                </a>
-              </div>
-              <p className="status">{copy.status}</p>
-            </div>
-
-            <div className="heroMark" aria-hidden="true">
-              <Image
-                src="/brand/neuroljus-logo.svg"
-                alt=""
-                width={720}
-                height={720}
-                priority
-                className="markImage"
-              />
-            </div>
-          </section>
-
-          <section className="shell thesisBand" aria-labelledby="thesis-title">
-            <div>
-              <p className="sectionKicker">{copy.coreKicker}</p>
-              <h2 id="thesis-title">{copy.thesisTitle}</h2>
-            </div>
-            <p>{copy.thesis}</p>
-          </section>
-
-          <section className="shell horizon" aria-label={copy.horizonAria}>
-            <article>
-              <span>01</span>
-              <h3>{copy.modelTitle}</h3>
-              <p>{copy.model}</p>
-            </article>
-            <article>
-              <span>02</span>
-              <h3>{copy.horizonTitle}</h3>
-              <p>{copy.horizon}</p>
-            </article>
-            <article>
-              <span>03</span>
-              <h3>{copy.robotTitle}</h3>
-              <p>{copy.robot}</p>
-            </article>
-          </section>
-
-          <section className="shell actionBand" aria-labelledby="action-title">
-            <div>
-              <p className="sectionKicker">{copy.actionKicker}</p>
-              <h2 id="action-title">{copy.actionTitle}</h2>
-              <p>{copy.actionIntro}</p>
-            </div>
-            <ol>
-              {copy.actionSteps.map((step) => (
-                <li key={step}>{step}</li>
-              ))}
-            </ol>
-          </section>
-
-          <section id="offer" className="shell offerSection" aria-labelledby="offer-title">
-            <div className="offerIntro">
-              <p className="sectionKicker">{copy.offerKicker}</p>
-              <h2 id="offer-title">{copy.offerTitle}</h2>
-              <p>{copy.offerFoot}</p>
-            </div>
-            <div className="offerGrid">
-              {copy.offers.map((offer) => (
-                <article key={offer.title} className="offerCard">
-                  <h3>{offer.title}</h3>
-                  <p>{offer.body}</p>
-                  <a className="textCta" href={offer.href}>
-                    {offer.action}
-                  </a>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <section className="shell evidenceGrid">
-            <div className="labPanel">
-              <p className="sectionKicker">NL-VISION</p>
-              <h2>{copy.labTitle}</h2>
-              <p>{copy.lab}</p>
-              <a className="textCta" href="/labs/nl-vision">
-                {copy.cta}
-              </a>
-            </div>
-
-            <div className="boundaryPanel">
-              <h2>{copy.boundariesTitle}</h2>
-              <ul>
-                {copy.boundaries.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          </section>
-
-          <section className="shell collaborators" aria-labelledby="collab-title">
-            <p className="sectionKicker">{copy.collabKicker}</p>
-            <h2 id="collab-title">{copy.collabTitle}</h2>
-            <p>{copy.collab}</p>
-            <div className="collabActions">
-              <a className="primaryCta" href="/contact">
-                {copy.navContact}
-              </a>
-              <a className="textCta" href={copy.whitepaperHref}>
-                {copy.whitepaperCta}
-              </a>
-            </div>
-          </section>
+        <div className="statusbar" aria-hidden="true">
+          <span>
+            neuroljus://local · <b>care_command_protocol_v0</b> · audit=on · network=off
+          </span>
+          <span>{copy.statusRight}</span>
         </div>
+
+        <header className="shell topnav" role="banner">
+          <div className="brandRow">
+            <Link href="/" className="logo">
+              Neuroljus
+            </Link>
+            <span className="sep">/</span>
+            <span className="platform">{copy.platform}</span>
+          </div>
+
+          <nav className="navLinks" aria-label={copy.navLabs}>
+            <Link href="/labs/future-care-room">{copy.navLabs}</Link>
+            <Link href="/about">{copy.navAbout}</Link>
+            <Link href="/contact">{copy.navContact}</Link>
+          </nav>
+
+          <div className="navRight">
+            <div className="pills" role="group" aria-label="Platform layers">
+              <span className="pill on">{copy.pillRuntime}</span>
+              <span className="pill">{copy.pillProtocol}</span>
+              <span className="pill">{copy.pillAdapters}</span>
+              <span className="pill">{copy.pillAudit}</span>
+            </div>
+            <div className="langToggle" role="group" aria-label="Language">
+              <button onClick={() => setLang("es")} aria-pressed={lang === "es"}>
+                ES
+              </button>
+              <button onClick={() => setLang("en")} aria-pressed={lang === "en"}>
+                EN
+              </button>
+              <button onClick={() => setLang("sv")} aria-pressed={lang === "sv"}>
+                SV
+              </button>
+            </div>
+          </div>
+        </header>
+
+        <main>
+          <section className="shell hero" aria-labelledby="hero-title">
+            <p className="cli">{copy.cli}</p>
+            <h1 id="hero-title">
+              {copy.heroTitle}
+              <br />
+              <span>{copy.heroDim}</span>
+            </h1>
+            <p className="heroSub">{copy.heroSub}</p>
+          </section>
+
+          <section className="shell metrics" aria-label="Platform metrics">
+            <div>
+              <b>5</b>
+              <span>{copy.m1}</span>
+            </div>
+            <div>
+              <b>7</b>
+              <span>{copy.m2}</span>
+            </div>
+            <div>
+              <b>4</b>
+              <span>{copy.m3}</span>
+            </div>
+            <div>
+              <b>0</b>
+              <span>{copy.m4}</span>
+            </div>
+          </section>
+
+          <section className="shell console" aria-label="Protocol stream preview">
+            <div className="consoleHead">
+              <b>{copy.streamLabel}</b>
+              <span>{copy.streamMeta}</span>
+            </div>
+            <div className="consoleBody">
+              <div className="sidebar">
+                <div className="side on">{copy.sideSequence}</div>
+                <div className="side">{copy.sideExceptions}</div>
+                <div className="side">{copy.sideAdapters}</div>
+                <div className="side">{copy.sideAudit}</div>
+                <div className="side">{copy.sideValidation}</div>
+              </div>
+              <div className="stream">
+                <div>
+                  <span className="k">{copy.lineProtocol}</span>{" "}
+                  <span className="v">care_command_protocol_v0</span>
+                </div>
+                <div>
+                  <span className="k">{copy.lineAuthored}</span>{" "}
+                  <span className="g">{copy.lineTrue}</span>
+                </div>
+                <div className="gap" />
+                <div>
+                  <span className="g">✓</span> <span className="v">{copy.line1}</span>{" "}
+                  <span className="k">{copy.line1note}</span>
+                </div>
+                <div>
+                  <span className="g">✓</span> <span className="v">{copy.line2}</span>{" "}
+                  <span className="k">{copy.line2note}</span>
+                </div>
+                <div>
+                  <span className="g">▸</span> <span className="v">{copy.line3}</span>{" "}
+                  <span className="k">{copy.line3note}</span>
+                </div>
+                <div>
+                  <span className="k">·</span> <span className="v">{copy.line4}</span>
+                </div>
+                <div className="gap" />
+                <div>
+                  <span className="a">◦</span> <span className="v">{copy.ex1}</span>
+                </div>
+                <div>
+                  <span className="a">◦</span> <span className="v">{copy.ex2}</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="shell modules" aria-labelledby="modules-title">
+            <h2 id="modules-title">{copy.modulesTitle}</h2>
+            <div className="modGrid">
+              {modules.map((mod, index) => (
+                <Link key={mod.id} href={mod.href} className="modCard">
+                  <span className="modId">{mod.id}</span>
+                  <h3>{moduleCopy[index].title}</h3>
+                  <p>{moduleCopy[index].body}</p>
+                  <span className="modGo">{mod.path} →</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          <section className="shell principles" aria-labelledby="principles-title">
+            <h2 id="principles-title">{copy.principlesTitle}</h2>
+            <ul>
+              {copy.principles.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="shell ctaBand">
+            <div>
+              <h2>{copy.ctaTitle}</h2>
+              <p>{copy.ctaSub}</p>
+            </div>
+            <a className="ctaBtn" href={copy.ctaHref}>
+              {copy.ctaBtn}
+            </a>
+          </section>
+        </main>
+
+        <footer className="shell foot" role="contentinfo">
+          <p>{copy.footer}</p>
+          <a href={copy.whitepaperHref}>{copy.whitepaper}</a>
+        </footer>
       </div>
 
       <style jsx>{`
+        :global(html) {
+          scroll-behavior: smooth;
+        }
         .page {
-          min-height: 60dvh;
-          color: var(--nl-text);
+          min-height: 100dvh;
+          background: #09090b;
+          color: #fafafa;
+          font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+            sans-serif;
         }
         .shell {
-          width: min(1160px, calc(100% - 40px));
+          width: min(1100px, calc(100% - 48px));
           margin: 0 auto;
         }
-        .hero {
-          position: relative;
-          min-height: 62vh;
-          display: grid;
-          grid-template-columns: minmax(0, 0.98fr) minmax(280px, 0.72fr);
-          gap: 42px;
+        .statusbar {
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 11px;
+          display: flex;
+          justify-content: space-between;
+          gap: 16px;
+          flex-wrap: wrap;
+          padding: 8px 24px;
+          border-bottom: 1px solid #27272a;
+          color: #71717a;
+        }
+        .statusbar :global(b) {
+          color: #3ecf9a;
+          font-weight: 600;
+        }
+        .topnav {
+          display: flex;
           align-items: center;
-          padding: 60px 0 40px;
-          overflow: hidden;
+          flex-wrap: wrap;
+          gap: 16px;
+          padding: 16px 0;
+          border-bottom: 1px solid #27272a;
         }
-        .heroCopy {
-          position: relative;
-          z-index: 1;
+        .brandRow {
+          display: flex;
+          align-items: center;
+          gap: 12px;
         }
-        .eyebrow,
-        .sectionKicker {
-          margin: 0 0 12px;
-          color: var(--nl-aurora-a);
-          font-size: 12px;
+        .logo {
+          font-size: 13px;
           font-weight: 800;
-          letter-spacing: 0.14em;
+          letter-spacing: 0.2em;
           text-transform: uppercase;
+          color: #fafafa;
+          text-decoration: none;
         }
-        h1,
-        h2,
-        h3,
-        p {
-          overflow-wrap: anywhere;
+        .sep {
+          color: #3f3f46;
+        }
+        .platform {
+          font-size: 13px;
+          color: #a1a1aa;
+        }
+        .navLinks {
+          display: flex;
+          gap: 20px;
+          font-size: 13px;
+        }
+        .navLinks :global(a) {
+          color: #a1a1aa;
+          text-decoration: none;
+          font-weight: 600;
+        }
+        .navLinks :global(a:hover) {
+          color: #3ecf9a;
+        }
+        .navRight {
+          margin-left: auto;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+        .pills {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+        .pill {
+          font-size: 11px;
+          font-weight: 700;
+          padding: 4px 10px;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
+          color: #a1a1aa;
+        }
+        .pill.on {
+          border-color: #3ecf9a;
+          color: #3ecf9a;
+        }
+        .langToggle {
+          display: flex;
+          gap: 4px;
+        }
+        .langToggle button {
+          min-width: 36px;
+          min-height: 30px;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
+          background: transparent;
+          color: #a1a1aa;
+          cursor: pointer;
+          font-size: 11px;
+          font-weight: 800;
+        }
+        .langToggle button[aria-pressed="true"] {
+          border-color: #3ecf9a;
+          background: #3ecf9a;
+          color: #09090b;
+        }
+        .hero {
+          padding: 64px 0 40px;
+        }
+        .cli {
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 12px;
+          color: #3ecf9a;
+          margin-bottom: 20px;
         }
         h1 {
           margin: 0;
-          max-width: 720px;
-          font-size: clamp(52px, 8vw, 108px);
-          line-height: 0.92;
-          letter-spacing: -0.02em;
-          background: linear-gradient(120deg, var(--nl-text) 30%, var(--nl-aurora-b) 85%);
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
+          font-size: clamp(40px, 6vw, 56px);
+          font-weight: 700;
+          letter-spacing: -0.04em;
+          line-height: 1.05;
         }
-        .subtitle {
-          max-width: 720px;
-          margin: 22px 0 0;
-          color: var(--nl-text-dim);
-          font-size: 21px;
-          line-height: 1.5;
+        h1 span {
+          color: #52525b;
         }
-        .actions {
+        .heroSub {
+          margin-top: 16px;
+          max-width: 560px;
+          font-size: 16px;
+          line-height: 1.6;
+          color: #a1a1aa;
+        }
+        .metrics {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 1px;
+          background: #27272a;
+          margin-bottom: 32px;
+        }
+        .metrics div {
+          background: #09090b;
+          padding: 20px 0;
+        }
+        .metrics b {
+          display: block;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 28px;
+          margin-bottom: 4px;
+        }
+        .metrics span {
+          font-size: 11px;
+          color: #71717a;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+        }
+        .console {
+          border: 1px solid #27272a;
+          border-radius: 6px;
+          overflow: hidden;
+          margin-bottom: 48px;
+        }
+        .consoleHead {
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 11px;
+          padding: 10px 16px;
+          background: #18181b;
+          border-bottom: 1px solid #27272a;
+          color: #71717a;
           display: flex;
           flex-wrap: wrap;
-          align-items: center;
-          gap: 14px 18px;
-          margin-top: 30px;
+          gap: 16px;
         }
-        .primaryCta {
-          display: inline-flex;
+        .consoleHead :global(b) {
+          color: #a1a1aa;
+        }
+        .consoleBody {
+          display: grid;
+          grid-template-columns: 200px 1fr;
+          min-height: 260px;
+        }
+        .sidebar {
+          background: #0c0c0e;
+          border-right: 1px solid #27272a;
+          padding: 12px 0;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 12px;
+        }
+        .side {
+          padding: 8px 16px;
+          color: #71717a;
+          border-left: 2px solid transparent;
+        }
+        .side.on {
+          color: #3ecf9a;
+          border-left-color: #3ecf9a;
+          background: rgba(62, 207, 154, 0.06);
+        }
+        .stream {
+          padding: 20px;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 12px;
+          line-height: 1.8;
+        }
+        .stream .gap {
+          height: 8px;
+        }
+        .k {
+          color: #71717a;
+        }
+        .v {
+          color: #e4e4e7;
+        }
+        .g {
+          color: #3ecf9a;
+        }
+        .a {
+          color: #fbbf24;
+        }
+        .modules {
+          margin-bottom: 40px;
+        }
+        .modules h2,
+        .principles h2 {
+          font-size: 13px;
+          font-weight: 800;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #71717a;
+          margin-bottom: 24px;
+        }
+        .modGrid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+        }
+        .modCard {
+          border: 1px solid #27272a;
+          border-radius: 6px;
+          padding: 20px;
+          background: #0c0c0e;
+          text-decoration: none;
+          color: inherit;
+          display: grid;
+          gap: 8px;
+          transition: border-color 200ms ease;
+        }
+        .modCard:hover {
+          border-color: #3ecf9a;
+        }
+        .modId {
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 10px;
+          color: #3ecf9a;
+        }
+        .modCard h3 {
+          margin: 0;
+          font-size: 15px;
+          font-weight: 700;
+        }
+        .modCard p {
+          margin: 0;
+          font-size: 12px;
+          color: #71717a;
+          line-height: 1.5;
+        }
+        .modGo {
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 11px;
+          font-weight: 800;
+          color: #fafafa;
+        }
+        .principles {
+          margin-bottom: 40px;
+          border-top: 1px solid #27272a;
+          padding-top: 40px;
+        }
+        .principles ul {
+          margin: 0;
+          padding: 0;
+          list-style: none;
+          display: grid;
+          gap: 10px;
+        }
+        .principles li {
+          font-size: 14px;
+          color: #a1a1aa;
+          line-height: 1.55;
+          padding-left: 16px;
+          border-left: 2px solid #27272a;
+        }
+        .ctaBand {
+          margin-bottom: 48px;
+          padding: 32px;
+          border: 1px solid #3ecf9a;
+          border-radius: 6px;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
           align-items: center;
-          justify-content: center;
-          min-height: 46px;
-          padding: 0 22px;
-          border: none;
-          border-radius: 999px;
-          background: var(--nl-aurora-grad);
-          color: var(--nl-on-aurora);
-          box-shadow: 0 12px 32px rgba(94, 230, 164, 0.22);
+          gap: 20px;
+        }
+        .ctaBand h2 {
+          margin: 0;
+          font-size: 20px;
+          font-weight: 700;
+        }
+        .ctaBand p {
+          margin: 4px 0 0;
+          font-size: 13px;
+          color: #a1a1aa;
+        }
+        .ctaBtn {
+          background: #3ecf9a;
+          color: #09090b;
+          padding: 12px 24px;
+          border-radius: 4px;
+          font-size: 13px;
           font-weight: 800;
           text-decoration: none;
-          transition: transform 160ms ease, box-shadow 160ms ease;
         }
-        .primaryCta:hover {
-          transform: translateY(-1px);
-          box-shadow: 0 16px 40px rgba(94, 230, 164, 0.3);
+        .foot {
+          padding: 24px 0 40px;
+          border-top: 1px solid #27272a;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
+          gap: 12px;
+          font-size: 12px;
+          color: #71717a;
         }
-        .textCta {
-          color: var(--nl-aurora-b);
+        .foot :global(a) {
+          color: #3ecf9a;
           font-weight: 700;
           text-decoration: none;
         }
-        .textCta:hover {
-          text-decoration: underline;
-        }
-        .status {
-          max-width: 680px;
-          margin: 24px 0 0;
-          color: var(--nl-text-faint);
-          font-size: 14px;
-          line-height: 1.6;
-        }
-        .heroMark {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          min-height: 360px;
-        }
-        .markImage {
-          width: min(100%, 460px);
-          height: auto;
-          filter: drop-shadow(0 0 60px rgba(94, 230, 164, 0.28))
-            drop-shadow(0 0 120px rgba(124, 227, 247, 0.18));
-        }
-        .thesisBand {
-          display: grid;
-          grid-template-columns: 0.74fr 1.26fr;
-          gap: 38px;
-          padding: 36px 0;
-          border-top: 1px solid var(--nl-border);
-          border-bottom: 1px solid var(--nl-border);
-        }
-        .thesisBand h2,
-        .offerIntro h2,
-        .labPanel h2,
-        .boundaryPanel h2,
-        .collaborators h2 {
-          margin: 0;
-          font-size: 30px;
-          line-height: 1.12;
-          letter-spacing: -0.01em;
-        }
-        .thesisBand p,
-        .offerIntro p,
-        .offerCard p,
-        .labPanel p,
-        .collaborators p {
-          margin: 0;
-          color: var(--nl-text-dim);
-          font-size: 17px;
-          line-height: 1.62;
-        }
-        .horizon {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 16px;
-          padding: 32px 0;
-        }
-        .actionBand {
-          display: grid;
-          grid-template-columns: 0.9fr 1.1fr;
-          gap: 24px;
-          align-items: start;
-          margin-bottom: 20px;
-          border: 1px solid var(--nl-border-strong);
-          border-radius: var(--nl-radius);
-          background:
-            radial-gradient(600px 300px at 12% 0%, rgba(94, 230, 164, 0.12), transparent 65%),
-            var(--nl-bg-raised);
-          padding: 30px;
-          box-shadow: var(--nl-shadow);
-        }
-        .actionBand h2 {
-          margin: 0;
-          font-size: 30px;
-          line-height: 1.12;
-        }
-        .actionBand p {
-          margin: 12px 0 0;
-          color: var(--nl-text-dim);
-          line-height: 1.6;
-        }
-        .actionBand .sectionKicker {
-          color: var(--nl-aurora-a);
-        }
-        .actionBand ol {
-          display: grid;
-          gap: 12px;
-          margin: 0;
-          padding-left: 20px;
-          color: var(--nl-text);
-          line-height: 1.55;
-        }
-        .horizon article,
-        .offerCard,
-        .labPanel,
-        .boundaryPanel {
-          border: 1px solid var(--nl-border);
-          border-radius: var(--nl-radius);
-          background: var(--nl-surface);
-          backdrop-filter: blur(14px);
-          -webkit-backdrop-filter: blur(14px);
-          padding: 24px;
-          transition: border-color 180ms ease, transform 180ms ease;
-        }
-        .horizon article:hover,
-        .offerCard:hover {
-          border-color: var(--nl-border-strong);
-          transform: translateY(-2px);
-        }
-        .horizon span {
-          color: var(--nl-aurora-b);
-          font-weight: 800;
-          font-size: 13px;
-        }
-        .horizon h3 {
-          margin: 14px 0 10px;
-          font-size: 21px;
-        }
-        .horizon p {
-          margin: 0;
-          color: var(--nl-text-dim);
-          line-height: 1.58;
-        }
-        .evidenceGrid {
-          display: grid;
-          grid-template-columns: 1.05fr 0.95fr;
-          gap: 16px;
-        }
-        .offerSection {
-          padding: 18px 0 32px;
-        }
-        .offerIntro {
-          max-width: 760px;
-          margin-bottom: 20px;
-        }
-        .offerGrid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 16px;
-        }
-        .offerCard {
-          display: flex;
-          flex-direction: column;
-          min-height: 250px;
-        }
-        .offerCard h3 {
-          margin: 0 0 10px;
-          font-size: 20px;
-          line-height: 1.15;
-        }
-        .offerCard p {
-          margin-bottom: 18px;
-          font-size: 15px;
-        }
-        .offerCard .textCta {
-          margin-top: auto;
-        }
-        .labPanel p {
-          margin: 12px 0 18px;
-        }
-        .boundaryPanel ul {
-          display: grid;
-          gap: 10px;
-          padding-left: 20px;
-          margin: 16px 0 0;
-          color: var(--nl-text-dim);
-          line-height: 1.55;
-        }
-        .collaborators {
-          padding: 42px 0 36px;
-        }
-        .collaborators p {
-          max-width: 820px;
-          margin: 12px 0 22px;
-        }
-        .collabActions {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: 18px;
-        }
         @media (max-width: 900px) {
           .shell {
-            width: min(100% - 28px, 1160px);
+            width: min(100% - 28px, 1100px);
           }
-          .hero,
-          .thesisBand,
-          .horizon,
-          .actionBand,
-          .offerGrid,
-          .evidenceGrid {
+          .navRight {
+            width: 100%;
+            margin-left: 0;
+            justify-content: space-between;
+          }
+          .metrics {
+            grid-template-columns: repeat(2, 1fr);
+          }
+          .consoleBody {
             grid-template-columns: 1fr;
           }
-          .offerCard {
-            min-height: auto;
+          .sidebar {
+            display: flex;
+            flex-wrap: wrap;
+            border-right: 0;
+            border-bottom: 1px solid #27272a;
+            padding: 8px;
           }
-          .hero {
-            min-height: auto;
-            gap: 8px;
-            padding-top: 26px;
+          .side {
+            padding: 6px 10px;
+            border-left: 0;
+            border-bottom: 2px solid transparent;
           }
-          .subtitle {
-            font-size: 18px;
+          .side.on {
+            border-bottom-color: #3ecf9a;
           }
-          .heroMark {
-            min-height: 180px;
-            justify-content: flex-start;
-          }
-          .markImage {
-            width: min(240px, 66vw);
+          .modGrid {
+            grid-template-columns: 1fr;
           }
         }
       `}</style>
-    </SiteLayout>
+    </>
   );
 }
