@@ -30,6 +30,11 @@ const modules = [
     href: "/labs/pattern-notebook",
     path: "/labs/pattern-notebook",
   },
+  {
+    id: "MOD.INCIDENT",
+    href: "/labs/serious-incident",
+    path: "/labs/serious-incident",
+  },
 ] as const;
 
 export default function Home() {
@@ -102,6 +107,8 @@ export default function Home() {
         modObsBody: "Struktur för vad som hände, sammanhang, tolkning och osäkerhet.",
         modPatTitle: "Mönsteranteckningar",
         modPatBody: "Lokala anteckningar om gester, lindring och osäkerhet — vårdgivarvittne.",
+        modIncTitle: "Allvarlig händelse",
+        modIncBody: "Lokalt vittnesmål + export till Lex Sarah / IVO / advokat. Ingen kamera.",
         principlesTitle: "Designprinciper",
         principles: [
           "Vårdgivaren författar rutiner, sammanhang och mål — som ansvar för personen, inte som personalens ego.",
@@ -196,6 +203,8 @@ export default function Home() {
         modObsBody: "Structure for what happened, context, interpretation, and uncertainty.",
         modPatTitle: "Pattern Notebook",
         modPatBody: "Local notes on gestures, relief, and uncertainty — caregiver witness.",
+        modIncTitle: "Serious Incident",
+        modIncBody: "Local witness note + export for Lex Sarah / IVO / lawyer. No camera.",
         principlesTitle: "Design principles",
         principles: [
           "The caregiver authors routines, context, and goals — as responsibility for the person, not staff ego.",
@@ -290,6 +299,8 @@ export default function Home() {
         modObsBody: "Estructura para qué pasó, contexto, interpretación e incertidumbre.",
         modPatTitle: "Cuaderno de patrones",
         modPatBody: "Notas locales sobre gestos, alivio e incertidumbre — testigo cuidador.",
+        modIncTitle: "Incidente grave",
+        modIncBody: "Testimonio local + export para Lex Sarah / IVO / abogado. Sin cámara.",
         principlesTitle: "Principios de diseño",
         principles: [
           "La cuidadora define rutinas, contexto y objetivos — como responsabilidad por la persona, no como ego del personal.",
@@ -342,6 +353,7 @@ export default function Home() {
     { title: copy.modVisionTitle, body: copy.modVisionBody },
     { title: copy.modObsTitle, body: copy.modObsBody },
     { title: copy.modPatTitle, body: copy.modPatBody },
+    { title: copy.modIncTitle, body: copy.modIncBody },
   ];
 
   return (

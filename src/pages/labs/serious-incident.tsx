@@ -3,26 +3,53 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
 import {
-  addPatternNote,
-  deletePatternNote,
-  readPatternNotes,
-  type PatternNote,
-} from "@/lib/carePatterns/localStore";
+  INCIDENT_KIND_LABELS,
+  addSeriousIncident,
+  deleteSeriousIncident,
+  formatIncidentExportJson,
+  formatIncidentExportText,
+  readSeriousIncidents,
+  type IncidentKind,
+  type SeriousIncident,
+} from "@/lib/careIncidents/localStore";
 
 type Lang = "sv" | "en" | "es";
 
+const kinds: IncidentKind[] = [
+  "violence",
+  "psychological",
+  "neglect",
+  "self_harm_allowed",
+  "speech_cycle",
+  "other",
+];
+
 const emptyForm = {
-  gesture: "",
-  context: "",
-  eased: "",
-  worsened: "",
+  kind: "violence" as IncidentKind,
+  whenApprox: "",
+  setting: "",
+  whoWhat: "",
+  othersPresent: "",
+  personAfter: "",
+  protectionActs: "",
+  speechCycles: "",
   uncertainty: "",
-  seenBefore: false,
+  reporting: "",
 };
 
-export default function PatternNotebook() {
+function downloadBlob(filename: string, content: string, mime: string) {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+export default function SeriousIncidentLab() {
   const [lang, setLang] = useState<Lang>("en");
-  const [notes, setNotes] = useState<PatternNote[]>([]);
+  const [incidents, setIncidents] = useState<SeriousIncident[]>([]);
   const [form, setForm] = useState(emptyForm);
   const [savedFlash, setSavedFlash] = useState(false);
 
@@ -35,97 +62,112 @@ export default function PatternNotebook() {
     } catch {
       setLang("en");
     }
-    setNotes(readPatternNotes());
+    setIncidents(readSeriousIncidents());
   }, []);
 
   const T = useMemo(
     () => ({
       sv: {
-        seoTitle: "Mönsteranteckningar — Neuroljus",
+        seoTitle: "Allvarlig händelse — Neuroljus",
         seoDesc:
-          "Lokala anteckningar om gester, lindring och osäkerhet. Vårdgivarvittne — ingen diagnos.",
-        platform: "Pattern Notebook",
-        kicker: "Lokal · privat · vårdgivarvittne",
-        heroTitle: "Mönster du ser genom att titta",
+          "Lokalt vittnesmål för Lex Sarah / IVO / juridisk hjälp. Ingen kamera. Ingen AI-detektion.",
+        platform: "Serious Incident",
+        kicker: "Lokal · privat · skydda först",
+        heroTitle: "Strukturera det du såg — sedan rapportera",
         heroSub:
-          "Vissa personer talar inte sina behov. Du läser gester i timmar. Här sparar du vad som verkade lindra eller förvärra — lokalt i den här webbläsaren, utan att påstå dig veta deras inre värld.",
+          "När personal knuffar, försummar, låter självskada fortsätta eller förnedrar: skriv vad som hände. Spara lokalt. Exportera text eller JSON till Lex Sarah, IVO eller advokat.",
         frame:
-          "Varje person är unik. Ändå kan mönster dyka upp över tid. Neuroljus hjälper dig strukturera vittnesmål — inte att diagnostisera smärta eller genetik.",
-        formTitle: "Ny anteckning",
-        gesture: "Observerad gest / hållning / ljud",
-        context: "Sammanhang (ljus, ljud, rutin, personer nära)",
-        eased: "Vad som verkade lindra",
-        worsened: "Vad som verkade förvärra",
+          "Neuroljus är inte polis och upptäcker inte våld via kamera. Detta är ditt vittnesmål. Våld och försummelse är aldrig vård.",
+        formTitle: "Ny allvarlig händelse",
+        kind: "Typ",
+        when: "När (ungefär)",
+        setting: "Plats / miljö",
+        who: "Vem gjorde vad",
+        others: "Andra närvarande",
+        after: "Vad personen gjorde efteråt",
+        protect: "Vad du gjorde för att skydda",
+        speech: "Upprepade fraser (som de sades)",
         uncertainty: "Vad du inte kan veta",
-        seenBefore: "Jag har sett ett liknande mönster hos den här personen tidigare",
+        reporting: "Rapportering (Lex Sarah / IVO / advokat — planerat eller gjort)",
         save: "Spara lokalt",
         saved: "Sparad i den här webbläsaren",
-        listTitle: "Dina anteckningar",
-        empty: "Inga anteckningar ännu. Börja med en gest du nyss såg.",
+        listTitle: "Dina händelser",
+        empty: "Inga händelser ännu. Börja med det du just bevittnade.",
         delete: "Ta bort",
-        ctaRoom: "Öppna Care Room · Possible discomfort",
+        exportTxt: "Exportera .txt",
+        exportJson: "Exportera .json",
         ctaObs: "Observation Method",
-        ctaInc: "Allvarlig händelse",
+        ctaPat: "Mönsteranteckningar",
         disclaimer:
-          "Ingen medicinsk bedömning. Om oro kvarstår: kontakta vård. Vid våld eller försummelse: använd Allvarlig händelse och rapportera.",
+          "Skydda personen först. Följ anmälningsplikt där du arbetar. Neuroljus ersätter inte Lex Sarah, IVO eller juridisk rådgivning.",
       },
       en: {
-        seoTitle: "Pattern Notebook — Neuroljus",
+        seoTitle: "Serious Incident — Neuroljus",
         seoDesc:
-          "Local notes on gestures, relief, and uncertainty. Caregiver witness — not diagnosis.",
-        platform: "Pattern Notebook",
-        kicker: "Local · private · caregiver witness",
-        heroTitle: "Patterns you learn by watching",
+          "Local witness note for Lex Sarah / IVO / legal counsel. No camera. No AI detection.",
+        platform: "Serious Incident",
+        kicker: "Local · private · protect first",
+        heroTitle: "Structure what you saw — then report",
         heroSub:
-          "Some people do not speak their needs. You read gestures for hours. Here you save what seemed to ease or worsen — local to this browser, without claiming to know their inner world.",
+          "When staff push, neglect, allow self-harm to continue, or demean: write what happened. Save locally. Export text or JSON for Lex Sarah, IVO, or a lawyer.",
         frame:
-          "Each person is unique. Still, patterns can appear over time. Neuroljus helps you structure witness notes — not diagnose pain or genetics.",
-        formTitle: "New note",
-        gesture: "Observed gesture / posture / sound",
-        context: "Context (light, sound, routine, people nearby)",
-        eased: "What seemed to ease",
-        worsened: "What seemed to worsen",
+          "Neuroljus is not police and does not detect violence via camera. This is your witness note. Violence and neglect are never care.",
+        formTitle: "New serious incident",
+        kind: "Kind",
+        when: "When (approx.)",
+        setting: "Setting",
+        who: "Who did what",
+        others: "Others present",
+        after: "What the person did afterward",
+        protect: "What you did to protect",
+        speech: "Repeated phrases (as spoken)",
         uncertainty: "What you cannot know",
-        seenBefore: "I have seen a similar pattern with this person before",
+        reporting: "Reporting (Lex Sarah / IVO / lawyer — planned or done)",
         save: "Save locally",
         saved: "Saved in this browser",
-        listTitle: "Your notes",
-        empty: "No notes yet. Start with a gesture you just saw.",
+        listTitle: "Your incidents",
+        empty: "No incidents yet. Start with what you just witnessed.",
         delete: "Delete",
-        ctaRoom: "Open Care Room · Possible discomfort",
+        exportTxt: "Export .txt",
+        exportJson: "Export .json",
         ctaObs: "Observation Method",
-        ctaInc: "Serious Incident",
+        ctaPat: "Pattern Notebook",
         disclaimer:
-          "Not a medical assessment. If concern remains: contact healthcare. For violence or neglect: use Serious Incident and report.",
+          "Protect the person first. Follow reporting duties where you work. Neuroljus does not replace Lex Sarah, IVO, or legal counsel.",
       },
       es: {
-        seoTitle: "Cuaderno de patrones — Neuroljus",
+        seoTitle: "Incidente grave — Neuroljus",
         seoDesc:
-          "Notas locales sobre gestos, alivio e incertidumbre. Testigo cuidador — no diagnóstico.",
-        platform: "Pattern Notebook",
-        kicker: "Local · privado · testigo cuidador",
-        heroTitle: "Patrones que aprendes mirando",
+          "Testimonio local para Lex Sarah / IVO / abogado. Sin cámara. Sin detección por IA.",
+        platform: "Serious Incident",
+        kicker: "Local · privado · proteger primero",
+        heroTitle: "Estructura lo que viste — luego reporta",
         heroSub:
-          "Algunas personas no hablan sus necesidades. Tú lees gestos durante horas. Aquí guardas lo que pareció aliviar o empeorar — solo en este navegador, sin pretender conocer su mundo interior.",
+          "Cuando el personal empuja, negligencia, deja continuar la autoagresión o humilla: escribe lo que pasó. Guarda localmente. Exporta texto o JSON para Lex Sarah, IVO o un abogado.",
         frame:
-          "Cada persona es única. Aun así, pueden aparecer patrones con el tiempo. Neuroljus te ayuda a estructurar el testimonio — no a diagnosticar dolor ni genética.",
-        formTitle: "Nueva nota",
-        gesture: "Gesto / postura / sonido observado",
-        context: "Contexto (luz, sonido, rutina, personas cerca)",
-        eased: "Lo que pareció aliviar",
-        worsened: "Lo que pareció empeorar",
+          "Neuroljus no es policía y no detecta violencia por cámara. Esto es tu testimonio. Violencia y negligencia nunca son cuidado.",
+        formTitle: "Nuevo incidente grave",
+        kind: "Tipo",
+        when: "Cuándo (aprox.)",
+        setting: "Lugar / entorno",
+        who: "Quién hizo qué",
+        others: "Otras personas presentes",
+        after: "Qué hizo la persona después",
+        protect: "Qué hiciste tú para proteger",
+        speech: "Frases repetidas (como se dijeron)",
         uncertainty: "Lo que no puedes saber",
-        seenBefore: "He visto un patrón similar con esta persona antes",
+        reporting: "Reporte (Lex Sarah / IVO / abogado — planeado o hecho)",
         save: "Guardar localmente",
         saved: "Guardado en este navegador",
-        listTitle: "Tus notas",
-        empty: "Aún no hay notas. Empieza con un gesto que acabas de ver.",
+        listTitle: "Tus incidentes",
+        empty: "Aún no hay incidentes. Empieza con lo que acabas de presenciar.",
         delete: "Eliminar",
-        ctaRoom: "Abrir Care Room · Possible discomfort",
+        exportTxt: "Exportar .txt",
+        exportJson: "Exportar .json",
         ctaObs: "Observation Method",
-        ctaInc: "Incidente grave",
+        ctaPat: "Cuaderno de patrones",
         disclaimer:
-          "No es evaluación médica. Si la preocupación continúa: contacta salud. Por violencia o negligencia: usa Incidente grave y reporta.",
+          "Protege a la persona primero. Cumple el deber de denuncia donde trabajas. Neuroljus no sustituye Lex Sarah, IVO ni asesoría legal.",
       },
     }),
     []
@@ -135,23 +177,43 @@ export default function PatternNotebook() {
 
   function onSubmit(event: FormEvent) {
     event.preventDefault();
-    if (!form.gesture.trim()) return;
-    const next = addPatternNote({
-      gesture: form.gesture.trim(),
-      context: form.context.trim(),
-      eased: form.eased.trim(),
-      worsened: form.worsened.trim(),
+    if (!form.whoWhat.trim() && !form.setting.trim()) return;
+    const next = addSeriousIncident({
+      kind: form.kind,
+      whenApprox: form.whenApprox.trim(),
+      setting: form.setting.trim(),
+      whoWhat: form.whoWhat.trim(),
+      othersPresent: form.othersPresent.trim(),
+      personAfter: form.personAfter.trim(),
+      protectionActs: form.protectionActs.trim(),
+      speechCycles: form.speechCycles.trim(),
       uncertainty: form.uncertainty.trim(),
-      seenBefore: form.seenBefore,
+      reporting: form.reporting.trim(),
     });
-    setNotes(next);
-    setForm(emptyForm);
+    setIncidents(next);
+    setForm({ ...emptyForm, kind: form.kind });
     setSavedFlash(true);
     window.setTimeout(() => setSavedFlash(false), 2200);
   }
 
   function onDelete(id: string) {
-    setNotes(deletePatternNote(id));
+    setIncidents(deleteSeriousIncident(id));
+  }
+
+  function onExportTxt(incident: SeriousIncident) {
+    downloadBlob(
+      `${incident.id}.txt`,
+      formatIncidentExportText(incident, lang),
+      "text/plain;charset=utf-8"
+    );
+  }
+
+  function onExportJson(incident: SeriousIncident) {
+    downloadBlob(
+      `${incident.id}.json`,
+      formatIncidentExportJson(incident),
+      "application/json;charset=utf-8"
+    );
   }
 
   return (
@@ -166,7 +228,7 @@ export default function PatternNotebook() {
       <div className="page">
         <div className="statusbar" aria-hidden="true">
           <span>
-            neuroljus://local · <b>care_patterns_v0</b> · network=off · storage=browser
+            neuroljus://local · <b>serious_incident_v0</b> · network=off · camera=off
           </span>
           <span>latency 0ms · caregiver_authority=true</span>
         </div>
@@ -181,8 +243,8 @@ export default function PatternNotebook() {
           </div>
           <nav className="navLinks" aria-label="Primary">
             <Link href="/labs/future-care-room">Labs</Link>
-            <Link href="/labs/nl-vision">NL-VISION</Link>
             <Link href="/observation-method">Observation</Link>
+            <Link href="/labs/pattern-notebook">Patterns</Link>
             <Link href="/labs/robot-interface">Protocol</Link>
           </nav>
           <div className="langToggle" role="group" aria-label="Language">
@@ -205,14 +267,11 @@ export default function PatternNotebook() {
           <p className="frame">{copy.frame}</p>
 
           <div className="ctaRow">
-            <Link className="cta" href="/labs/future-care-room">
-              {copy.ctaRoom}
-            </Link>
-            <Link className="cta ghost" href="/observation-method">
+            <Link className="cta" href="/observation-method">
               {copy.ctaObs}
             </Link>
-            <Link className="cta ghost" href="/labs/serious-incident">
-              {copy.ctaInc}
+            <Link className="cta ghost" href="/labs/pattern-notebook">
+              {copy.ctaPat}
             </Link>
           </div>
 
@@ -220,36 +279,75 @@ export default function PatternNotebook() {
             <h2 id="form-title">{copy.formTitle}</h2>
             <form onSubmit={onSubmit}>
               <label>
-                {copy.gesture}
+                {copy.kind}
+                <select
+                  value={form.kind}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, kind: e.target.value as IncidentKind }))
+                  }
+                >
+                  {kinds.map((kind) => (
+                    <option key={kind} value={kind}>
+                      {INCIDENT_KIND_LABELS[kind][lang]}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label>
+                {copy.when}
+                <textarea
+                  rows={2}
+                  value={form.whenApprox}
+                  onChange={(e) => setForm((f) => ({ ...f, whenApprox: e.target.value }))}
+                />
+              </label>
+              <label>
+                {copy.setting}
+                <textarea
+                  rows={2}
+                  value={form.setting}
+                  onChange={(e) => setForm((f) => ({ ...f, setting: e.target.value }))}
+                />
+              </label>
+              <label>
+                {copy.who}
                 <textarea
                   required
-                  rows={2}
-                  value={form.gesture}
-                  onChange={(e) => setForm((f) => ({ ...f, gesture: e.target.value }))}
+                  rows={3}
+                  value={form.whoWhat}
+                  onChange={(e) => setForm((f) => ({ ...f, whoWhat: e.target.value }))}
                 />
               </label>
               <label>
-                {copy.context}
+                {copy.others}
                 <textarea
                   rows={2}
-                  value={form.context}
-                  onChange={(e) => setForm((f) => ({ ...f, context: e.target.value }))}
+                  value={form.othersPresent}
+                  onChange={(e) => setForm((f) => ({ ...f, othersPresent: e.target.value }))}
                 />
               </label>
               <label>
-                {copy.eased}
+                {copy.after}
                 <textarea
                   rows={2}
-                  value={form.eased}
-                  onChange={(e) => setForm((f) => ({ ...f, eased: e.target.value }))}
+                  value={form.personAfter}
+                  onChange={(e) => setForm((f) => ({ ...f, personAfter: e.target.value }))}
                 />
               </label>
               <label>
-                {copy.worsened}
+                {copy.protect}
                 <textarea
                   rows={2}
-                  value={form.worsened}
-                  onChange={(e) => setForm((f) => ({ ...f, worsened: e.target.value }))}
+                  value={form.protectionActs}
+                  onChange={(e) => setForm((f) => ({ ...f, protectionActs: e.target.value }))}
+                />
+              </label>
+              <label>
+                {copy.speech}
+                <textarea
+                  rows={2}
+                  value={form.speechCycles}
+                  onChange={(e) => setForm((f) => ({ ...f, speechCycles: e.target.value }))}
                 />
               </label>
               <label>
@@ -260,13 +358,13 @@ export default function PatternNotebook() {
                   onChange={(e) => setForm((f) => ({ ...f, uncertainty: e.target.value }))}
                 />
               </label>
-              <label className="check">
-                <input
-                  type="checkbox"
-                  checked={form.seenBefore}
-                  onChange={(e) => setForm((f) => ({ ...f, seenBefore: e.target.checked }))}
+              <label>
+                {copy.reporting}
+                <textarea
+                  rows={2}
+                  value={form.reporting}
+                  onChange={(e) => setForm((f) => ({ ...f, reporting: e.target.value }))}
                 />
-                <span>{copy.seenBefore}</span>
               </label>
               <div className="actions">
                 <button type="submit">{copy.save}</button>
@@ -277,36 +375,38 @@ export default function PatternNotebook() {
 
           <section className="panel" aria-labelledby="list-title">
             <h2 id="list-title">{copy.listTitle}</h2>
-            {notes.length === 0 ? (
+            {incidents.length === 0 ? (
               <p className="empty">{copy.empty}</p>
             ) : (
               <ul className="notes">
-                {notes.map((note) => (
-                  <li key={note.id}>
+                {incidents.map((incident) => (
+                  <li key={incident.id}>
                     <div className="noteHead">
-                      <time dateTime={note.createdAt}>
-                        {new Date(note.createdAt).toLocaleString()}
+                      <time dateTime={incident.createdAt}>
+                        {new Date(incident.createdAt).toLocaleString()}
                       </time>
-                      {note.seenBefore && <span className="tag">pattern</span>}
-                      <button type="button" className="del" onClick={() => onDelete(note.id)}>
+                      <span className="tag">{INCIDENT_KIND_LABELS[incident.kind][lang]}</span>
+                      <button type="button" className="del" onClick={() => onDelete(incident.id)}>
                         {copy.delete}
                       </button>
                     </div>
                     <p>
-                      <strong>{note.gesture}</strong>
+                      <strong>{incident.whoWhat}</strong>
                     </p>
-                    {note.context && <p>{note.context}</p>}
-                    {note.eased && (
-                      <p>
-                        + {note.eased}
-                      </p>
-                    )}
-                    {note.worsened && (
-                      <p>
-                        − {note.worsened}
-                      </p>
-                    )}
-                    {note.uncertainty && <p className="muted">? {note.uncertainty}</p>}
+                    {incident.setting && <p>{incident.setting}</p>}
+                    {incident.speechCycles && <p className="muted">“{incident.speechCycles}”</p>}
+                    <div className="exportRow">
+                      <button type="button" className="exportBtn" onClick={() => onExportTxt(incident)}>
+                        {copy.exportTxt}
+                      </button>
+                      <button
+                        type="button"
+                        className="exportBtn ghost"
+                        onClick={() => onExportJson(incident)}
+                      >
+                        {copy.exportJson}
+                      </button>
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -323,12 +423,12 @@ export default function PatternNotebook() {
           --ink: #f4f4f5;
           --muted: #a1a1aa;
           --line: rgba(255, 255, 255, 0.1);
-          --accent: #7dd3fc;
+          --accent: #fca5a5;
           --panel: rgba(24, 24, 27, 0.92);
           min-height: 100vh;
           background:
-            radial-gradient(ellipse 80% 50% at 20% -10%, rgba(125, 211, 252, 0.12), transparent),
-            radial-gradient(ellipse 60% 40% at 90% 10%, rgba(167, 139, 250, 0.08), transparent),
+            radial-gradient(ellipse 80% 50% at 15% -10%, rgba(252, 165, 165, 0.1), transparent),
+            radial-gradient(ellipse 50% 40% at 90% 0%, rgba(125, 211, 252, 0.06), transparent),
             var(--bg);
           color: var(--ink);
           font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -415,7 +515,7 @@ export default function PatternNotebook() {
         }
         h1 {
           font-weight: 550;
-          font-size: clamp(1.8rem, 4vw, 2.6rem);
+          font-size: clamp(1.8rem, 4vw, 2.55rem);
           line-height: 1.15;
           margin: 0 0 0.75rem;
           letter-spacing: -0.02em;
@@ -438,11 +538,11 @@ export default function PatternNotebook() {
           display: inline-flex;
           align-items: center;
           padding: 0.55rem 0.9rem;
-          border: 1px solid rgba(125, 211, 252, 0.45);
+          border: 1px solid rgba(252, 165, 165, 0.45);
           color: var(--ink);
           text-decoration: none;
           font-size: 0.88rem;
-          background: rgba(125, 211, 252, 0.08);
+          background: rgba(252, 165, 165, 0.08);
         }
         .cta.ghost {
           border-color: var(--line);
@@ -469,7 +569,8 @@ export default function PatternNotebook() {
           font-size: 0.82rem;
           color: var(--muted);
         }
-        textarea {
+        textarea,
+        select {
           width: 100%;
           resize: vertical;
           background: #0c0c0e;
@@ -478,15 +579,6 @@ export default function PatternNotebook() {
           padding: 0.55rem 0.65rem;
           font: inherit;
         }
-        .check {
-          display: flex;
-          align-items: flex-start;
-          gap: 0.55rem;
-          grid-template-columns: none;
-        }
-        .check input {
-          margin-top: 0.2rem;
-        }
         .actions {
           display: flex;
           align-items: center;
@@ -494,7 +586,7 @@ export default function PatternNotebook() {
         }
         .actions button {
           background: var(--accent);
-          color: #082f49;
+          color: #450a0a;
           border: none;
           padding: 0.55rem 1rem;
           font-weight: 600;
@@ -529,12 +621,10 @@ export default function PatternNotebook() {
           color: var(--muted);
         }
         .tag {
-          border: 1px solid rgba(125, 211, 252, 0.35);
+          border: 1px solid rgba(252, 165, 165, 0.35);
           color: var(--accent);
           padding: 0.1rem 0.35rem;
           font-size: 0.68rem;
-          text-transform: uppercase;
-          letter-spacing: 0.04em;
         }
         .del {
           margin-left: auto;
@@ -551,6 +641,24 @@ export default function PatternNotebook() {
           line-height: 1.45;
         }
         .muted {
+          color: var(--muted);
+        }
+        .exportRow {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.45rem;
+          margin-top: 0.55rem;
+        }
+        .exportBtn {
+          background: transparent;
+          border: 1px solid rgba(252, 165, 165, 0.4);
+          color: var(--ink);
+          cursor: pointer;
+          font-size: 0.75rem;
+          padding: 0.3rem 0.55rem;
+        }
+        .exportBtn.ghost {
+          border-color: var(--line);
           color: var(--muted);
         }
         .disclaimer {
