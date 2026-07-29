@@ -498,7 +498,7 @@ export default function RobotInterfaceLab() {
 
         <main className="workspace">
           <div className="pageIntro shell">
-            <p className="cli">$ neuroljus workspace --protocol</p>
+            <p className="cli">neuroljus workspace --protocol</p>
             <h1>Robot Care Interface</h1>
             <p className="roomLink">
               Prefer the experiential view?{" "}

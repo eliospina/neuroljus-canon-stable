@@ -445,7 +445,7 @@ function NLVisionTasks() {
       </header>
 
       <main className="shell">
-        <p className="cli">$ neuroljus vision --engine tasks-vision@1.0.0</p>
+        <p className="cli">neuroljus vision --engine tasks-vision@1.0.0</p>
         <h1>NL-VISION · Tasks v2</h1>
         <p className="lede">
           Raw MediaPipe detector view: green boxes + face/hand landmarks on a dark
