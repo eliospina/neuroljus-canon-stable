@@ -101,7 +101,8 @@ export default function Home() {
         modObsTitle: "Observation Method",
         modObsBody: "Struktur för vad som hände, sammanhang, tolkning och osäkerhet.",
         modPatTitle: "Mönsteranteckningar",
-        modPatBody: "Lokala anteckningar om gester, lindring och osäkerhet — vårdgivarvittne.",
+        modPatBody:
+          "Din vårdgivarminne i den här webbläsaren — inte automatisk igenkänning av besökare. Ingen inloggning.",
         principlesTitle: "Designprinciper",
         principles: [
           "Vårdgivaren författar rutiner, sammanhang och mål — som ansvar för personen, inte som personalens ego.",
@@ -130,7 +131,7 @@ export default function Home() {
         path3Href: "/labs/robot-interface",
         path3Cta: "Öppna protokoll",
         pathCompanion:
-          "Mellan stegen: spara lokala anteckningar om gester → lindring i Mönsteranteckningar.",
+          "Mellan stegen: skriv vad du såg (gest → lindring) i Mönsteranteckningar — du håller mönstret, inte kameran.",
         pathCompanionCta: "Öppna mönsteranteckningar",
         pathCompanionHref: "/labs/pattern-notebook",
         ctaTitle: "Distribuera ett protokoll.",
@@ -195,7 +196,8 @@ export default function Home() {
         modObsTitle: "Observation Method",
         modObsBody: "Structure for what happened, context, interpretation, and uncertainty.",
         modPatTitle: "Pattern Notebook",
-        modPatBody: "Local notes on gestures, relief, and uncertainty — caregiver witness.",
+        modPatBody:
+          "Your caregiver memory in this browser — not automatic recognition of visitors. No login.",
         principlesTitle: "Design principles",
         principles: [
           "The caregiver authors routines, context, and goals — as responsibility for the person, not staff ego.",
@@ -224,7 +226,7 @@ export default function Home() {
         path3Href: "/labs/robot-interface",
         path3Cta: "Open protocol",
         pathCompanion:
-          "Between steps: save local gesture → relief notes in the Pattern Notebook.",
+          "Between steps: write what you saw (gesture → relief) in the Pattern Notebook — you hold the pattern, not the camera.",
         pathCompanionCta: "Open Pattern Notebook",
         pathCompanionHref: "/labs/pattern-notebook",
         ctaTitle: "Deploy a protocol.",
@@ -289,7 +291,8 @@ export default function Home() {
         modObsTitle: "Observation Method",
         modObsBody: "Estructura para qué pasó, contexto, interpretación e incertidumbre.",
         modPatTitle: "Cuaderno de patrones",
-        modPatBody: "Notas locales sobre gestos, alivio e incertidumbre — testigo cuidador.",
+        modPatBody:
+          "Tu memoria de cuidadora en este navegador — no reconocimiento automático de visitantes. Sin login.",
         principlesTitle: "Principios de diseño",
         principles: [
           "La cuidadora define rutinas, contexto y objetivos — como responsabilidad por la persona, no como ego del personal.",
@@ -318,7 +321,7 @@ export default function Home() {
         path3Href: "/labs/robot-interface",
         path3Cta: "Abrir protocolo",
         pathCompanion:
-          "Entre pasos: guarda notas locales gesto → alivio en el Cuaderno de patrones.",
+          "Entre pasos: escribe lo que viste (gesto → alivio) en el Cuaderno de patrones — tú sostienes el patrón, no la cámara.",
         pathCompanionCta: "Abrir Cuaderno de patrones",
         pathCompanionHref: "/labs/pattern-notebook",
         ctaTitle: "Despliega un protocolo.",
