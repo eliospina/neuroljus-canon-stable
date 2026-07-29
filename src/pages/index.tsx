@@ -106,6 +106,7 @@ export default function Home() {
         principles: [
           "Vårdgivaren författar rutiner, sammanhang och mål — som ansvar för personen, inte som personalens ego.",
           "Den neurodivergenta personen rankas inte under personalens bekvämlighet eller neurotypisk ”förmåga”.",
+          "Knuff, slag och förnedring är aldrig vård — vittna, skydda, rapportera. Neuroljus upptäcker inte våld via kamera.",
           "Lokala observationer prioriterar integritet och kontroll nära personen.",
           "Osäkerhet sparas som data — systemet låtsas inte veta mer än det vet.",
           "Kliniska lager utvecklas med kvalificerade forsknings- och vårdpartners.",
@@ -197,6 +198,7 @@ export default function Home() {
         principles: [
           "The caregiver authors routines, context, and goals — as responsibility for the person, not staff ego.",
           "The neurodivergent person is never ranked below staff convenience or neurotypical “capability.”",
+          "Pushing, hitting, and humiliation are never care — witness, protect, report. Neuroljus does not detect violence via camera.",
           "Local observations prioritize privacy and control near the person.",
           "Uncertainty is preserved as data — the system never pretends to know more than it knows.",
           "Clinical layers are developed with qualified research and care partners.",
@@ -288,6 +290,7 @@ export default function Home() {
         principles: [
           "La cuidadora define rutinas, contexto y objetivos — como responsabilidad por la persona, no como ego del personal.",
           "La persona neurodivergente no se rankea debajo de la comodidad del personal ni de la “capacidad” neurotípica.",
+          "Empujar, pegar y humillar nunca es cuidado — testimonio, proteger, reportar. Neuroljus no detecta violencia por cámara.",
           "Las observaciones locales priorizan privacidad y control cerca de la persona.",
           "La incertidumbre se conserva como dato — el sistema no finge saber más de lo que sabe.",
           "Las capas clínicas se desarrollan con aliados cualificados de investigación y cuidado.",

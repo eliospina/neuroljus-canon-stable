@@ -63,6 +63,24 @@ Uncertainty remaining:
 
 If concern is severe or persistent: contact healthcare. Neuroljus does not replace medical judgment.
 
+## Mistreatment / Violence (witness — never a care method)
+
+Pushing, hitting, rough grip, humiliation, or threats are **not care techniques**. Record what you saw. Protect the person. Report through the duties that apply where you work.
+
+Observed acts:
+
+Who did what (role/name as appropriate), approximate time:
+
+Who else was present:
+
+What the person did afterward:
+
+What you did to protect the person:
+
+Reporting pathway used / to use (e.g. in Sweden: Lex Sarah / local duty — check your obligation):
+
+Important: Neuroljus does not detect violence via camera. This is human witness structure only.
+
 ## Caregiver Interpretation
 
 What do you think may have been happening?

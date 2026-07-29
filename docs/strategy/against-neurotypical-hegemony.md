@@ -21,6 +21,25 @@ Elizabeth’s lived judgment after years in Sweden: that habit is common enough 
 
 ---
 
+## Physical aggression and everyday mistreatment
+
+Elizabeth has also witnessed **physical aggression** in care settings: caregivers who push, hit, grip hard, humiliate — treating neurodivergent people as if rough handling were normal.
+
+For many non-speaking and neurodivergent people, this is not rare scandal. It is **everyday bread**: violence and contempt folded into “work.”
+
+Neuroljus names this without claiming camera AI can police it.
+
+| What we do | What we refuse |
+| --- | --- |
+| Observation Method: **mistreatment / violence witness** section — facts seen, who, when, protection acts, reporting pathways | “NL-VISION detected abuse” or any emotion/violence classifier |
+| Treat push/hit/humiliation as **never a care method** | Soft language that reframes violence as “challenging behavior management” |
+| Point witnesses toward **local reporting duties** (in Sweden: often Lex Sarah / equivalent pathways — check your obligation) | Pretending Neuroljus is police, court, or HR |
+| Keep audit trails that make power visible in protocols | Building staff surveillance theater that replaces human courage to report |
+
+If you are reading this because you witnessed harm: **protect the person first**, then document what you saw, then use the reporting channels that apply where you work. Neuroljus can help structure a witness note. It cannot replace your duty or your presence.
+
+---
+
 ## What Neuroljus must never encode
 
 | Harmful default | Neuroljus refusal |
@@ -29,6 +48,7 @@ Elizabeth’s lived judgment after years in Sweden: that habit is common enough 
 | Rank humans by speech, speed, compliance | No capability scores; no “good client / difficult client” labels |
 | Treat rejection as bad behavior | `rejection_signal` is a **safety exception**, not defiance |
 | Let “caregiver authority” mean staff ego | Authority means **responsibility for the person**, always overridable toward dignity |
+| Treat push, hit, or humiliation as techniques | Mistreatment is **named and reportable** — never encoded as protocol steps |
 | Hope that a black-box AGI will magically fix culture | Future systems inherit whatever we encode now — ableism or dignity |
 
 ---
@@ -75,7 +95,8 @@ Before shipping a feature, ask:
 1. Does this make the **person’s** sensory/space needs easier to honor — or only staff throughput?  
 2. Could a manager use this output to **rank** people by “difficulty”? If yes, redesign.  
 3. Does copy imply the AI “understands” the neurodivergent person? If yes, cut.  
-4. Does “caregiver control” read as **staff supremacy**? Soften toward **responsibility for the person**.
+4. Does “caregiver control” read as **staff supremacy**? Soften toward **responsibility for the person**.  
+5. Could this feature hide or normalize **physical mistreatment**? If yes, stop and redesign.
 
 ---
 
@@ -84,3 +105,5 @@ Before shipping a feature, ask:
 Neurodivergent people are not a lower layer of humanity. They are not props in a workplace story about efficient shifts.
 
 Neuroljus exists so care intelligence infrastructure does not quietly reproduce that ranking — and so future systems, AGI included, inherit **dignity first**.
+
+Dignity includes the right not to be pushed, hit, or mocked while receiving care.
