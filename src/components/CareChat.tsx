@@ -19,9 +19,9 @@ const T: Record<Lang, Record<string, string>> = {
     placeholder: "Skriv din fråga här…",
     send: "Skicka",
     thinking: "Tänker…",
-    quick1: "Vad bör jag observera om jag misstänker smärta?",
-    quick2: "Behöver vi sänka stimuli?",
-    quick3: "Vilka nästa steg föreslår du?",
+    quick1: "Tolka mina senaste NL-VISION-rörelsesignaler vetenskapligt.",
+    quick2: "Behöver vi sänka stimuli utifrån signalerna?",
+    quick3: "Vilka protokollsteg föreslår du från det du ser?",
     disclaimer: "Organiserar observationer och omsorgsfrågor. Vid akut oro eller ihållande smärta, kontakta vården.",
     notesPlaceholder: "Vårdgivarens anteckningar (valfritt, privat)",
     error: "Jag har tekniska problem just nu. Försök igen om en liten stund.",
@@ -34,9 +34,9 @@ const T: Record<Lang, Record<string, string>> = {
     placeholder: "Type your question here…",
     send: "Send",
     thinking: "Thinking…",
-    quick1: "What should I observe if I suspect pain?",
-    quick2: "Should we lower stimulation?",
-    quick3: "What next steps do you suggest?",
+    quick1: "Scientifically interpret my latest NL-VISION movement signals.",
+    quick2: "Should we lower stimulation based on the signals?",
+    quick3: "What protocol steps do you suggest from what you see?",
     disclaimer: "Organizes observations and care questions. For urgent concern or persistent pain, contact healthcare.",
     notesPlaceholder: "Caregiver notes (optional, private)",
     error: "I'm having technical trouble right now. Please try again in a moment.",
@@ -49,9 +49,9 @@ const T: Record<Lang, Record<string, string>> = {
     placeholder: "Escribe tu pregunta aquí…",
     send: "Enviar",
     thinking: "Pensando…",
-    quick1: "¿Qué debo observar si sospecho dolor?",
-    quick2: "¿Debemos reducir estímulos?",
-    quick3: "¿Qué próximos pasos sugieres?",
+    quick1: "Interpreta científicamente mis últimas señales de movimiento NL-VISION.",
+    quick2: "¿Debemos reducir estímulos según las señales?",
+    quick3: "¿Qué pasos de protocolo sugieres a partir de lo que ves?",
     disclaimer: "Organiza observaciones y preguntas de cuidado. Ante urgencia o dolor persistente, contacta salud.",
     notesPlaceholder: "Notas del cuidador (opcional, privado)",
     error: "Tengo un problema técnico ahora mismo. Inténtalo de nuevo en un momento.",
@@ -62,11 +62,11 @@ const T: Record<Lang, Record<string, string>> = {
 
 const GREETING: Record<Lang, string> = {
   sv:
-    "Hej. Jag är Neuroljus Care Reflection. Jag hjälper dig att strukturera det du ser — gester, sammanhang, osäkerhet — utan att låtsas läsa någons inre. Om du misstänker smärta: beskriv vad du såg, vad som lindrade, vad som förvärrade. För portalens verkliga steg: NL-VISION → Care Room → protokoll.",
+    "Hej. Jag är Neuroljus Care Reflection. När NL-VISION har sparat lokala signaler kan jag göra en vetenskaplig simulering av dem — rörelseband, hand nära ansikte, blinkningar — som hypoteser för dig, inte som känsla eller diagnos. Fråga om dina rörelser, eller beskriv vad du såg i rummet. Vägen: NL-VISION → Care Room → protokoll.",
   en:
-    "Hello. I’m Neuroljus Care Reflection. I help structure what you see — gestures, context, uncertainty — without pretending to read anyone’s inner world. If you suspect pain: describe what you saw, what eased it, what worsened it. For this portal’s real path: NL-VISION → Care Room → protocol.",
+    "Hello. I’m Neuroljus Care Reflection. When NL-VISION has stored local signals, I can run a scientific simulation of them — movement bands, hand-near-face, blinks — as hypotheses for you, not as emotion or diagnosis. Ask about your movements, or describe what you saw in the room. Path: NL-VISION → Care Room → protocol.",
   es:
-    "Hola. Soy Neuroljus Care Reflection. Te ayudo a estructurar lo que ves — gestos, contexto, incertidumbre — sin fingir leer el mundo interior de nadie. Si sospechas dolor: describe qué viste, qué alivió, qué empeoró. El camino real de este portal: NL-VISION → Care Room → protocolo.",
+    "Hola. Soy Neuroljus Care Reflection. Cuando NL-VISION guarda señales locales, puedo hacer una simulación científica de ellas — bandas de movimiento, mano cerca del rostro, parpadeos — como hipótesis para ti, no como emoción ni diagnóstico. Pregunta por tus movimientos, o describe lo que viste en la habitación. Camino: NL-VISION → Care Room → protocolo.",
 };
 
 const greetingValues = new Set(Object.values(GREETING));

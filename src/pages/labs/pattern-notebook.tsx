@@ -45,12 +45,12 @@ export default function PatternNotebook() {
         seoDesc:
           "Lokala anteckningar om gester, lindring och osäkerhet. Vårdgivarvittne — ingen diagnos.",
         platform: "Pattern Notebook",
-        kicker: "Lokal · privat · vårdgivarvittne",
-        heroTitle: "Mönster du ser genom att titta",
+        kicker: "Lokal · ingen inloggning · vårdgivarvittne",
+        heroTitle: "Mönster du lär dig genom att titta",
         heroSub:
-          "Vissa personer talar inte sina behov. Du läser gester i timmar. Här sparar du vad som verkade lindra eller förvärra — lokalt i den här webbläsaren, utan att påstå dig veta deras inre värld.",
+          "Öppen portal — inga dörrar, inga konton, ingen biometrisk igenkänning. Neuroljus skiljer inte besökare åt. Här sparar DU vad som verkade lindra eller förvärra hos personen du vårdar — lokalt i den här webbläsaren.",
         frame:
-          "Varje person är unik. Ändå kan mönster dyka upp över tid. Neuroljus hjälper dig strukturera vittnesmål — inte att diagnostisera smärta eller genetik.",
+          "Detta är inte automatisk mönsterdetektering mellan främlingar. Det är din vårdgivarminne, strukturerad. Framtida personprofiler med samtycke är en lärandehorisont — inte byggt här ännu. Ingen diagnos av smärta eller genetik.",
         formTitle: "Ny anteckning",
         gesture: "Observerad gest / hållning / ljud",
         context: "Sammanhang (ljus, ljud, rutin, personer nära)",
@@ -73,12 +73,12 @@ export default function PatternNotebook() {
         seoDesc:
           "Local notes on gestures, relief, and uncertainty. Caregiver witness — not diagnosis.",
         platform: "Pattern Notebook",
-        kicker: "Local · private · caregiver witness",
+        kicker: "Local · no login · caregiver witness",
         heroTitle: "Patterns you learn by watching",
         heroSub:
-          "Some people do not speak their needs. You read gestures for hours. Here you save what seemed to ease or worsen — local to this browser, without claiming to know their inner world.",
+          "Open portal — no doors, no accounts, no biometric recognition. Neuroljus does not tell visitors apart. Here YOU save what seemed to ease or worsen for the person you care for — local to this browser.",
         frame:
-          "Each person is unique. Still, patterns can appear over time. Neuroljus helps you structure witness notes — not diagnose pain or genetics.",
+          "This is not automatic pattern detection across strangers. It is your caregiver memory, structured. Future person-linked profiles with consent are a learning horizon — not built here yet. No diagnosis of pain or genetics.",
         formTitle: "New note",
         gesture: "Observed gesture / posture / sound",
         context: "Context (light, sound, routine, people nearby)",
@@ -101,12 +101,12 @@ export default function PatternNotebook() {
         seoDesc:
           "Notas locales sobre gestos, alivio e incertidumbre. Testigo cuidador — no diagnóstico.",
         platform: "Pattern Notebook",
-        kicker: "Local · privado · testigo cuidador",
+        kicker: "Local · sin login · testigo cuidador",
         heroTitle: "Patrones que aprendes mirando",
         heroSub:
-          "Algunas personas no hablan sus necesidades. Tú lees gestos durante horas. Aquí guardas lo que pareció aliviar o empeorar — solo en este navegador, sin pretender conocer su mundo interior.",
+          "Portal abierto — sin puertas, sin cuentas, sin reconocimiento biométrico. Neuroljus no distingue visitantes. Aquí guardas TÚ lo que pareció aliviar o empeorar en la persona a quien cuidas — solo en este navegador.",
         frame:
-          "Cada persona es única. Aun así, pueden aparecer patrones con el tiempo. Neuroljus te ayuda a estructurar el testimonio — no a diagnosticar dolor ni genética.",
+          "Esto no es detección automática de patrones entre desconocidos. Es tu memoria de cuidadora, estructurada. Perfiles personales futuros con consentimiento son un horizonte de aprendizaje — aún no construido aquí. Sin diagnóstico de dolor ni genética.",
         formTitle: "Nueva nota",
         gesture: "Gesto / postura / sonido observado",
         context: "Contexto (luz, sonido, rutina, personas cerca)",
