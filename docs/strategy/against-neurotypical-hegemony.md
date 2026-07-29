@@ -32,6 +32,7 @@ Neuroljus names this without claiming camera AI can police it.
 | What we do | What we refuse |
 | --- | --- |
 | Observation Method: **mistreatment / violence witness** section — facts seen, who, when, protection acts, reporting pathways | “NL-VISION detected abuse” or any emotion/violence classifier |
+| Lab **/labs/serious-incident**: local save + **.txt / .json export** for Lex Sarah / IVO / lawyer | Pretending Neuroljus is police, court, or HR |
 | Treat push/hit/humiliation as **never a care method** | Soft language that reframes violence as “challenging behavior management” |
 | Point witnesses toward **local reporting duties** (in Sweden: often Lex Sarah / equivalent pathways — check your obligation) | Pretending Neuroljus is police, court, or HR |
 | Keep audit trails that make power visible in protocols | Building staff surveillance theater that replaces human courage to report |

@@ -592,6 +592,13 @@ export default function ObservationMethod() {
           </section>
 
           <div className="ctaRow">
+            <Link href="/labs/serious-incident" className="ctaPrimary">
+              {lang === "sv"
+                ? "Allvarlig händelse · exportera vittnesmål"
+                : lang === "es"
+                  ? "Incidente grave · exportar testimonio"
+                  : "Serious Incident · export witness note"}
+            </Link>
             <Link href="/labs/pattern-notebook" className="ctaPrimary">
               {lang === "sv"
                 ? "Öppna mönsteranteckningar"
