@@ -27,6 +27,7 @@ The person does not need to know if a device is expensive. They live in their ow
 | Care Room scenario: **Possible discomfort (caregiver witness)** | Protocols that can drive wearables / smart home **without** claiming medical diagnosis |
 | NL-VISION: visible landmarks as raw signals | Never: “the AI detected pain” |
 | Chat: structure “what eased / what worsened” | Institutional procurement of quiet tech — cost is not the person’s problem |
+| Landing principles: person never ranked below staff convenience | Refuse features that become “difficulty scores” for managers |
 
 ---
 
@@ -53,3 +54,5 @@ Elizabeth: *Dios, mi vida tiene meaning today.*
 That meaning is the product north star: **make invisible care labor into structured intelligence that protects dignity** — especially for people whose cognition and communication do not match neurotypical speech.
 
 Neuroljus exists so fewer caregivers have to carry that watching alone, and so future assistive systems learn from care — not the other way around.
+
+Related: `docs/strategy/against-neurotypical-hegemony.md` — caregiver authority means responsibility for the person, never ranking humans by neurotypical capability or staff convenience.
