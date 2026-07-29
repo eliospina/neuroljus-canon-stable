@@ -35,6 +35,11 @@ const modules = [
     href: "/labs/serious-incident",
     path: "/labs/serious-incident",
   },
+  {
+    id: "MOD.MEMORY",
+    href: "/labs/care-memory",
+    path: "/labs/care-memory",
+  },
 ] as const;
 
 export default function Home() {
@@ -108,7 +113,9 @@ export default function Home() {
         modPatTitle: "Mönsteranteckningar",
         modPatBody: "Lokala anteckningar om gester, lindring och osäkerhet — vårdgivarvittne.",
         modIncTitle: "Allvarlig händelse",
-        modIncBody: "Lokalt vittnesmål + export till Lex Sarah / IVO / advokat. Ingen kamera.",
+        modIncBody: "Lokalt vittnesmål + export under lokal lag. Sverige är ett exempel. Ingen kamera.",
+        modMemTitle: "Omsorgsminne",
+        modMemBody: "En berättelse i taget för projektet — blir inte automatiskt ett protokoll.",
         principlesTitle: "Designprinciper",
         principles: [
           "Vårdgivaren författar rutiner, sammanhang och mål — som ansvar för personen, inte som personalens ego.",
@@ -204,7 +211,9 @@ export default function Home() {
         modPatTitle: "Pattern Notebook",
         modPatBody: "Local notes on gestures, relief, and uncertainty — caregiver witness.",
         modIncTitle: "Serious Incident",
-        modIncBody: "Local witness note + export for Lex Sarah / IVO / lawyer. No camera.",
+        modIncBody: "Local witness + export under local law. Sweden is one example. No camera.",
+        modMemTitle: "Care Memory",
+        modMemBody: "One story at a time for the project — does not auto-become a protocol.",
         principlesTitle: "Design principles",
         principles: [
           "The caregiver authors routines, context, and goals — as responsibility for the person, not staff ego.",
@@ -300,7 +309,9 @@ export default function Home() {
         modPatTitle: "Cuaderno de patrones",
         modPatBody: "Notas locales sobre gestos, alivio e incertidumbre — testigo cuidador.",
         modIncTitle: "Incidente grave",
-        modIncBody: "Testimonio local + export para Lex Sarah / IVO / abogado. Sin cámara.",
+        modIncBody: "Testimonio local + export bajo ley local. Suecia es un ejemplo. Sin cámara.",
+        modMemTitle: "Memoria de cuidado",
+        modMemBody: "Una historia a la vez para el proyecto — no se vuelve protocolo sola.",
         principlesTitle: "Principios de diseño",
         principles: [
           "La cuidadora define rutinas, contexto y objetivos — como responsabilidad por la persona, no como ego del personal.",
@@ -354,6 +365,7 @@ export default function Home() {
     { title: copy.modObsTitle, body: copy.modObsBody },
     { title: copy.modPatTitle, body: copy.modPatBody },
     { title: copy.modIncTitle, body: copy.modIncBody },
+    { title: copy.modMemTitle, body: copy.modMemBody },
   ];
 
   return (
