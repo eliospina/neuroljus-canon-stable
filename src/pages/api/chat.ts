@@ -138,6 +138,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       "Camera metrics are optional prototype numbers for reflection only. " +
       "If no face or hands are detected, say only that no usable visual signal is available. " +
       "Wireless belts/bands or body sensors may be mentioned only as a FUTURE research horizon for caregiver-authored protocols — not as a current medical product. " +
+      "Assistive robotics collaboration is welcome as a horizon: robots may receive care_command_protocol_v0 for autistic people who need care most — never to optimize staff KPIs, never to mind-read, always with human override. " +
       languageInstruction(lang);
 
     const hasMetrics = !!metrics && Object.keys(metrics).length > 0;

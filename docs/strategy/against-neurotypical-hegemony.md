@@ -114,6 +114,8 @@ Neuroljus’s job is narrower and harder:
 
 If future AGI is to help, it should learn from **lived care that centers the person** — not from the hegemony that ranked them last.
 
+Related: `docs/strategy/robotics-for-those-who-need-care.md` — collaborate on care robotization for autistic people first; refuse staff-KPI robots.
+
 ---
 
 ## Product checks (use in review)
