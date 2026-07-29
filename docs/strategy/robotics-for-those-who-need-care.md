@@ -6,6 +6,24 @@
 
 ---
 
+## Century horizon (founder contentment)
+
+Robotization of care will arrive someday. The timeline may be a decade, a generation, or — honestly — **a 200-year arc**.
+
+Elizabeth’s measure of success is not speed of deployment. It is this:
+
+> Even if the plan takes two centuries, she would be content if autistic people are the **center** of the care system that is **for them**.
+
+That is the civilizational north star of Neuroljus:
+
+- Build the **person-first protocol contract now** (`care_command_protocol_v0`, witness notes, safety exceptions, human override).  
+- So whenever machines enter the room — next year or next century — they inherit **dignity for the beneficiary**, not the neurotypical workplace script.  
+- Contentment = the system finally belongs to those it claims to serve.
+
+Neuroljus does not promise 200-year roadmaps as product marketing. It **does** refuse short-term robotics that recenters staff convenience and calls that “care innovation.”
+
+---
+
 ## The invitation
 
 Elizabeth wants Neuroljus to **collaborate with the robotization of care services** — directed at those who need it most: **autistic people**, especially those who do not speak neurotypical scripts.
@@ -26,9 +44,9 @@ Lived stance (moral and observational — **not** a clinical ranking of humanity
 
 Neuroljus product language must stay humble:
 
-- Do **not** claim “autistic people feel more pain than neurotypicals” as a scientific product fact.  
+- Pain research increasingly challenges the “indifference” myth and documents heightened sensitivity in several measures (see `docs/research/pain-in-autism-bibliography-v0.md`) — cite papers; do not overclaim a single universal law.  
 - Do **claim** that pain and discomfort are frequently **missed**, and that care systems must stop ranking the person below staff convenience.  
-- Do **claim** that robotics, if it arrives, must serve **the person first**.
+- Do **claim** that robotics, whenever it arrives, must keep autistic people at the **center** of a care system **for them**.
 
 ---
 
@@ -63,4 +81,6 @@ Partners who want robots to hold soft space, lower demand, notify a trusted huma
 
 Robotization of care will happen with or without ethics.
 
-Elizabeth’s hope is that it happens **with** the people who do not live other people’s scripts — so future machines learn from innocence and need, not from hegemony.
+Elizabeth’s hope — whether in ten years or two hundred — is that it happens **with** the people who do not live other people’s scripts at the **center** of a care system built **for them**.
+
+That contentment is enough. Speed is secondary.
