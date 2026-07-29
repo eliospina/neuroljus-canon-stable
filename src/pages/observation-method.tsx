@@ -33,6 +33,8 @@ export default function ObservationMethod() {
         statusRight: "latency 0ms · deterministiskt · caregiver_authority=true",
         platform: "Observation Method",
         navLabs: "Labs",
+        navVision: "NL-VISION",
+        navProtocol: "Protokoll",
         navAbout: "Om",
         navContact: "Kontakt",
         pillRuntime: "runtime",
@@ -121,6 +123,8 @@ export default function ObservationMethod() {
         statusRight: "latency 0ms · deterministic · caregiver_authority=true",
         platform: "Observation Method",
         navLabs: "Labs",
+        navVision: "NL-VISION",
+        navProtocol: "Protocol",
         navAbout: "About",
         navContact: "Contact",
         pillRuntime: "runtime",
@@ -210,6 +214,8 @@ export default function ObservationMethod() {
         statusRight: "latency 0ms · determinista · caregiver_authority=true",
         platform: "Observation Method",
         navLabs: "Labs",
+        navVision: "NL-VISION",
+        navProtocol: "Protocolo",
         navAbout: "Sobre",
         navContact: "Contacto",
         pillRuntime: "runtime",
@@ -342,8 +348,10 @@ export default function ObservationMethod() {
             <span className="platform">{copy.platform}</span>
           </div>
 
-          <nav className="navLinks" aria-label={copy.navLabs}>
+          <nav className="navLinks" aria-label="Primary">
             <Link href="/labs/future-care-room">{copy.navLabs}</Link>
+            <Link href="/labs/nl-vision">{copy.navVision}</Link>
+            <Link href="/labs/robot-interface">{copy.navProtocol}</Link>
             <Link href="/about">{copy.navAbout}</Link>
             <Link href="/contact">{copy.navContact}</Link>
           </nav>

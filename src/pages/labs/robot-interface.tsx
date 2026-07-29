@@ -479,6 +479,7 @@ export default function RobotInterfaceLab() {
             <span className="platform">Protocol Workspace</span>
           </div>
           <nav className="navLinks" aria-label="Labs">
+            <Link href="/labs/nl-vision">NL-VISION</Link>
             <Link href="/labs/future-care-room">Care Room</Link>
             <Link href="/">Platform</Link>
           </nav>

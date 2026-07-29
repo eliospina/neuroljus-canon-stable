@@ -50,6 +50,8 @@ export default function Home() {
         statusRight: "latency 0ms · deterministiskt · caregiver_authority=true",
         platform: "Omsorgsintelligensplattform",
         navLabs: "Labs",
+        navVision: "NL-VISION",
+        navProtocol: "Protokoll",
         navAbout: "Om",
         navContact: "Kontakt",
         pillRuntime: "runtime",
@@ -104,6 +106,7 @@ export default function Home() {
         ctaSub: "Ingen registrering. Inget moln. Öppna workspace och exportera.",
         ctaBtn: "ÖPPNA WORKSPACE",
         ctaHref: "/labs/robot-interface",
+        ctaVision: "Öppna NL-VISION",
         whitepaper: "White paper",
         whitepaperHref: "https://doi.org/10.5281/zenodo.20775583",
         footer: "Neuroljus — oberoende forsknings- och portfolioprojekt av Elizabeth Ospina.",
@@ -115,6 +118,8 @@ export default function Home() {
         statusRight: "latency 0ms · deterministic · caregiver_authority=true",
         platform: "Care Intelligence Platform",
         navLabs: "Labs",
+        navVision: "NL-VISION",
+        navProtocol: "Protocol",
         navAbout: "About",
         navContact: "Contact",
         pillRuntime: "runtime",
@@ -169,6 +174,7 @@ export default function Home() {
         ctaSub: "No signup. No cloud. Open the workspace and export.",
         ctaBtn: "OPEN WORKSPACE",
         ctaHref: "/labs/robot-interface",
+        ctaVision: "Open NL-VISION",
         whitepaper: "White paper",
         whitepaperHref: "https://doi.org/10.5281/zenodo.20775583",
         footer: "Neuroljus — independent research and portfolio project by Elizabeth Ospina.",
@@ -180,6 +186,8 @@ export default function Home() {
         statusRight: "latency 0ms · determinista · caregiver_authority=true",
         platform: "Plataforma de inteligencia del cuidado",
         navLabs: "Labs",
+        navVision: "NL-VISION",
+        navProtocol: "Protocolo",
         navAbout: "Sobre",
         navContact: "Contacto",
         pillRuntime: "runtime",
@@ -234,6 +242,7 @@ export default function Home() {
         ctaSub: "Sin registro. Sin nube. Abre el workspace y exporta.",
         ctaBtn: "ABRIR WORKSPACE",
         ctaHref: "/labs/robot-interface",
+        ctaVision: "Abrir NL-VISION",
         whitepaper: "White paper",
         whitepaperHref: "https://doi.org/10.5281/zenodo.20775583",
         footer: "Neuroljus — proyecto independiente de investigación y portafolio de Elizabeth Ospina.",
@@ -281,8 +290,10 @@ export default function Home() {
             <span className="platform">{copy.platform}</span>
           </div>
 
-          <nav className="navLinks" aria-label={copy.navLabs}>
+          <nav className="navLinks" aria-label="Primary">
             <Link href="/labs/future-care-room">{copy.navLabs}</Link>
+            <Link href="/labs/nl-vision">{copy.navVision}</Link>
+            <Link href="/labs/robot-interface">{copy.navProtocol}</Link>
             <Link href="/about">{copy.navAbout}</Link>
             <Link href="/contact">{copy.navContact}</Link>
           </nav>
@@ -415,9 +426,14 @@ export default function Home() {
               <h2>{copy.ctaTitle}</h2>
               <p>{copy.ctaSub}</p>
             </div>
-            <a className="ctaBtn" href={copy.ctaHref}>
-              {copy.ctaBtn}
-            </a>
+            <div className="ctaActions">
+              <a className="ctaBtn" href={copy.ctaHref}>
+                {copy.ctaBtn}
+              </a>
+              <a className="ctaSecondary" href="/labs/nl-vision">
+                {copy.ctaVision}
+              </a>
+            </div>
           </section>
         </main>
 
