@@ -102,6 +102,21 @@ export default function Home() {
           "Osäkerhet sparas som data — systemet låtsas inte veta mer än det vet.",
           "Kliniska lager utvecklas med kvalificerade forsknings- och vårdpartners.",
         ],
+        pathTitle: "Börja här — tre steg",
+        pathSub:
+          "Icke-talande personer uttrycker sig på andra sätt. Vi gör vården mer synlig — utan att låtsas läsa tankar.",
+        path1Title: "1 · Se signaler",
+        path1Body: "NL-VISION: lokala landmarks. Vad kameran spårar — inte vad personen ”känner”.",
+        path1Href: "/labs/nl-vision",
+        path1Cta: "Öppna NL-VISION",
+        path2Title: "2 · Forma omsorg",
+        path2Body: "Care Room + Story Mode: lev en övergång, känn säkerhetsundantag, behåll kontrollen.",
+        path2Href: "/labs/future-care-room",
+        path2Cta: "Öppna Care Room",
+        path3Title: "3 · Exportera protokoll",
+        path3Body: "Samma kuvert till människa, hem eller robot. Deterministiskt. Lokal körning.",
+        path3Href: "/labs/robot-interface",
+        path3Cta: "Öppna protokoll",
         ctaTitle: "Distribuera ett protokoll.",
         ctaSub: "Ingen registrering. Inget moln. Öppna workspace och exportera.",
         ctaBtn: "ÖPPNA WORKSPACE",
@@ -170,6 +185,21 @@ export default function Home() {
           "Uncertainty is preserved as data — the system never pretends to know more than it knows.",
           "Clinical layers are developed with qualified research and care partners.",
         ],
+        pathTitle: "Start here — three steps",
+        pathSub:
+          "Non-speaking people express themselves differently. We make care more visible — without pretending to read minds.",
+        path1Title: "1 · See signals",
+        path1Body: "NL-VISION: local landmarks. What the camera tracks — not what the person “feels”.",
+        path1Href: "/labs/nl-vision",
+        path1Cta: "Open NL-VISION",
+        path2Title: "2 · Shape care",
+        path2Body: "Care Room + Story Mode: live a transition, feel safety exceptions, keep authority.",
+        path2Href: "/labs/future-care-room",
+        path2Cta: "Open Care Room",
+        path3Title: "3 · Export protocol",
+        path3Body: "The same envelope for a person, a home, or a robot. Deterministic. Local.",
+        path3Href: "/labs/robot-interface",
+        path3Cta: "Open protocol",
         ctaTitle: "Deploy a protocol.",
         ctaSub: "No signup. No cloud. Open the workspace and export.",
         ctaBtn: "OPEN WORKSPACE",
@@ -238,6 +268,22 @@ export default function Home() {
           "La incertidumbre se conserva como dato — el sistema no finge saber más de lo que sabe.",
           "Las capas clínicas se desarrollan con aliados cualificados de investigación y cuidado.",
         ],
+        pathTitle: "Empieza aquí — tres pasos",
+        pathSub:
+          "Quienes no hablan se expresan de otra forma. Hacemos el cuidado más visible — sin fingir leer la mente.",
+        path1Title: "1 · Ver señales",
+        path1Body: "NL-VISION: landmarks locales. Lo que la cámara rastrea — no lo que la persona “siente”.",
+        path1Href: "/labs/nl-vision",
+        path1Cta: "Abrir NL-VISION",
+        path2Title: "2 · Dar forma al cuidado",
+        path2Body:
+          "Care Room + Story Mode: vive una transición, siente las excepciones de seguridad, conserva la autoridad.",
+        path2Href: "/labs/future-care-room",
+        path2Cta: "Abrir Care Room",
+        path3Title: "3 · Exportar protocolo",
+        path3Body: "El mismo sobre para una persona, un hogar o un robot. Determinista. Local.",
+        path3Href: "/labs/robot-interface",
+        path3Cta: "Abrir protocolo",
         ctaTitle: "Despliega un protocolo.",
         ctaSub: "Sin registro. Sin nube. Abre el workspace y exporta.",
         ctaBtn: "ABRIR WORKSPACE",
@@ -346,6 +392,28 @@ export default function Home() {
             <div>
               <b>0</b>
               <span>{copy.m4}</span>
+            </div>
+          </section>
+
+          <section className="shell path" aria-labelledby="path-title">
+            <h2 id="path-title">{copy.pathTitle}</h2>
+            <p className="pathSub">{copy.pathSub}</p>
+            <div className="pathGrid">
+              <article className="pathCard">
+                <h3>{copy.path1Title}</h3>
+                <p>{copy.path1Body}</p>
+                <Link href={copy.path1Href}>{copy.path1Cta}</Link>
+              </article>
+              <article className="pathCard">
+                <h3>{copy.path2Title}</h3>
+                <p>{copy.path2Body}</p>
+                <Link href={copy.path2Href}>{copy.path2Cta}</Link>
+              </article>
+              <article className="pathCard">
+                <h3>{copy.path3Title}</h3>
+                <p>{copy.path3Body}</p>
+                <Link href={copy.path3Href}>{copy.path3Cta}</Link>
+              </article>
             </div>
           </section>
 
@@ -607,6 +675,51 @@ export default function Home() {
           text-transform: uppercase;
           letter-spacing: 0.08em;
         }
+        .path {
+          margin: 0 0 40px;
+        }
+        .path h2 {
+          margin: 0;
+          font-size: 18px;
+        }
+        .pathSub {
+          margin: 8px 0 0;
+          color: #a1a1aa;
+          max-width: 64ch;
+          line-height: 1.55;
+          font-size: 14px;
+        }
+        .pathGrid {
+          margin-top: 16px;
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 12px;
+        }
+        .pathCard {
+          border: 1px solid #27272a;
+          border-radius: 6px;
+          background: #0c0c0e;
+          padding: 18px;
+          display: grid;
+          gap: 10px;
+          align-content: start;
+        }
+        .pathCard h3 {
+          margin: 0;
+          font-size: 15px;
+        }
+        .pathCard p {
+          margin: 0;
+          color: #a1a1aa;
+          font-size: 13px;
+          line-height: 1.5;
+        }
+        .pathCard :global(a) {
+          color: #3ecf9a;
+          font-size: 12px;
+          font-weight: 800;
+          text-decoration: none;
+        }
         .console {
           border: 1px solid #27272a;
           border-radius: 6px;
@@ -819,6 +932,9 @@ export default function Home() {
           }
           .metrics {
             grid-template-columns: repeat(2, 1fr);
+          }
+          .pathGrid {
+            grid-template-columns: 1fr;
           }
           .consoleBody {
             grid-template-columns: 1fr;

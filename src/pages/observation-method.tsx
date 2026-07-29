@@ -6,7 +6,7 @@ import { readLatestLocalVisionSnapshot } from "@/lib/careProtocol/nlVisionBridge
 
 type Lang = "sv" | "en" | "es";
 
-const sectionKeys = ["basic", "happened", "context", "interpretation", "response"] as const;
+const sectionKeys = ["basic", "happened", "context", "discomfort", "interpretation", "response"] as const;
 
 export default function ObservationMethod() {
   const [lang, setLang] = useState<Lang>("en");
@@ -73,8 +73,18 @@ export default function ObservationMethod() {
               "Avvikelse från normal rutin",
             ],
           },
+          discomfort: {
+            title: "4. Möjligt obehag / smärta (vårdgivarvittne)",
+            items: [
+              "Observerade gester: hand mot kroppsdel, skyddande hållning, förändrad gång",
+              "Vad som verkade lindra (tryck, tystnad, värme, paus, avstånd)",
+              "Vad som verkade förvärra (ljud, ljus, beröring, krav)",
+              "Osäkerhet: vad du inte kan veta — ingen diagnos, ingen säkerhet om inre tillstånd",
+              "Om oro kvarstår: kontakta vård. Neuroljus ersätter inte medicinsk bedömning.",
+            ],
+          },
           interpretation: {
-            title: "4. Vårdgivarens tolkning",
+            title: "5. Vårdgivarens tolkning",
             items: [
               "Vad som kan ha hänt",
               "Säkerhetsnivå: låg, medel eller hög",
@@ -83,7 +93,7 @@ export default function ObservationMethod() {
             ],
           },
           response: {
-            title: "5. Respons och mönstergranskning",
+            title: "6. Respons och mönstergranskning",
             items: [
               "Vad vårdgivaren försökte",
               "Vad som verkade hjälpa",
@@ -163,8 +173,18 @@ export default function ObservationMethod() {
               "Change from normal routine",
             ],
           },
+          discomfort: {
+            title: "4. Possible discomfort / pain (caregiver witness)",
+            items: [
+              "Observed gestures: hand to body area, protective posture, changed gait",
+              "What seemed to ease it (pressure, quiet, warmth, pause, distance)",
+              "What seemed to worsen it (sound, light, touch, demand)",
+              "Uncertainty: what you cannot know — no diagnosis, no certainty about inner state",
+              "If concern remains: contact healthcare. Neuroljus does not replace medical judgment.",
+            ],
+          },
           interpretation: {
-            title: "4. Caregiver interpretation",
+            title: "5. Caregiver interpretation",
             items: [
               "What may have been happening",
               "Certainty level: low, medium, or high",
@@ -173,7 +193,7 @@ export default function ObservationMethod() {
             ],
           },
           response: {
-            title: "5. Response and pattern review",
+            title: "6. Response and pattern review",
             items: [
               "What the caregiver tried",
               "What seemed to help",
@@ -254,8 +274,18 @@ export default function ObservationMethod() {
               "Cambio respecto a la rutina normal",
             ],
           },
+          discomfort: {
+            title: "4. Posible malestar / dolor (testigo cuidador)",
+            items: [
+              "Gestos observados: mano a zona del cuerpo, postura protectora, marcha distinta",
+              "Qué pareció aliviar (presión, silencio, calor, pausa, distancia)",
+              "Qué pareció empeorar (sonido, luz, tacto, exigencia)",
+              "Incertidumbre: lo que no puedes saber — sin diagnóstico, sin certeza del estado interno",
+              "Si la preocupación permanece: contacta salud. Neuroljus no sustituye criterio médico.",
+            ],
+          },
           interpretation: {
-            title: "4. Interpretación de la cuidadora",
+            title: "5. Interpretación de la cuidadora",
             items: [
               "Qué pudo estar pasando",
               "Nivel de certeza: bajo, medio o alto",
@@ -264,7 +294,7 @@ export default function ObservationMethod() {
             ],
           },
           response: {
-            title: "5. Respuesta y revisión de patrones",
+            title: "6. Respuesta y revisión de patrones",
             items: [
               "Qué intentó la cuidadora",
               "Qué pareció ayudar",
