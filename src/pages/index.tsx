@@ -117,13 +117,18 @@ export default function Home() {
         path1Href: "/labs/nl-vision",
         path1Cta: "Öppna NL-VISION",
         path2Title: "2 · Forma omsorg",
-        path2Body: "Care Room + Story Mode: lev en övergång, känn säkerhetsundantag, behåll kontrollen.",
+        path2Body:
+          "Care Room: lev en övergång eller ”Possible discomfort”. Story Mode. Du behåller kontrollen.",
         path2Href: "/labs/future-care-room",
         path2Cta: "Öppna Care Room",
         path3Title: "3 · Exportera protokoll",
         path3Body: "Samma kuvert till människa, hem eller robot. Deterministiskt. Lokal körning.",
         path3Href: "/labs/robot-interface",
         path3Cta: "Öppna protokoll",
+        pathCompanion:
+          "Mellan stegen: spara lokala anteckningar om gester → lindring i Mönsteranteckningar.",
+        pathCompanionCta: "Öppna mönsteranteckningar",
+        pathCompanionHref: "/labs/pattern-notebook",
         ctaTitle: "Distribuera ett protokoll.",
         ctaSub: "Ingen registrering. Inget moln. Öppna workspace och exportera.",
         ctaBtn: "ÖPPNA WORKSPACE",
@@ -202,13 +207,18 @@ export default function Home() {
         path1Href: "/labs/nl-vision",
         path1Cta: "Open NL-VISION",
         path2Title: "2 · Shape care",
-        path2Body: "Care Room + Story Mode: live a transition, feel safety exceptions, keep authority.",
+        path2Body:
+          "Care Room: live a transition or Possible discomfort. Story Mode. You keep authority.",
         path2Href: "/labs/future-care-room",
         path2Cta: "Open Care Room",
         path3Title: "3 · Export protocol",
         path3Body: "The same envelope for a person, a home, or a robot. Deterministic. Local.",
         path3Href: "/labs/robot-interface",
         path3Cta: "Open protocol",
+        pathCompanion:
+          "Between steps: save local gesture → relief notes in the Pattern Notebook.",
+        pathCompanionCta: "Open Pattern Notebook",
+        pathCompanionHref: "/labs/pattern-notebook",
         ctaTitle: "Deploy a protocol.",
         ctaSub: "No signup. No cloud. Open the workspace and export.",
         ctaBtn: "OPEN WORKSPACE",
@@ -288,13 +298,17 @@ export default function Home() {
         path1Cta: "Abrir NL-VISION",
         path2Title: "2 · Dar forma al cuidado",
         path2Body:
-          "Care Room + Story Mode: vive una transición, siente las excepciones de seguridad, conserva la autoridad.",
+          "Care Room: vive una transición o Possible discomfort. Story Mode. Tú mantienes el control.",
         path2Href: "/labs/future-care-room",
         path2Cta: "Abrir Care Room",
         path3Title: "3 · Exportar protocolo",
         path3Body: "El mismo sobre para una persona, un hogar o un robot. Determinista. Local.",
         path3Href: "/labs/robot-interface",
         path3Cta: "Abrir protocolo",
+        pathCompanion:
+          "Entre pasos: guarda notas locales gesto → alivio en el Cuaderno de patrones.",
+        pathCompanionCta: "Abrir Cuaderno de patrones",
+        pathCompanionHref: "/labs/pattern-notebook",
         ctaTitle: "Despliega un protocolo.",
         ctaSub: "Sin registro. Sin nube. Abre el workspace y exporta.",
         ctaBtn: "ABRIR WORKSPACE",
@@ -427,6 +441,10 @@ export default function Home() {
                 <Link href={copy.path3Href}>{copy.path3Cta}</Link>
               </article>
             </div>
+            <p className="pathCompanion">
+              {copy.pathCompanion}{" "}
+              <Link href={copy.pathCompanionHref}>{copy.pathCompanionCta}</Link>
+            </p>
           </section>
 
           <section className="shell console" aria-label="Protocol stream preview">
@@ -730,6 +748,18 @@ export default function Home() {
           color: #3ecf9a;
           font-size: 12px;
           font-weight: 800;
+          text-decoration: none;
+        }
+        .pathCompanion {
+          margin: 14px 0 0;
+          color: #8aa0b8;
+          font-size: 13px;
+          line-height: 1.5;
+          max-width: 70ch;
+        }
+        .pathCompanion :global(a) {
+          color: #3ecf9a;
+          font-weight: 700;
           text-decoration: none;
         }
         .console {
