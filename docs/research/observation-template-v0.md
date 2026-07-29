@@ -81,6 +81,28 @@ Reporting pathway used / to use (e.g. in Sweden: Lex Sarah / local duty — chec
 
 Important: Neuroljus does not detect violence via camera. This is human witness structure only.
 
+## Neglect / Environment (witness — dignity)
+
+Environment (urine, feces, soiled floor — cleaned? when? by whom?):
+
+Hygiene and meals (ate from soiled surface? helped to wash / change / move?):
+
+Self-harm allowed to continue without interruption / protection / presence?:
+
+Staff passivity (what was seen, said, omitted):
+
+This is not “challenging behavior to wait out.” It is neglect of human dignity.
+
+## Repeated Phrases / Cycles (witness — no translation)
+
+Words or sounds that repeated (as spoken):
+
+Where in the cycle (before / during / after distress, loneliness, transition):
+
+How staff met the phrase:
+
+Uncertainty remaining (do not fake-translate inner meaning):
+
 ## Caregiver Interpretation
 
 What do you think may have been happening?

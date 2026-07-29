@@ -12,6 +12,8 @@ const sectionKeys = [
   "context",
   "discomfort",
   "mistreatment",
+  "neglect",
+  "cycles",
   "interpretation",
   "response",
 ] as const;
@@ -92,17 +94,37 @@ export default function ObservationMethod() {
             ],
           },
           mistreatment: {
-            title: "5. Misshandel / våld (vittne — aldrig ’vårdmetod’)",
+            title: "5. Misshandel / våld / psykiskt övergrepp (vittne)",
             items: [
-              "Observerade handlingar: knuff, slag, hård grepp, verbalt förnedrande, hot",
+              "Observerade handlingar: knuff, slag, hård grepp, verbalt förnedrande, hot, psykiskt nedvärderande",
               "Vem gjorde vad, ungefär när, vem mer var närvarande",
-              "Vad personen gjorde efteråt (skyddade sig, drog undan, ljud, stillhet)",
+              "Vad personen gjorde efteråt (skyddade sig, drog undan, ljud, stillhet, upprepade fraser)",
               "Vad du gjorde för att skydda personen i stunden",
-              "Rapportera enligt de skyldigheter som gäller där du arbetar (i Sverige: ofta Lex Sarah / anmälningsvägar). Neuroljus är inte polis och upptäcker inte våld via kamera.",
+              "Rapportera: Lex Sarah / lokal anmälan, och vid behov IVO (Inspektionen för vård och omsorg) samt juridisk rådgivning. Neuroljus är inte polis och upptäcker inte våld via kamera.",
+            ],
+          },
+          neglect: {
+            title: "6. Försummelse / miljö (vittne — värdighet)",
+            items: [
+              "Miljö: urin, avföring, smutsig golvyta — städades det? när? av vem?",
+              "Hygien och måltid: åt personen från smutsig yta? fick hen hjälp att tvätta händer / byta / flytta?",
+              "Självskada: tilläts den fortsätta utan avbrott, skydd eller närvaro?",
+              "Personalens passivitet: vad sågs, vad sades, vad uteblev",
+              "Detta är inte ’utmanande beteende att vänta ut’. Det är försummelse av människovärde. Dokumentera och eskalera.",
+            ],
+          },
+          cycles: {
+            title: "7. Upprepade fraser / cykler (vittne — ingen översättning)",
+            items: [
+              "Ord eller ljud som upprepades (skriv dem som de sades)",
+              "När i cykeln: före, under eller efter obehag / ensamhet / övergång",
+              "Hur personalen bemötte frasen (ignorerade, härmade, svarade, tystade)",
+              "Osäkerhet: du vet inte säkert vad frasen betydde inuti — men den var mänsklig kommunikation värd att höra",
+              "Neuroljus översätter inte. Det bevarar vittnesmålet.",
             ],
           },
           interpretation: {
-            title: "6. Vårdgivarens tolkning",
+            title: "8. Vårdgivarens tolkning",
             items: [
               "Vad som kan ha hänt",
               "Säkerhetsnivå: låg, medel eller hög",
@@ -111,12 +133,13 @@ export default function ObservationMethod() {
             ],
           },
           response: {
-            title: "7. Respons och mönstergranskning",
+            title: "9. Respons och mönstergranskning",
             items: [
               "Vad vårdgivaren försökte",
               "Vad som verkade hjälpa",
               "Vad som inte hjälpte",
               "Vad att bevaka nästa gång",
+              "Om du anmälde: Lex Sarah / IVO / advokat — datum och utfall så långt det är säkert att notera",
             ],
           },
         },
@@ -202,17 +225,37 @@ export default function ObservationMethod() {
             ],
           },
           mistreatment: {
-            title: "5. Mistreatment / violence (witness — never a ‘care method’)",
+            title: "5. Mistreatment / violence / psychological abuse (witness)",
             items: [
-              "Observed acts: push, hit, rough grip, humiliating speech, threat",
+              "Observed acts: push, hit, rough grip, humiliating speech, threat, psychological demeaning",
               "Who did what, roughly when, who else was present",
-              "What the person did afterward (protected self, withdrew, sound, stillness)",
+              "What the person did afterward (protected self, withdrew, sound, stillness, repeated phrases)",
               "What you did to protect the person in the moment",
-              "Report through the duties that apply where you work (in Sweden: often Lex Sarah / reporting pathways). Neuroljus is not police and does not detect violence via camera.",
+              "Report: Lex Sarah / local duty, and when needed IVO (Swedish Health and Social Care Inspectorate) plus legal counsel. Neuroljus is not police and does not detect violence via camera.",
+            ],
+          },
+          neglect: {
+            title: "6. Neglect / environment (witness — dignity)",
+            items: [
+              "Environment: urine, feces, soiled floor — was it cleaned? when? by whom?",
+              "Hygiene and meals: did the person eat from a soiled surface? were they helped to wash / change / move?",
+              "Self-harm: was it allowed to continue without interruption, protection, or presence?",
+              "Staff passivity: what was seen, what was said, what was omitted",
+              "This is not ‘challenging behavior to wait out’. It is neglect of human dignity. Document and escalate.",
+            ],
+          },
+          cycles: {
+            title: "7. Repeated phrases / cycles (witness — no translation)",
+            items: [
+              "Words or sounds that repeated (write them as spoken)",
+              "Where in the cycle: before, during, or after distress / loneliness / transition",
+              "How staff met the phrase (ignored, mocked, answered, silenced)",
+              "Uncertainty: you cannot know for certain what it meant inside — and still it was human communication worth hearing",
+              "Neuroljus does not translate. It preserves the witness note.",
             ],
           },
           interpretation: {
-            title: "6. Caregiver interpretation",
+            title: "8. Caregiver interpretation",
             items: [
               "What may have been happening",
               "Certainty level: low, medium, or high",
@@ -221,12 +264,13 @@ export default function ObservationMethod() {
             ],
           },
           response: {
-            title: "7. Response and pattern review",
+            title: "9. Response and pattern review",
             items: [
               "What the caregiver tried",
               "What seemed to help",
               "What did not help",
               "What to watch for next time",
+              "If you reported: Lex Sarah / IVO / lawyer — date and outcome as far as safe to note",
             ],
           },
         },
@@ -313,17 +357,37 @@ export default function ObservationMethod() {
             ],
           },
           mistreatment: {
-            title: "5. Maltrato / violencia (testigo — nunca ‘método de cuidado’)",
+            title: "5. Maltrato / violencia / abuso psicológico (testigo)",
             items: [
-              "Actos observados: empujón, golpe, agarre brusco, humillación verbal, amenaza",
+              "Actos observados: empujón, golpe, agarre brusco, humillación verbal, amenaza, menosprecio psicológico",
               "Quién hizo qué, aproximadamente cuándo, quién más estaba presente",
-              "Qué hizo la persona después (se protegió, se retiró, sonido, quietud)",
+              "Qué hizo la persona después (se protegió, se retiró, sonido, quietud, frases repetidas)",
               "Qué hiciste tú para proteger a la persona en el momento",
-              "Reporta según las obligaciones que apliquen donde trabajas (en Suecia: a menudo Lex Sarah / vías de denuncia). Neuroljus no es policía y no detecta violencia por cámara.",
+              "Reporta: Lex Sarah / deber local, y cuando haga falta IVO (Inspección sueca de cuidado) más consejo jurídico. Neuroljus no es policía y no detecta violencia por cámara.",
+            ],
+          },
+          neglect: {
+            title: "6. Negligencia / entorno (testigo — dignidad)",
+            items: [
+              "Entorno: orina, heces, suelo sucio — ¿se limpió? ¿cuándo? ¿quién?",
+              "Higiene y comida: ¿comió la persona de una superficie sucia? ¿le ayudaron a lavarse / cambiarse / moverse?",
+              "Autoagresión: ¿se dejó continuar sin interrupción, protección o presencia?",
+              "Pasividad del personal: qué se vio, qué se dijo, qué faltó",
+              "Esto no es ‘conducta desafiante a esperar’. Es negligencia de la dignidad humana. Documenta y escala.",
+            ],
+          },
+          cycles: {
+            title: "7. Frases / ciclos repetidos (testigo — sin traducción)",
+            items: [
+              "Palabras o sonidos que se repetían (escríbelos como se dijeron)",
+              "En qué momento del ciclo: antes, durante o después de malestar / soledad / transición",
+              "Cómo el personal recibió la frase (ignoró, se burló, respondió, silenció)",
+              "Incertidumbre: no puedes saber con certeza qué significó por dentro — y aun así fue comunicación humana digna de ser oída",
+              "Neuroljus no traduce. Conserva el testimonio.",
             ],
           },
           interpretation: {
-            title: "6. Interpretación de la cuidadora",
+            title: "8. Interpretación de la cuidadora",
             items: [
               "Qué pudo estar pasando",
               "Nivel de certeza: bajo, medio o alto",
@@ -332,12 +396,13 @@ export default function ObservationMethod() {
             ],
           },
           response: {
-            title: "7. Respuesta y revisión de patrones",
+            title: "9. Respuesta y revisión de patrones",
             items: [
               "Qué intentó la cuidadora",
               "Qué pareció ayudar",
               "Qué no ayudó",
               "Qué vigilar la próxima vez",
+              "Si denunciaste: Lex Sarah / IVO / abogado — fecha y resultado en lo que sea seguro anotar",
             ],
           },
         },
