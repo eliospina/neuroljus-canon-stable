@@ -1,5 +1,9 @@
 // src/pages/api/chat.ts
 import type { NextApiRequest, NextApiResponse } from "next";
+import {
+  getReflectionProvider,
+  offlineReflectionReply,
+} from "@/lib/careReflection/provider";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 type Lang = "sv" | "en" | "es";
@@ -148,12 +152,22 @@ Boundary: These signals cannot determine calmness, engagement, pain, emotion, in
 
     const context = metricsContext + `\nCaregiver notes: ${notes || "None provided"}`;
 
+    const provider = getReflectionProvider();
+    if (provider === "none") {
+      return res.status(200).json({
+        role: "assistant",
+        content: offlineReflectionReply(lang),
+        provider: "none",
+      });
+    }
+
     const key = process.env.OPENAI_API_KEY;
     if (!key) {
       console.error("OPENAI_API_KEY not configured");
       return res.status(500).json({
         role: "assistant",
         content: "I'm experiencing a technical issue right now. Please try again in a moment.",
+        provider: "openai",
       });
     }
 
@@ -198,7 +212,7 @@ Boundary: These signals cannot determine calmness, engagement, pain, emotion, in
     const content =
       j?.choices?.[0]?.message?.content ||
       "I'm having trouble processing that right now. Could you please try rephrasing your question?";
-    res.status(200).json({ role: "assistant", content });
+    res.status(200).json({ role: "assistant", content, provider: "openai" });
   } catch (error) {
     console.error("OpenAI API error:", error);
     res.status(500).json({

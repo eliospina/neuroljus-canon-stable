@@ -362,7 +362,7 @@ export default function FutureCareRoom() {
 
   const progress = steps.length === 0 ? 0 : Math.min(100, Math.round((stepIndex / steps.length) * 100));
 
-  const pathStages = ["Observation", "Care interpretation", "Protocol", "Robot adapter"];
+  const pathStages = ["Observation", "Caregiver interpretation", "Protocol", "Robot adapter"];
   const activeStage =
     status === "playing" || status === "paused" || status === "escalated" || status === "completed"
       ? 3
@@ -774,11 +774,11 @@ export default function FutureCareRoom() {
           </div>
 
           <aside className="machinePanel" aria-label="Machine layer" aria-live="polite">
-            <p className="mKicker">Machine layer · live translation</p>
+            <p className="mKicker">Machine layer · live mapping</p>
             <h3 className="mTitle">What the machine receives</h3>
             <p className="mIntro">
               The warm room on the left is what the caregiver shapes. This is the
-              same moment, translated — as the routine plays, each action lights
+              same moment, structured as protocol — as the routine plays, each action lights
               up its line.
             </p>
 
