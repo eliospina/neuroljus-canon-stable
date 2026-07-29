@@ -3,6 +3,11 @@
  * Labs and the protocol engine do not depend on these.
  */
 
+import {
+  formatScientificSimulation,
+  type VisionMetricsInput,
+} from "@/lib/nlVision/scientificReflection";
+
 export type ReflectionProvider = "none" | "openai" | "anthropic";
 
 export function getReflectionProvider(): ReflectionProvider {
@@ -12,25 +17,32 @@ export function getReflectionProvider(): ReflectionProvider {
   return "openai";
 }
 
-export function offlineReflectionReply(lang: "sv" | "en" | "es"): string {
+export function offlineReflectionReply(
+  lang: "sv" | "en" | "es",
+  metrics?: VisionMetricsInput | null
+): string {
+  const simulation = formatScientificSimulation(metrics, lang);
   if (lang === "sv") {
     return (
+      `${simulation}\n\n` +
       "Molnbaserad reflektionsassistent är avstängd (CARE_REFLECTION_PROVIDER=none). " +
-      "Neuroljus kärna är lokal: Observation Method, NL-VISION-signaler och care_command_protocol_v0. " +
-      "Skriv anteckningar i metoden, bifoga lokala signaler om du vill, och bygg protokollet i labs — utan att skicka vårdanteckningar till en extern modell."
+      "Den lokala vetenskapliga signalsimuleringen ovan körs ändå. " +
+      "Fortsätt i Observation Method, NL-VISION och care_command_protocol_v0 — utan att skicka vårdanteckningar till en extern modell."
     );
   }
   if (lang === "es") {
     return (
+      `${simulation}\n\n` +
       "El asistente de reflexión en la nube está desactivado (CARE_REFLECTION_PROVIDER=none). " +
-      "El núcleo de Neuroljus es local: Observation Method, señales NL-VISION y care_command_protocol_v0. " +
-      "Escribe notas en el método, adjunta señales locales si quieres, y construye el protocolo en los labs — sin enviar notas de cuidado a un modelo externo."
+      "La simulación científica local de señales de arriba sigue activa. " +
+      "Continúa en Observation Method, NL-VISION y care_command_protocol_v0 — sin enviar notas de cuidado a un modelo externo."
     );
   }
   return (
+    `${simulation}\n\n` +
     "Cloud reflection assistant is off (CARE_REFLECTION_PROVIDER=none). " +
-    "Neuroljus core is local: Observation Method, NL-VISION signals, and care_command_protocol_v0. " +
-    "Write notes in the method, attach local signals if useful, and build the protocol in the labs — without sending care notes to an external model."
+    "The local scientific signal simulation above still runs. " +
+    "Continue in Observation Method, NL-VISION, and care_command_protocol_v0 — without sending care notes to an external model."
   );
 }
 

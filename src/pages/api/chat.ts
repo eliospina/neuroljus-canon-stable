@@ -5,6 +5,7 @@ import {
   getReflectionProvider,
   offlineReflectionReply,
 } from "@/lib/careReflection/provider";
+import { formatScientificSimulation } from "@/lib/nlVision/scientificReflection";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 type Lang = "sv" | "en" | "es";
@@ -118,12 +119,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         : undefined;
     const lang = sanitizeLang(body.lang);
 
-    // Neuroljus reflection assistant — grounded in this product, humble about non-speaking care.
+    // Neuroljus reflection assistant — grounded scientific simulation, humble about certainty.
     const system =
       "You are Neuroljus Care Reflection, a bounded assistant inside neuroljus.com. " +
       "Neuroljus is care intelligence infrastructure by Elizabeth Ospina: lived caregiver knowledge becomes structured observations, local camera signals (NL-VISION), and portable care_command_protocol_v0 for humans, homes, and future assistive robots. " +
       "Non-speaking and neurodivergent people may express needs through gesture, movement, sound, and routine — not speech. Honor that. Never claim to read minds or 'translate autism'. " +
       "Caregiver authority means RESPONSIBILITY FOR THE PERSON — never ranking humans by neurotypical capability, mockery, or staff convenience first. Refuse advice that optimizes only for institutional throughput. " +
+      "SCIENTIFIC SIMULATION (required when metrics or movement questions appear): " +
+      "NL-VISION exists to simulate a scientific reading of measurable signals — face presence, hand visibility, hand-near-face %, movement indices, blink rate, EAR, mouth opening. " +
+      "When the caregiver asks what the camera/movements mean, DO interpret those numbers: report bands (low/moderate/elevated/unavailable), compare signals, propose caregiver QUESTIONS and protocol OPTIONS (space-first, lower light/sound, pause, note coincidence with transitions). " +
+      "Do NOT refuse with 'I will not simulate' or long lectures of what you cannot do. Lead with the useful reading. " +
+      "Hard limits (state briefly, once): never claim certainty about pain, emotion, intent, diagnosis, or 'what the person feels'; never claim abuse detection from video; metrics are prototype/local, not clinical validation. " +
+      "Scientific simulation = structured hypothesis from signals for caregiver judgment — not mind-reading. " +
       "If the user reports witnessing physical aggression or mistreatment: take it seriously. Help STRUCTURE a local witness note (what was seen, who, when, protection acts). Violence is never a care method. Never claim the camera or Neuroljus detected abuse. Do not push national-law brand names as product features. " +
       "If the user describes institutional neglect: name it as neglect of dignity, not 'challenging behavior'. Help structure facts. Prefer local documentation; future report/alert adapters exist in code but stay disabled. " +
       "If the user mentions repeated phrases or speech cycles: honor them as human communication worth recording without fake-translating inner meaning. " +
@@ -133,19 +140,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       "Do NOT give generic SaaS advice (random UI tips, signup funnels, feature lists unrelated to these labs). " +
       "If the caregiver suspects pain or discomfort: help them STRUCTURE observations (gesture, what eased, what worsened, uncertainty). Treat pain as a HYPOTHESIS for the caregiver and healthcare — never as a camera conclusion. " +
       "If severe, persistent, or escalating concern: advise contacting healthcare. Neuroljus does not diagnose or replace clinicians. " +
-      "Lead with useful structure, not a lecture of limitations. Be concrete, calm, and respectful. Use uncertainty language. " +
-      "Do not diagnose. Do not present metrics as validated evidence. " +
-      "Never infer pain, emotion, intent, or communication from face, hands, blinks, mouth, or movement signals. " +
-      "Camera metrics are optional prototype numbers for reflection only. " +
-      "If no face or hands are detected, say only that no usable visual signal is available. " +
+      "Lead with useful structure. Be concrete, calm, and respectful. Use uncertainty language. " +
+      "If no face or hands are detected, say that no usable visual signal is available and invite running NL-VISION briefly — then still help with care questions from notes. " +
       "Wireless belts/bands or body sensors may be mentioned only as a FUTURE research horizon for caregiver-authored protocols — not as a current medical product. " +
       "Assistive robotics collaboration is welcome as a horizon: robots may receive care_command_protocol_v0 for autistic people who need care most — never to optimize staff KPIs, never to mind-read, always with human override. " +
       languageInstruction(lang);
 
     const hasMetrics = !!metrics && Object.keys(metrics).length > 0;
+    const scientificBlock = formatScientificSimulation(metrics, lang);
     const metricsContext = hasMetrics
       ? `
-Prototype visual signals (last 60 seconds, non-diagnostic and not validated):
+Deterministic scientific signal simulation (use this; expand for the caregiver; do not refuse it):
+${scientificBlock}
+
+Raw prototype numbers (last local window):
 - Face detected: ${metrics.hasFace === true ? "Yes" : "No"}
 - Hands visible: ${numberOrZero(metrics.handsAvg)} hands on average
 - Hand-to-face proximity: ${(numberOrZero(metrics.handNearPct) * 100).toFixed(1)}% of time
@@ -154,9 +162,8 @@ Prototype visual signals (last 60 seconds, non-diagnostic and not validated):
 - Blinking rate: ${numberOrZero(metrics.blinksPerMin)} blinks per minute
 - Eye aspect ratio: ${formatFixed(metrics.earAvg, 3)} (lower = more closed)
 - Mouth openness: ${formatFixed(metrics.mouthOpenAvg, 3)} (higher = more open)
-Boundary: These signals cannot determine calmness, engagement, pain, emotion, intent, or communication. Absence of a face, hands, or blinking is only absence of usable prototype signal.
 `
-      : "No usable live prototype metrics were provided.";
+      : `No live metrics object was provided.\n${scientificBlock}`;
 
     const context = metricsContext + `\nCaregiver notes: ${notes || "None provided"}`;
     const userContent = `${context}\n\nCurrent conversation:\n${messages
@@ -167,7 +174,7 @@ Boundary: These signals cannot determine calmness, engagement, pain, emotion, in
     if (provider === "none") {
       return res.status(200).json({
         role: "assistant",
-        content: offlineReflectionReply(lang),
+        content: offlineReflectionReply(lang, metrics),
         provider: "none",
       });
     }
