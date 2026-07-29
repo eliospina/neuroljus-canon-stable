@@ -6,7 +6,15 @@ import { readLatestLocalVisionSnapshot } from "@/lib/careProtocol/nlVisionBridge
 
 type Lang = "sv" | "en" | "es";
 
-const sectionKeys = ["basic", "happened", "context", "discomfort", "interpretation", "response"] as const;
+const sectionKeys = [
+  "basic",
+  "happened",
+  "context",
+  "discomfort",
+  "mistreatment",
+  "interpretation",
+  "response",
+] as const;
 
 export default function ObservationMethod() {
   const [lang, setLang] = useState<Lang>("en");
@@ -83,8 +91,18 @@ export default function ObservationMethod() {
               "Om oro kvarstår: kontakta vård. Neuroljus ersätter inte medicinsk bedömning.",
             ],
           },
+          mistreatment: {
+            title: "5. Misshandel / våld (vittne — aldrig ’vårdmetod’)",
+            items: [
+              "Observerade handlingar: knuff, slag, hård grepp, verbalt förnedrande, hot",
+              "Vem gjorde vad, ungefär när, vem mer var närvarande",
+              "Vad personen gjorde efteråt (skyddade sig, drog undan, ljud, stillhet)",
+              "Vad du gjorde för att skydda personen i stunden",
+              "Rapportera enligt de skyldigheter som gäller där du arbetar (i Sverige: ofta Lex Sarah / anmälningsvägar). Neuroljus är inte polis och upptäcker inte våld via kamera.",
+            ],
+          },
           interpretation: {
-            title: "5. Vårdgivarens tolkning",
+            title: "6. Vårdgivarens tolkning",
             items: [
               "Vad som kan ha hänt",
               "Säkerhetsnivå: låg, medel eller hög",
@@ -93,7 +111,7 @@ export default function ObservationMethod() {
             ],
           },
           response: {
-            title: "6. Respons och mönstergranskning",
+            title: "7. Respons och mönstergranskning",
             items: [
               "Vad vårdgivaren försökte",
               "Vad som verkade hjälpa",
@@ -183,8 +201,18 @@ export default function ObservationMethod() {
               "If concern remains: contact healthcare. Neuroljus does not replace medical judgment.",
             ],
           },
+          mistreatment: {
+            title: "5. Mistreatment / violence (witness — never a ‘care method’)",
+            items: [
+              "Observed acts: push, hit, rough grip, humiliating speech, threat",
+              "Who did what, roughly when, who else was present",
+              "What the person did afterward (protected self, withdrew, sound, stillness)",
+              "What you did to protect the person in the moment",
+              "Report through the duties that apply where you work (in Sweden: often Lex Sarah / reporting pathways). Neuroljus is not police and does not detect violence via camera.",
+            ],
+          },
           interpretation: {
-            title: "5. Caregiver interpretation",
+            title: "6. Caregiver interpretation",
             items: [
               "What may have been happening",
               "Certainty level: low, medium, or high",
@@ -193,7 +221,7 @@ export default function ObservationMethod() {
             ],
           },
           response: {
-            title: "6. Response and pattern review",
+            title: "7. Response and pattern review",
             items: [
               "What the caregiver tried",
               "What seemed to help",
@@ -284,8 +312,18 @@ export default function ObservationMethod() {
               "Si la preocupación permanece: contacta salud. Neuroljus no sustituye criterio médico.",
             ],
           },
+          mistreatment: {
+            title: "5. Maltrato / violencia (testigo — nunca ‘método de cuidado’)",
+            items: [
+              "Actos observados: empujón, golpe, agarre brusco, humillación verbal, amenaza",
+              "Quién hizo qué, aproximadamente cuándo, quién más estaba presente",
+              "Qué hizo la persona después (se protegió, se retiró, sonido, quietud)",
+              "Qué hiciste tú para proteger a la persona en el momento",
+              "Reporta según las obligaciones que apliquen donde trabajas (en Suecia: a menudo Lex Sarah / vías de denuncia). Neuroljus no es policía y no detecta violencia por cámara.",
+            ],
+          },
           interpretation: {
-            title: "5. Interpretación de la cuidadora",
+            title: "6. Interpretación de la cuidadora",
             items: [
               "Qué pudo estar pasando",
               "Nivel de certeza: bajo, medio o alto",
@@ -294,7 +332,7 @@ export default function ObservationMethod() {
             ],
           },
           response: {
-            title: "6. Respuesta y revisión de patrones",
+            title: "7. Respuesta y revisión de patrones",
             items: [
               "Qué intentó la cuidadora",
               "Qué pareció ayudar",
