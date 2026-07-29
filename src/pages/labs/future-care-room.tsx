@@ -23,6 +23,9 @@ type CueType = "now_next" | "step_sequence" | "calm_image" | "none";
 
 type SupportLevel = "hands_on" | "nearby" | "remote";
 
+/** Guided thesis demo — present tense, no time-travel slider. */
+type StoryPhase = "off" | "caregiver" | "robot" | "recipients" | "done";
+
 type TimelineEntry = {
   id: number;
   time: string;
@@ -30,6 +33,58 @@ type TimelineEntry = {
   label: string;
   detail: string;
 };
+
+const storyCopy: Record<
+  Exclude<StoryPhase, "off">,
+  { kicker: string; title: string; body: string; next: string }
+> = {
+  caregiver: {
+    kicker: "Story · 1 / 3",
+    title: "You are the caregiver",
+    body: "Evening transition. Shape light, sound, and distance. Play the routine. Watch lived care become a protocol — still under your authority.",
+    next: "Continue — you are the robot",
+  },
+  robot: {
+    kicker: "Story · 2 / 3",
+    title: "You are the robot",
+    body: "Controls lock. You only execute preauthorized steps. Feel a safety exception: person rejects, or caregiver pause. The human stays in charge.",
+    next: "Continue — one protocol, many recipients",
+  },
+  recipients: {
+    kicker: "Story · 3 / 3",
+    title: "One protocol, many recipients",
+    body: "The same caregiver-authored envelope reaches a substitute caregiver, a smart home, or an assistive robot. Present tense. Same audit trail.",
+    next: "Finish story",
+  },
+  done: {
+    kicker: "Story · complete",
+    title: "Thesis demonstrated",
+    body: "Observation → caregiver judgment → portable protocol → human override. No cloud required. Open free exploration whenever you want.",
+    next: "Exit story mode",
+  },
+};
+
+const recipientCards: Array<{
+  id: AdapterTarget;
+  title: string;
+  detail: string;
+}> = [
+  {
+    id: "offline",
+    title: "Substitute caregiver",
+    detail: "Offline review packet — handoff notes without a device.",
+  },
+  {
+    id: "mqtt",
+    title: "Smart home",
+    detail: "MQTT packet — light, sound, and cues in the room fabric.",
+  },
+  {
+    id: "ros2",
+    title: "Assistive robot",
+    detail: "ROS2 packet — the same steps, distance, and safety exceptions.",
+  },
+];
 
 const cueLabels: Record<CueType, string> = {
   now_next: "Now / Next card",
@@ -101,8 +156,11 @@ export default function FutureCareRoom() {
     },
   ]);
   const [visionSnapshot, setVisionSnapshot] = useState<VisionSnapshot | null>(null);
+  const [storyPhase, setStoryPhase] = useState<StoryPhase>("off");
   const nextId = useRef(2);
 
+  const controlsLocked = storyPhase === "robot";
+  const storyActive = storyPhase !== "off";
   const preset = scenarioPresets[scenario];
 
   const cueText = useMemo(() => {
@@ -163,12 +221,74 @@ export default function FutureCareRoom() {
   }
 
   function applyScenario(id: ScenarioId) {
+    if (storyActive && storyPhase !== "caregiver") return;
     const next = scenarioPresets[id];
     setScenario(id);
     setEnvironment(next.environment);
     setStatus("idle");
     setStepIndex(0);
     addTimeline("caregiver", `${next.name} chosen`, next.careGoal);
+  }
+
+  function startStoryMode() {
+    const evening = scenarioPresets.evening_transition;
+    setScenario("evening_transition");
+    setEnvironment(evening.environment);
+    setCueType("now_next");
+    setSupportLevel("nearby");
+    setStatus("idle");
+    setStepIndex(0);
+    setProtocolOpen(false);
+    setStoryPhase("caregiver");
+    addTimeline(
+      "neuroljus",
+      "Story mode started",
+      "Evening transition · caregiver first · present tense · no time slider"
+    );
+  }
+
+  function advanceStory() {
+    if (storyPhase === "caregiver") {
+      setStoryPhase("robot");
+      setStatus("idle");
+      setStepIndex(0);
+      window.setTimeout(() => {
+        setStepIndex(0);
+        setStatus("playing");
+      }, 80);
+      addTimeline(
+        "neuroljus",
+        "You are the robot",
+        "Controls locked. Only safety exceptions and caregiver pause remain."
+      );
+      return;
+    }
+    if (storyPhase === "robot") {
+      setStatus("idle");
+      setStepIndex(0);
+      setProtocolOpen(true);
+      setGeneratedAt(nowStamp());
+      setStoryPhase("recipients");
+      addTimeline(
+        "protocol",
+        "One protocol, many recipients",
+        "Same envelope for substitute caregiver, smart home, and assistive robot"
+      );
+      return;
+    }
+    if (storyPhase === "recipients") {
+      setStoryPhase("done");
+      addTimeline("neuroljus", "Story complete", "Thesis shown without cloud intelligence");
+      return;
+    }
+    exitStoryMode();
+  }
+
+  function exitStoryMode() {
+    setStoryPhase("off");
+    setStatus("idle");
+    setStepIndex(0);
+    addTimeline("caregiver", "Story mode exited", "Free exploration restored");
   }
 
   function importVisionSignals() {
@@ -197,13 +317,14 @@ export default function FutureCareRoom() {
   }
 
   function playRoutine() {
-    if (steps.length === 0) return;
+    if (steps.length === 0 || controlsLocked) return;
     setStepIndex(0);
     setStatus("playing");
     addTimeline("caregiver", "Routine started", `${preset.name} plays through ${steps.length} preauthorized steps`);
   }
 
   function togglePause() {
+    if (controlsLocked) return;
     if (status === "playing") {
       setStatus("paused");
       addTimeline("caregiver", "Routine paused", "caregiver paused the routine manually");
@@ -214,6 +335,7 @@ export default function FutureCareRoom() {
   }
 
   function resetRoom() {
+    if (controlsLocked) return;
     setStatus("idle");
     setStepIndex(0);
     addTimeline("caregiver", "Room reset", "the room returned to its ready state");
@@ -422,7 +544,51 @@ export default function FutureCareRoom() {
               Want the full protocol workspace?{" "}
               <Link href="/labs/robot-interface">Open the Robot Care Interface</Link>
             </p>
+            {!storyActive ? (
+              <button type="button" className="storyStart" onClick={startStoryMode}>
+                Start Story Mode · evening transition
+              </button>
+            ) : null}
           </div>
+
+          {storyPhase !== "off" ? (
+            <section className="storyPanel shell" aria-label="Story mode">
+              <p className="storyKicker">{storyCopy[storyPhase].kicker}</p>
+              <h2>{storyCopy[storyPhase].title}</h2>
+              <p>{storyCopy[storyPhase].body}</p>
+              {storyPhase === "robot" && (
+                <p className="storyLock" role="status">
+                  Controls locked · you execute protocol only · try “Person rejects”
+                </p>
+              )}
+              {storyPhase === "recipients" && (
+                <div className="recipientGrid">
+                  {recipientCards.map((card) => (
+                    <button
+                      key={card.id}
+                      type="button"
+                      className={adapterTarget === card.id ? "recipientCard on" : "recipientCard"}
+                      onClick={() => {
+                        setAdapterTarget(card.id);
+                        addTimeline("caregiver", `${card.title} selected`, card.detail);
+                      }}
+                    >
+                      <strong>{card.title}</strong>
+                      <span>{card.detail}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+              <div className="storyActions">
+                <button type="button" className="storyNext" onClick={advanceStory}>
+                  {storyCopy[storyPhase].next}
+                </button>
+                <button type="button" className="storyExit" onClick={exitStoryMode}>
+                  Exit story
+                </button>
+              </div>
+            </section>
+          ) : null}
 
         <section className="hero">
           <h2>Neuroljus turns lived care into structured intelligence for assistive systems.</h2>
@@ -445,6 +611,7 @@ export default function FutureCareRoom() {
               className={scenario === id ? "scenarioChip active" : "scenarioChip"}
               aria-pressed={scenario === id}
               title={scenarioPresets[id].careGoal}
+              disabled={controlsLocked || (storyActive && id !== "evening_transition")}
             >
               {scenarioPresets[id].name}
             </button>
@@ -453,7 +620,7 @@ export default function FutureCareRoom() {
 
         <section className="stage">
           <aside className="panel controls" aria-label="Room controls">
-            <p className="kicker">Shape the room</p>
+            <p className="kicker">{controlsLocked ? "Robot mode · locked" : "Shape the room"}</p>
             <h3>Care controls</h3>
 
             <label className="slider">
@@ -465,6 +632,7 @@ export default function FutureCareRoom() {
                 min={0}
                 max={100}
                 value={environment.light}
+                disabled={controlsLocked}
                 onChange={(event) =>
                   setEnvironment((current) => ({ ...current, light: Number(event.target.value) }))
                 }
@@ -479,6 +647,7 @@ export default function FutureCareRoom() {
                 min={0}
                 max={100}
                 value={environment.sound}
+                disabled={controlsLocked}
                 onChange={(event) =>
                   setEnvironment((current) => ({ ...current, sound: Number(event.target.value) }))
                 }
@@ -494,6 +663,7 @@ export default function FutureCareRoom() {
                 max={4}
                 step={0.1}
                 value={environment.distance}
+                disabled={controlsLocked}
                 onChange={(event) =>
                   setEnvironment((current) => ({ ...current, distance: Number(event.target.value) }))
                 }
@@ -504,6 +674,7 @@ export default function FutureCareRoom() {
               Pace
               <select
                 value={environment.pace}
+                disabled={controlsLocked}
                 onChange={(event) =>
                   setEnvironment((current) => ({
                     ...current,
@@ -519,7 +690,11 @@ export default function FutureCareRoom() {
 
             <label className="field">
               Visual cue
-              <select value={cueType} onChange={(event) => setCueType(event.target.value as CueType)}>
+              <select
+                value={cueType}
+                disabled={controlsLocked}
+                onChange={(event) => setCueType(event.target.value as CueType)}
+              >
                 {(Object.keys(cueLabels) as CueType[]).map((cue) => (
                   <option key={cue} value={cue}>
                     {cueLabels[cue]}
@@ -532,6 +707,7 @@ export default function FutureCareRoom() {
               Caregiver presence
               <select
                 value={supportLevel}
+                disabled={controlsLocked}
                 onChange={(event) => setSupportLevel(event.target.value as SupportLevel)}
               >
                 {(Object.keys(supportLabels) as SupportLevel[]).map((level) => (
@@ -544,13 +720,22 @@ export default function FutureCareRoom() {
             </label>
 
             <div className="actions">
-              <button className="primaryAction" onClick={playRoutine} disabled={status === "playing" || steps.length === 0}>
+              <button
+                className="primaryAction"
+                onClick={playRoutine}
+                disabled={controlsLocked || status === "playing" || steps.length === 0}
+              >
                 Play routine
               </button>
-              <button onClick={togglePause} disabled={status !== "playing" && status !== "paused"}>
+              <button
+                onClick={togglePause}
+                disabled={controlsLocked || (status !== "playing" && status !== "paused")}
+              >
                 {status === "paused" ? "Resume" : "Pause"}
               </button>
-              <button onClick={resetRoom}>Reset</button>
+              <button onClick={resetRoom} disabled={controlsLocked}>
+                Reset
+              </button>
             </div>
             <div className="actions">
               <button onClick={personRejects} disabled={status !== "playing" && status !== "paused"}>
@@ -804,11 +989,11 @@ export default function FutureCareRoom() {
                 the caregiver keeps interpretation. Not emotion AI.
               </p>
               <div className="signalActions">
-                <button type="button" className="signalBtn" onClick={importVisionSignals}>
+                <button type="button" className="signalBtn" onClick={importVisionSignals} disabled={controlsLocked}>
                   Attach local signal
                 </button>
                 {visionSnapshot && (
-                  <button type="button" className="signalBtn ghost" onClick={clearVisionSignals}>
+                  <button type="button" className="signalBtn ghost" onClick={clearVisionSignals} disabled={controlsLocked}>
                     Clear
                   </button>
                 )}
@@ -1149,6 +1334,108 @@ export default function FutureCareRoom() {
         .crossLink :global(a) {
           color: #3ecf9a;
           font-weight: 700;
+        }
+        .storyStart {
+          margin-top: 16px;
+          border: 1px solid #3ecf9a;
+          background: #3ecf9a;
+          color: #09090b;
+          border-radius: 4px;
+          min-height: 42px;
+          padding: 0 16px;
+          font-size: 13px;
+          font-weight: 800;
+          cursor: pointer;
+        }
+        .storyPanel {
+          margin: 0 auto 18px;
+          border: 1px solid #3f3f46;
+          border-radius: 6px;
+          background: #0c0c0e;
+          padding: 18px 20px;
+          display: grid;
+          gap: 10px;
+        }
+        .storyKicker {
+          color: #3ecf9a;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+          font-size: 11px;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+        }
+        .storyPanel h2 {
+          font-size: 22px;
+        }
+        .storyPanel > p {
+          color: #a1a1aa;
+          font-size: 14px;
+          line-height: 1.55;
+          max-width: 68ch;
+        }
+        .storyLock {
+          border: 1px solid #fbbf24;
+          background: rgba(251, 191, 36, 0.08);
+          color: #fbbf24;
+          border-radius: 4px;
+          padding: 10px 12px;
+          font-size: 13px;
+          font-weight: 700;
+        }
+        .recipientGrid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 10px;
+        }
+        .recipientCard {
+          display: grid;
+          gap: 6px;
+          text-align: left;
+          border: 1px solid #3f3f46;
+          border-radius: 4px;
+          background: #18181b;
+          color: #fafafa;
+          padding: 12px;
+          cursor: pointer;
+        }
+        .recipientCard.on {
+          border-color: #3ecf9a;
+          background: rgba(62, 207, 154, 0.08);
+        }
+        .recipientCard strong {
+          font-size: 14px;
+        }
+        .recipientCard span {
+          color: #a1a1aa;
+          font-size: 12px;
+          line-height: 1.45;
+        }
+        .storyActions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-top: 4px;
+        }
+        .storyNext {
+          border: 1px solid #3ecf9a;
+          background: #3ecf9a;
+          color: #09090b;
+          border-radius: 4px;
+          min-height: 40px;
+          padding: 0 14px;
+          font-size: 12px;
+          font-weight: 800;
+          cursor: pointer;
+        }
+        .storyExit {
+          border: 1px solid #3f3f46;
+          background: transparent;
+          color: #a1a1aa;
+          border-radius: 4px;
+          min-height: 40px;
+          padding: 0 14px;
+          font-size: 12px;
+          font-weight: 700;
+          cursor: pointer;
         }
         h1,
         h2,
@@ -2018,6 +2305,9 @@ export default function FutureCareRoom() {
             width: min(100% - 28px, 1360px);
             padding-left: 0;
             padding-right: 0;
+          }
+          .recipientGrid {
+            grid-template-columns: 1fr;
           }
           .workspace {
             padding: 14px 0 32px;

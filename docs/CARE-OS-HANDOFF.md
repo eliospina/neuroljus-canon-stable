@@ -54,11 +54,11 @@ All pass. Dev server: `npm run dev` → http://localhost:3000
 3. **`future-care-room.tsx`** — optional: align page chrome (nav/top) to Care OS while keeping warm SVG scene inside.
 
 ### Phase 2 — Story Mode (product, not just skin)
-Discussed but not built:
-- Spine: live a scenario as caregiver (evening transition)
-- Climax: "you are the robot" — locked controls, safety exceptions felt
-- **No** 2026→2035 time slider (rejected — feels too far-future)
-- Closing: "one protocol, many recipients" (substitute caregiver, smart home, robot) — all present tense
+Shipped on Care Room (`future-care-room.tsx`):
+- Spine: evening transition as caregiver
+- Climax: "you are the robot" — locked controls; safety exceptions remain
+- Closing: one protocol → substitute caregiver / smart home / assistive robot
+- No 2026→2035 time slider
 
 ### Phase 3 — Hard pages (separate session)
 - **`about.tsx`** + **`labs/nl-vision.tsx`** — old dark gradient family `#1E1F3B` / mint-cyan; full redesign to Care OS
