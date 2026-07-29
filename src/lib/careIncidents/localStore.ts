@@ -1,6 +1,10 @@
 /**
  * Local-only serious incident witness notes.
- * For Lex Sarah / IVO / legal counsel structuring — never cloud, never AI abuse detection.
+ *
+ * Intended for caregivers and staff who are authorized — and often obligated —
+ * to document and report mistreatment (e.g. Lex Sarah pathways in Sweden).
+ * Structuring that testimony locally is legitimate care labor.
+ * Never cloud upload by default. Never AI / camera abuse detection.
  */
 
 export type IncidentKind =
@@ -118,9 +122,9 @@ export function formatIncidentExportText(
   const headers =
     lang === "sv"
       ? {
-          title: "NEUROLJUS — Allvarlig händelse (lokalt vittnesmål)",
+          title: "NEUROLJUS — Allvarlig händelse (behörigt lokalt vittnesmål)",
           notice:
-            "Detta är ett strukturerat vittnesmål från en människa. Neuroljus upptäcker inte våld via kamera och är inte IVO, Lex Sarah eller juridisk rådgivning.",
+            "Detta är ett strukturerat vittnesmål från en människa som har rätt — och ofta skyldighet — att dokumentera och anmäla. Neuroljus hjälper dig strukturera under din behörighet, lokalt. Neuroljus upptäcker inte våld via kamera och ersätter inte IVO, Lex Sarah eller juridisk rådgivning som institution.",
           recorded: "Registrerad (webbläsare)",
           kind: "Typ",
           when: "När (ungefär)",
@@ -134,13 +138,13 @@ export function formatIncidentExportText(
           reporting: "Rapportering (Lex Sarah / IVO / advokat)",
           next: "Nästa steg för vittnet",
           nextBody:
-            "Skydda personen. Dokumentera. Följ anmälningsplikt där du arbetar. Sök juridisk rådgivning vid behov.",
+            "Skydda personen. Dokumentera under din behörighet. Följ anmälningsplikt där du arbetar. Sök juridisk rådgivning vid behov.",
         }
       : lang === "es"
         ? {
-            title: "NEUROLJUS — Incidente grave (testimonio local)",
+            title: "NEUROLJUS — Incidente grave (testimonio local autorizado)",
             notice:
-              "Esto es un testimonio estructurado de una persona. Neuroljus no detecta violencia por cámara y no es IVO, Lex Sarah ni asesoría legal.",
+              "Esto es un testimonio estructurado de una persona autorizada — y a menudo obligada — a documentar y denunciar. Neuroljus te ayuda a estructurarlo bajo tu autoridad, en local. Neuroljus no detecta violencia por cámara y no sustituye a IVO, Lex Sarah ni la asesoría legal como institución.",
             recorded: "Registrado (navegador)",
             kind: "Tipo",
             when: "Cuándo (aprox.)",
@@ -154,12 +158,12 @@ export function formatIncidentExportText(
             reporting: "Reporte (Lex Sarah / IVO / abogado)",
             next: "Siguiente paso del testigo",
             nextBody:
-              "Protege a la persona. Documenta. Cumple el deber de denuncia donde trabajas. Busca consejo jurídico si hace falta.",
+              "Protege a la persona. Documenta bajo tu autorización. Cumple el deber de denuncia donde trabajas. Busca consejo jurídico si hace falta.",
           }
         : {
-            title: "NEUROLJUS — Serious incident (local witness)",
+            title: "NEUROLJUS — Serious incident (authorized local witness)",
             notice:
-              "This is a structured human witness note. Neuroljus does not detect violence via camera and is not IVO, Lex Sarah, or legal counsel.",
+              "This is a structured witness note from a person who is authorized — and often obligated — to document and report. Neuroljus helps you structure it under your authority, locally. Neuroljus does not detect violence via camera and does not replace IVO, Lex Sarah, or legal counsel as institutions.",
             recorded: "Recorded (browser)",
             kind: "Kind",
             when: "When (approx.)",
@@ -173,7 +177,7 @@ export function formatIncidentExportText(
             reporting: "Reporting (Lex Sarah / IVO / lawyer)",
             next: "Witness next steps",
             nextBody:
-              "Protect the person. Document. Follow reporting duties where you work. Seek legal counsel if needed.",
+              "Protect the person. Document under your authorization. Follow reporting duties where you work. Seek legal counsel if needed.",
           };
 
   const lines = [
@@ -226,7 +230,8 @@ export function formatIncidentExportJson(incident: SeriousIncident): string {
       envelope: "neuroljus.serious_incident.v0",
       network: "off",
       camera_abuse_detection: false,
-      replaces_lex_sarah_or_ivo: false,
+      replaces_lex_sarah_or_ivo_as_institution: false,
+      intended_for_authorized_witness_under_reporting_duty: true,
       incident,
     },
     null,

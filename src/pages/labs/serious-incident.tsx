@@ -77,7 +77,7 @@ export default function SeriousIncidentLab() {
         heroSub:
           "När personal knuffar, försummar, låter självskada fortsätta eller förnedrar: skriv vad som hände. Spara lokalt. Exportera text eller JSON till Lex Sarah, IVO eller advokat.",
         frame:
-          "Neuroljus är inte polis och upptäcker inte våld via kamera. Detta är ditt vittnesmål. Våld och försummelse är aldrig vård.",
+          "Du som vårdgivare eller personal med anmälningsplikt har behörighet — och ofta skyldighet — att hantera den här informationen. Neuroljus hjälper dig strukturera vittnesmålet lokalt under din auktoritet. Det upptäcker inte våld via kamera och ersätter inte IVO som institution. Våld och försummelse är aldrig vård.",
         formTitle: "Ny allvarlig händelse",
         kind: "Typ",
         when: "När (ungefär)",
@@ -99,7 +99,7 @@ export default function SeriousIncidentLab() {
         ctaObs: "Observation Method",
         ctaPat: "Mönsteranteckningar",
         disclaimer:
-          "Skydda personen först. Följ anmälningsplikt där du arbetar. Neuroljus ersätter inte Lex Sarah, IVO eller juridisk rådgivning.",
+          "Skydda personen först. Dokumentera under din behörighet. Följ anmälningsplikt. Neuroljus strukturerar lokalt — det ersätter inte IVO eller advokat som institution, och det upptäcker inte våld via kamera.",
       },
       en: {
         seoTitle: "Serious Incident — Neuroljus",
@@ -111,7 +111,7 @@ export default function SeriousIncidentLab() {
         heroSub:
           "When staff push, neglect, allow self-harm to continue, or demean: write what happened. Save locally. Export text or JSON for Lex Sarah, IVO, or a lawyer.",
         frame:
-          "Neuroljus is not police and does not detect violence via camera. This is your witness note. Violence and neglect are never care.",
+          "As a caregiver or staff member with a reporting duty, you are authorized — and often obligated — to handle this information. Neuroljus helps you structure the witness note locally under your authority. It does not detect violence via camera and does not replace IVO as an institution. Violence and neglect are never care.",
         formTitle: "New serious incident",
         kind: "Kind",
         when: "When (approx.)",
@@ -133,7 +133,7 @@ export default function SeriousIncidentLab() {
         ctaObs: "Observation Method",
         ctaPat: "Pattern Notebook",
         disclaimer:
-          "Protect the person first. Follow reporting duties where you work. Neuroljus does not replace Lex Sarah, IVO, or legal counsel.",
+          "Protect the person first. Document under your authorization. Follow reporting duties. Neuroljus structures locally — it does not replace IVO or a lawyer as institutions, and it does not detect violence via camera.",
       },
       es: {
         seoTitle: "Incidente grave — Neuroljus",
@@ -145,7 +145,7 @@ export default function SeriousIncidentLab() {
         heroSub:
           "Cuando el personal empuja, negligencia, deja continuar la autoagresión o humilla: escribe lo que pasó. Guarda localmente. Exporta texto o JSON para Lex Sarah, IVO o un abogado.",
         frame:
-          "Neuroljus no es policía y no detecta violencia por cámara. Esto es tu testimonio. Violencia y negligencia nunca son cuidado.",
+          "Como cuidadora o personal con deber de denuncia, estás autorizada — y a menudo obligada — a manejar esta información. Neuroljus te ayuda a estructurar el testimonio en local bajo tu autoridad. No detecta violencia por cámara y no sustituye a IVO como institución. Violencia y negligencia nunca son cuidado.",
         formTitle: "Nuevo incidente grave",
         kind: "Tipo",
         when: "Cuándo (aprox.)",
@@ -167,7 +167,7 @@ export default function SeriousIncidentLab() {
         ctaObs: "Observation Method",
         ctaPat: "Cuaderno de patrones",
         disclaimer:
-          "Protege a la persona primero. Cumple el deber de denuncia donde trabajas. Neuroljus no sustituye Lex Sarah, IVO ni asesoría legal.",
+          "Protege a la persona primero. Documenta bajo tu autorización. Cumple el deber de denuncia. Neuroljus estructura en local — no sustituye a IVO ni al abogado como institución, y no detecta violencia por cámara.",
       },
     }),
     []
