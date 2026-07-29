@@ -53,13 +53,13 @@ const storyCopy: Record<
   recipients: {
     kicker: "Story · 3 / 3",
     title: "One protocol, many recipients",
-    body: "The same caregiver-authored envelope reaches a substitute caregiver, a smart home, or an assistive robot. Present tense. Same audit trail. Relief stays a human judgment.",
+    body: "The same caregiver-authored envelope reaches a substitute caregiver, a smart home, or an assistive robot. The robot serves the autistic person in the room — not staff convenience. Same audit trail. Relief stays a human judgment.",
     next: "Finish story",
   },
   done: {
     kicker: "Story · complete",
     title: "Thesis demonstrated",
-    body: "Witness → caregiver judgment → portable protocol → human override. No mind-reading. No cloud required. Open free exploration — try Possible discomfort when you need a softer routine.",
+    body: "Witness → caregiver judgment → portable protocol → human override. Robotics may join later — still without mind-reading, still person-first. Open free exploration — try Possible discomfort when you need a softer routine.",
     next: "Exit story mode",
   },
 };
@@ -82,7 +82,7 @@ const recipientCards: Array<{
   {
     id: "ros2",
     title: "Assistive robot",
-    detail: "ROS2 packet — the same steps, distance, and safety exceptions.",
+    detail: "ROS2 packet — for the person who needs care, with distance and safety exceptions intact.",
   },
 ];
 
