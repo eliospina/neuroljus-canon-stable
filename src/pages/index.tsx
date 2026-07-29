@@ -772,6 +772,27 @@ export default function Home() {
           font-weight: 800;
           text-decoration: none;
         }
+        .ctaActions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          align-items: center;
+        }
+        .ctaSecondary {
+          display: inline-flex;
+          align-items: center;
+          border: 1px solid #3f3f46;
+          color: #fafafa;
+          padding: 12px 18px;
+          border-radius: 4px;
+          font-size: 13px;
+          font-weight: 800;
+          text-decoration: none;
+        }
+        .ctaSecondary:hover {
+          border-color: #3ecf9a;
+          color: #3ecf9a;
+        }
         .foot {
           padding: 24px 0 40px;
           border-top: 1px solid #27272a;
