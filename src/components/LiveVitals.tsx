@@ -3,7 +3,7 @@
  * This file is part of the stable, polished NL-VISION demo (CareChat + LiveVitals + Holistic).
  * Do not modify unless you *intentionally* update the demo.
  * If you need to change it, include the commit message token: [ALLOW-NLVISION-EDIT]
- * Frozen baseline tag: v1.0-nlvision-stable
+ * Frozen baseline tag: v1.0-nlvision-stable → evolving on lab/nl-vision-v2 (Tasks Vision)
  */
 
 // src/components/LiveVitals.tsx
@@ -19,6 +19,7 @@ type Row = {
   earAvg: number | null;
   mouthOpenAvg: number | null;
   blinksPerMin: number;
+  engine?: string;
 };
 
 export default function LiveVitals() {
@@ -54,7 +55,8 @@ export default function LiveVitals() {
       <Bar label="Blinks / min" value={fmt(last?.blinksPerMin, 0)} raw={last?.blinksPerMin ?? null} max={40} />
 
       <div style={hint}>
-        Prototype observations only. This does not infer emotion, pain, diagnosis, or inner state.
+        Movement index only (not emotion). Engine: {(last as { engine?: string } | null)?.engine || "local sample"}.
+        Does not infer pain, diagnosis, or inner state.
       </div>
     </div>
   );
