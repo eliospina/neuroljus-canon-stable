@@ -122,6 +122,8 @@ const scenarioQuestions: Record<ScenarioId, string> = {
     "Is the light target low enough for how the evening routine usually ends?",
   sensory_overload:
     "Which single step reduces load fastest when overload starts in this room?",
+  possible_discomfort:
+    "What eased or worsened last time you witnessed a similar gesture — and what remains uncertain?",
   leaving_home:
     "Does the visual card show the real order of steps used at the door?",
   meal_support:
@@ -138,8 +140,13 @@ function isElevatedArousal(vision: VisionSnapshot | null): boolean {
   );
 }
 
-function orderCommands(allowed: Command[], vision: VisionSnapshot | null): Command[] {
-  const order = isElevatedArousal(vision) ? settleFirstOrder : canonicalOrder;
+function orderCommands(
+  allowed: Command[],
+  vision: VisionSnapshot | null,
+  scenario?: ScenarioId
+): Command[] {
+  const settleFirst = isElevatedArousal(vision) || scenario === "possible_discomfort";
+  const order = settleFirst ? settleFirstOrder : canonicalOrder;
   return order.filter((command) => allowed.includes(command));
 }
 
@@ -251,6 +258,16 @@ function buildAttentionFlags(input: PlannerInput): AttentionFlag[] {
       message: "Light or sound targets look high for a sensory overload scenario.",
     });
   }
+  if (
+    input.scenario === "possible_discomfort" &&
+    (environment.light > 40 || environment.sound > 30 || environment.pace !== "slow")
+  ) {
+    flags.push({
+      severity: "advice",
+      message:
+        "For possible discomfort, keep light/sound low and pace slow unless the caregiver chooses otherwise.",
+    });
+  }
   if (!visionContext) {
     flags.push({
       severity: "info",
@@ -269,7 +286,8 @@ function buildAttentionFlags(input: PlannerInput): AttentionFlag[] {
 
 function buildExplanation(input: PlannerInput, steps: PlannedStep[]): string[] {
   const paragraphs: string[] = [];
-  const settleFirst = isElevatedArousal(input.visionContext);
+  const settleFirst =
+    isElevatedArousal(input.visionContext) || input.scenario === "possible_discomfort";
   const routine = input.routineName.trim() || "Untitled routine";
 
   paragraphs.push(
@@ -288,7 +306,9 @@ function buildExplanation(input: PlannerInput, steps: PlannedStep[]): string[] {
     const sequence = steps.map((step) => commandLabels[step.command].toLowerCase()).join(", then ");
     paragraphs.push(
       settleFirst
-        ? `Because the attached local vision sample suggests elevated arousal, the plan settles space and pacing first: ${sequence}.`
+        ? input.scenario === "possible_discomfort"
+          ? `Because this scenario prioritizes possible discomfort as a caregiver witness, the plan settles space and pacing first: ${sequence}.`
+          : `Because the attached local vision sample suggests elevated arousal, the plan settles space and pacing first: ${sequence}.`
         : `The plan reduces sensory load first, then adjusts space and structure, and closes with notice and record: ${sequence}.`
     );
   }
@@ -382,7 +402,11 @@ function buildProtocol(input: PlannerInput, steps: PlannedStep[]): CareCommandPr
 
 /** Build a complete, deterministic care protocol plan from caregiver settings. */
 export function buildCarePlan(input: PlannerInput): PlannerResult {
-  const orderedCommands = orderCommands(input.allowedCommands, input.visionContext);
+  const orderedCommands = orderCommands(
+    input.allowedCommands,
+    input.visionContext,
+    input.scenario
+  );
   const steps = buildSteps(orderedCommands, input.durationMinutes);
 
   return {

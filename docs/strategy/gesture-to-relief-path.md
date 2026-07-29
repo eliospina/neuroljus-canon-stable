@@ -23,9 +23,10 @@ The person does not need to know if a device is expensive. They live in their ow
 | Now (build) | Later (horizon) |
 | --- | --- |
 | Observation Method section for possible discomfort/pain as **caregiver witness** | Optional body-worn sensors (belt/band) as **adapter targets**, caregiver-authored |
-| NL-VISION: visible landmarks as raw signals | Correlate gesture/posture signals with caregiver notes over time |
-| Care Room protocols: lower stimulus, pause, notify caregiver | Protocols that can drive wearables / smart home **without** claiming medical diagnosis |
-| Chat: structure “what eased / what worsened” | Never: “the AI detected pain” |
+| Pattern Notebook lab: local gesture → ease/worsen notes | Correlate notes with NL-VISION samples over time (still human-judged) |
+| Care Room scenario: **Possible discomfort (caregiver witness)** | Protocols that can drive wearables / smart home **without** claiming medical diagnosis |
+| NL-VISION: visible landmarks as raw signals | Never: “the AI detected pain” |
+| Chat: structure “what eased / what worsened” | Institutional procurement of quiet tech — cost is not the person’s problem |
 
 ---
 

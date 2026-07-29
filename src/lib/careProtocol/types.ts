@@ -36,6 +36,7 @@ export type AdapterTarget = "ros2" | "mqtt" | "http" | "offline";
 export type ScenarioId =
   | "evening_transition"
   | "sensory_overload"
+  | "possible_discomfort"
   | "leaving_home"
   | "meal_support"
   | "school_arrival";

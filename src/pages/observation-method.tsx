@@ -489,6 +489,13 @@ export default function ObservationMethod() {
           </section>
 
           <div className="ctaRow">
+            <Link href="/labs/pattern-notebook" className="ctaPrimary">
+              {lang === "sv"
+                ? "Öppna mönsteranteckningar"
+                : lang === "es"
+                  ? "Abrir cuaderno de patrones"
+                  : "Open Pattern Notebook"}
+            </Link>
             <Link href="/contact" className="ctaPrimary">
               {copy.ctaFeedback}
             </Link>

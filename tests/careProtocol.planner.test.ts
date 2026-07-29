@@ -140,3 +140,34 @@ test("explanation and reflection questions are present and human-readable", () =
   assert.ok(plan.explanation[0].includes("Evening transition"));
   assert.ok(plan.reflectionQuestions.length >= 4);
 });
+
+test("possible_discomfort settles space and pause first without vision context", () => {
+  const plan = buildCarePlan(
+    baseInput({
+      scenario: "possible_discomfort",
+      routineName: "Possible discomfort",
+      careGoal:
+        "Lower demand while the caregiver watches for relief signals — without claiming inner pain.",
+      visualCard: "Pause. Soft space. Caregiver near.",
+      durationMinutes: 15,
+      environment: { light: 20, sound: 10, distance: 2.2, pace: "slow" },
+      allowedCommands: [
+        "pause_interaction",
+        "reduce_sound",
+        "lower_light",
+        "step_back",
+        "notify_caregiver",
+        "log_observation",
+      ],
+      visionContext: null,
+    })
+  );
+  assert.deepEqual(plan.steps.slice(0, 2).map((step) => step.command), [
+    "step_back",
+    "pause_interaction",
+  ]);
+  assert.ok(
+    plan.reflectionQuestions.some((q) => q.includes("eased") || q.includes("worsened"))
+  );
+  assert.ok(plan.explanation.some((p) => p.includes("caregiver witness")));
+});

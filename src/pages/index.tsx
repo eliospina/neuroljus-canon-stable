@@ -25,6 +25,11 @@ const modules = [
     href: "/observation-method",
     path: "/observation-method",
   },
+  {
+    id: "MOD.PATTERNS",
+    href: "/labs/pattern-notebook",
+    path: "/labs/pattern-notebook",
+  },
 ] as const;
 
 export default function Home() {
@@ -95,6 +100,8 @@ export default function Home() {
         modVisionBody: "Lokalt observationslager. Valfria visuella signaler. Integritet först.",
         modObsTitle: "Observation Method",
         modObsBody: "Struktur för vad som hände, sammanhang, tolkning och osäkerhet.",
+        modPatTitle: "Mönsteranteckningar",
+        modPatBody: "Lokala anteckningar om gester, lindring och osäkerhet — vårdgivarvittne.",
         principlesTitle: "Designprinciper",
         principles: [
           "Vårdgivaren författar rutiner, sammanhang och mål.",
@@ -178,6 +185,8 @@ export default function Home() {
         modVisionBody: "Local observation layer. Optional visual signals. Privacy-first.",
         modObsTitle: "Observation Method",
         modObsBody: "Structure for what happened, context, interpretation, and uncertainty.",
+        modPatTitle: "Pattern Notebook",
+        modPatBody: "Local notes on gestures, relief, and uncertainty — caregiver witness.",
         principlesTitle: "Design principles",
         principles: [
           "The caregiver authors routines, context, and goals.",
@@ -261,6 +270,8 @@ export default function Home() {
         modVisionBody: "Capa local de observación. Señales visuales opcionales. Privacidad primero.",
         modObsTitle: "Observation Method",
         modObsBody: "Estructura para qué pasó, contexto, interpretación e incertidumbre.",
+        modPatTitle: "Cuaderno de patrones",
+        modPatBody: "Notas locales sobre gestos, alivio e incertidumbre — testigo cuidador.",
         principlesTitle: "Principios de diseño",
         principles: [
           "La cuidadora define rutinas, contexto y objetivos.",
@@ -304,6 +315,7 @@ export default function Home() {
     { title: copy.modProtoTitle, body: copy.modProtoBody },
     { title: copy.modVisionTitle, body: copy.modVisionBody },
     { title: copy.modObsTitle, body: copy.modObsBody },
+    { title: copy.modPatTitle, body: copy.modPatBody },
   ];
 
   return (
