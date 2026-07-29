@@ -520,6 +520,7 @@ export default function FutureCareRoom() {
             <span className="platform">Care Room</span>
           </div>
           <nav className="navLinks" aria-label="Labs">
+            <Link href="/labs/nl-vision">NL-VISION</Link>
             <Link href="/labs/robot-interface">Protocol Workspace</Link>
             <Link href="/">Platform</Link>
           </nav>
