@@ -109,6 +109,7 @@ Contract for any provider:
 - Metrics described as prototype signals only
 - UI shows **which engine** is active
 - Env switch: `CARE_REFLECTION_PROVIDER=openai|anthropic|none`
+- Anthropic uses `ANTHROPIC_API_KEY` (+ optional `ANTHROPIC_MODEL`)
 
 ### C. Structured reflection without free chat
 

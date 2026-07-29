@@ -1,6 +1,7 @@
 // src/pages/api/chat.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
+  callAnthropicReflection,
   getReflectionProvider,
   offlineReflectionReply,
 } from "@/lib/careReflection/provider";
@@ -151,6 +152,9 @@ Boundary: These signals cannot determine calmness, engagement, pain, emotion, in
       : "No usable live prototype metrics were provided.";
 
     const context = metricsContext + `\nCaregiver notes: ${notes || "None provided"}`;
+    const userContent = `${context}\n\nCurrent conversation:\n${messages
+      .map((m) => `${m.role.toUpperCase()}: ${m.content}`)
+      .join("\n")}`;
 
     const provider = getReflectionProvider();
     if (provider === "none") {
@@ -161,22 +165,57 @@ Boundary: These signals cannot determine calmness, engagement, pain, emotion, in
       });
     }
 
-    const key = process.env.OPENAI_API_KEY;
-    if (!key) {
-      console.error("OPENAI_API_KEY not configured");
-      return res.status(500).json({
-        role: "assistant",
-        content: "I'm experiencing a technical issue right now. Please try again in a moment.",
-        provider: "openai",
-      });
-    }
-
-    // Abort if OpenAI is slow, to avoid hanging the serverless function.
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 25_000);
 
-    let j: any;
     try {
+      if (provider === "anthropic") {
+        const anthropicKey = process.env.ANTHROPIC_API_KEY;
+        if (!anthropicKey) {
+          console.error("ANTHROPIC_API_KEY not configured");
+          return res.status(500).json({
+            role: "assistant",
+            content: "I'm experiencing a technical issue right now. Please try again in a moment.",
+            provider: "anthropic",
+          });
+        }
+
+        const result = await callAnthropicReflection({
+          apiKey: anthropicKey,
+          system,
+          userContent,
+          messages,
+          maxTokens: OPENAI_MAX_TOKENS,
+          signal: controller.signal,
+        });
+
+        if (!result.ok) {
+          console.error("Anthropic API returned an error", result.status, result.detail);
+          return res.status(502).json({
+            role: "assistant",
+            content:
+              "I'm having trouble reaching the AI service right now. Please try again in a moment.",
+            provider: "anthropic",
+          });
+        }
+
+        return res.status(200).json({
+          role: "assistant",
+          content: result.content,
+          provider: "anthropic",
+        });
+      }
+
+      const key = process.env.OPENAI_API_KEY;
+      if (!key) {
+        console.error("OPENAI_API_KEY not configured");
+        return res.status(500).json({
+          role: "assistant",
+          content: "I'm experiencing a technical issue right now. Please try again in a moment.",
+          provider: "openai",
+        });
+      }
+
       const r = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
@@ -187,35 +226,38 @@ Boundary: These signals cannot determine calmness, engagement, pain, emotion, in
           max_tokens: OPENAI_MAX_TOKENS,
           messages: [
             { role: "system", content: system },
-            {
-              role: "user",
-              content: `${context}\n\nCurrent conversation:\n${messages
-                .map((m) => `${m.role.toUpperCase()}: ${m.content}`)
-                .join("\n")}`,
-            },
+            { role: "user", content: userContent },
           ],
         }),
       });
-      j = await r.json();
+      const j = await r.json();
       if (!r.ok) {
         console.error("OpenAI API returned an error", r.status, j?.error?.message);
         return res.status(502).json({
           role: "assistant",
           content:
             "I'm having trouble reaching the AI service right now. Please try again in a moment.",
+          provider: "openai",
         });
       }
+
+      const content =
+        j?.choices?.[0]?.message?.content ||
+        "I'm having trouble processing that right now. Could you please try rephrasing your question?";
+      return res.status(200).json({ role: "assistant", content, provider: "openai" });
+    } catch (error) {
+      console.error("Reflection provider error:", error);
+      return res.status(500).json({
+        role: "assistant",
+        content: "I'm experiencing some technical difficulties. Please try again in a moment.",
+        provider,
+      });
     } finally {
       clearTimeout(timeout);
     }
-
-    const content =
-      j?.choices?.[0]?.message?.content ||
-      "I'm having trouble processing that right now. Could you please try rephrasing your question?";
-    res.status(200).json({ role: "assistant", content, provider: "openai" });
   } catch (error) {
-    console.error("OpenAI API error:", error);
-    res.status(500).json({
+    console.error("Chat handler error:", error);
+    return res.status(500).json({
       role: "assistant",
       content: "I'm experiencing some technical difficulties. Please try again in a moment.",
     });
