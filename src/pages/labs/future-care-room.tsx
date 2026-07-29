@@ -6,6 +6,7 @@ import type {
   Command,
   Environment,
   ScenarioId,
+  VisionSnapshot,
 } from "@/lib/careProtocol/types";
 import {
   adapterLabels,
@@ -14,6 +15,7 @@ import {
   commandLabels,
 } from "@/lib/careProtocol/planner";
 import { scenarioOrder, scenarioPresets } from "@/lib/careProtocol/scenarios";
+import { readLatestLocalVisionSnapshot } from "@/lib/careProtocol/nlVisionBridge";
 
 type RoomStatus = "idle" | "playing" | "paused" | "escalated" | "completed";
 
@@ -98,6 +100,7 @@ export default function FutureCareRoom() {
       detail: "Choose a situation, shape the room, and watch the protocol form.",
     },
   ]);
+  const [visionSnapshot, setVisionSnapshot] = useState<VisionSnapshot | null>(null);
   const nextId = useRef(2);
 
   const preset = scenarioPresets[scenario];
@@ -131,9 +134,9 @@ export default function FutureCareRoom() {
         environment,
         allowedCommands,
         safetyExceptions: preset.exceptions,
-        visionContext: null,
+        visionContext: visionSnapshot,
       }),
-    [scenario, preset, cueText, environment, allowedCommands]
+    [scenario, preset, cueText, environment, allowedCommands, visionSnapshot]
   );
 
   const steps = plan.steps;
@@ -166,6 +169,31 @@ export default function FutureCareRoom() {
     setStatus("idle");
     setStepIndex(0);
     addTimeline("caregiver", `${next.name} chosen`, next.careGoal);
+  }
+
+  function importVisionSignals() {
+    const snapshot = readLatestLocalVisionSnapshot(
+      typeof window !== "undefined" ? window.localStorage : null
+    );
+    if (!snapshot) {
+      addTimeline(
+        "neuroljus",
+        "No local signal yet",
+        "Open NL-VISION, run the camera briefly, then attach the raw local sample here."
+      );
+      return;
+    }
+    setVisionSnapshot(snapshot);
+    addTimeline(
+      "caregiver",
+      "NL-VISION signal attached",
+      "Raw local movement signals only — not emotion, not diagnosis. Caregiver interprets."
+    );
+  }
+
+  function clearVisionSignals() {
+    setVisionSnapshot(null);
+    addTimeline("caregiver", "Vision context cleared", "Protocol returns to scenario defaults without camera context.");
   }
 
   function playRoutine() {
@@ -765,6 +793,55 @@ export default function FutureCareRoom() {
               </b>
               <span>presence</span>
               <b>{supportLevel}</b>
+              <span>vision</span>
+              <b>{visionSnapshot ? "attached" : "none"}</b>
+            </div>
+
+            <div className="signalBridge" aria-label="NL-VISION signal bridge">
+              <p className="mLabel">signal_bridge · nlvision_holistic_v0</p>
+              <p className="signalNote">
+                Optional raw local signals from the camera lab. Landmarks and numbers only —
+                the caregiver keeps interpretation. Not emotion AI.
+              </p>
+              <div className="signalActions">
+                <button type="button" className="signalBtn" onClick={importVisionSignals}>
+                  Attach local signal
+                </button>
+                {visionSnapshot && (
+                  <button type="button" className="signalBtn ghost" onClick={clearVisionSignals}>
+                    Clear
+                  </button>
+                )}
+                <Link href="/labs/nl-vision" className="signalLink">
+                  Open NL-VISION
+                </Link>
+              </div>
+              {visionSnapshot ? (
+                <div className="signalGrid">
+                  <div>
+                    <span>face</span>
+                    <strong>{visionSnapshot.faceDetected ? "detected" : "none"}</strong>
+                  </div>
+                  <div>
+                    <span>hands_avg</span>
+                    <strong>{visionSnapshot.handsAvg.toFixed(2)}</strong>
+                  </div>
+                  <div>
+                    <span>near_face</span>
+                    <strong>{Math.round(visionSnapshot.handNearPct * 100)}%</strong>
+                  </div>
+                  <div>
+                    <span>movement</span>
+                    <strong>{visionSnapshot.movement.toFixed(4)}</strong>
+                  </div>
+                  <div>
+                    <span>blinks/min</span>
+                    <strong>{visionSnapshot.blinksPerMin}</strong>
+                  </div>
+                </div>
+              ) : (
+                <p className="signalEmpty">No local sample attached.</p>
+              )}
             </div>
 
             <div className="streamBlock">
@@ -1542,6 +1619,75 @@ export default function FutureCareRoom() {
           color: #d9e6f2;
           font-weight: 600;
           overflow-wrap: anywhere;
+        }
+        .signalBridge {
+          display: grid;
+          gap: 10px;
+          border: 1px solid #1e2c40;
+          border-radius: 8px;
+          background: rgba(20, 32, 50, 0.55);
+          padding: 12px;
+        }
+        .signalNote {
+          margin: 0;
+          color: #8aa0b8;
+          font-size: 12px;
+          line-height: 1.45;
+        }
+        .signalActions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          align-items: center;
+        }
+        .signalBtn {
+          border: 1px solid #3ecf9a;
+          background: #3ecf9a;
+          color: #04120c;
+          border-radius: 6px;
+          padding: 8px 12px;
+          font-size: 12px;
+          font-weight: 700;
+          cursor: pointer;
+        }
+        .signalBtn.ghost {
+          background: transparent;
+          color: #9ec9b8;
+          border-color: #2a4a40;
+        }
+        .signalLink {
+          color: #3ecf9a;
+          font-size: 12px;
+          text-decoration: underline;
+          text-underline-offset: 3px;
+        }
+        .signalGrid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 8px;
+        }
+        .signalGrid div {
+          display: grid;
+          gap: 2px;
+          border: 1px solid #24344a;
+          border-radius: 6px;
+          padding: 8px;
+        }
+        .signalGrid span {
+          color: #6e87a3;
+          font-size: 10px;
+          letter-spacing: 0.04em;
+          text-transform: lowercase;
+        }
+        .signalGrid strong {
+          color: #e8f2fb;
+          font-size: 13px;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        }
+        .signalEmpty {
+          margin: 0;
+          color: #6e87a3;
+          font-size: 12px;
         }
         .streamBlock {
           display: grid;

@@ -19,6 +19,7 @@ import {
   exceptionLabels,
 } from "@/lib/careProtocol/planner";
 import { scenarioOrder, scenarioPresets } from "@/lib/careProtocol/scenarios";
+import { readLatestLocalVisionSnapshot } from "@/lib/careProtocol/nlVisionBridge";
 
 type SimStatus = "idle" | "running" | "paused" | "completed" | "escalated";
 
@@ -210,31 +211,17 @@ export default function RobotInterfaceLab() {
   }
 
   function importVisionSignals() {
-    try {
-      const raw = window.localStorage.getItem("nlvision_holistic_v1") || "[]";
-      const arr = JSON.parse(raw) as Array<Record<string, unknown>>;
-      const latest = arr[arr.length - 1];
+    const snapshot = readLatestLocalVisionSnapshot(
+      typeof window !== "undefined" ? window.localStorage : null
+    );
 
-      if (!latest) {
-        addLog("system", "vision_context_empty", "no NL-VISION local samples available yet");
-        return;
-      }
-
-      const snapshot: VisionSnapshot = {
-        faceDetected: latest.hasFace === true,
-        handsAvg: typeof latest.handsAvg === "number" ? latest.handsAvg : 0,
-        handNearPct: typeof latest.handNearPct === "number" ? latest.handNearPct : 0,
-        movement:
-          (typeof latest.faceMoveAvg === "number" ? latest.faceMoveAvg : 0) +
-          (typeof latest.handsMoveAvg === "number" ? latest.handsMoveAvg : 0),
-        blinksPerMin: typeof latest.blinksPerMin === "number" ? latest.blinksPerMin : 0,
-      };
-
-      setVisionSnapshot(snapshot);
-      addLog("caregiver", "import_nlvision_signal", "latest local NL-VISION snapshot attached");
-    } catch {
-      addLog("system", "vision_context_failed", "could not read local NL-VISION samples");
+    if (!snapshot) {
+      addLog("system", "vision_context_empty", "no NL-VISION local samples available yet");
+      return;
     }
+
+    setVisionSnapshot(snapshot);
+    addLog("caregiver", "import_nlvision_signal", "latest local NL-VISION snapshot attached");
   }
 
   function startRoutine() {

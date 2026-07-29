@@ -1,6 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import type { VisionSnapshot } from "@/lib/careProtocol/types";
+import { readLatestLocalVisionSnapshot } from "@/lib/careProtocol/nlVisionBridge";
 
 type Lang = "sv" | "en" | "es";
 
@@ -8,6 +10,8 @@ const sectionKeys = ["basic", "happened", "context", "interpretation", "response
 
 export default function ObservationMethod() {
   const [lang, setLang] = useState<Lang>("en");
+  const [visionSnapshot, setVisionSnapshot] = useState<VisionSnapshot | null>(null);
+  const [visionMessage, setVisionMessage] = useState<string | null>(null);
 
   useEffect(() => {
     try {
@@ -95,6 +99,20 @@ export default function ObservationMethod() {
         ],
         ctaFeedback: "Dela feedback",
         ctaVision: "Utforska NL-VISION",
+        signalTitle: "Valfri lokal signalsammanfattning",
+        signalBody:
+          "Bifoga senaste NL-VISION-provet från den här webbläsaren. Det är råa rörelsesignaler — inte känsla, inte diagnos. Vårdgivaren tolkar.",
+        signalAttach: "Bifoga lokal signal",
+        signalClear: "Rensa",
+        signalEmpty: "Inget lokalt prov bifogat.",
+        signalNone: "Inget NL-VISION-prov i den här webbläsaren ännu. Öppna labbet, kör kameran en stund, kom tillbaka.",
+        signalFace: "ansikte",
+        signalHands: "händer_snitt",
+        signalNear: "nära_ansikte",
+        signalMove: "rörelse",
+        signalBlink: "blink/min",
+        signalDetected: "upptäckt",
+        signalAbsent: "ingen",
       },
       en: {
         seoTitle: "Observation Method v0 — Neuroljus",
@@ -169,6 +187,21 @@ export default function ObservationMethod() {
         ],
         ctaFeedback: "Share feedback",
         ctaVision: "Explore NL-VISION",
+        signalTitle: "Optional local signal bridge",
+        signalBody:
+          "Attach the latest NL-VISION sample from this browser. Raw movement signals only — not emotion, not diagnosis. The caregiver interprets.",
+        signalAttach: "Attach local signal",
+        signalClear: "Clear",
+        signalEmpty: "No local sample attached.",
+        signalNone:
+          "No NL-VISION sample in this browser yet. Open the lab, run the camera briefly, then return.",
+        signalFace: "face",
+        signalHands: "hands_avg",
+        signalNear: "near_face",
+        signalMove: "movement",
+        signalBlink: "blinks/min",
+        signalDetected: "detected",
+        signalAbsent: "none",
       },
       es: {
         seoTitle: "Observation Method v0 — Neuroljus",
@@ -243,12 +276,45 @@ export default function ObservationMethod() {
         ],
         ctaFeedback: "Compartir feedback",
         ctaVision: "Explorar NL-VISION",
+        signalTitle: "Puente opcional de señal local",
+        signalBody:
+          "Adjunta la última muestra de NL-VISION de este navegador. Solo señales crudas de movimiento — no emoción, no diagnóstico. La cuidadora interpreta.",
+        signalAttach: "Adjuntar señal local",
+        signalClear: "Limpiar",
+        signalEmpty: "Ninguna muestra local adjunta.",
+        signalNone:
+          "Aún no hay muestra de NL-VISION en este navegador. Abre el lab, corre la cámara un momento y vuelve.",
+        signalFace: "rostro",
+        signalHands: "manos_prom",
+        signalNear: "cerca_rostro",
+        signalMove: "movimiento",
+        signalBlink: "parpadeos/min",
+        signalDetected: "detectado",
+        signalAbsent: "ninguno",
       },
     }),
     []
   );
 
   const copy = T[lang];
+
+  function attachLocalSignal() {
+    const snapshot = readLatestLocalVisionSnapshot(
+      typeof window !== "undefined" ? window.localStorage : null
+    );
+    if (!snapshot) {
+      setVisionSnapshot(null);
+      setVisionMessage(copy.signalNone);
+      return;
+    }
+    setVisionSnapshot(snapshot);
+    setVisionMessage(null);
+  }
+
+  function clearLocalSignal() {
+    setVisionSnapshot(null);
+    setVisionMessage(null);
+  }
 
   return (
     <>
@@ -313,6 +379,53 @@ export default function ObservationMethod() {
           <section className="frame" aria-labelledby="frame-title">
             <h2 id="frame-title">{copy.frameTitle}</h2>
             <p>{copy.frameBody}</p>
+          </section>
+
+          <section className="signalCard" aria-labelledby="signal-title">
+            <h2 id="signal-title">{copy.signalTitle}</h2>
+            <p>{copy.signalBody}</p>
+            <div className="signalActions">
+              <button type="button" className="signalBtn" onClick={attachLocalSignal}>
+                {copy.signalAttach}
+              </button>
+              {visionSnapshot && (
+                <button type="button" className="signalBtn ghost" onClick={clearLocalSignal}>
+                  {copy.signalClear}
+                </button>
+              )}
+              <Link href="/labs/nl-vision" className="signalLink">
+                {copy.ctaVision}
+              </Link>
+            </div>
+            {visionMessage && <p className="signalMsg">{visionMessage}</p>}
+            {visionSnapshot ? (
+              <div className="signalGrid">
+                <div>
+                  <span>{copy.signalFace}</span>
+                  <strong>
+                    {visionSnapshot.faceDetected ? copy.signalDetected : copy.signalAbsent}
+                  </strong>
+                </div>
+                <div>
+                  <span>{copy.signalHands}</span>
+                  <strong>{visionSnapshot.handsAvg.toFixed(2)}</strong>
+                </div>
+                <div>
+                  <span>{copy.signalNear}</span>
+                  <strong>{Math.round(visionSnapshot.handNearPct * 100)}%</strong>
+                </div>
+                <div>
+                  <span>{copy.signalMove}</span>
+                  <strong>{visionSnapshot.movement.toFixed(4)}</strong>
+                </div>
+                <div>
+                  <span>{copy.signalBlink}</span>
+                  <strong>{visionSnapshot.blinksPerMin}</strong>
+                </div>
+              </div>
+            ) : (
+              !visionMessage && <p className="signalMsg">{copy.signalEmpty}</p>
+            )}
           </section>
 
           <div className="sectionGrid">
@@ -529,6 +642,83 @@ export default function ObservationMethod() {
           margin: 0;
           color: #a1a1aa;
           line-height: 1.6;
+        }
+        .signalCard {
+          margin-top: 16px;
+          border: 1px solid #27272a;
+          border-radius: 6px;
+          background: #0c0c0e;
+          padding: 24px;
+        }
+        .signalCard h2 {
+          margin: 0 0 8px;
+          font-size: 15px;
+          font-weight: 700;
+        }
+        .signalCard > p {
+          margin: 0;
+          color: #a1a1aa;
+          line-height: 1.6;
+        }
+        .signalActions {
+          margin-top: 14px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          align-items: center;
+        }
+        .signalBtn {
+          border: 1px solid #3ecf9a;
+          background: #3ecf9a;
+          color: #09090b;
+          border-radius: 4px;
+          min-height: 40px;
+          padding: 0 14px;
+          font-size: 12px;
+          font-weight: 800;
+          cursor: pointer;
+        }
+        .signalBtn.ghost {
+          background: transparent;
+          color: #a1a1aa;
+          border-color: #3f3f46;
+        }
+        .signalLink {
+          color: #3ecf9a;
+          font-size: 12px;
+          font-weight: 700;
+          text-decoration: none;
+        }
+        .signalLink:hover {
+          text-decoration: underline;
+        }
+        .signalMsg {
+          margin: 12px 0 0;
+          color: #71717a;
+          font-size: 13px;
+        }
+        .signalGrid {
+          margin-top: 14px;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+          gap: 8px;
+        }
+        .signalGrid div {
+          display: grid;
+          gap: 4px;
+          border: 1px solid #27272a;
+          border-radius: 4px;
+          padding: 10px;
+        }
+        .signalGrid span {
+          color: #71717a;
+          font-size: 11px;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        }
+        .signalGrid strong {
+          color: #fafafa;
+          font-size: 14px;
+          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
         }
         .sectionGrid {
           margin-top: 16px;
