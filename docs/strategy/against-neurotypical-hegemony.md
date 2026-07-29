@@ -40,6 +40,32 @@ If you are reading this because you witnessed harm: **protect the person first**
 
 ---
 
+## Institutional neglect (founder witness)
+
+Physical hits are not the only violence. Elizabeth has lived the other face of institutional harm:
+
+- Staff who **let self-harm continue** instead of interrupting with presence and protection  
+- **Psychological mistreatment** — contempt, indifference, treating a person as less  
+- An environment where urine and feces stayed on the floor, and a person **ate from that surface** while no one cleaned  
+- The courage it took to write **IVO**, hire a **lawyer**, and cry and shout with rage in a meeting because dignity was being abandoned  
+
+That rage is not unprofessional. It is moral clarity.
+
+In the same life, a person said in cycles: **“Yo te quiero mucho — yo te quiero mucho.”**  
+
+Neuroljus does **not** claim to know what those words meant inside. It refuses to treat repeated speech as noise or as a joke. Write the words as spoken. Note when in the cycle they appeared. Note how staff met them. Preserve uncertainty — and preserve **humanity**.
+
+Reporting map (Sweden, check current duty):
+
+1. Protect the person in the room  
+2. Lex Sarah / local mistreatment report  
+3. IVO (Inspektionen för vård och omsorg) when the system fails the person  
+4. Legal counsel when needed  
+
+Neuroljus structures the witness note. It is not IVO, not a court, not a camera abuse detector.
+
+---
+
 ## What Neuroljus must never encode
 
 | Harmful default | Neuroljus refusal |
@@ -49,6 +75,8 @@ If you are reading this because you witnessed harm: **protect the person first**
 | Treat rejection as bad behavior | `rejection_signal` is a **safety exception**, not defiance |
 | Let “caregiver authority” mean staff ego | Authority means **responsibility for the person**, always overridable toward dignity |
 | Treat push, hit, or humiliation as techniques | Mistreatment is **named and reportable** — never encoded as protocol steps |
+| Wait out self-harm or leave soiled floors as “behavior” | **Neglect of dignity** is named: hygiene, environment, interruption, presence |
+| Treat repeated phrases as meaningless noise | Preserve the words as spoken; never fake-translate inner meaning |
 | Hope that a black-box AGI will magically fix culture | Future systems inherit whatever we encode now — ableism or dignity |
 
 ---
