@@ -1002,7 +1002,16 @@ export default function FutureCareRoom() {
                 <Link href="/labs/nl-vision" className="signalLink">
                   Open NL-VISION
                 </Link>
+                <Link href="/labs/pattern-notebook" className="signalLink">
+                  Pattern Notebook
+                </Link>
               </div>
+              {scenario === "possible_discomfort" && (
+                <p className="signalNote softHint">
+                  Possible discomfort selected: after you watch what eased or worsened, jot it in
+                  the Pattern Notebook. Witness notes stay local — never “AI detected pain.”
+                </p>
+              )}
               {visionSnapshot ? (
                 <div className="signalGrid">
                   <div>
@@ -1922,6 +1931,12 @@ export default function FutureCareRoom() {
           color: #8aa0b8;
           font-size: 12px;
           line-height: 1.45;
+        }
+        .signalNote.softHint {
+          margin-top: 8px;
+          color: #b7c7d8;
+          border-left: 2px solid #3ecf9a;
+          padding-left: 10px;
         }
         .signalActions {
           display: flex;
