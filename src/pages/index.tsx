@@ -104,7 +104,8 @@ export default function Home() {
         modPatBody: "Lokala anteckningar om gester, lindring och osäkerhet — vårdgivarvittne.",
         principlesTitle: "Designprinciper",
         principles: [
-          "Vårdgivaren författar rutiner, sammanhang och mål.",
+          "Vårdgivaren författar rutiner, sammanhang och mål — som ansvar för personen, inte som personalens ego.",
+          "Den neurodivergenta personen rankas inte under personalens bekvämlighet eller neurotypisk ”förmåga”.",
           "Lokala observationer prioriterar integritet och kontroll nära personen.",
           "Osäkerhet sparas som data — systemet låtsas inte veta mer än det vet.",
           "Kliniska lager utvecklas med kvalificerade forsknings- och vårdpartners.",
@@ -194,7 +195,8 @@ export default function Home() {
         modPatBody: "Local notes on gestures, relief, and uncertainty — caregiver witness.",
         principlesTitle: "Design principles",
         principles: [
-          "The caregiver authors routines, context, and goals.",
+          "The caregiver authors routines, context, and goals — as responsibility for the person, not staff ego.",
+          "The neurodivergent person is never ranked below staff convenience or neurotypical “capability.”",
           "Local observations prioritize privacy and control near the person.",
           "Uncertainty is preserved as data — the system never pretends to know more than it knows.",
           "Clinical layers are developed with qualified research and care partners.",
@@ -284,7 +286,8 @@ export default function Home() {
         modPatBody: "Notas locales sobre gestos, alivio e incertidumbre — testigo cuidador.",
         principlesTitle: "Principios de diseño",
         principles: [
-          "La cuidadora define rutinas, contexto y objetivos.",
+          "La cuidadora define rutinas, contexto y objetivos — como responsabilidad por la persona, no como ego del personal.",
+          "La persona neurodivergente no se rankea debajo de la comodidad del personal ni de la “capacidad” neurotípica.",
           "Las observaciones locales priorizan privacidad y control cerca de la persona.",
           "La incertidumbre se conserva como dato — el sistema no finge saber más de lo que sabe.",
           "Las capas clínicas se desarrollan con aliados cualificados de investigación y cuidado.",
