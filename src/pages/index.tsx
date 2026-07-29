@@ -30,16 +30,6 @@ const modules = [
     href: "/labs/pattern-notebook",
     path: "/labs/pattern-notebook",
   },
-  {
-    id: "MOD.INCIDENT",
-    href: "/labs/serious-incident",
-    path: "/labs/serious-incident",
-  },
-  {
-    id: "MOD.MEMORY",
-    href: "/labs/care-memory",
-    path: "/labs/care-memory",
-  },
 ] as const;
 
 export default function Home() {
@@ -112,16 +102,12 @@ export default function Home() {
         modObsBody: "Struktur för vad som hände, sammanhang, tolkning och osäkerhet.",
         modPatTitle: "Mönsteranteckningar",
         modPatBody: "Lokala anteckningar om gester, lindring och osäkerhet — vårdgivarvittne.",
-        modIncTitle: "Allvarlig händelse",
-        modIncBody: "Lokalt vittnesmål + export under lokal lag. Sverige är ett exempel. Ingen kamera.",
-        modMemTitle: "Omsorgsminne",
-        modMemBody: "En berättelse i taget för projektet — blir inte automatiskt ett protokoll.",
         principlesTitle: "Designprinciper",
         principles: [
           "Vårdgivaren författar rutiner, sammanhang och mål — som ansvar för personen, inte som personalens ego.",
           "Den neurodivergenta personen rankas inte under personalens bekvämlighet eller neurotypisk ”förmåga”.",
           "Knuff, slag och förnedring är aldrig vård — vittna, skydda, rapportera. Neuroljus upptäcker inte våld via kamera.",
-          "Försummad hygien, smutsig miljö och tillåten självskada är försummelse av värdighet — Lex Sarah, IVO, juridisk hjälp när det behövs.",
+          "Försummad hygien, smutsig miljö och tillåten självskada är försummelse av värdighet — vittna, skydda, eskalera enligt lokal behörighet.",
           "Robotisering av omsorg: ja — med den autistiska personen som mottagare, inte personalens bekvämlighet.",
           "Lokala observationer prioriterar integritet och kontroll nära personen.",
           "Osäkerhet sparas som data — systemet låtsas inte veta mer än det vet.",
@@ -210,16 +196,12 @@ export default function Home() {
         modObsBody: "Structure for what happened, context, interpretation, and uncertainty.",
         modPatTitle: "Pattern Notebook",
         modPatBody: "Local notes on gestures, relief, and uncertainty — caregiver witness.",
-        modIncTitle: "Serious Incident",
-        modIncBody: "Local witness + export under local law. Sweden is one example. No camera.",
-        modMemTitle: "Care Memory",
-        modMemBody: "One story at a time for the project — does not auto-become a protocol.",
         principlesTitle: "Design principles",
         principles: [
           "The caregiver authors routines, context, and goals — as responsibility for the person, not staff ego.",
           "The neurodivergent person is never ranked below staff convenience or neurotypical “capability.”",
           "Pushing, hitting, and humiliation are never care — witness, protect, report. Neuroljus does not detect violence via camera.",
-          "Neglected hygiene, soiled environments, and allowed self-harm are neglect of dignity — Lex Sarah, IVO, legal help when needed.",
+          "Neglected hygiene, soiled environments, and allowed self-harm are neglect of dignity — witness, protect, escalate under local authorization.",
           "Robotization of care: yes — with the autistic person as beneficiary, not staff convenience.",
           "Local observations prioritize privacy and control near the person.",
           "Uncertainty is preserved as data — the system never pretends to know more than it knows.",
@@ -308,16 +290,12 @@ export default function Home() {
         modObsBody: "Estructura para qué pasó, contexto, interpretación e incertidumbre.",
         modPatTitle: "Cuaderno de patrones",
         modPatBody: "Notas locales sobre gestos, alivio e incertidumbre — testigo cuidador.",
-        modIncTitle: "Incidente grave",
-        modIncBody: "Testimonio local + export bajo ley local. Suecia es un ejemplo. Sin cámara.",
-        modMemTitle: "Memoria de cuidado",
-        modMemBody: "Una historia a la vez para el proyecto — no se vuelve protocolo sola.",
         principlesTitle: "Principios de diseño",
         principles: [
           "La cuidadora define rutinas, contexto y objetivos — como responsabilidad por la persona, no como ego del personal.",
           "La persona neurodivergente no se rankea debajo de la comodidad del personal ni de la “capacidad” neurotípica.",
           "Empujar, pegar y humillar nunca es cuidado — testimonio, proteger, reportar. Neuroljus no detecta violencia por cámara.",
-          "Higiene abandonada, entorno sucio y autoagresión permitida son negligencia de la dignidad — Lex Sarah, IVO, ayuda legal cuando haga falta.",
+          "Higiene abandonada, entorno sucio y autoagresión permitida son negligencia de la dignidad — testimonio, proteger, escalar bajo autorización local.",
           "Robotización del cuidado: sí — con la persona autista como beneficiaria, no la comodidad del personal.",
           "Las observaciones locales priorizan privacidad y control cerca de la persona.",
           "La incertidumbre se conserva como dato — el sistema no finge saber más de lo que sabe.",
@@ -364,8 +342,6 @@ export default function Home() {
     { title: copy.modVisionTitle, body: copy.modVisionBody },
     { title: copy.modObsTitle, body: copy.modObsBody },
     { title: copy.modPatTitle, body: copy.modPatBody },
-    { title: copy.modIncTitle, body: copy.modIncBody },
-    { title: copy.modMemTitle, body: copy.modMemBody },
   ];
 
   return (

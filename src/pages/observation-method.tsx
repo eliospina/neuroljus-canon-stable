@@ -100,7 +100,7 @@ export default function ObservationMethod() {
               "Vem gjorde vad, ungefär när, vem mer var närvarande",
               "Vad personen gjorde efteråt (skyddade sig, drog undan, ljud, stillhet, upprepade fraser)",
               "Vad du gjorde för att skydda personen i stunden",
-              "Rapportera enligt lokal anmälningsplikt / tillsyn / juridisk hjälp (exempel Sverige: Lex Sarah, IVO). Du har behörighet att dokumentera. Neuroljus strukturerar lokalt — upptäcker inte våld via kamera.",
+              "Rapportera enligt lokal behörighet och skyldighet där du arbetar. Neuroljus strukturerar lokalt — upptäcker inte våld via kamera.",
             ],
           },
           neglect: {
@@ -139,7 +139,7 @@ export default function ObservationMethod() {
               "Vad som verkade hjälpa",
               "Vad som inte hjälpte",
               "Vad att bevaka nästa gång",
-              "Om du anmälde: Lex Sarah / IVO / advokat — datum och utfall så långt det är säkert att notera",
+              "Om du eskalerade: datum och utfall så långt det är säkert att notera",
             ],
           },
         },
@@ -231,7 +231,7 @@ export default function ObservationMethod() {
               "Who did what, roughly when, who else was present",
               "What the person did afterward (protected self, withdrew, sound, stillness, repeated phrases)",
               "What you did to protect the person in the moment",
-              "Report under local reporting duty / inspectorate / legal counsel (example Sweden: Lex Sarah, IVO). You are authorized to document. Neuroljus structures locally — does not detect violence via camera.",
+              "Report under local authorization and duty where you work. Neuroljus structures locally — does not detect violence via camera.",
             ],
           },
           neglect: {
@@ -270,7 +270,7 @@ export default function ObservationMethod() {
               "What seemed to help",
               "What did not help",
               "What to watch for next time",
-              "If you reported: Lex Sarah / IVO / lawyer — date and outcome as far as safe to note",
+              "If you escalated: date and outcome as far as safe to note",
             ],
           },
         },
@@ -363,7 +363,7 @@ export default function ObservationMethod() {
               "Quién hizo qué, aproximadamente cuándo, quién más estaba presente",
               "Qué hizo la persona después (se protegió, se retiró, sonido, quietud, frases repetidas)",
               "Qué hiciste tú para proteger a la persona en el momento",
-              "Reporta según deber local / inspección / abogado (ejemplo Suecia: Lex Sarah, IVO). Estás autorizada a documentar. Neuroljus estructura en local — no detecta violencia por cámara.",
+              "Reporta según autorización y deber local donde trabajas. Neuroljus estructura en local — no detecta violencia por cámara.",
             ],
           },
           neglect: {
@@ -402,7 +402,7 @@ export default function ObservationMethod() {
               "Qué pareció ayudar",
               "Qué no ayudó",
               "Qué vigilar la próxima vez",
-              "Si denunciaste: Lex Sarah / IVO / abogado — fecha y resultado en lo que sea seguro anotar",
+              "Si escalaste: fecha y resultado en lo que sea seguro anotar",
             ],
           },
         },
@@ -592,13 +592,6 @@ export default function ObservationMethod() {
           </section>
 
           <div className="ctaRow">
-            <Link href="/labs/serious-incident" className="ctaPrimary">
-              {lang === "sv"
-                ? "Allvarlig händelse · exportera vittnesmål"
-                : lang === "es"
-                  ? "Incidente grave · exportar testimonio"
-                  : "Serious Incident · export witness note"}
-            </Link>
             <Link href="/labs/pattern-notebook" className="ctaPrimary">
               {lang === "sv"
                 ? "Öppna mönsteranteckningar"

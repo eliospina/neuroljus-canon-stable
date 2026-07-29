@@ -12,6 +12,7 @@ import {
   type IncidentKind,
   type SeriousIncident,
 } from "@/lib/careIncidents/localStore";
+import { REPORTING_ADAPTER_CONFIG } from "@/lib/careIncidents/reportingHorizon";
 
 type Lang = "sv" | "en" | "es";
 
@@ -69,19 +70,19 @@ export default function SeriousIncidentLab() {
   const T = useMemo(
     () => ({
       sv: {
-        seoTitle: "Allvarlig händelse — Neuroljus",
+        seoTitle: "Witness notes — Neuroljus",
         seoDesc:
-          "Lokalt vittnesmål för anmälningsplikt / tillsyn / juridisk hjälp. Internationellt. Ingen kamera. Ingen AI-detektion.",
-        platform: "Serious Incident",
-        kicker: "Lokal · privat · skydda först · internationellt",
-        heroTitle: "Strukturera det du såg — sedan rapportera",
+          "Intern struktur för vittnesanteckningar. Lokal export. Ingen kamera.",
+        platform: "Witness notes · internal",
+        kicker: "Intern · lokal · framtida rapportering avstängd",
+        heroTitle: "Strukturera det du såg",
         heroSub:
-          "När personal knuffar, försummar, låter självskada fortsätta eller förnedrar: skriv vad som hände. Spara lokalt. Exportera text eller JSON för lokal anmälan / tillsyn / advokat. Sverige är ett exempel (Lex Sarah, IVO) — projektet är internationellt.",
+          "Lokal anteckning och export. Inga nätverksalarm i den här versionen. Framtida rapporterings-/rapportlager finns i koden men är avstängda.",
         frame:
-          "Du som vårdgivare med anmälningsplikt har behörighet att hantera den här informationen enligt lokal lag. Neuroljus strukturerar vittnesmålet lokalt under din auktoritet. Det upptäcker inte våld via kamera. Våld och försummelse är aldrig vård.",
-        formTitle: "Ny allvarlig händelse",
+          "Detta yta är intern infrastruktur — inte en offentlig produktmodul. Du behåller behörigheten. Neuroljus upptäcker inte våld via kamera.",
+        formTitle: "Ny anteckning",
         kind: "Typ",
-        jurisdiction: "Jurisdiktion / land",
+        jurisdiction: "Jurisdiktion / land (valfritt)",
         when: "När (ungefär)",
         setting: "Plats / miljö",
         who: "Vem gjorde vad",
@@ -90,11 +91,11 @@ export default function SeriousIncidentLab() {
         protect: "Vad du gjorde för att skydda",
         speech: "Upprepade fraser (som de sades)",
         uncertainty: "Vad du inte kan veta",
-        reporting: "Rapportering (lokal skyldighet / tillsyn / advokat — planerat eller gjort)",
+        reporting: "Eskalering / uppföljning (valfritt)",
         save: "Spara lokalt",
         saved: "Sparad i den här webbläsaren",
-        listTitle: "Dina händelser",
-        empty: "Inga händelser ännu. Börja med det du just bevittnade.",
+        listTitle: "Dina anteckningar",
+        empty: "Inga anteckningar ännu.",
         delete: "Ta bort",
         exportTxt: "Exportera .txt",
         exportJson: "Exportera .json",
@@ -102,22 +103,21 @@ export default function SeriousIncidentLab() {
         ctaPat: "Mönsteranteckningar",
         ctaMem: "Omsorgsminne",
         disclaimer:
-          "Skydda personen först. Dokumentera under din behörighet enligt lokal lag. Neuroljus strukturerar lokalt — det ersätter inte någon tillsynsmyndighet och upptäcker inte våld via kamera.",
+          "Lokal struktur. Inga automatiska larm. Framtida adapter för rapporter/alarmer kräver uttrycklig aktivering.",
       },
       en: {
-        seoTitle: "Serious Incident — Neuroljus",
-        seoDesc:
-          "Local witness note for reporting duty / inspectorate / legal counsel. International. No camera. No AI detection.",
-        platform: "Serious Incident",
-        kicker: "Local · private · protect first · international",
-        heroTitle: "Structure what you saw — then report",
+        seoTitle: "Witness notes — Neuroljus",
+        seoDesc: "Internal witness-note structure. Local export. No camera.",
+        platform: "Witness notes · internal",
+        kicker: "Internal · local · future reporting off",
+        heroTitle: "Structure what you saw",
         heroSub:
-          "When staff push, neglect, allow self-harm to continue, or demean: write what happened. Save locally. Export text or JSON for local reporting / inspectorate / lawyer. Sweden is one example (Lex Sarah, IVO) — the project is international.",
+          "Local note and export. No network alarms in this version. Future reporting/report layers exist in code but stay disabled.",
         frame:
-          "As a caregiver with a reporting duty, you are authorized to handle this information under local law. Neuroljus structures the witness note locally under your authority. It does not detect violence via camera. Violence and neglect are never care.",
-        formTitle: "New serious incident",
+          "This surface is internal infrastructure — not a public product module. You keep authority. Neuroljus does not detect violence via camera.",
+        formTitle: "New note",
         kind: "Kind",
-        jurisdiction: "Jurisdiction / country",
+        jurisdiction: "Jurisdiction / country (optional)",
         when: "When (approx.)",
         setting: "Setting",
         who: "Who did what",
@@ -126,11 +126,11 @@ export default function SeriousIncidentLab() {
         protect: "What you did to protect",
         speech: "Repeated phrases (as spoken)",
         uncertainty: "What you cannot know",
-        reporting: "Reporting (local duty / inspectorate / lawyer — planned or done)",
+        reporting: "Escalation / follow-up (optional)",
         save: "Save locally",
         saved: "Saved in this browser",
-        listTitle: "Your incidents",
-        empty: "No incidents yet. Start with what you just witnessed.",
+        listTitle: "Your notes",
+        empty: "No notes yet.",
         delete: "Delete",
         exportTxt: "Export .txt",
         exportJson: "Export .json",
@@ -138,22 +138,21 @@ export default function SeriousIncidentLab() {
         ctaPat: "Pattern Notebook",
         ctaMem: "Care Memory",
         disclaimer:
-          "Protect the person first. Document under your authorization under local law. Neuroljus structures locally — it does not replace any inspectorate and does not detect violence via camera.",
+          "Local structure. No automatic alerts. Future adapters for reports/alarms require explicit activation.",
       },
       es: {
-        seoTitle: "Incidente grave — Neuroljus",
-        seoDesc:
-          "Testimonio local para deber de denuncia / inspección / abogado. Internacional. Sin cámara. Sin detección por IA.",
-        platform: "Serious Incident",
-        kicker: "Local · privado · proteger primero · internacional",
-        heroTitle: "Estructura lo que viste — luego reporta",
+        seoTitle: "Notas de testimonio — Neuroljus",
+        seoDesc: "Estructura interna de testimonio. Export local. Sin cámara.",
+        platform: "Witness notes · internal",
+        kicker: "Interno · local · reporte futuro apagado",
+        heroTitle: "Estructura lo que viste",
         heroSub:
-          "Cuando el personal empuja, negligencia, deja continuar la autoagresión o humilla: escribe lo que pasó. Guarda localmente. Exporta texto o JSON para denuncia local / inspección / abogado. Suecia es un ejemplo (Lex Sarah, IVO) — el proyecto es internacional.",
+          "Nota y export locales. Sin alarmas de red en esta versión. Capas futuras de reporte existen en código pero están desactivadas.",
         frame:
-          "Como cuidadora con deber de denuncia, estás autorizada a manejar esta información según la ley local. Neuroljus estructura el testimonio en local bajo tu autoridad. No detecta violencia por cámara. Violencia y negligencia nunca son cuidado.",
-        formTitle: "Nuevo incidente grave",
+          "Esta superficie es infraestructura interna — no un módulo público. Tú mantienes la autoridad. Neuroljus no detecta violencia por cámara.",
+        formTitle: "Nueva nota",
         kind: "Tipo",
-        jurisdiction: "Jurisdicción / país",
+        jurisdiction: "Jurisdicción / país (opcional)",
         when: "Cuándo (aprox.)",
         setting: "Lugar / entorno",
         who: "Quién hizo qué",
@@ -162,11 +161,11 @@ export default function SeriousIncidentLab() {
         protect: "Qué hiciste tú para proteger",
         speech: "Frases repetidas (como se dijeron)",
         uncertainty: "Lo que no puedes saber",
-        reporting: "Reporte (deber local / inspección / abogado — planeado o hecho)",
+        reporting: "Escalada / seguimiento (opcional)",
         save: "Guardar localmente",
         saved: "Guardado en este navegador",
-        listTitle: "Tus incidentes",
-        empty: "Aún no hay incidentes. Empieza con lo que acabas de presenciar.",
+        listTitle: "Tus notas",
+        empty: "Aún no hay notas.",
         delete: "Eliminar",
         exportTxt: "Exportar .txt",
         exportJson: "Exportar .json",
@@ -174,7 +173,7 @@ export default function SeriousIncidentLab() {
         ctaPat: "Cuaderno de patrones",
         ctaMem: "Memoria de cuidado",
         disclaimer:
-          "Protege a la persona primero. Documenta bajo tu autorización según la ley local. Neuroljus estructura en local — no sustituye a ninguna inspección y no detecta violencia por cámara.",
+          "Estructura local. Sin alertas automáticas. Adaptadores futuros de informes/alarmas requieren activación explícita.",
       },
     }),
     []
@@ -229,6 +228,7 @@ export default function SeriousIncidentLab() {
       <Head>
         <title>{copy.seoTitle}</title>
         <meta name="description" content={copy.seoDesc} />
+        <meta name="robots" content="noindex,nofollow" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#09090b" />
       </Head>
@@ -236,9 +236,9 @@ export default function SeriousIncidentLab() {
       <div className="page">
         <div className="statusbar" aria-hidden="true">
           <span>
-            neuroljus://local · <b>serious_incident_v0</b> · network=off · camera=off
+            neuroljus://internal · <b>witness_notes_v0</b> · reporting_adapters=off · network=off
           </span>
-          <span>latency 0ms · caregiver_authority=true</span>
+          <span>local export only</span>
         </div>
 
         <header className="shell topnav" role="banner">
@@ -432,7 +432,12 @@ export default function SeriousIncidentLab() {
             )}
           </section>
 
-          <p className="disclaimer">{copy.disclaimer}</p>
+          <p className="disclaimer">
+            {copy.disclaimer}
+            {!REPORTING_ADAPTER_CONFIG.enabled && (
+              <span className="mutedBlock"> · adapters=off</span>
+            )}
+          </p>
         </main>
       </div>
 
@@ -684,6 +689,9 @@ export default function SeriousIncidentLab() {
         .disclaimer {
           font-size: 0.82rem;
           margin-top: 1.5rem;
+        }
+        .mutedBlock {
+          color: var(--muted);
         }
         @media (max-width: 720px) {
           .statusbar {

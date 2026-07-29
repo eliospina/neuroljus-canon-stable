@@ -65,7 +65,7 @@ export default function CareMemoryLab() {
         ctaInc: "Allvarlig händelse",
         ctaProto: "Protokoll (bara om sekvensen upprepas)",
         disclaimer:
-          "Detta är projektminne, inte Lex Sarah/IVO-anmälan och inte ett robotprotokoll. Vid skada: använd Allvarlig händelse under din behörighet.",
+          "Detta är projektminne, inte ett robotprotokoll. Intern yta — inte publikt pitch.",
       },
       en: {
         seoTitle: "Care Memory — Neuroljus",
@@ -93,7 +93,7 @@ export default function CareMemoryLab() {
         ctaInc: "Serious Incident",
         ctaProto: "Protocol (only if the sequence repeats)",
         disclaimer:
-          "This is project memory, not an inspectorate filing and not a robot protocol. If harm: use Serious Incident under your authorization.",
+          "This is project memory, not a robot protocol. Internal surface — not the public pitch.",
       },
       es: {
         seoTitle: "Memoria de cuidado — Neuroljus",
@@ -121,7 +121,7 @@ export default function CareMemoryLab() {
         ctaInc: "Incidente grave",
         ctaProto: "Protocolo (solo si la secuencia se repite)",
         disclaimer:
-          "Esto es memoria de proyecto, no denuncia a la inspección ni protocolo de robot. Si hubo daño: usa Incidente grave bajo tu autorización.",
+          "Esto es memoria de proyecto, no un protocolo de robot. Superficie interna — no el pitch público.",
       },
     }),
     []
@@ -150,6 +150,7 @@ export default function CareMemoryLab() {
       <Head>
         <title>{copy.seoTitle}</title>
         <meta name="description" content={copy.seoDesc} />
+        <meta name="robots" content="noindex,nofollow" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#09090b" />
       </Head>
