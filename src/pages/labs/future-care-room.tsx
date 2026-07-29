@@ -539,7 +539,7 @@ export default function FutureCareRoom() {
 
         <main className="workspace">
           <div className="pageIntro shell">
-            <p className="cli">$ neuroljus care-room --live</p>
+            <p className="cli">neuroljus care-room --live</p>
             <h1>Future Care Room</h1>
             <p className="crossLink">
               Want the full protocol workspace?{" "}

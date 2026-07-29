@@ -36,7 +36,7 @@ export default function ContactPage() {
         pillProtocol: "protocol",
         pillAdapters: "adapters",
         pillAudit: "audit",
-        cli: "$ neuroljus contact --open",
+        cli: "neuroljus contact --open",
         heroTitle: "Kontakt",
         heroSub:
           "Samtal med vårdgivare, feedback om observationsmetoden, forskningssamarbete, etik och tillgänglighet.",
@@ -56,7 +56,7 @@ export default function ContactPage() {
         pillProtocol: "protocol",
         pillAdapters: "adapters",
         pillAudit: "audit",
-        cli: "$ neuroljus contact --open",
+        cli: "neuroljus contact --open",
         heroTitle: "Contact",
         heroSub:
           "Caregiver conversations, observation-method feedback, research collaboration, ethics, and accessibility inquiries.",
@@ -76,7 +76,7 @@ export default function ContactPage() {
         pillProtocol: "protocol",
         pillAdapters: "adapters",
         pillAudit: "audit",
-        cli: "$ neuroljus contact --open",
+        cli: "neuroljus contact --open",
         heroTitle: "Contacto",
         heroSub:
           "Conversaciones con cuidadoras, feedback del método de observación, colaboración en investigación, ética y accesibilidad.",

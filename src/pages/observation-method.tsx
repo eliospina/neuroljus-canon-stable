@@ -42,7 +42,7 @@ export default function ObservationMethod() {
         pillAdapters: "adapters",
         pillAudit: "audit",
         modId: "MOD.OBSERVATION",
-        cli: "$ neuroljus observation --method v0",
+        cli: "neuroljus observation --method v0",
         kicker: "Observation Method v0",
         heroTitle: "Omsorgsobservationer som kan bli kunskap",
         heroSub:
@@ -132,7 +132,7 @@ export default function ObservationMethod() {
         pillAdapters: "adapters",
         pillAudit: "audit",
         modId: "MOD.OBSERVATION",
-        cli: "$ neuroljus observation --method v0",
+        cli: "neuroljus observation --method v0",
         kicker: "Observation Method v0",
         heroTitle: "Care observations that can become knowledge",
         heroSub:
@@ -223,7 +223,7 @@ export default function ObservationMethod() {
         pillAdapters: "adapters",
         pillAudit: "audit",
         modId: "MOD.OBSERVATION",
-        cli: "$ neuroljus observation --method v0",
+        cli: "neuroljus observation --method v0",
         kicker: "Observation Method v0",
         heroTitle: "Observaciones del cuidado que pueden convertirse en conocimiento",
         heroSub:

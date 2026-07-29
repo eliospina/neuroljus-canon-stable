@@ -58,7 +58,7 @@ export default function Home() {
         pillProtocol: "protocol",
         pillAdapters: "adapters",
         pillAudit: "audit",
-        cli: "$ neuroljus status --all",
+        cli: "neuroljus status --all",
         heroTitle: "Omsorgsintelligens",
         heroDim: "som distribuerbar infrastruktur.",
         heroSub:
@@ -126,7 +126,7 @@ export default function Home() {
         pillProtocol: "protocol",
         pillAdapters: "adapters",
         pillAudit: "audit",
-        cli: "$ neuroljus status --all",
+        cli: "neuroljus status --all",
         heroTitle: "Care intelligence",
         heroDim: "as deployable infrastructure.",
         heroSub:
@@ -194,7 +194,7 @@ export default function Home() {
         pillProtocol: "protocol",
         pillAdapters: "adapters",
         pillAudit: "audit",
-        cli: "$ neuroljus status --all",
+        cli: "neuroljus status --all",
         heroTitle: "Inteligencia del cuidado",
         heroDim: "como infraestructura desplegable.",
         heroSub:
