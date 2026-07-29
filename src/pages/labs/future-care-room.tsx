@@ -295,7 +295,7 @@ export default function FutureCareRoom() {
     : Math.min(78, environment.sound + 38);
   const robotDistance = completedCommands.has("step_back")
     ? environment.distance
-    : Math.max(0.7, environment.distance - 0.7);
+    : Math.min(environment.distance, Math.max(0.7, environment.distance - 0.7));
   const cardVisible =
     cueType !== "none" &&
     (completedCommands.has("offer_visual_card") || currentCommand === "offer_visual_card");

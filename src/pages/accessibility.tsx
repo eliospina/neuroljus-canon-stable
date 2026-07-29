@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Link from "next/link";
+import SiteLayout from "@/components/SiteLayout";
 
 const commitments = [
   "Prefer calm, screen-light interfaces over visually noisy experiences.",
@@ -19,7 +19,7 @@ const openWork = [
 
 export default function Accessibility() {
   return (
-    <>
+    <SiteLayout>
       <Head>
         <title>Accessibility - Neuroljus</title>
         <meta
@@ -28,35 +28,33 @@ export default function Accessibility() {
         />
       </Head>
 
-      <main className="mx-auto max-w-3xl px-5 py-14 text-slate-900">
-        <Link href="/" className="text-sm font-semibold text-teal-800 underline">
-          Neuroljus
-        </Link>
-        <h1 className="mt-6 text-3xl font-semibold tracking-tight">Accessibility</h1>
-        <p className="mt-6 text-base leading-7 text-slate-700">
+      <div className="mx-auto max-w-3xl px-5 py-14">
+        <p className="nl-kicker">Design ethics</p>
+        <h1 className="mt-3 text-4xl font-semibold tracking-tight">Accessibility</h1>
+        <p className="mt-6 text-base leading-7 text-[color:var(--nl-text-dim)]">
           Neuroljus treats accessibility as part of ethics, not polish. The project is
           especially sensitive to sensory load, caregiver fatigue, multilingual access,
           and the need to keep prototype signals in their proper context.
         </p>
 
-        <section className="mt-9 border-t border-slate-200 pt-6">
+        <section className="mt-9 border-t border-[color:var(--nl-border)] pt-6">
           <h2 className="text-lg font-semibold">Current commitments</h2>
-          <ul className="mt-3 list-disc space-y-2 pl-5 leading-7 text-slate-700">
+          <ul className="mt-3 list-disc space-y-2 pl-5 leading-7 text-[color:var(--nl-text-dim)]">
             {commitments.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
         </section>
 
-        <section className="mt-9 border-t border-slate-200 pt-6">
+        <section className="mt-9 border-t border-[color:var(--nl-border)] pt-6">
           <h2 className="text-lg font-semibold">Before pilot use</h2>
-          <ul className="mt-3 list-disc space-y-2 pl-5 leading-7 text-slate-700">
+          <ul className="mt-3 list-disc space-y-2 pl-5 leading-7 text-[color:var(--nl-text-dim)]">
             {openWork.map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
         </section>
-      </main>
-    </>
+      </div>
+    </SiteLayout>
   );
 }

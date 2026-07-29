@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Link from "next/link";
+import SiteLayout from "@/components/SiteLayout";
 
 const sections = [
   {
@@ -31,7 +31,7 @@ const sections = [
 
 export default function Privacy() {
   return (
-    <>
+    <SiteLayout>
       <Head>
         <title>Privacy - Neuroljus</title>
         <meta
@@ -40,13 +40,11 @@ export default function Privacy() {
         />
       </Head>
 
-      <main className="mx-auto max-w-3xl px-5 py-14 text-slate-900">
-        <Link href="/" className="text-sm font-semibold text-teal-800 underline">
-          Neuroljus
-        </Link>
-        <h1 className="mt-6 text-3xl font-semibold tracking-tight">Privacy</h1>
-        <p className="mt-3 text-sm text-slate-500">Last updated: 2026-07-04</p>
-        <p className="mt-6 text-base leading-7 text-slate-700">
+      <div className="mx-auto max-w-3xl px-5 py-14">
+        <p className="nl-kicker">Trust</p>
+        <h1 className="mt-3 text-4xl font-semibold tracking-tight">Privacy</h1>
+        <p className="mt-3 text-sm text-[color:var(--nl-text-faint)]">Last updated: 2026-07-04</p>
+        <p className="mt-6 text-base leading-7 text-[color:var(--nl-text-dim)]">
           This page describes the current prototype privacy approach. It is a project
           statement for the current public prototype and a foundation for future legal
           and research review.
@@ -54,22 +52,22 @@ export default function Privacy() {
 
         <div className="mt-9 space-y-6">
           {sections.map((section) => (
-            <section key={section.title} className="border-t border-slate-200 pt-6">
+            <section key={section.title} className="border-t border-[color:var(--nl-border)] pt-6">
               <h2 className="text-lg font-semibold">{section.title}</h2>
-              <p className="mt-2 leading-7 text-slate-700">{section.body}</p>
+              <p className="mt-2 leading-7 text-[color:var(--nl-text-dim)]">{section.body}</p>
             </section>
           ))}
         </div>
 
-        <section className="mt-10 rounded-lg border border-slate-200 bg-slate-50 p-5">
+        <section className="nl-card mt-10 p-6">
           <h2 className="text-lg font-semibold">Medical and emergency care</h2>
-          <p className="mt-2 leading-7 text-slate-700">
+          <p className="mt-2 leading-7 text-[color:var(--nl-text-dim)]">
             Medical and emergency situations deserve qualified human response. If severe
             pain, injury, distress, abuse, or risk is suspected, appropriate healthcare,
             emergency, or safeguarding services should be contacted.
           </p>
         </section>
-      </main>
-    </>
+      </div>
+    </SiteLayout>
   );
 }
