@@ -41,25 +41,25 @@ const storyCopy: Record<
   caregiver: {
     kicker: "Story · 1 / 3",
     title: "You are the caregiver",
-    body: "Evening transition. Shape light, sound, and distance. Play the routine. Watch lived care become a protocol — still under your authority.",
+    body: "Some people you support do not speak their needs in words. You shape light, sound, and distance — reading gestures the way you already do. Play the evening routine. Lived care becomes a protocol, still under your authority.",
     next: "Continue — you are the robot",
   },
   robot: {
     kicker: "Story · 2 / 3",
     title: "You are the robot",
-    body: "Controls lock. You only execute preauthorized steps. Feel a safety exception: person rejects, or caregiver pause. The human stays in charge.",
+    body: "Controls lock. You only execute preauthorized steps. Feel a safety exception: person rejects, or caregiver pause. You do not guess inner states. The human stays in charge.",
     next: "Continue — one protocol, many recipients",
   },
   recipients: {
     kicker: "Story · 3 / 3",
     title: "One protocol, many recipients",
-    body: "The same caregiver-authored envelope reaches a substitute caregiver, a smart home, or an assistive robot. Present tense. Same audit trail.",
+    body: "The same caregiver-authored envelope reaches a substitute caregiver, a smart home, or an assistive robot. Present tense. Same audit trail. Relief stays a human judgment.",
     next: "Finish story",
   },
   done: {
     kicker: "Story · complete",
     title: "Thesis demonstrated",
-    body: "Observation → caregiver judgment → portable protocol → human override. No cloud required. Open free exploration whenever you want.",
+    body: "Witness → caregiver judgment → portable protocol → human override. No mind-reading. No cloud required. Open free exploration — try Possible discomfort when you need a softer routine.",
     next: "Exit story mode",
   },
 };
@@ -96,6 +96,7 @@ const cueLabels: Record<CueType, string> = {
 const stepSequenceCards: Record<ScenarioId, string> = {
   evening_transition: "1 Bath · 2 Pyjamas · 3 Story · 4 Sleep",
   sensory_overload: "1 Pause · 2 Breathe · 3 Quiet corner",
+  possible_discomfort: "1 Pause · 2 Soft space · 3 Caregiver near · 4 Note what eased",
   leaving_home: "1 Shoes · 2 Jacket · 3 Door · 4 Outside",
   meal_support: "1 Table · 2 Food · 3 Drink · 4 Finished",
   school_arrival: "1 Arrive · 2 Quiet corner · 3 Teacher · 4 First task",

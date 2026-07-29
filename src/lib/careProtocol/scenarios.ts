@@ -18,6 +18,7 @@ export const defaultCommands: Command[] = [
 export const scenarioOrder: ScenarioId[] = [
   "evening_transition",
   "sensory_overload",
+  "possible_discomfort",
   "leaving_home",
   "meal_support",
   "school_arrival",
@@ -43,6 +44,24 @@ export const scenarioPresets: Record<ScenarioId, ScenarioPreset> = {
     environment: { light: 22, sound: 12, distance: 2.4, pace: "slow" },
     commands: ["reduce_sound", "lower_light", "step_back", "pause_interaction", "notify_caregiver", "log_observation"],
     exceptions: ["rejection_signal", "unusual_movement", "caregiver_pause", "unknown_event"],
+  },
+  possible_discomfort: {
+    id: "possible_discomfort",
+    name: "Possible discomfort (caregiver witness)",
+    careGoal:
+      "Lower demand and stimulus while the caregiver watches for relief signals — without claiming to know inner pain.",
+    visualCard: "Pause. Soft space. Caregiver near. No new demands.",
+    duration: 15,
+    environment: { light: 20, sound: 10, distance: 2.2, pace: "slow" },
+    commands: [
+      "pause_interaction",
+      "reduce_sound",
+      "lower_light",
+      "step_back",
+      "notify_caregiver",
+      "log_observation",
+    ],
+    exceptions: ["rejection_signal", "unusual_movement", "caregiver_pause", "timeout", "unknown_event"],
   },
   leaving_home: {
     id: "leaving_home",
