@@ -66,4 +66,22 @@ When Elizabeth adds papers she trusts, append them below with DOI and one-line t
 
 ## Papers added by founder
 
-_(empty — paste DOI + takeaway here)_
+Confirmed local copies (2026-07-29):
+
+1. **Bogdanova et al. (2022)** — *The Current View on the Paradox of Pain in Autism Spectrum Disorders*. Front. Psychiatry 13:910824.  
+   - Local: `Downloads/fpsyt-13-910824.pdf`  
+   - DOI: https://doi.org/10.3389/fpsyt.2022.910824  
+   - Takeaway: Challenges the dogma of pain *insensitivity*; pain in ASD is a cycle (perception, transmission, expression, modulation); chronic pain common; assessment often insufficient; need individualized multi-measure assessment.
+
+2. **Failla et al. (2020)** — *Increased pain sensitivity and pain-related anxiety in individuals with autism*. PAIN Reports 5:e861.  
+   - Local: `Desktop/paper_7c83149d1e3d5c49927d622fdc57788f.pdf`  
+   - DOI: https://doi.org/10.1097/PR9.0000000000000861  
+   - Takeaway: In verbal adults, heat pain *thresholds* similar to controls, but **suprathreshold pain ratings higher** in ASD; **pain anxiety and fear of pain higher**; sensory and cognitive pain experience heightened and interact. Challenges clinical “reduced pain sensitivity” assumption (including when self-injury is misread as indifference).
+
+---
+
+## Founder synthesis (working)
+
+Elizabeth’s care witness — that autistic people often carry more pain/sensory load than staff assume — aligns with these papers’ direction: **not indifference; often under-assessed intensity + atypical expression**.  
+
+Neuroljus product use: cite these for *why caregivers must watch gestures and never assume numbness*; still no camera claim of pain intensity.
