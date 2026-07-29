@@ -26,6 +26,7 @@ const kinds: IncidentKind[] = [
 
 const emptyForm = {
   kind: "violence" as IncidentKind,
+  jurisdiction: "",
   whenApprox: "",
   setting: "",
   whoWhat: "",
@@ -70,16 +71,17 @@ export default function SeriousIncidentLab() {
       sv: {
         seoTitle: "Allvarlig händelse — Neuroljus",
         seoDesc:
-          "Lokalt vittnesmål för Lex Sarah / IVO / juridisk hjälp. Ingen kamera. Ingen AI-detektion.",
+          "Lokalt vittnesmål för anmälningsplikt / tillsyn / juridisk hjälp. Internationellt. Ingen kamera. Ingen AI-detektion.",
         platform: "Serious Incident",
-        kicker: "Lokal · privat · skydda först",
+        kicker: "Lokal · privat · skydda först · internationellt",
         heroTitle: "Strukturera det du såg — sedan rapportera",
         heroSub:
-          "När personal knuffar, försummar, låter självskada fortsätta eller förnedrar: skriv vad som hände. Spara lokalt. Exportera text eller JSON till Lex Sarah, IVO eller advokat.",
+          "När personal knuffar, försummar, låter självskada fortsätta eller förnedrar: skriv vad som hände. Spara lokalt. Exportera text eller JSON för lokal anmälan / tillsyn / advokat. Sverige är ett exempel (Lex Sarah, IVO) — projektet är internationellt.",
         frame:
-          "Du som vårdgivare eller personal med anmälningsplikt har behörighet — och ofta skyldighet — att hantera den här informationen. Neuroljus hjälper dig strukturera vittnesmålet lokalt under din auktoritet. Det upptäcker inte våld via kamera och ersätter inte IVO som institution. Våld och försummelse är aldrig vård.",
+          "Du som vårdgivare med anmälningsplikt har behörighet att hantera den här informationen enligt lokal lag. Neuroljus strukturerar vittnesmålet lokalt under din auktoritet. Det upptäcker inte våld via kamera. Våld och försummelse är aldrig vård.",
         formTitle: "Ny allvarlig händelse",
         kind: "Typ",
+        jurisdiction: "Jurisdiktion / land",
         when: "När (ungefär)",
         setting: "Plats / miljö",
         who: "Vem gjorde vad",
@@ -88,7 +90,7 @@ export default function SeriousIncidentLab() {
         protect: "Vad du gjorde för att skydda",
         speech: "Upprepade fraser (som de sades)",
         uncertainty: "Vad du inte kan veta",
-        reporting: "Rapportering (Lex Sarah / IVO / advokat — planerat eller gjort)",
+        reporting: "Rapportering (lokal skyldighet / tillsyn / advokat — planerat eller gjort)",
         save: "Spara lokalt",
         saved: "Sparad i den här webbläsaren",
         listTitle: "Dina händelser",
@@ -98,22 +100,24 @@ export default function SeriousIncidentLab() {
         exportJson: "Exportera .json",
         ctaObs: "Observation Method",
         ctaPat: "Mönsteranteckningar",
+        ctaMem: "Omsorgsminne",
         disclaimer:
-          "Skydda personen först. Dokumentera under din behörighet. Följ anmälningsplikt. Neuroljus strukturerar lokalt — det ersätter inte IVO eller advokat som institution, och det upptäcker inte våld via kamera.",
+          "Skydda personen först. Dokumentera under din behörighet enligt lokal lag. Neuroljus strukturerar lokalt — det ersätter inte någon tillsynsmyndighet och upptäcker inte våld via kamera.",
       },
       en: {
         seoTitle: "Serious Incident — Neuroljus",
         seoDesc:
-          "Local witness note for Lex Sarah / IVO / legal counsel. No camera. No AI detection.",
+          "Local witness note for reporting duty / inspectorate / legal counsel. International. No camera. No AI detection.",
         platform: "Serious Incident",
-        kicker: "Local · private · protect first",
+        kicker: "Local · private · protect first · international",
         heroTitle: "Structure what you saw — then report",
         heroSub:
-          "When staff push, neglect, allow self-harm to continue, or demean: write what happened. Save locally. Export text or JSON for Lex Sarah, IVO, or a lawyer.",
+          "When staff push, neglect, allow self-harm to continue, or demean: write what happened. Save locally. Export text or JSON for local reporting / inspectorate / lawyer. Sweden is one example (Lex Sarah, IVO) — the project is international.",
         frame:
-          "As a caregiver or staff member with a reporting duty, you are authorized — and often obligated — to handle this information. Neuroljus helps you structure the witness note locally under your authority. It does not detect violence via camera and does not replace IVO as an institution. Violence and neglect are never care.",
+          "As a caregiver with a reporting duty, you are authorized to handle this information under local law. Neuroljus structures the witness note locally under your authority. It does not detect violence via camera. Violence and neglect are never care.",
         formTitle: "New serious incident",
         kind: "Kind",
+        jurisdiction: "Jurisdiction / country",
         when: "When (approx.)",
         setting: "Setting",
         who: "Who did what",
@@ -122,7 +126,7 @@ export default function SeriousIncidentLab() {
         protect: "What you did to protect",
         speech: "Repeated phrases (as spoken)",
         uncertainty: "What you cannot know",
-        reporting: "Reporting (Lex Sarah / IVO / lawyer — planned or done)",
+        reporting: "Reporting (local duty / inspectorate / lawyer — planned or done)",
         save: "Save locally",
         saved: "Saved in this browser",
         listTitle: "Your incidents",
@@ -132,22 +136,24 @@ export default function SeriousIncidentLab() {
         exportJson: "Export .json",
         ctaObs: "Observation Method",
         ctaPat: "Pattern Notebook",
+        ctaMem: "Care Memory",
         disclaimer:
-          "Protect the person first. Document under your authorization. Follow reporting duties. Neuroljus structures locally — it does not replace IVO or a lawyer as institutions, and it does not detect violence via camera.",
+          "Protect the person first. Document under your authorization under local law. Neuroljus structures locally — it does not replace any inspectorate and does not detect violence via camera.",
       },
       es: {
         seoTitle: "Incidente grave — Neuroljus",
         seoDesc:
-          "Testimonio local para Lex Sarah / IVO / abogado. Sin cámara. Sin detección por IA.",
+          "Testimonio local para deber de denuncia / inspección / abogado. Internacional. Sin cámara. Sin detección por IA.",
         platform: "Serious Incident",
-        kicker: "Local · privado · proteger primero",
+        kicker: "Local · privado · proteger primero · internacional",
         heroTitle: "Estructura lo que viste — luego reporta",
         heroSub:
-          "Cuando el personal empuja, negligencia, deja continuar la autoagresión o humilla: escribe lo que pasó. Guarda localmente. Exporta texto o JSON para Lex Sarah, IVO o un abogado.",
+          "Cuando el personal empuja, negligencia, deja continuar la autoagresión o humilla: escribe lo que pasó. Guarda localmente. Exporta texto o JSON para denuncia local / inspección / abogado. Suecia es un ejemplo (Lex Sarah, IVO) — el proyecto es internacional.",
         frame:
-          "Como cuidadora o personal con deber de denuncia, estás autorizada — y a menudo obligada — a manejar esta información. Neuroljus te ayuda a estructurar el testimonio en local bajo tu autoridad. No detecta violencia por cámara y no sustituye a IVO como institución. Violencia y negligencia nunca son cuidado.",
+          "Como cuidadora con deber de denuncia, estás autorizada a manejar esta información según la ley local. Neuroljus estructura el testimonio en local bajo tu autoridad. No detecta violencia por cámara. Violencia y negligencia nunca son cuidado.",
         formTitle: "Nuevo incidente grave",
         kind: "Tipo",
+        jurisdiction: "Jurisdicción / país",
         when: "Cuándo (aprox.)",
         setting: "Lugar / entorno",
         who: "Quién hizo qué",
@@ -156,7 +162,7 @@ export default function SeriousIncidentLab() {
         protect: "Qué hiciste tú para proteger",
         speech: "Frases repetidas (como se dijeron)",
         uncertainty: "Lo que no puedes saber",
-        reporting: "Reporte (Lex Sarah / IVO / abogado — planeado o hecho)",
+        reporting: "Reporte (deber local / inspección / abogado — planeado o hecho)",
         save: "Guardar localmente",
         saved: "Guardado en este navegador",
         listTitle: "Tus incidentes",
@@ -166,8 +172,9 @@ export default function SeriousIncidentLab() {
         exportJson: "Exportar .json",
         ctaObs: "Observation Method",
         ctaPat: "Cuaderno de patrones",
+        ctaMem: "Memoria de cuidado",
         disclaimer:
-          "Protege a la persona primero. Documenta bajo tu autorización. Cumple el deber de denuncia. Neuroljus estructura en local — no sustituye a IVO ni al abogado como institución, y no detecta violencia por cámara.",
+          "Protege a la persona primero. Documenta bajo tu autorización según la ley local. Neuroljus estructura en local — no sustituye a ninguna inspección y no detecta violencia por cámara.",
       },
     }),
     []
@@ -180,6 +187,7 @@ export default function SeriousIncidentLab() {
     if (!form.whoWhat.trim() && !form.setting.trim()) return;
     const next = addSeriousIncident({
       kind: form.kind,
+      jurisdiction: form.jurisdiction.trim(),
       whenApprox: form.whenApprox.trim(),
       setting: form.setting.trim(),
       whoWhat: form.whoWhat.trim(),
@@ -273,6 +281,9 @@ export default function SeriousIncidentLab() {
             <Link className="cta ghost" href="/labs/pattern-notebook">
               {copy.ctaPat}
             </Link>
+            <Link className="cta ghost" href="/labs/care-memory">
+              {copy.ctaMem}
+            </Link>
           </div>
 
           <section className="panel" aria-labelledby="form-title">
@@ -292,6 +303,14 @@ export default function SeriousIncidentLab() {
                     </option>
                   ))}
                 </select>
+              </label>
+              <label>
+                {copy.jurisdiction}
+                <input
+                  value={form.jurisdiction}
+                  onChange={(e) => setForm((f) => ({ ...f, jurisdiction: e.target.value }))}
+                  placeholder="Sweden · Colombia · …"
+                />
               </label>
               <label>
                 {copy.when}
@@ -570,7 +589,8 @@ export default function SeriousIncidentLab() {
           color: var(--muted);
         }
         textarea,
-        select {
+        select,
+        input {
           width: 100%;
           resize: vertical;
           background: #0c0c0e;

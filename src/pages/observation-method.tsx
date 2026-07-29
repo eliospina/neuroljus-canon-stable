@@ -100,7 +100,7 @@ export default function ObservationMethod() {
               "Vem gjorde vad, ungefär när, vem mer var närvarande",
               "Vad personen gjorde efteråt (skyddade sig, drog undan, ljud, stillhet, upprepade fraser)",
               "Vad du gjorde för att skydda personen i stunden",
-              "Rapportera: Lex Sarah / lokal anmälan, och vid behov IVO samt juridisk rådgivning. Du har behörighet (och ofta skyldighet) att dokumentera. Neuroljus strukturerar lokalt — upptäcker inte våld via kamera.",
+              "Rapportera enligt lokal anmälningsplikt / tillsyn / juridisk hjälp (exempel Sverige: Lex Sarah, IVO). Du har behörighet att dokumentera. Neuroljus strukturerar lokalt — upptäcker inte våld via kamera.",
             ],
           },
           neglect: {
@@ -231,7 +231,7 @@ export default function ObservationMethod() {
               "Who did what, roughly when, who else was present",
               "What the person did afterward (protected self, withdrew, sound, stillness, repeated phrases)",
               "What you did to protect the person in the moment",
-              "Report: Lex Sarah / local duty, and when needed IVO plus legal counsel. You are authorized (and often obligated) to document. Neuroljus structures locally — does not detect violence via camera.",
+              "Report under local reporting duty / inspectorate / legal counsel (example Sweden: Lex Sarah, IVO). You are authorized to document. Neuroljus structures locally — does not detect violence via camera.",
             ],
           },
           neglect: {
@@ -363,7 +363,7 @@ export default function ObservationMethod() {
               "Quién hizo qué, aproximadamente cuándo, quién más estaba presente",
               "Qué hizo la persona después (se protegió, se retiró, sonido, quietud, frases repetidas)",
               "Qué hiciste tú para proteger a la persona en el momento",
-              "Reporta: Lex Sarah / deber local, y cuando haga falta IVO más consejo jurídico. Estás autorizada (y a menudo obligada) a documentar. Neuroljus estructura en local — no detecta violencia por cámara.",
+              "Reporta según deber local / inspección / abogado (ejemplo Suecia: Lex Sarah, IVO). Estás autorizada a documentar. Neuroljus estructura en local — no detecta violencia por cámara.",
             ],
           },
           neglect: {
