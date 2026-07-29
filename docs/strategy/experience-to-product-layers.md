@@ -21,8 +21,11 @@ An experience can be trauma, pattern, ethics, research, or one hard day. Those a
 | --- | --- | --- | --- |
 | **1. Care memory** | `/labs/care-memory` | Short lived stories for the project (what happened, what it taught) | Almost never |
 | **2. Pattern note** | `/labs/pattern-notebook` | Gesture → what eased / worsened (within-person patterns) | Sometimes inspires a *scenario* later |
-| **3. Serious incident** | `/labs/serious-incident` | Authorized witness for mistreatment / neglect / reporting | No — reporting packet, not a routine |
+| **3. Witness notes (internal)** | `/labs/serious-incident` | Local structure for hard facts; future report/alert adapters exist in code but stay **off** | No — not a public product pitch |
 | **4. Care protocol** | Care Room / Protocol Workspace | Deterministic `care_command_protocol_v0` for humans / home / robot | Only when a **repeatable care sequence** is clear |
+
+Public pitch surfaces: Care Room, Protocol Workspace, NL-VISION, Observation Method, Pattern Notebook.  
+Internal: Care Memory, Witness notes — keep until founder decides to promote.
 
 Rule of thumb:
 

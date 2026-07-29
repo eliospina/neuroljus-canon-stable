@@ -19,31 +19,30 @@ const sample: SeriousIncident = {
   protectionActs: "Interrupted, cleaned, documented, escalated",
   speechCycles: "Yo te quiero mucho",
   uncertainty: "Cannot know inner meaning of the phrase",
-  reporting: "Local reporting duty; example Sweden Lex Sarah / IVO",
+  reporting: "Escalation noted locally",
 };
 
 test("serious incident text export names witness limits and reporting path", () => {
   const text = formatIncidentExportText(sample, "en");
-  assert.ok(text.includes("authorized local witness"));
+  assert.ok(text.includes("Witness notes (internal)"));
   assert.ok(text.includes("does not detect violence via camera"));
-  assert.ok(text.includes("Lex Sarah") || text.includes("local"));
-  assert.ok(text.includes("International") || text.includes("international"));
   assert.ok(text.includes("Yo te quiero mucho"));
-  assert.ok(text.includes("Sweden"));
-  assert.ok(text.includes("neuroljus.serious_incident.v0"));
+  assert.ok(text.includes("reporting_adapters=off") || text.includes("adapters stay off"));
+  assert.ok(text.includes("neuroljus.witness_notes.v0"));
 });
 
-test("serious incident JSON export refuses camera abuse detection claims", () => {
+test("serious incident JSON export keeps reporting adapters off", () => {
   const parsed = JSON.parse(formatIncidentExportJson(sample));
-  assert.equal(parsed.envelope, "neuroljus.serious_incident.v0");
+  assert.equal(parsed.envelope, "neuroljus.witness_notes.v0");
   assert.equal(parsed.camera_abuse_detection, false);
-  assert.equal(parsed.replaces_lex_sarah_or_ivo_as_institution, false);
-  assert.equal(parsed.intended_for_authorized_witness_under_reporting_duty, true);
+  assert.equal(parsed.reporting_adapters_enabled, false);
+  assert.equal(parsed.ai_report_draft_enabled, false);
+  assert.equal(parsed.auto_alert_enabled, false);
   assert.equal(parsed.incident.kind, "neglect");
 });
 
-test("Spanish export keeps authorized-witness framing", () => {
+test("Spanish export keeps internal witness framing", () => {
   const text = formatIncidentExportText(sample, "es");
-  assert.ok(text.includes("testimonio local autorizado") || text.includes("autorizada"));
+  assert.ok(text.includes("interno") || text.includes("Interno") || text.includes("testimonio"));
   assert.ok(text.includes("no detecta violencia por cámara"));
 });

@@ -126,9 +126,9 @@ export function formatIncidentExportText(
   const headers =
     lang === "sv"
       ? {
-          title: "NEUROLJUS — Allvarlig händelse (behörigt lokalt vittnesmål)",
+          title: "NEUROLJUS — Vittnesanteckning (intern)",
           notice:
-            "Internationellt projekt. Detta är ett strukturerat vittnesmål från en människa som har rätt — och ofta skyldighet — att dokumentera och anmäla enligt lokal lag. Neuroljus hjälper dig strukturera under din behörighet, lokalt. Exempel Sverige: Lex Sarah / IVO. Neuroljus upptäcker inte våld via kamera och ersätter inte någon tillsynsmyndighet.",
+            "Intern struktur. Vittnesmål under mänsklig behörighet. Lokal export. Inga nätverksalarm. Neuroljus upptäcker inte våld via kamera.",
           recorded: "Registrerad (webbläsare)",
           kind: "Typ",
           jurisdiction: "Jurisdiktion / land",
@@ -140,16 +140,16 @@ export function formatIncidentExportText(
           protect: "Vad vittnet gjorde för att skydda",
           speech: "Upprepade fraser (som de sades)",
           uncertainty: "Osäkerhet",
-          reporting: "Rapportering (lokal skyldighet / tillsyn / advokat)",
-          next: "Nästa steg för vittnet",
+          reporting: "Eskalering / uppföljning",
+          next: "Nästa steg",
           nextBody:
-            "Skydda personen. Dokumentera under din behörighet. Följ lokal anmälningsplikt. Sök juridisk rådgivning vid behov.",
+            "Skydda personen. Dokumentera. Följ lokal behörighet. Framtida rapport-/larmadapters är avstängda tills de aktiveras medvetet.",
         }
       : lang === "es"
         ? {
-            title: "NEUROLJUS — Incidente grave (testimonio local autorizado)",
+            title: "NEUROLJUS — Notas de testimonio (interno)",
             notice:
-              "Proyecto internacional. Esto es un testimonio estructurado de una persona autorizada — y a menudo obligada — a documentar y denunciar según la ley local. Neuroljus te ayuda a estructurarlo bajo tu autoridad, en local. Ejemplo Suecia: Lex Sarah / IVO. Neuroljus no detecta violencia por cámara y no sustituye a ninguna inspección.",
+              "Estructura interna. Testimonio bajo autoridad humana. Export local. Sin alarmas de red. Neuroljus no detecta violencia por cámara.",
             recorded: "Registrado (navegador)",
             kind: "Tipo",
             jurisdiction: "Jurisdicción / país",
@@ -161,15 +161,15 @@ export function formatIncidentExportText(
             protect: "Qué hizo el testigo para proteger",
             speech: "Frases repetidas (como se dijeron)",
             uncertainty: "Incertidumbre",
-            reporting: "Reporte (deber local / inspección / abogado)",
-            next: "Siguiente paso del testigo",
+            reporting: "Escalada / seguimiento",
+            next: "Siguiente paso",
             nextBody:
-              "Protege a la persona. Documenta bajo tu autorización. Cumple el deber de denuncia local. Busca consejo jurídico si hace falta.",
+              "Protege a la persona. Documenta. Sigue la autorización local. Los adaptadores futuros de informe/alarma están apagados hasta activación explícita.",
           }
         : {
-            title: "NEUROLJUS — Serious incident (authorized local witness)",
+            title: "NEUROLJUS — Witness notes (internal)",
             notice:
-              "International project. This is a structured witness note from a person who is authorized — and often obligated — to document and report under local law. Neuroljus helps you structure it under your authority, locally. Example Sweden: Lex Sarah / IVO. Neuroljus does not detect violence via camera and does not replace any inspectorate.",
+              "Internal structure. Witness note under human authority. Local export. No network alarms. Neuroljus does not detect violence via camera.",
             recorded: "Recorded (browser)",
             kind: "Kind",
             jurisdiction: "Jurisdiction / country",
@@ -181,10 +181,10 @@ export function formatIncidentExportText(
             protect: "What the witness did to protect",
             speech: "Repeated phrases (as spoken)",
             uncertainty: "Uncertainty",
-            reporting: "Reporting (local duty / inspectorate / lawyer)",
-            next: "Witness next steps",
+            reporting: "Escalation / follow-up",
+            next: "Next steps",
             nextBody:
-              "Protect the person. Document under your authorization. Follow local reporting duties. Seek legal counsel if needed.",
+              "Protect the person. Document. Follow local authorization. Future report/alert adapters stay off until deliberately enabled.",
           };
 
   const lines = [
@@ -226,7 +226,7 @@ export function formatIncidentExportText(
     `${headers.next}:`,
     headers.nextBody,
     "",
-    "Envelope: neuroljus.serious_incident.v0 · storage=browser · network=off · international=true",
+    "Envelope: neuroljus.witness_notes.v0 · surface=internal · storage=browser · network=off · reporting_adapters=off",
   ];
 
   return lines.join("\n");
@@ -235,11 +235,13 @@ export function formatIncidentExportText(
 export function formatIncidentExportJson(incident: SeriousIncident): string {
   return JSON.stringify(
     {
-      envelope: "neuroljus.serious_incident.v0",
+      envelope: "neuroljus.witness_notes.v0",
+      surface: "internal",
       network: "off",
       camera_abuse_detection: false,
-      replaces_lex_sarah_or_ivo_as_institution: false,
-      intended_for_authorized_witness_under_reporting_duty: true,
+      reporting_adapters_enabled: false,
+      ai_report_draft_enabled: false,
+      auto_alert_enabled: false,
       incident,
     },
     null,

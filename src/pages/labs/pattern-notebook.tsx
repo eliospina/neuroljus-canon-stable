@@ -65,9 +65,8 @@ export default function PatternNotebook() {
         delete: "Ta bort",
         ctaRoom: "Öppna Care Room · Possible discomfort",
         ctaObs: "Observation Method",
-        ctaInc: "Allvarlig händelse",
         disclaimer:
-          "Ingen medicinsk bedömning. Om oro kvarstår: kontakta vård. Vid våld eller försummelse: använd Allvarlig händelse och rapportera.",
+          "Ingen medicinsk bedömning. Om oro kvarstår: kontakta vård. Trådlösa band/bälten är en framtida adapterhorisont — inte en produkt här.",
       },
       en: {
         seoTitle: "Pattern Notebook — Neuroljus",
@@ -94,9 +93,8 @@ export default function PatternNotebook() {
         delete: "Delete",
         ctaRoom: "Open Care Room · Possible discomfort",
         ctaObs: "Observation Method",
-        ctaInc: "Serious Incident",
         disclaimer:
-          "Not a medical assessment. If concern remains: contact healthcare. For violence or neglect: use Serious Incident and report.",
+          "Not a medical assessment. If concern remains: contact healthcare. Wireless belts/bands are a future adapter horizon — not a product here.",
       },
       es: {
         seoTitle: "Cuaderno de patrones — Neuroljus",
@@ -123,9 +121,8 @@ export default function PatternNotebook() {
         delete: "Eliminar",
         ctaRoom: "Abrir Care Room · Possible discomfort",
         ctaObs: "Observation Method",
-        ctaInc: "Incidente grave",
         disclaimer:
-          "No es evaluación médica. Si la preocupación continúa: contacta salud. Por violencia o negligencia: usa Incidente grave y reporta.",
+          "No es evaluación médica. Si la preocupación continúa: contacta salud. Cinturones/bandas inalámbricas son un horizonte futuro de adaptadores — no un producto aquí.",
       },
     }),
     []
@@ -210,9 +207,6 @@ export default function PatternNotebook() {
             </Link>
             <Link className="cta ghost" href="/observation-method">
               {copy.ctaObs}
-            </Link>
-            <Link className="cta ghost" href="/labs/serious-incident">
-              {copy.ctaInc}
             </Link>
           </div>
 
