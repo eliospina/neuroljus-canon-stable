@@ -40,6 +40,68 @@ function toPoints(landmarks: Array<{ x: number; y: number; z?: number }> | undef
   return landmarks.map((p) => ({ x: p.x, y: p.y }));
 }
 
+/** Axis-aligned box in canvas pixels from normalized landmarks. */
+function landmarkBounds(
+  landmarks: Point2[],
+  width: number,
+  height: number,
+  pad = 0.04
+): { x: number; y: number; w: number; h: number } | null {
+  if (!landmarks.length) return null;
+  let minX = 1;
+  let minY = 1;
+  let maxX = 0;
+  let maxY = 0;
+  for (const p of landmarks) {
+    minX = Math.min(minX, p.x);
+    minY = Math.min(minY, p.y);
+    maxX = Math.max(maxX, p.x);
+    maxY = Math.max(maxY, p.y);
+  }
+  minX = Math.max(0, minX - pad);
+  minY = Math.max(0, minY - pad);
+  maxX = Math.min(1, maxX + pad);
+  maxY = Math.min(1, maxY + pad);
+  return {
+    x: minX * width,
+    y: minY * height,
+    w: (maxX - minX) * width,
+    h: (maxY - minY) * height,
+  };
+}
+
+function drawGreenBox(
+  ctx: CanvasRenderingContext2D,
+  box: { x: number; y: number; w: number; h: number },
+  label: string,
+  color: string
+) {
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 3;
+  ctx.strokeRect(box.x, box.y, box.w, box.h);
+  // corner ticks — classic detector look
+  const tick = Math.min(18, box.w * 0.12, box.h * 0.12);
+  ctx.beginPath();
+  ctx.moveTo(box.x, box.y + tick);
+  ctx.lineTo(box.x, box.y);
+  ctx.lineTo(box.x + tick, box.y);
+  ctx.moveTo(box.x + box.w - tick, box.y);
+  ctx.lineTo(box.x + box.w, box.y);
+  ctx.lineTo(box.x + box.w, box.y + tick);
+  ctx.moveTo(box.x + box.w, box.y + box.h - tick);
+  ctx.lineTo(box.x + box.w, box.y + box.h);
+  ctx.lineTo(box.x + box.w - tick, box.y + box.h);
+  ctx.moveTo(box.x + tick, box.y + box.h);
+  ctx.lineTo(box.x, box.y + box.h);
+  ctx.lineTo(box.x, box.y + box.h - tick);
+  ctx.stroke();
+  ctx.fillStyle = color;
+  ctx.font = "600 13px ui-monospace, SF Mono, Menlo, monospace";
+  ctx.fillText(label, box.x + 6, Math.max(14, box.y - 6));
+  ctx.restore();
+}
+
 export default function NLVisionTasksPage() {
   return (
     <>
@@ -74,15 +136,16 @@ function NLVisionTasks() {
   const stopRef = useRef<() => void>(() => {});
   const faceRef = useRef<FaceLandmarker | null>(null);
   const handRef = useRef<HandLandmarker | null>(null);
-  const showPreviewRef = useRef(true);
+  const showPreviewRef = useRef(false);
   const lowStimRef = useRef(false);
 
   const [running, setRunning] = useState(false);
   const [ready, setReady] = useState(false);
   const [loadingModels, setLoadingModels] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const [showPreview, setShowPreview] = useState(true);
+  const [showPreview, setShowPreview] = useState(false);
   const [lowStim, setLowStim] = useState(false);
+  const [showBoxes, setShowBoxes] = useState(true);
   const [dbg, setDbg] = useState({ fps: 0, hands: 0, face: 0 });
 
   const metricsRef = useRef<FrameSample[]>([]);
@@ -90,6 +153,7 @@ function NLVisionTasks() {
   const blinkTimesRef = useRef<number[]>([]);
   const lastBlinkTsRef = useRef(0);
   const lastEarRef = useRef(1);
+  const showBoxesRef = useRef(true);
 
   useEffect(() => {
     showPreviewRef.current = showPreview;
@@ -97,6 +161,9 @@ function NLVisionTasks() {
   useEffect(() => {
     lowStimRef.current = lowStim;
   }, [lowStim]);
+  useEffect(() => {
+    showBoxesRef.current = showBoxes;
+  }, [showBoxes]);
 
   useEffect(() => () => stopRef.current(), []);
 
@@ -204,27 +271,47 @@ function NLVisionTasks() {
         const rightHand = toPoints(hands[1]);
 
         const lineW = lowStimRef.current ? 1.5 : 2.5;
-        const faceColor = lowStimRef.current ? "#86efac" : "#3ecf9a";
-        const handColor = lowStimRef.current ? "#93c5fd" : "#7dd3fc";
+        // Classic MediaPipe green detector look (not a clean selfie feed)
+        const faceColor = lowStimRef.current ? "#86efac" : "#22c55e";
+        const handColor = lowStimRef.current ? "#4ade80" : "#4ade80";
+        const boxColor = "#22c55e";
 
         if (faceLm.length && faceResult.faceLandmarks?.[0]) {
           drawing.drawConnectors(
             faceResult.faceLandmarks[0],
             FaceLandmarker.FACE_LANDMARKS_TESSELATION,
-            { color: faceColor, lineWidth: lineW * 0.35 }
+            { color: `${faceColor}99`, lineWidth: lineW * 0.4 }
           );
           drawing.drawConnectors(
             faceResult.faceLandmarks[0],
             FaceLandmarker.FACE_LANDMARKS_CONTOURS,
             { color: faceColor, lineWidth: lineW }
           );
+          drawing.drawLandmarks(faceResult.faceLandmarks[0], {
+            color: faceColor,
+            lineWidth: 1,
+            radius: lowStimRef.current ? 1.2 : 1.8,
+          });
+          if (showBoxesRef.current) {
+            const box = landmarkBounds(faceLm, c.width, c.height, 0.05);
+            if (box) drawGreenBox(ctx, box, "face", boxColor);
+          }
         }
-        hands.forEach((hand) => {
+        hands.forEach((hand, index) => {
           drawing.drawConnectors(hand, HandLandmarker.HAND_CONNECTIONS, {
             color: handColor,
             lineWidth: lineW,
           });
-          drawing.drawLandmarks(hand, { color: "#fafafa", lineWidth: 1, radius: lowStimRef.current ? 2 : 3 });
+          drawing.drawLandmarks(hand, {
+            color: "#bbf7d0",
+            lineWidth: 1,
+            radius: lowStimRef.current ? 2 : 3.2,
+          });
+          if (showBoxesRef.current) {
+            const pts = toPoints(hand);
+            const box = landmarkBounds(pts, c.width, c.height, 0.06);
+            if (box) drawGreenBox(ctx, box, index === 0 ? "hand_0" : "hand_1", boxColor);
+          }
         });
         ctx.restore();
 
@@ -361,18 +448,19 @@ function NLVisionTasks() {
         <p className="cli">$ neuroljus vision --engine tasks-vision@1.0.0</p>
         <h1>NL-VISION · Tasks v2</h1>
         <p className="lede">
-          Raw on-device landmarks (face + hands). Numbers for caregiver reflection —
-          not emotion, not diagnosis, not a translation of a person.
+          Raw MediaPipe detector view: green boxes + face/hand landmarks on a dark
+          field by default — not a clean selfie. Toggle camera underlay only if you need it.
+          Signals are local numbers for caregiver reflection, not emotion labels.
         </p>
 
         <div className="legend" aria-label="Signal legend">
           <span>
-            <i className="face" /> face mesh
+            <i className="face" /> face mesh + box
           </span>
           <span>
-            <i className="hand" /> hand skeleton
+            <i className="hand" /> hand skeleton + box
           </span>
-          <span>signals → localStorage → Care Room / Robot Lab</span>
+          <span>default = tech overlay (no clean video)</span>
         </div>
 
         <div className="actions">
@@ -394,7 +482,15 @@ function NLVisionTasks() {
               checked={showPreview}
               onChange={(e) => setShowPreview(e.target.checked)}
             />
-            Show camera
+            Camera underlay
+          </label>
+          <label className="toggle">
+            <input
+              type="checkbox"
+              checked={showBoxes}
+              onChange={(e) => setShowBoxes(e.target.checked)}
+            />
+            Green boxes
           </label>
           <label className="toggle">
             <input type="checkbox" checked={lowStim} onChange={(e) => setLowStim(e.target.checked)} />
@@ -514,10 +610,10 @@ function NLVisionTasks() {
           margin-right: 6px;
         }
         .legend i.face {
-          background: #3ecf9a;
+          background: #22c55e;
         }
         .legend i.hand {
-          background: #7dd3fc;
+          background: #4ade80;
         }
         .actions {
           margin-top: 18px;
