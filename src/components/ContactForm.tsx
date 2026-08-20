@@ -137,7 +137,14 @@ export default function ContactForm({ lang = "en" }: Props) {
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    formData.append("access_key", "5b50cf71-36b1-4445-8d7a-f9a7a98cc4f6");
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
+    if (!accessKey) {
+      setState("error");
+      setMsg(copy.errorDefault);
+      return;
+    }
+
+    formData.append("access_key", accessKey);
     const interest = (formData.get("interest") as string) || "General inquiry";
     formData.append("subject", `Neuroljus — ${interest}`);
     formData.append("from_name", "Neuroljus Website");
