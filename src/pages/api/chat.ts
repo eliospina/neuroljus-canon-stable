@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
   callAnthropicReflection,
+  degradedReflectionReply,
   getReflectionProvider,
   offlineReflectionReply,
 } from "@/lib/careReflection/provider";
@@ -16,7 +17,10 @@ const RATE_LIMIT_MAX_REQUESTS = 15; // per IP per window
 const MAX_MESSAGES = 20; // cap conversation history
 const MAX_MESSAGE_CHARS = 2_000; // cap each message
 const MAX_NOTES_CHARS = 2_000;
-const OPENAI_MAX_TOKENS = 500; // cap model output (cost control)
+const MAX_OUTPUT_TOKENS = 500; // cap model output (cost control)
+// Anthropic models reason before answering and that counts against max_tokens,
+// so give the reply itself the same room as the OpenAI path.
+const ANTHROPIC_MAX_TOKENS = 800;
 
 // In-memory store. Note: on serverless this is per-instance, not global,
 // but it still meaningfully slows down abuse from a single source.
@@ -199,8 +203,7 @@ Raw prototype numbers (last local window):
           apiKey: anthropicKey,
           system,
           userContent,
-          messages,
-          maxTokens: OPENAI_MAX_TOKENS,
+          maxTokens: ANTHROPIC_MAX_TOKENS,
           signal: controller.signal,
         });
 
@@ -208,9 +211,9 @@ Raw prototype numbers (last local window):
           console.error("Anthropic API returned an error", result.status, result.detail);
           return res.status(502).json({
             role: "assistant",
-            content:
-              "I'm having trouble reaching the AI service right now. Please try again in a moment.",
+            content: degradedReflectionReply(lang, metrics),
             provider: "anthropic",
+            upstreamStatus: result.status,
           });
         }
 
@@ -238,21 +241,26 @@ Raw prototype numbers (last local window):
         body: JSON.stringify({
           model: "gpt-4o-mini",
           temperature: 0.3,
-          max_tokens: OPENAI_MAX_TOKENS,
+          max_tokens: MAX_OUTPUT_TOKENS,
           messages: [
             { role: "system", content: system },
             { role: "user", content: userContent },
           ],
         }),
       });
-      const j = await r.json();
+      let j: any = null;
+      try {
+        j = await r.json();
+      } catch {
+        j = null;
+      }
       if (!r.ok) {
         console.error("OpenAI API returned an error", r.status, j?.error?.message);
         return res.status(502).json({
           role: "assistant",
-          content:
-            "I'm having trouble reaching the AI service right now. Please try again in a moment.",
+          content: degradedReflectionReply(lang, metrics),
           provider: "openai",
+          upstreamStatus: r.status,
         });
       }
 
