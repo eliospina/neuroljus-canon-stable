@@ -18,11 +18,15 @@ export type ReflectionLang = "sv" | "en" | "es";
  */
 export const DEFAULT_ANTHROPIC_MODEL = "claude-sonnet-5-5";
 
+/**
+ * Care Chat engine. Claude (Anthropic) is the default; OpenAI stays available
+ * as an alternative adapter; "none" keeps the chat fully local.
+ */
 export function getReflectionProvider(): ReflectionProvider {
-  const raw = (process.env.CARE_REFLECTION_PROVIDER || "openai").trim().toLowerCase();
+  const raw = (process.env.CARE_REFLECTION_PROVIDER || "anthropic").trim().toLowerCase();
   if (raw === "none") return "none";
-  if (raw === "anthropic") return "anthropic";
-  return "openai";
+  if (raw === "openai") return "openai";
+  return "anthropic";
 }
 
 export function getAnthropicModel(): string {

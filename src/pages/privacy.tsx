@@ -15,7 +15,7 @@ const sections = [
   {
     title: "AI chat",
     body:
-      "If you use the Neuroljus AI chat, your chat message, optional caregiver notes, and the most recent prototype metrics may be sent to the server-side chat endpoint and then to OpenAI for a response. For privacy, avoid entering clinical records, identifying child data, secrets, or emergency information.",
+      "If you use the Neuroljus AI chat, your chat message, optional caregiver notes, and the most recent prototype metrics may be sent to the server-side chat endpoint and then to Claude (Anthropic) for a response. Camera video and NL-VISION landmarks never leave your device; only the summarized prototype metrics travel with your message. For privacy, avoid entering clinical records, identifying child data, secrets, or emergency information.",
   },
   {
     title: "Contact form",

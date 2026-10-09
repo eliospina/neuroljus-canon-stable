@@ -5,17 +5,19 @@ import {
   offlineReflectionReply,
 } from "../src/lib/careReflection/provider";
 
-test("getReflectionProvider defaults to openai and accepts none/anthropic", () => {
+test("getReflectionProvider defaults to anthropic and accepts none/openai", () => {
   const previous = process.env.CARE_REFLECTION_PROVIDER;
   try {
     delete process.env.CARE_REFLECTION_PROVIDER;
-    assert.equal(getReflectionProvider(), "openai");
+    assert.equal(getReflectionProvider(), "anthropic");
     process.env.CARE_REFLECTION_PROVIDER = "none";
     assert.equal(getReflectionProvider(), "none");
     process.env.CARE_REFLECTION_PROVIDER = "anthropic";
     assert.equal(getReflectionProvider(), "anthropic");
     process.env.CARE_REFLECTION_PROVIDER = "OPENAI";
     assert.equal(getReflectionProvider(), "openai");
+    process.env.CARE_REFLECTION_PROVIDER = "unknown";
+    assert.equal(getReflectionProvider(), "anthropic");
   } finally {
     if (previous === undefined) delete process.env.CARE_REFLECTION_PROVIDER;
     else process.env.CARE_REFLECTION_PROVIDER = previous;

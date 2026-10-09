@@ -8,7 +8,7 @@ Core sentence: *Neuroljus turns lived care into structured intelligence for futu
 
 ## Stack
 
-Next.js 15 (Pages Router) · React 19 · TypeScript · styled-jsx for page styles · deployed on Vercel. OpenAI is used server-side only in `src/pages/api/chat.ts`.
+Next.js 15 (Pages Router) · React 19 · TypeScript · styled-jsx for page styles · deployed on Vercel. Care Chat calls Claude (Anthropic, `claude-sonnet-5-5`) server-side only, in `src/pages/api/chat.ts`; OpenAI remains an optional adapter via `CARE_REFLECTION_PROVIDER=openai`.
 
 Commands: `npm run dev` · `npm run build` · `npm run smoke` (tsc) · `npm test` (planner tests via tsx) · `npm run lint`.
 
