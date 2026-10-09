@@ -70,8 +70,16 @@ npm run build && npm start
 Create a `.env.local` file in the project root:
 
 ```bash
+# Default engine for /api/chat (Care Chat): OpenAI, model gpt-4o-mini
 OPENAI_API_KEY=sk-proj-xxxxxxxxxxxxx
+
+# Optional: switch the chat engine. openai (default) | anthropic | none
+# CARE_REFLECTION_PROVIDER=anthropic
+# ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxx
+# ANTHROPIC_MODEL=claude-sonnet-5-5   # default; claude-sonnet-4-20250514 was retired 2026-06-15
 ```
+
+`none` keeps the chat fully local: the deterministic NL-VISION signal simulation still runs and no care notes leave the browser.
 
 **Important**: Never commit `.env.local` to git (already in `.gitignore`)
 
@@ -81,7 +89,8 @@ This site is live at **[neuroljus.com](https://neuroljus.com)** and **auto-deplo
 To set it up on a fresh Vercel project:
 1. Import this repo on https://vercel.com (Framework preset: **Next.js**).
 2. Add the environment variable in Project Settings → Environment Variables:
-   - `OPENAI_API_KEY` — your OpenAI API key (server-side only; required for the AI chat).
+   - `OPENAI_API_KEY` — your OpenAI API key (server-side only; required for the AI chat with the default engine).
+   - Or `CARE_REFLECTION_PROVIDER=anthropic` + `ANTHROPIC_API_KEY` (optional `ANTHROPIC_MODEL`, default `claude-sonnet-5-5`).
 3. Deploy. Pushes to `main` then deploy automatically.
 
 ## Structure
