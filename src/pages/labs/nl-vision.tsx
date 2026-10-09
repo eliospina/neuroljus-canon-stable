@@ -427,7 +427,7 @@ function NLVisionTasks() {
     <div className="page">
       <div className="statusbar" aria-hidden="true">
         <span>
-          neuroljus://local · <b>nl_vision_tasks_v2</b> · network=off · video=on-device
+          neuroljus://local · <b>nl_vision_tasks_v2</b> · video=on-device · care_chat=claude
         </span>
         <span>latency local · caregiver_authority=true</span>
       </div>

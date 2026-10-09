@@ -71,7 +71,7 @@ export default function Home() {
         m1: "scenariopresets",
         m2: "kommandotyper",
         m3: "adaptermål",
-        m4: "externa API-anrop",
+        m4: "extern AI-tjänst: Care Chat → Claude",
         streamLabel: "protocol_stream",
         streamMeta: "evening_transition · presence=nearby · status=ready",
         sideSequence: "planned_sequence",
@@ -166,7 +166,7 @@ export default function Home() {
         m1: "scenario presets",
         m2: "command types",
         m3: "adapter targets",
-        m4: "external API calls",
+        m4: "external AI service: Care Chat → Claude",
         streamLabel: "protocol_stream",
         streamMeta: "evening_transition · presence=nearby · status=ready",
         sideSequence: "planned_sequence",
@@ -261,7 +261,7 @@ export default function Home() {
         m1: "presets de escenario",
         m2: "tipos de comando",
         m3: "destinos adaptador",
-        m4: "llamadas API externas",
+        m4: "servicio de IA externo: Care Chat → Claude",
         streamLabel: "protocol_stream",
         streamMeta: "evening_transition · presence=nearby · status=ready",
         sideSequence: "planned_sequence",
@@ -363,7 +363,7 @@ export default function Home() {
       <div className="page">
         <div className="statusbar" aria-hidden="true">
           <span>
-            neuroljus://local · <b>care_command_protocol_v0</b> · audit=on · network=off
+            neuroljus://local · <b>care_command_protocol_v0</b> · audit=on · video=on-device · care_chat=claude
           </span>
           <span>{copy.statusRight}</span>
         </div>
@@ -431,7 +431,7 @@ export default function Home() {
               <span>{copy.m3}</span>
             </div>
             <div>
-              <b>0</b>
+              <b>1</b>
               <span>{copy.m4}</span>
             </div>
           </section>

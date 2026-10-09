@@ -4,7 +4,7 @@ Neuroljus is an independent research project by Elizabeth Ospina: a research-rea
 
 Focused development (website, local labs, protocol engine, research materials) is active under [Board Decision 002](docs/board/decision-002-adopt-care-intelligence-positioning.md). Institutional pilots, clinical workflows, and human validation still require the evidence and approvals in [Reopen Criteria](docs/board/reopen-criteria.md).
 
-**Stack:** Next.js 15 · React 19 · OpenAI (server-side) · deployed on Vercel.
+**Stack:** Next.js 15 · React 19 · Claude by Anthropic (Care Chat, server-side) · deployed on Vercel.
 
 ## Strategic Status Documents
 
@@ -55,8 +55,8 @@ Neuroljus does not currently offer diagnosis, medical advice, clinical deploymen
 # 1) Install
 npm install
 
-# 2) Create .env.local file in project root
-echo "OPENAI_API_KEY=your-key-here" > .env.local
+# 2) Create .env.local file in project root (Care Chat runs on Claude)
+echo "ANTHROPIC_API_KEY=your-key-here" > .env.local
 
 # 3) Dev server
 npm run dev
@@ -70,16 +70,16 @@ npm run build && npm start
 Create a `.env.local` file in the project root:
 
 ```bash
-# Default engine for /api/chat (Care Chat): OpenAI, model gpt-4o-mini
-OPENAI_API_KEY=sk-proj-xxxxxxxxxxxxx
+# Care Chat engine (/api/chat): Claude by Anthropic, model claude-sonnet-5-5
+ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxx
 
-# Optional: switch the chat engine. openai (default) | anthropic | none
-# CARE_REFLECTION_PROVIDER=anthropic
-# ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxx
-# ANTHROPIC_MODEL=claude-sonnet-5-5   # default; claude-sonnet-4-20250514 was retired 2026-06-15
+# Optional overrides
+# ANTHROPIC_MODEL=claude-sonnet-5-5       # default; claude-sonnet-4-20250514 was retired 2026-06-15
+# CARE_REFLECTION_PROVIDER=anthropic      # anthropic (default) | openai | none
+# OPENAI_API_KEY=sk-proj-xxxxxxxxxxxxx    # only with CARE_REFLECTION_PROVIDER=openai (gpt-4o-mini)
 ```
 
-`none` keeps the chat fully local: the deterministic NL-VISION signal simulation still runs and no care notes leave the browser.
+`CARE_REFLECTION_PROVIDER=none` keeps the chat fully local: the deterministic NL-VISION signal simulation still runs and no care notes leave the browser.
 
 **Important**: Never commit `.env.local` to git (already in `.gitignore`)
 
@@ -89,8 +89,8 @@ This site is live at **[neuroljus.com](https://neuroljus.com)** and **auto-deplo
 To set it up on a fresh Vercel project:
 1. Import this repo on https://vercel.com (Framework preset: **Next.js**).
 2. Add the environment variable in Project Settings → Environment Variables:
-   - `OPENAI_API_KEY` — your OpenAI API key (server-side only; required for the AI chat with the default engine).
-   - Or `CARE_REFLECTION_PROVIDER=anthropic` + `ANTHROPIC_API_KEY` (optional `ANTHROPIC_MODEL`, default `claude-sonnet-5-5`).
+   - `ANTHROPIC_API_KEY` — your Anthropic API key (server-side only; required for Care Chat). Optional: `ANTHROPIC_MODEL` (default `claude-sonnet-5-5`).
+   - Alternative engine: `CARE_REFLECTION_PROVIDER=openai` + `OPENAI_API_KEY`.
 3. Deploy. Pushes to `main` then deploy automatically.
 
 ## Structure
@@ -98,7 +98,7 @@ To set it up on a fresh Vercel project:
 .
 ├─ next.config.mjs
 ├─ package.json
-├─ .env.local              # OpenAI API key (not in git)
+├─ .env.local              # Anthropic API key (not in git)
 ├─ postcss.config.js
 ├─ tailwind.config.ts
 ├─ tsconfig.json
@@ -115,11 +115,15 @@ To set it up on a fresh Vercel project:
    │  ├─ _app.tsx
    │  ├─ index.tsx         # main landing
    │  ├─ api/
-   │  │  └─ chat.ts        # OpenAI GPT-4o-mini integration
+   │  │  └─ chat.ts        # Care Chat endpoint → Claude (claude-sonnet-5-5)
    │  ├─ labs/
-   │  │  └─ nl-vision.tsx  # Vision + AI chat demo
+   │  │  └─ nl-vision.tsx  # Vision + Care Chat demo
    │  ├─ privacy.tsx
    │  └─ accessibility.tsx
+   ├─ lib/
+   │  ├─ careProtocol/    # deterministic protocol engine (no network)
+   │  ├─ careReflection/  # Care Chat providers: anthropic (default) · openai · none
+   │  └─ nlVision/        # on-device signal simulation
    └─ styles/
       └─ globals.css
 ```
@@ -128,15 +132,15 @@ To set it up on a fresh Vercel project:
 
 ### NL-Vision Lab (`/labs/nl-vision`)
 - **Prototype camera metrics**: Face detection, hand tracking, blinking rate, eye aspect ratio
-- **Neuroljus AI Chat**: Experimental caregiver-support chat for notes and prototype metrics
-- **Privacy-first**: Camera metrics processed locally, AI analysis optional
+- **Care Chat**: Experimental caregiver-support chat for notes and prototype metrics, powered by Claude
+- **Privacy-first**: Camera video and landmarks processed on device; only summarized metrics reach the chat, and only when you use it
 - **Sensory-friendly**: Low-stimulus mode, monochrome option, adjustable settings
 
-### Neuroljus AI
-- Powered by OpenAI GPT-4o-mini
-- Uses caregiver input and optional prototype metrics as context
-- Provides supportive, non-diagnostic reflection
-- Non-diagnostic support for caregivers
+### Care Chat (Neuroljus AI)
+- Powered by Claude (Anthropic), model `claude-sonnet-5-5`, called server-side from `src/pages/api/chat.ts`
+- Sends the caregiver's messages, optional notes, and the last local NL-VISION metrics window as context; never video or images
+- Provides supportive, non-diagnostic reflection; the caregiver decides
+- OpenAI (`gpt-4o-mini`) remains an optional adapter; `none` keeps everything local
 
 ### Long-Horizon Care Intelligence
 - Frames future AI and care robotics as a research horizon, not a current product claim
@@ -163,5 +167,5 @@ Add the Plausible script to `_app.tsx` or `_document.tsx` once the domain is liv
 
 ## Notes
 - Content is multilingual (EN/SV/ES)
-- Camera metrics stay on device unless explicitly shared with AI
-- All AI responses require valid OpenAI API key
+- Camera video and NL-VISION landmarks stay on device; Care Chat sends summarized metrics and notes to Claude only when you use it
+- Care Chat responses require a valid `ANTHROPIC_API_KEY` (or `OPENAI_API_KEY` with `CARE_REFLECTION_PROVIDER=openai`)

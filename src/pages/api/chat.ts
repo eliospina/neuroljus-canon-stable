@@ -17,10 +17,11 @@ const RATE_LIMIT_MAX_REQUESTS = 15; // per IP per window
 const MAX_MESSAGES = 20; // cap conversation history
 const MAX_MESSAGE_CHARS = 2_000; // cap each message
 const MAX_NOTES_CHARS = 2_000;
-const MAX_OUTPUT_TOKENS = 500; // cap model output (cost control)
-// Anthropic models reason before answering and that counts against max_tokens,
-// so give the reply itself the same room as the OpenAI path.
+// Care Chat engine: Claude (Anthropic) by default, see careReflection/provider.ts.
+// Claude reasons before answering and that counts against max_tokens, so the
+// reply gets a little more room than the optional OpenAI adapter.
 const ANTHROPIC_MAX_TOKENS = 800;
+const MAX_OUTPUT_TOKENS = 500; // OpenAI adapter output cap (cost control)
 
 // In-memory store. Note: on serverless this is per-instance, not global,
 // but it still meaningfully slows down abuse from a single source.
