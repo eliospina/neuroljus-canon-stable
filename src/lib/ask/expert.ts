@@ -18,7 +18,7 @@
  */
 
 import { localRiskScreen, type HelpfulRoutine, sanitizeHelpfulRoutines } from "../careProtocol/intentParser";
-import { commandLabels } from "../careProtocol/planner";
+import { COMMAND_LABELS } from "../companion/i18n";
 import { searchLibrary, TOPIC_LABELS, type LibraryDoc, type TopicId } from "../library";
 
 export type AskLang = "es" | "en" | "sv";
@@ -213,7 +213,7 @@ export function personSegments(history: HelpfulRoutine[], lang: AskLang): AskSeg
   return history.map((h) => ({
     label: "person" as const,
     text: PERSON_TEXT[lang].one
-      .replace("{routine}", h.commands.map((c) => commandLabels[c].toLowerCase()).join(" → "))
+      .replace("{routine}", h.commands.map((c) => COMMAND_LABELS[lang][c].toLowerCase()).join(" → "))
       .replace("{scenario}", SCENARIO_NAMES[lang][h.scenario] ?? h.scenario)
       .replace("{helped}", String(h.helped))
       .replace("{rated}", String(h.rated)),

@@ -73,7 +73,7 @@ test("data from this person is computed by code with counts, never by the model"
   assert.equal(segs.length, 1);
   assert.equal(segs[0].label, "person");
   assert.match(segs[0].text, /3 de 4/);
-  assert.match(segs[0].text, /reduce sound → lower light/);
+  assert.match(segs[0].text, /suavizar el sonido → bajar la luz/);
   assert.match(buildAskSystemPrompt("es", true), /\[PERSON\]/);
   assert.doesNotMatch(buildAskSystemPrompt("es", false), /\[PERSON\]/);
 });
