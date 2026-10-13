@@ -107,6 +107,7 @@ export default function Home() {
         modCompanionBody: "Omsorgsroboten som börjar i telefonen. Beskriv, tryck Starta: skärmen dämpas, mjukt brus, bildkort.",
         heroCompanion: "Prova Companion i mobilen →",
         navCompanion: "Companion",
+        navLibrary: "Bibliotek",
         modAgentTitle: "Care Agent",
         modAgentBody: "Beskriv situationen med ord. Claude tolkar, planeraren beslutar, roboten får protokollet.",
         modCareTitle: "Care Room",
@@ -209,6 +210,7 @@ export default function Home() {
         modCompanionBody: "The care robot that starts on your phone. Describe, press Start: the screen dims, soft noise, visual card.",
         heroCompanion: "Try Companion on your phone →",
         navCompanion: "Companion",
+        navLibrary: "Library",
         modAgentTitle: "Care Agent",
         modAgentBody: "Describe the situation in words. Claude interprets, the planner decides, the robot gets the protocol.",
         modCareTitle: "Care Room",
@@ -311,6 +313,7 @@ export default function Home() {
         modCompanionBody: "El robot de cuidado que empieza en el teléfono. Describe, pulsa Empezar: la pantalla se atenúa, ruido suave, tarjeta visual.",
         heroCompanion: "Prueba Companion en tu móvil →",
         navCompanion: "Companion",
+        navLibrary: "Biblioteca",
         modAgentTitle: "Care Agent",
         modAgentBody: "Describe la situación con palabras. Claude interpreta, el planner decide, el robot recibe el protocolo.",
         modCareTitle: "Care Room",
@@ -415,6 +418,7 @@ export default function Home() {
             <Link href="/labs/nl-vision">{copy.navVision}</Link>
             <Link href="/labs/robot-interface">{copy.navProtocol}</Link>
             <Link href="/companion">{copy.navCompanion}</Link>
+            <Link href="/library">{copy.navLibrary}</Link>
             <Link href="/care-agent">{copy.navAgent}</Link>
             <Link href="/about">{copy.navAbout}</Link>
             <Link href="/contact">{copy.navContact}</Link>

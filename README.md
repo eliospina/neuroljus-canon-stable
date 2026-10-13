@@ -46,6 +46,7 @@ Near-term research tools:
 - **Future Care Room** (`/labs/future-care-room`) — an interactive care-room simulation where caregiver settings become a living care protocol.
 - **Robot Care Interface** (`/labs/robot-interface`) — the technical protocol workspace: routine builder, simulator, audit trail, adapter packets (ROS2/MQTT/HTTP/offline).
 - **Care protocol engine** (`src/lib/careProtocol/`) — deterministic, local, tested (`npm test`).
+- **Autism library** (`/library`) — 500+ open-access studies verified by code (DOI, licence, retraction), with key findings and practical sheets in three languages.
 - **Companion** (`/companion`) — the care robot that starts on a phone: describe the situation, press Start, and the phone itself runs the plan. The same plan exports to Home Assistant, ROS2, MQTT, HTTP or an offline playbook.
 - **Care Agent** (`/care-agent`) — natural-language description → Claude interprets → the deterministic planner emits the protocol and adapter packets.
 - **Research collaboration** for ethics, privacy, accessibility, validation design, and future evidence-building.
@@ -172,6 +173,19 @@ The robot is only a body. Neuroljus is the brain and the ethics. Today the body 
 - **More bodies: the house today, the robot tomorrow.** A body selector — Phone, Home (Home Assistant), Robot (ROS2), MQTT, HTTP, Offline — shows the exact package for the same plan with a copy button. "Home" generates a ready-to-paste Home Assistant script (`src/lib/companion/homeAssistant.ts`): `light.turn_on` with `brightness_pct`, warm `color_temp_kelvin` and a transition, `media_player.volume_set`, a `notify` to the caregiver's phone and `logbook.log` for what the house cannot do, with `delay`s that follow the planned timing. No tokens are stored and the page never calls the house; the caregiver runs the script and stops it with `script.turn_off`.
 - **Escalation.** Physical risk, self-injury, a medical emergency or anything that does not fit: no Start button, only `notify_caregiver` + `log_observation`, the message "This needs a person. If there is danger, call 112." and a call button.
 - **Local-first, low stimulation.** History stays on the device; the caregiver text is never logged. Soft colours, no flashing, large buttons, `prefers-reduced-motion` respected.
+
+## Autism library (`/library`)
+
+The science NeuroLjus grounds its answers on, verified by code rather than by trust:
+
+- `scripts/library/ingest.ts` pulls open-access autism studies from the **Europe PMC** API (PubMed records included) across twelve practical topics — sensory processing, communication and AAC, meltdowns and regulation, sleep, anxiety, feeding, school, employment and adult life, family and caregivers, routine changes, autism in women and girls, pain and health. Systematic reviews and meta-analyses rank first; research done with autistic people (participatory, lived experience) is prioritised. Each topic fills with its own documents.
+- Every document must: be open access, have an abstract, be from 2010 or later, have a DOI that resolves in **Crossref**, and carry no retraction (Europe PMC publication types and Crossref retraction notices). Abstract text is stored only under an open (CC) licence; otherwise metadata and link only. No full texts in the repo.
+- `scripts/library/seeds.ts` adds ~20 hand-picked key findings, resolved by title and verified the same way, with a trilingual claim and an explicit "supports / does not support".
+- `scripts/library/sheets.ts` writes a practical sheet per open document with Claude ("what this means for a caregiver tomorrow morning", ES/EN/SV). `scripts/library/build.ts` builds the BM25 index (minisearch) and `docs/library/SOURCES.md`.
+- `npm run library` re-runs ingestion, seeds and build; the library grows, it never silently shrinks. `npm run library:sheets` needs `ANTHROPIC_API_KEY`.
+- Data lives in `data/library/` and is read at runtime by `src/lib/library` (no network). `/library` lists everything with its DOI, licence and sheet.
+
+The library does not diagnose or prescribe. If there is danger: 112. Medical questions in Sweden: 1177.
 
 ## Product Status
 
