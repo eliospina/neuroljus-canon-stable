@@ -48,6 +48,19 @@ export type IntentResult = {
   notice?: string;
 };
 
+/**
+ * Anonymous summary of a routine that helped this person before, computed on
+ * the device. Only enums and counts: no names, no free text, no dates.
+ */
+export type HelpfulRoutine = {
+  scenario: ScenarioId;
+  commands: Command[];
+  helped: number;
+  rated: number;
+};
+
+export const MAX_HELPFUL_ROUTINES = 3;
+
 export const MAX_INTENT_TEXT_CHARS = 500;
 export const INTENT_TIMEOUT_MS = 15_000;
 export const DEFAULT_INTENT_MODEL = "claude-sonnet-5-5";
@@ -201,6 +214,44 @@ function unionKeepOrder<T>(base: T[], extra: T[]): T[] {
   const out = [...base];
   for (const item of extra) if (!out.includes(item)) out.push(item);
   return out;
+}
+
+function count(input: unknown): number | null {
+  const n = finiteNumber(input);
+  return n === null ? null : clamp(Math.round(n), 0, 999);
+}
+
+/** Validate the client's history summary. Anything not an enum or a count is dropped. */
+export function sanitizeHelpfulRoutines(raw: unknown): HelpfulRoutine[] {
+  if (!Array.isArray(raw)) return [];
+  const out: HelpfulRoutine[] = [];
+  for (const item of raw) {
+    if (out.length >= MAX_HELPFUL_ROUTINES) break;
+    if (!item || typeof item !== "object" || Array.isArray(item)) continue;
+    const o = item as Record<string, unknown>;
+    const scenario = pickEnum(o.scenario, SCENARIOS);
+    const commands = pickEnumList(o.commands, COMMANDS).kept;
+    const helped = count(o.helped);
+    const rated = count(o.rated);
+    if (!scenario || commands.length === 0 || helped === null || rated === null || helped > rated) continue;
+    out.push({ scenario, commands, helped, rated });
+  }
+  return out;
+}
+
+/** The user-turn text Claude sees. History, when present, is only enums and counts. */
+export function buildIntentUserMessage(text: string, history: HelpfulRoutine[] = []): string {
+  const lines = [`Caregiver description:\n${text}`];
+  if (history.length > 0) {
+    lines.push(
+      "",
+      "Routines that helped this person before (anonymous local history; prefer them when the description fits, never against safety rules):",
+      ...history.map(
+        (h) => `- ${h.scenario} with [${h.commands.join(", ")}]: helped ${h.helped} of ${h.rated} rated runs`
+      )
+    );
+  }
+  return lines.join("\n");
 }
 
 /** Escalated intents keep the preset environment and only the closing commands. */
@@ -467,6 +518,7 @@ export async function callClaudeIntent(input: {
   signal: AbortSignal;
   model?: string;
   fetchImpl?: typeof fetch;
+  history?: HelpfulRoutine[];
 }): Promise<ClaudeIntentResult> {
   const doFetch = input.fetchImpl ?? fetch;
   const model = input.model || (process.env.ANTHROPIC_MODEL || "").trim() || DEFAULT_INTENT_MODEL;
@@ -485,7 +537,7 @@ export async function callClaudeIntent(input: {
         model,
         max_tokens: 600,
         system,
-        messages: [{ role: "user", content: `Caregiver description:\n${input.text}` }],
+        messages: [{ role: "user", content: buildIntentUserMessage(input.text, input.history) }],
         output_config: structured
           ? { effort: "low", format: { type: "json_schema", schema: INTENT_SCHEMA } }
           : { effort: "low" },
@@ -541,6 +593,7 @@ export async function parseCareIntent(input: {
   model?: string;
   signal?: AbortSignal;
   fetchImpl?: typeof fetch;
+  history?: HelpfulRoutine[];
   onError?: (status: number, detail: string) => void;
 }): Promise<IntentResult> {
   const text = input.text.trim().slice(0, MAX_INTENT_TEXT_CHARS);
@@ -566,6 +619,7 @@ export async function parseCareIntent(input: {
       model: input.model,
       signal: input.signal ?? new AbortController().signal,
       fetchImpl: input.fetchImpl,
+      history: sanitizeHelpfulRoutines(input.history),
     });
 
     if (!result.ok) {
