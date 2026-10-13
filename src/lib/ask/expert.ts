@@ -83,8 +83,8 @@ const NO_SOURCES_NOTICE: Record<AskLang, string> = {
 const TERMS_SCHEMA = {
   type: "object",
   properties: {
-    terms: { type: "array", items: { type: "string" }, maxItems: 12 },
-    topics: { type: "array", items: { type: "string", enum: Object.keys(TOPIC_LABELS) }, maxItems: 3 },
+    terms: { type: "array", items: { type: "string" } },
+    topics: { type: "array", items: { type: "string", enum: Object.keys(TOPIC_LABELS) } },
   },
   required: ["terms", "topics"],
   additionalProperties: false,
@@ -134,7 +134,8 @@ async function callClaude(body: Record<string, unknown>, deps: ClaudeDeps): Prom
     body: JSON.stringify({ model: deps.model, ...body }),
   });
   const payload = (await res.json().catch(() => ({}))) as AnthropicPayload;
-  if (!res.ok) throw new Error(`${res.status} ${payload.error?.type ?? ""}`.trim());
+  // Status and API error text only (never the question) so failures can be diagnosed from logs.
+  if (!res.ok) throw new Error(`${res.status} ${payload.error?.type ?? ""}: ${payload.error?.message ?? ""}`.trim());
   return payload;
 }
 
