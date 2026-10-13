@@ -42,7 +42,15 @@ export const scenarioPresets: Record<ScenarioId, ScenarioPreset> = {
     visualCard: "Pause. Less light. Less sound. More space.",
     duration: 12,
     environment: { light: 22, sound: 12, distance: 2.4, pace: "slow" },
-    commands: ["reduce_sound", "lower_light", "step_back", "pause_interaction", "notify_caregiver", "log_observation"],
+    commands: [
+      "reduce_sound",
+      "lower_light",
+      "step_back",
+      "pause_interaction",
+      "offer_visual_card",
+      "notify_caregiver",
+      "log_observation",
+    ],
     exceptions: ["rejection_signal", "unusual_movement", "caregiver_pause", "unknown_event"],
   },
   possible_discomfort: {

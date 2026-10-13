@@ -46,6 +46,7 @@ Near-term research tools:
 - **Future Care Room** (`/labs/future-care-room`) — an interactive care-room simulation where caregiver settings become a living care protocol.
 - **Robot Care Interface** (`/labs/robot-interface`) — the technical protocol workspace: routine builder, simulator, audit trail, adapter packets (ROS2/MQTT/HTTP/offline).
 - **Care protocol engine** (`src/lib/careProtocol/`) — deterministic, local, tested (`npm test`).
+- **Companion** (`/companion`) — the care robot that starts on a phone: describe the situation, press Start, and the phone itself runs the plan.
 - **Care Agent** (`/care-agent`) — natural-language description → Claude interprets → the deterministic planner emits the protocol and adapter packets.
 - **Research collaboration** for ethics, privacy, accessibility, validation design, and future evidence-building.
 
@@ -158,6 +159,16 @@ A caregiver describes what is happening in Spanish, English or Swedish ("Leo se 
 3. **Safety exceptions cannot be skipped.** The preset's exceptions are a floor the model can only extend. A description of physical risk, self-injury or a medical emergency is caught locally before any network call (and by Claude as a second check): no automatic action is planned, only `notify_caregiver` and `log_observation`, with the message "This needs a person. If there is danger, call 112."
 
 Endpoint: `POST /api/protocol-from-text` with `{ text, lang, visionContext? }` (max 500 characters, 15 s timeout, the text is never logged). If Claude is unreachable the endpoint still answers from the presets and says so (`source: "fallback"`). The latest local NL-VISION snapshot is attached exactly as in the Care Room.
+
+## Companion (`/companion`)
+
+The robot is only a body. Neuroljus is the brain and the ethics. Today the body is the caregiver's phone; tomorrow a ROS2 robot receives the same `care_command_protocol_v0` under the same rules.
+
+- **Claude interprets, the deterministic planner decides, the caregiver presses Start.** Nothing runs on its own. Pause and a large Stop (`caregiver_pause`) stay on screen for the whole run.
+- **Body: this phone.** Each command maps to something the phone really does (`src/lib/companion/phoneBody.ts`): `lower_light` dims the screen progressively (overlay capped at 60 %, never black), `reduce_sound` plays soft brown noise generated with Web Audio (no files, gain capped, fade in/out), `pause_interaction` shows a quiet timer, `offer_visual_card` shows the routine card full screen, `notify_caregiver` vibrates and shows a notice, `log_observation` stores a structured local record (no text, no names). `step_back` is something a phone cannot do, so it becomes an instruction for the caregiver. The screen stays on with Wake Lock where available.
+- **The body never touches anyone.** It only steps back, lowers stimuli, offers visual support and notifies.
+- **Escalation.** Physical risk, self-injury, a medical emergency or anything that does not fit: no Start button, only `notify_caregiver` + `log_observation`, the message "This needs a person. If there is danger, call 112." and a call button.
+- **Local-first, low stimulation.** History stays on the device; the caregiver text is never logged. Soft colours, no flashing, large buttons, `prefers-reduced-motion` respected.
 
 ## Product Status
 

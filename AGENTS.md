@@ -19,6 +19,7 @@ Commands: `npm run dev` · `npm run build` · `npm run smoke` (tsc) · `npm test
   - `planner.ts` — `buildCarePlan()`: ordered/timed steps, human explanation, validation, attention flags, reflection questions, adapter packets (ROS2/MQTT/HTTP/offline). Also exports shared label maps.
   - `scenarios.ts` — shared scenario presets (evening transition, sensory overload, leaving home, meal support, school arrival).
   - `intentParser.ts` — Care Agent: caregiver text (es/en/sv) → Claude (structured output) → validated partial PlannerInput; risk screen escalates to notify+log only. Served by `src/pages/api/protocol-from-text.ts`, UI at `src/pages/care-agent.tsx`.
+- `src/lib/companion/` + `src/pages/companion.tsx` — Companion: the phone as the first robot body. `phoneBody.ts` maps each protocol command to a phone action and computes the phone state per minute (pure, tested); `phoneRuntime.ts` holds the browser effects (Web Audio brown noise, Wake Lock, vibration); `runLog.ts` is the local run record.
 - `tests/careProtocol.planner.test.ts` — 10 tests, run with `npm test`.
 - `src/pages/labs/robot-interface.tsx` — technical protocol workspace (builder, simulator, audit trail, protocol intelligence panel).
 - `src/pages/labs/future-care-room.tsx` — the public-facing interactive experience (care room scene, live controls, protocol layer, timeline). Linked from the landing page hero and labs cards.
