@@ -3,7 +3,8 @@ import Link from "next/link";
 import type { GetStaticProps } from "next";
 import { useCallback, useMemo, useState } from "react";
 import { useLang, type Lang } from "@/components/SiteLayout";
-import { LIBRARY_DOCS, TOPIC_LABELS, TOPIC_ORDER, type EvidenceKind, type TopicId } from "@/lib/library";
+import { LIBRARY_DOCS, type EvidenceKind } from "@/lib/library";
+import { TOPIC_LABELS, TOPIC_ORDER, type TopicId } from "@/lib/library/topics";
 
 /** What the page needs per document (abstracts stay on the server). */
 type Item = {
@@ -19,7 +20,7 @@ type Item = {
   license: string;
   topics: TopicId[];
   hasSheet: boolean;
-  seed: { claim: { es: string; en: string; sv: string }; supports: string; doesNotSupport: string } | null;
+  seed: { claim: { es: string; en: string; sv: string }; supports: { es: string; en: string; sv: string }; doesNotSupport: { es: string; en: string; sv: string } } | null;
 };
 
 type Props = { items: Item[]; counts: { total: number; strong: number; participatory: number; sheets: number; seeds: number } };
@@ -218,7 +219,7 @@ export default function LibraryPage({ items, counts }: Props) {
                     </a>
                   </p>
                   <p className="limits">
-                    <b>{t.supports}:</b> {s.seed!.supports} <b>{t.not}:</b> {s.seed!.doesNotSupport}
+                    <b>{t.supports}:</b> {s.seed!.supports[lang]} <b>{t.not}:</b> {s.seed!.doesNotSupport[lang]}
                   </p>
                 </li>
               ))}

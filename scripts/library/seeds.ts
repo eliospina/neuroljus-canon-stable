@@ -35,8 +35,8 @@ type Seed = {
   year: number;
   topics: TopicId[];
   claim: { es: string; en: string; sv: string };
-  supports: string;
-  doesNotSupport: string;
+  supports: { es: string; en: string; sv: string };
+  doesNotSupport: { es: string; en: string; sv: string };
 };
 
 export const SEEDS: Seed[] = [
@@ -49,8 +49,16 @@ export const SEEDS: Seed[] = [
       en: "Sensory differences (over- and under-responsivity, sensory seeking) are very common in autism and larger than in other groups.",
       sv: "Sensoriska skillnader (över- och underreaktivitet, sensoriskt sökande) är mycket vanliga vid autism och större än i andra grupper.",
     },
-    supports: "Taking sound, light and touch load seriously as a first step in care.",
-    doesNotSupport: "That every autistic person has the same sensory profile; profiles are individual.",
+    supports: {
+      es: "Tomar en serio la carga de sonido, luz y tacto como primer paso del cuidado.",
+      en: "Taking sound, light and touch load seriously as a first step in care.",
+      sv: "Att ta ljud-, ljus- och beröringsbelastning på allvar som ett första steg i omsorgen.",
+    },
+    doesNotSupport: {
+      es: "Que todas las personas autistas tengan el mismo perfil sensorial; los perfiles son individuales.",
+      en: "That every autistic person has the same sensory profile; profiles are individual.",
+      sv: "Att alla autistiska personer har samma sensoriska profil; profilerna är individuella.",
+    },
   },
   {
     title: "Sensory perception in autism",
@@ -61,8 +69,16 @@ export const SEEDS: Seed[] = [
       en: "Atypical sensory perception is a core feature of autism tied to daily wellbeing, not a side detail.",
       sv: "Avvikande sensorisk perception är ett centralt drag vid autism kopplat till dagligt välbefinnande, inte en bisak.",
     },
-    supports: "Adapting environments (noise, light, crowds) before adding demands.",
-    doesNotSupport: "A single mechanism or 'cure' for sensory differences.",
+    supports: {
+      es: "Adaptar el entorno (ruido, luz, gente) antes de añadir exigencias.",
+      en: "Adapting environments (noise, light, crowds) before adding demands.",
+      sv: "Att anpassa miljön (ljud, ljus, folkmängd) innan man ställer krav.",
+    },
+    doesNotSupport: {
+      es: "Un único mecanismo o una «cura» de las diferencias sensoriales.",
+      en: "A single mechanism or 'cure' for sensory differences.",
+      sv: "En enda mekanism eller ett «botemedel» för sensoriska skillnader.",
+    },
   },
   {
     title: "The Current View on the Paradox of Pain in Autism Spectrum Disorders",
@@ -73,8 +89,16 @@ export const SEEDS: Seed[] = [
       en: "The old idea of 'pain indifference' in autism is wrong: pain is expressed atypically and often missed.",
       sv: "Den gamla idén om 'smärtokänslighet' vid autism är fel: smärta uttrycks annorlunda och missas ofta.",
     },
-    supports: "Treating a change in behaviour as a possible pain signal worth checking.",
-    doesNotSupport: "That caregivers or cameras can measure pain; pain remains a hypothesis to check with healthcare.",
+    supports: {
+      es: "Tratar un cambio de conducta como posible señal de dolor que merece comprobarse.",
+      en: "Treating a change in behaviour as a possible pain signal worth checking.",
+      sv: "Att se en beteendeförändring som en möjlig smärtsignal värd att kontrollera.",
+    },
+    doesNotSupport: {
+      es: "Que cuidadores o cámaras puedan medir el dolor; el dolor sigue siendo una hipótesis que se comprueba con sanidad.",
+      en: "That caregivers or cameras can measure pain; pain remains a hypothesis to check with healthcare.",
+      sv: "Att vårdgivare eller kameror kan mäta smärta; smärta förblir en hypotes att kontrollera med vården.",
+    },
   },
   {
     title: "Indifference or hypersensitivity? Solving the riddle of the pain profile in individuals with autism",
@@ -85,8 +109,16 @@ export const SEEDS: Seed[] = [
       en: "Autistic adults rated heat pain higher and showed a pronociceptive profile: more sensitivity, not less.",
       sv: "Autistiska vuxna skattade värmesmärta högre och visade en pronociceptiv profil: mer känslighet, inte mindre.",
     },
-    supports: "Not assuming a person 'doesn't mind' a procedure or an injury.",
-    doesNotSupport: "A universal rule for every person; experimental pain differs from daily pain.",
+    supports: {
+      es: "No dar por hecho que a la persona «no le importa» un procedimiento o una lesión.",
+      en: "Not assuming a person 'doesn't mind' a procedure or an injury.",
+      sv: "Att inte anta att en person «inte bryr sig» om ett ingrepp eller en skada.",
+    },
+    doesNotSupport: {
+      es: "Una regla universal para todas las personas; el dolor experimental no es el dolor cotidiano.",
+      en: "A universal rule for every person; experimental pain differs from daily pain.",
+      sv: "En universell regel för alla; experimentell smärta skiljer sig från vardaglig smärta.",
+    },
   },
   {
     title: "Effects of augmentative and alternative communication intervention on speech production in children with autism: a systematic review",
@@ -97,8 +129,16 @@ export const SEEDS: Seed[] = [
       en: "Augmentative and alternative communication (pictures, devices) does not hold back speech; in several cases it helps it.",
       sv: "Alternativ och kompletterande kommunikation (bilder, hjälpmedel) hindrar inte talet; i flera fall hjälper den.",
     },
-    supports: "Offering AAC early and without waiting for speech.",
-    doesNotSupport: "That AAC alone produces speech, or that one system suits everyone.",
+    supports: {
+      es: "Ofrecer CAA pronto y sin esperar al habla.",
+      en: "Offering AAC early and without waiting for speech.",
+      sv: "Att erbjuda AKK tidigt och utan att vänta på tal.",
+    },
+    doesNotSupport: {
+      es: "Que la CAA por sí sola produzca habla, o que un solo sistema sirva para todos.",
+      en: "That AAC alone produces speech, or that one system suits everyone.",
+      sv: "Att AKK i sig ger tal, eller att ett system passar alla.",
+    },
   },
   {
     title: "A meta-analysis of single case research studies on aided augmentative and alternative communication systems with individuals with autism spectrum disorders",
@@ -109,8 +149,16 @@ export const SEEDS: Seed[] = [
       en: "Aided AAC systems (PECS, speech-generating devices) have positive effects on communication for autistic people.",
       sv: "Hjälpmedelsbaserad AKK (PECS, talhjälpmedel) har positiva effekter på kommunikation för autistiska personer.",
     },
-    supports: "Giving a non-speaking person a reliable way to request, refuse and comment.",
-    doesNotSupport: "That communication only counts when it is speech.",
+    supports: {
+      es: "Dar a una persona no hablante una forma fiable de pedir, rechazar y comentar.",
+      en: "Giving a non-speaking person a reliable way to request, refuse and comment.",
+      sv: "Att ge en icke-talande person ett pålitligt sätt att be om, avböja och kommentera.",
+    },
+    doesNotSupport: {
+      es: "Que la comunicación solo cuente cuando es habla.",
+      en: "That communication only counts when it is speech.",
+      sv: "Att kommunikation bara räknas när den är tal.",
+    },
   },
   {
     title: "People should be allowed to do what they like: Autistic adults' views and experiences of stimming",
@@ -121,8 +169,16 @@ export const SEEDS: Seed[] = [
       en: "Autistic adults describe stimming (repetitive movement) as a way to self-regulate under overload; suppressing it is harmful.",
       sv: "Autistiska vuxna beskriver stimming (repetitiva rörelser) som ett sätt att reglera sig vid överbelastning; att stoppa det skadar.",
     },
-    supports: "Leaving room for self-regulation instead of 'quiet hands'.",
-    doesNotSupport: "Ignoring movement that injures the person; safety still comes first.",
+    supports: {
+      es: "Dejar espacio a la autorregulación en vez de «manos quietas».",
+      en: "Leaving room for self-regulation instead of 'quiet hands'.",
+      sv: "Att ge utrymme för självreglering i stället för «stilla händer».",
+    },
+    doesNotSupport: {
+      es: "Ignorar movimientos que lesionan a la persona; la seguridad sigue siendo lo primero.",
+      en: "Ignoring movement that injures the person; safety still comes first.",
+      sv: "Att ignorera rörelser som skadar personen; säkerheten kommer fortfarande först.",
+    },
   },
   {
     title: "The 'double empathy problem': Ten years on",
@@ -133,8 +189,16 @@ export const SEEDS: Seed[] = [
       en: "Misunderstanding runs both ways: non-autistic people also struggle to read autistic people. It is not a one-sided deficit.",
       sv: "Missförstånd går åt båda hållen: icke-autistiska personer har också svårt att läsa autistiska. Det är inte en ensidig brist.",
     },
-    supports: "Caregivers adapting their own communication, not only the person's.",
-    doesNotSupport: "That communication support is unnecessary.",
+    supports: {
+      es: "Que los cuidadores adapten su propia comunicación, no solo la de la persona.",
+      en: "Caregivers adapting their own communication, not only the person's.",
+      sv: "Att vårdgivare anpassar sin egen kommunikation, inte bara personens.",
+    },
+    doesNotSupport: {
+      es: "Que el apoyo a la comunicación sea innecesario.",
+      en: "That communication support is unnecessary.",
+      sv: "Att kommunikationsstöd är onödigt.",
+    },
   },
   {
     title: "Autistic peer-to-peer information transfer is highly effective",
@@ -145,8 +209,16 @@ export const SEEDS: Seed[] = [
       en: "Information flows between autistic people as well as between non-autistic people; it breaks down in mixed groups.",
       sv: "Information flödar lika bra mellan autistiska personer som mellan icke-autistiska; den bryts i blandade grupper.",
     },
-    supports: "Valuing autistic peers and self-advocates as a resource.",
-    doesNotSupport: "That autistic people lack social ability.",
+    supports: {
+      es: "Valorar a iguales autistas y autodefensores como un recurso.",
+      en: "Valuing autistic peers and self-advocates as a resource.",
+      sv: "Att värdera autistiska jämlikar och självförespråkare som en resurs.",
+    },
+    doesNotSupport: {
+      es: "Que las personas autistas carezcan de capacidad social.",
+      en: "That autistic people lack social ability.",
+      sv: "Att autistiska personer saknar social förmåga.",
+    },
   },
   {
     title: "Making the future together: Shaping autism research through meaningful participation",
@@ -157,8 +229,16 @@ export const SEEDS: Seed[] = [
       en: "Autism research is more useful and respectful when autistic people take part in designing it.",
       sv: "Autismforskning blir mer användbar och respektfull när autistiska personer deltar i utformningen.",
     },
-    supports: "Building tools with autistic people, not only for them.",
-    doesNotSupport: "Any specific intervention; this is about how knowledge is made.",
+    supports: {
+      es: "Construir herramientas con personas autistas, no solo para ellas.",
+      en: "Building tools with autistic people, not only for them.",
+      sv: "Att bygga verktyg tillsammans med autistiska personer, inte bara för dem.",
+    },
+    doesNotSupport: {
+      es: "Ninguna intervención concreta; trata de cómo se construye el conocimiento.",
+      en: "Any specific intervention; this is about how knowledge is made.",
+      sv: "Ingen specifik insats; det handlar om hur kunskap skapas.",
+    },
   },
   {
     title: "Avoiding Ableist Language: Suggestions for Autism Researchers",
@@ -169,8 +249,16 @@ export const SEEDS: Seed[] = [
       en: "The words we use about autism matter: terms like 'challenging behaviour' or 'low functioning' stigmatise.",
       sv: "Orden vi använder om autism spelar roll: uttryck som 'utmanande beteende' eller 'lågfungerande' stigmatiserar.",
     },
-    supports: "Describing what happened and what helped, not labelling the person.",
-    doesNotSupport: "That everyone must use identical words; preferences vary and should be asked.",
+    supports: {
+      es: "Describir qué pasó y qué ayudó, sin etiquetar a la persona.",
+      en: "Describing what happened and what helped, not labelling the person.",
+      sv: "Att beskriva vad som hände och vad som hjälpte, inte att etikettera personen.",
+    },
+    doesNotSupport: {
+      es: "Que todos deban usar las mismas palabras; las preferencias varían y hay que preguntarlas.",
+      en: "That everyone must use identical words; preferences vary and should be asked.",
+      sv: "Att alla måste använda samma ord; preferenser varierar och bör efterfrågas.",
+    },
   },
   {
     title: "Anxiety disorders in children and adolescents with autistic spectrum disorders: a meta-analysis",
@@ -181,8 +269,16 @@ export const SEEDS: Seed[] = [
       en: "About 40% of autistic children and adolescents have at least one anxiety disorder; anxiety is common, not rare.",
       sv: "Omkring 40 % av autistiska barn och ungdomar har minst ett ångestsyndrom; ångest är vanligt, inte ovanligt.",
     },
-    supports: "Reading agitation or refusal as possible anxiety and reducing uncertainty.",
-    doesNotSupport: "Diagnosing anxiety at home; that is for clinicians.",
+    supports: {
+      es: "Leer la agitación o el rechazo como posible ansiedad y reducir la incertidumbre.",
+      en: "Reading agitation or refusal as possible anxiety and reducing uncertainty.",
+      sv: "Att tolka oro eller vägran som möjlig ångest och minska osäkerheten.",
+    },
+    doesNotSupport: {
+      es: "Diagnosticar ansiedad en casa; eso es cosa de profesionales clínicos.",
+      en: "Diagnosing anxiety at home; that is for clinicians.",
+      sv: "Att diagnostisera ångest hemma; det är klinikers sak.",
+    },
   },
   {
     title: "Feeding problems and nutrient intake in children with autism spectrum disorders: a meta-analysis and comprehensive review",
@@ -193,8 +289,16 @@ export const SEEDS: Seed[] = [
       en: "Autistic children have far more feeding difficulties (selectivity, refusal) than other children.",
       sv: "Autistiska barn har betydligt fler svårigheter med mat (selektivitet, vägran) än andra barn.",
     },
-    supports: "Lowering pressure at meals and respecting sensory limits around food.",
-    doesNotSupport: "Forcing foods; nutrition concerns go to a clinician.",
+    supports: {
+      es: "Bajar la presión en las comidas y respetar los límites sensoriales con la comida.",
+      en: "Lowering pressure at meals and respecting sensory limits around food.",
+      sv: "Att sänka pressen vid måltider och respektera sensoriska gränser kring mat.",
+    },
+    doesNotSupport: {
+      es: "Forzar alimentos; las dudas de nutrición van a un profesional.",
+      en: "Forcing foods; nutrition concerns go to a clinician.",
+      sv: "Att tvinga i mat; näringsfrågor går till en kliniker.",
+    },
   },
   {
     title: "The impact of parenting stress: a meta-analysis of studies comparing the experience of parenting stress in parents of children with and without autism spectrum disorder",
@@ -205,8 +309,16 @@ export const SEEDS: Seed[] = [
       en: "Parents of autistic children show clearly higher stress than other parents; caregiver support is part of care.",
       sv: "Föräldrar till autistiska barn visar tydligt högre stress än andra föräldrar; stöd till vårdgivaren är en del av omsorgen.",
     },
-    supports: "Planning rest and support for the caregiver, not only routines for the person.",
-    doesNotSupport: "Blaming the child for family stress.",
+    supports: {
+      es: "Planificar descanso y apoyo para quien cuida, no solo rutinas para la persona.",
+      en: "Planning rest and support for the caregiver, not only routines for the person.",
+      sv: "Att planera vila och stöd för vårdgivaren, inte bara rutiner för personen.",
+    },
+    doesNotSupport: {
+      es: "Culpar al niño o la niña del estrés familiar.",
+      en: "Blaming the child for family stress.",
+      sv: "Att skylla familjens stress på barnet.",
+    },
   },
   {
     title: "What is the male-to-female ratio in autism spectrum disorder? A systematic review and meta-analysis",
@@ -217,8 +329,16 @@ export const SEEDS: Seed[] = [
       en: "The true male-to-female ratio in autism is closer to 3:1, not 4:1: many girls and women go unidentified.",
       sv: "Den verkliga könsfördelningen vid autism är närmare 3:1, inte 4:1: många flickor och kvinnor förblir oidentifierade.",
     },
-    supports: "Taking a girl's or woman's needs seriously even without a 'typical' presentation.",
-    doesNotSupport: "Any diagnosis; identification is clinical.",
+    supports: {
+      es: "Tomar en serio las necesidades de una niña o mujer aunque no tenga una presentación «típica».",
+      en: "Taking a girl's or woman's needs seriously even without a 'typical' presentation.",
+      sv: "Att ta en flickas eller kvinnas behov på allvar även utan en «typisk» bild.",
+    },
+    doesNotSupport: {
+      es: "Ningún diagnóstico; la identificación es clínica.",
+      en: "Any diagnosis; identification is clinical.",
+      sv: "Ingen diagnos; identifiering är klinisk.",
+    },
   },
   {
     title: "Putting on My Best Normal: Social Camouflaging in Adults with Autism Spectrum Conditions",
@@ -229,8 +349,16 @@ export const SEEDS: Seed[] = [
       en: "Many autistic adults, especially women, camouflage their traits to fit in; they describe it as exhausting and costly for mental health.",
       sv: "Många autistiska vuxna, särskilt kvinnor, kamouflerar sina drag för att passa in; de beskriver det som utmattande och kostsamt för den psykiska hälsan.",
     },
-    supports: "Allowing rest and 'unmasked' time at home and school.",
-    doesNotSupport: "That camouflaging is only a female phenomenon.",
+    supports: {
+      es: "Permitir descanso y tiempo «sin máscara» en casa y en la escuela.",
+      en: "Allowing rest and 'unmasked' time at home and school.",
+      sv: "Att tillåta vila och tid «utan mask» hemma och i skolan.",
+    },
+    doesNotSupport: {
+      es: "Que el camuflaje sea solo un fenómeno femenino.",
+      en: "That camouflaging is only a female phenomenon.",
+      sv: "Att kamouflering bara är ett kvinnligt fenomen.",
+    },
   },
   {
     title: "Having All of Your Internal Resources Exhausted Beyond Measure and Being Left with No Clean-Up Crew",
@@ -241,8 +369,16 @@ export const SEEDS: Seed[] = [
       en: "'Autistic burnout' — deep exhaustion, loss of skills, less tolerance to stimuli — is described by autistic adults as the result of sustained demands without support.",
       sv: "'Autistisk utmattning' — djup trötthet, förlust av färdigheter, mindre tolerans för stimuli — beskrivs av autistiska vuxna som följden av ihållande krav utan stöd.",
     },
-    supports: "Reducing demands and sensory load when capacity drops, instead of pushing through.",
-    doesNotSupport: "A clinical diagnosis; this is a lived-experience definition.",
+    supports: {
+      es: "Reducir exigencias y carga sensorial cuando baja la capacidad, en vez de forzar.",
+      en: "Reducing demands and sensory load when capacity drops, instead of pushing through.",
+      sv: "Att minska krav och sensorisk belastning när kapaciteten sjunker, i stället för att pressa på.",
+    },
+    doesNotSupport: {
+      es: "Un diagnóstico clínico; es una definición desde la experiencia vivida.",
+      en: "A clinical diagnosis; this is a lived-experience definition.",
+      sv: "En klinisk diagnos; det här är en definition utifrån levd erfarenhet.",
+    },
   },
   {
     title: "Sleep problems in autism spectrum disorders: prevalence, nature, & possible biopsychosocial aetiologies",
@@ -253,8 +389,16 @@ export const SEEDS: Seed[] = [
       en: "Sleep problems affect a large share of autistic children (often 40-80%) and make the next day harder.",
       sv: "Sömnproblem drabbar en stor andel autistiska barn (ofta 40-80 %) och gör nästa dag svårare.",
     },
-    supports: "A predictable, low-stimulus evening routine as a first measure.",
-    doesNotSupport: "Medication decisions; melatonin and other treatments are for clinicians.",
+    supports: {
+      es: "Una rutina de noche predecible y de baja estimulación como primera medida.",
+      en: "A predictable, low-stimulus evening routine as a first measure.",
+      sv: "En förutsägbar kvällsrutin med låg stimulans som första åtgärd.",
+    },
+    doesNotSupport: {
+      es: "Decisiones sobre medicación; la melatonina y otros tratamientos son cosa de profesionales.",
+      en: "Medication decisions; melatonin and other treatments are for clinicians.",
+      sv: "Beslut om medicinering; melatonin och andra behandlingar är klinikers sak.",
+    },
   },
   {
     title: "Evidence-Based Practices for Children, Youth, and Young Adults with Autism Spectrum Disorder: A Comprehensive Review",
@@ -265,8 +409,16 @@ export const SEEDS: Seed[] = [
       en: "A review of 29,000 articles identified 27 evidence-based practices, including visual supports, video modelling, social narratives and augmentative communication instruction.",
       sv: "En genomgång av 29 000 artiklar identifierade 27 evidensbaserade metoder, bland dem visuellt stöd, videomodellering, sociala berättelser och undervisning i alternativ kommunikation.",
     },
-    supports: "Preparing transitions (dentist, school, outings) with pictures, video or a short story of what will happen.",
-    doesNotSupport: "That a practice works for everyone or replaces listening to the person in the moment.",
+    supports: {
+      es: "Preparar transiciones (dentista, escuela, salidas) con imágenes, vídeo o una historia corta de lo que va a pasar.",
+      en: "Preparing transitions (dentist, school, outings) with pictures, video or a short story of what will happen.",
+      sv: "Att förbereda övergångar (tandläkare, skola, utflykter) med bilder, video eller en kort berättelse om vad som ska hända.",
+    },
+    doesNotSupport: {
+      es: "Que una práctica funcione para todos o sustituya escuchar a la persona en el momento.",
+      en: "That a practice works for everyone or replaces listening to the person in the moment.",
+      sv: "Att en metod fungerar för alla eller ersätter att lyssna på personen i stunden.",
+    },
   },
   {
     title: "Evaluating visual activity schedules as evidence-based practice for individuals with autism spectrum disorders",
@@ -277,8 +429,16 @@ export const SEEDS: Seed[] = [
       en: "Visual activity schedules (picture sequences of what comes next) are an evidence-based practice for transitions and independence.",
       sv: "Visuella scheman (bildsekvenser av vad som kommer) är en evidensbaserad metod för övergångar och självständighet.",
     },
-    supports: "The visual card in every Companion routine.",
-    doesNotSupport: "That schedules remove the need to listen to the person's refusal.",
+    supports: {
+      es: "La tarjeta visual de cada rutina de Companion.",
+      en: "The visual card in every Companion routine.",
+      sv: "Bildkortet i varje Companion-rutin.",
+    },
+    doesNotSupport: {
+      es: "Que los horarios eliminen la necesidad de escuchar el «no» de la persona.",
+      en: "That schedules remove the need to listen to the person's refusal.",
+      sv: "Att scheman tar bort behovet av att lyssna på personens nej.",
+    },
   },
   {
     title: "Sensory adapted dental environments to enhance oral care for children with autism spectrum disorders",
@@ -289,8 +449,16 @@ export const SEEDS: Seed[] = [
       en: "A sensory-adapted dental environment (dim light, less noise, deep pressure) reduced stress and discomfort for autistic children during cleaning.",
       sv: "En sensoriskt anpassad tandvårdsmiljö (dämpat ljus, mindre ljud, djupt tryck) minskade stress och obehag hos autistiska barn vid rengöring.",
     },
-    supports: "Asking a clinic for lower light and sound and a predictable sequence.",
-    doesNotSupport: "That adaptation removes the need for consent and pauses.",
+    supports: {
+      es: "Pedir a la clínica menos luz y sonido y una secuencia predecible.",
+      en: "Asking a clinic for lower light and sound and a predictable sequence.",
+      sv: "Att be kliniken om mindre ljus och ljud och en förutsägbar ordning.",
+    },
+    doesNotSupport: {
+      es: "Que la adaptación elimine la necesidad de consentimiento y pausas.",
+      en: "That adaptation removes the need for consent and pauses.",
+      sv: "Att anpassning tar bort behovet av samtycke och pauser.",
+    },
   },
   {
     title: "Comparison of healthcare experiences in autistic and non-autistic adults: a cross-sectional online survey",
@@ -301,8 +469,16 @@ export const SEEDS: Seed[] = [
       en: "Autistic adults report worse communication with healthcare providers and more unmet needs than non-autistic adults.",
       sv: "Autistiska vuxna rapporterar sämre kommunikation med vårdpersonal och fler ouppfyllda behov än icke-autistiska vuxna.",
     },
-    supports: "Bringing a written summary and the person's communication preferences to appointments.",
-    doesNotSupport: "That healthcare should be avoided; it means it must be made accessible.",
+    supports: {
+      es: "Llevar a las citas un resumen escrito y las preferencias de comunicación de la persona.",
+      en: "Bringing a written summary and the person's communication preferences to appointments.",
+      sv: "Att ta med en skriftlig sammanfattning och personens kommunikationspreferenser till besök.",
+    },
+    doesNotSupport: {
+      es: "Que haya que evitar la sanidad; significa que debe hacerse accesible.",
+      en: "That healthcare should be avoided; it means it must be made accessible.",
+      sv: "Att vården ska undvikas; det betyder att den måste göras tillgänglig.",
+    },
   },
   {
     title: "Employment and post-secondary educational activities for young adults with autism spectrum disorders during the transition to adulthood",
@@ -313,8 +489,16 @@ export const SEEDS: Seed[] = [
       en: "After school, a large share of autistic young adults have no job or training, especially those needing more support: the transition to adulthood needs planning.",
       sv: "Efter skolan saknar en stor andel autistiska unga vuxna arbete eller utbildning, särskilt de med större stödbehov: övergången till vuxenlivet kräver planering.",
     },
-    supports: "Starting transition planning years before school ends.",
-    doesNotSupport: "That outcomes are fixed; supports change them.",
+    supports: {
+      es: "Empezar a planificar la transición años antes de que acabe la escuela.",
+      en: "Starting transition planning years before school ends.",
+      sv: "Att börja planera övergången flera år innan skolan tar slut.",
+    },
+    doesNotSupport: {
+      es: "Que los resultados estén fijados; los apoyos los cambian.",
+      en: "That outcomes are fixed; supports change them.",
+      sv: "Att utfallen är givna; stöd förändrar dem.",
+    },
   },
 ];
 

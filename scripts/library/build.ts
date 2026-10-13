@@ -23,7 +23,7 @@ function main() {
     docs.map((d) => ({
       ...d,
       sheetEn: sheetText(d),
-      seedEn: d.seed ? `${d.seed.claim.en} ${d.seed.supports}` : "",
+      seedEn: d.seed ? `${d.seed.claim.en} ${d.seed.supports.en}` : "",
     }))
   );
   mkdirSync(path.dirname(INDEX_PATH), { recursive: true });

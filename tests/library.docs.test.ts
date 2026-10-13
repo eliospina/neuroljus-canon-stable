@@ -44,7 +44,8 @@ test("seed findings are present, trilingual and carry their limits", () => {
   assert.ok(seeds.length >= 18, `only ${seeds.length} seeds`);
   for (const d of seeds) {
     assert.ok(d.seed!.claim.es && d.seed!.claim.en && d.seed!.claim.sv);
-    assert.ok(d.seed!.doesNotSupport.length > 10);
+    assert.ok(d.seed!.doesNotSupport.es && d.seed!.doesNotSupport.en && d.seed!.doesNotSupport.sv);
+    assert.ok(d.seed!.supports.es && d.seed!.supports.sv);
     assert.doesNotMatch(d.seed!.claim.en, /\b(cure|diagnos(e|is) (your|the) child)\b/i);
   }
 });

@@ -174,7 +174,7 @@ export function retrieve(terms: string, topics: TopicId[]): LibraryDoc[] {
 
 export function documentText(d: LibraryDoc): string {
   const parts = [`${d.title} (${d.year}). ${d.kind.replace("_", " ")}${d.participatory ? ", research with autistic people" : ""}.`];
-  if (d.seed) parts.push(`Key finding: ${d.seed.claim.en} Supports: ${d.seed.supports} Does not support: ${d.seed.doesNotSupport}`);
+  if (d.seed) parts.push(`Key finding: ${d.seed.claim.en} Supports: ${d.seed.supports.en} Does not support: ${d.seed.doesNotSupport.en}`);
   if (d.sheet) parts.push(`Practical sheet: ${d.sheet.en}`);
   if (d.abstract) parts.push(d.abstract);
   return parts.join("\n\n");
