@@ -523,6 +523,7 @@ export default function FutureCareRoom() {
           <nav className="navLinks" aria-label="Labs">
             <Link href="/labs/nl-vision">NL-VISION</Link>
             <Link href="/labs/robot-interface">Protocol Workspace</Link>
+            <Link href="/care-agent">Care Agent</Link>
             <Link href="/">Platform</Link>
           </nav>
           <div className="navRight">

@@ -6,6 +6,11 @@ type Lang = "sv" | "en" | "es";
 
 const modules = [
   {
+    id: "MOD.CARE_AGENT",
+    href: "/care-agent",
+    path: "/care-agent",
+  },
+  {
     id: "MOD.CARE_ROOM",
     href: "/labs/future-care-room",
     path: "/labs/future-care-room",
@@ -57,6 +62,7 @@ export default function Home() {
         navLabs: "Labs",
         navVision: "NL-VISION",
         navProtocol: "Protokoll",
+        navAgent: "Care Agent",
         navAbout: "Om",
         navContact: "Kontakt",
         pillRuntime: "runtime",
@@ -92,6 +98,8 @@ export default function Home() {
         ex1: "rejection_signal → STOP · notify_caregiver",
         ex2: "caregiver_pause → STOP · hand_back",
         modulesTitle: "Distribuerade moduler",
+        modAgentTitle: "Care Agent",
+        modAgentBody: "Beskriv situationen med ord. Claude tolkar, planeraren beslutar, roboten får protokollet.",
         modCareTitle: "Care Room",
         modCareBody: "Interaktiv miljösimulering + Story Mode. Ljus, ljud, avstånd → levande protokoll.",
         modProtoTitle: "Protocol Workspace",
@@ -152,6 +160,7 @@ export default function Home() {
         navLabs: "Labs",
         navVision: "NL-VISION",
         navProtocol: "Protocol",
+        navAgent: "Care Agent",
         navAbout: "About",
         navContact: "Contact",
         pillRuntime: "runtime",
@@ -187,6 +196,8 @@ export default function Home() {
         ex1: "rejection_signal → STOP · notify_caregiver",
         ex2: "caregiver_pause → STOP · hand_back",
         modulesTitle: "Deployed modules",
+        modAgentTitle: "Care Agent",
+        modAgentBody: "Describe the situation in words. Claude interprets, the planner decides, the robot gets the protocol.",
         modCareTitle: "Care Room",
         modCareBody: "Interactive environment simulation + Story Mode. Light, sound, distance → live protocol.",
         modProtoTitle: "Protocol Workspace",
@@ -247,6 +258,7 @@ export default function Home() {
         navLabs: "Labs",
         navVision: "NL-VISION",
         navProtocol: "Protocolo",
+        navAgent: "Care Agent",
         navAbout: "Sobre",
         navContact: "Contacto",
         pillRuntime: "runtime",
@@ -282,6 +294,8 @@ export default function Home() {
         ex1: "rejection_signal → STOP · notify_caregiver",
         ex2: "caregiver_pause → STOP · hand_back",
         modulesTitle: "Módulos desplegados",
+        modAgentTitle: "Care Agent",
+        modAgentBody: "Describe la situación con palabras. Claude interpreta, el planner decide, el robot recibe el protocolo.",
         modCareTitle: "Care Room",
         modCareBody: "Simulación interactiva + Story Mode. Luz, sonido, distancia → protocolo vivo.",
         modProtoTitle: "Protocol Workspace",
@@ -340,6 +354,7 @@ export default function Home() {
   const copy = T[lang];
 
   const moduleCopy = [
+    { title: copy.modAgentTitle, body: copy.modAgentBody },
     { title: copy.modCareTitle, body: copy.modCareBody },
     { title: copy.modProtoTitle, body: copy.modProtoBody },
     { title: copy.modVisionTitle, body: copy.modVisionBody },
@@ -381,6 +396,7 @@ export default function Home() {
             <Link href="/labs/future-care-room">{copy.navLabs}</Link>
             <Link href="/labs/nl-vision">{copy.navVision}</Link>
             <Link href="/labs/robot-interface">{copy.navProtocol}</Link>
+            <Link href="/care-agent">{copy.navAgent}</Link>
             <Link href="/about">{copy.navAbout}</Link>
             <Link href="/contact">{copy.navContact}</Link>
           </nav>
@@ -543,9 +559,9 @@ export default function Home() {
               <a className="ctaBtn" href={copy.ctaHref}>
                 {copy.ctaBtn}
               </a>
-              <a className="ctaSecondary" href="/labs/nl-vision">
+              <Link className="ctaSecondary" href="/labs/nl-vision">
                 {copy.ctaVision}
-              </a>
+              </Link>
             </div>
           </section>
         </main>
