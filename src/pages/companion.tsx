@@ -28,6 +28,14 @@ import { addRun, readRuns, type CompanionRun, type RunEnd } from "@/lib/companio
 import { helpfulSummary, OUTCOMES, rankRoutines, routineKey, setRunOutcome, type Outcome } from "@/lib/companion/outcomes";
 import { addPatternNote } from "@/lib/carePatterns/localStore";
 import {
+  DEFAULT_ENTITIES,
+  homeAssistantScript,
+  sanitizeEntities,
+  type HomeEntities,
+} from "@/lib/companion/homeAssistant";
+import {
+  BODIES,
+  BODY_UI,
   CARD_PICTOS,
   COMMAND_LABELS,
   CONSTRAINT_TEXT,
@@ -42,8 +50,11 @@ import {
   SILENT_PHONE_TEXT,
   UI,
   VISUAL_CARDS,
+  type BodyId,
   type CompanionLang,
 } from "@/lib/companion/i18n";
+
+const ENTITIES_KEY = "neuroljus.companion.ha_entities.v0";
 
 type AgentResponse = {
   ok: true;
@@ -94,6 +105,7 @@ export default function CompanionPage() {
   const copy = UI[lang];
   const pcopy = PROFILE_UI[lang];
   const ocopy = OUTCOME_UI[lang];
+  const bcopy = BODY_UI[lang];
 
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
@@ -111,6 +123,9 @@ export default function CompanionPage() {
   const [lastRunId, setLastRunId] = useState<string | null>(null);
   const [rated, setRated] = useState<Outcome | null>(null);
   const [showHelps, setShowHelps] = useState(false);
+  const [body, setBody] = useState<BodyId>("phone");
+  const [entities, setEntities] = useState<HomeEntities>(DEFAULT_ENTITIES);
+  const [copiedBody, setCopiedBody] = useState(false);
 
   const elapsedBefore = useRef(0); // ms accumulated before the current segment
   const segmentStart = useRef(0);
@@ -128,12 +143,24 @@ export default function CompanionPage() {
     try {
       setProfile(readProfile(window.localStorage));
       setRuns(readRuns(window.localStorage));
+      const storedEntities = window.localStorage.getItem(ENTITIES_KEY);
+      if (storedEntities) setEntities(sanitizeEntities(JSON.parse(storedEntities) as Partial<HomeEntities>));
     } catch {
       setProfile(null);
     }
   }, []);
 
   const ranked = useMemo(() => rankRoutines(runs), [runs]);
+
+  const updateEntity = (key: keyof HomeEntities, value: string) => {
+    const next = { ...entities, [key]: value };
+    setEntities(next);
+    try {
+      window.localStorage.setItem(ENTITIES_KEY, JSON.stringify(sanitizeEntities(next)));
+    } catch {
+      /* storage unavailable */
+    }
+  };
 
   // The person's profile is a hard limit: fused in code, then the plan is rebuilt locally.
   const fusion = useMemo(() => (result ? applyProfile(result.plannerInput, profile) : null), [result, profile]);
@@ -318,6 +345,37 @@ export default function CompanionPage() {
     },
     [text, busy, lang, vision, runs, copy.error]
   );
+
+  const bodyPackage = useMemo(() => {
+    if (!plan || !fusion || body === "phone") return "";
+    if (body === "home") {
+      const card = VISUAL_CARDS[lang][fusion.input.scenario];
+      return homeAssistantScript({
+        routine: fusion.input.routineName,
+        scenario: fusion.input.scenario,
+        environment: fusion.input.environment,
+        steps: plan.steps,
+        entities: sanitizeEntities(entities),
+        notifyMessage: fill(bcopy.notifyMessage, { routine: SCENARIO_NAMES[lang][fusion.input.scenario] }),
+        caregiverNotes: {
+          step_back: fill(bcopy.noteStepBack, { distance: fusion.input.environment.distance.toFixed(1) }),
+          pause_interaction: bcopy.notePause,
+          offer_visual_card: fill(bcopy.noteCard, { card }),
+        },
+      });
+    }
+    return JSON.stringify(plan.adapterPackets[body], null, 2);
+  }, [plan, fusion, body, entities, lang, bcopy]);
+
+  const copyBody = useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(bodyPackage);
+      setCopiedBody(true);
+      window.setTimeout(() => setCopiedBody(false), 1800);
+    } catch {
+      setCopiedBody(false);
+    }
+  }, [bodyPackage]);
 
   const onPhone = (step: PlannedStep) => phoneMapping[step.command].onPhone && (step.command !== "reduce_sound" || noiseAllowed);
 
@@ -531,6 +589,54 @@ export default function CompanionPage() {
                     )}
                   </div>
 
+                  <div className="bodies" role="group" aria-label={bcopy.label}>
+                    <span className="label small">{bcopy.label}</span>
+                    <div className="bodyRow">
+                      {BODIES.map((b) => (
+                        <button key={b} type="button" aria-pressed={body === b} onClick={() => setBody(b)}>
+                          {bcopy[b]}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {body !== "phone" && plan && (
+                    <div className="card packet">
+                      <p className="packetHelp">
+                        {body === "home"
+                          ? bcopy.homeHelp
+                          : fill(bcopy.packetHelp, { route: plan.adapterPackets[body].route })}
+                      </p>
+                      {body === "home" && (
+                        <div className="entities">
+                          {(
+                            [
+                              ["light", bcopy.entLight],
+                              ["mediaPlayer", bcopy.entMedia],
+                              ["notify", bcopy.entNotify],
+                            ] as Array<[keyof HomeEntities, string]>
+                          ).map(([key, label]) => (
+                            <label key={key}>
+                              <span>{label}</span>
+                              <input
+                                value={entities[key]}
+                                onChange={(e) => updateEntity(key, e.target.value)}
+                                autoCapitalize="none"
+                                autoCorrect="off"
+                                spellCheck={false}
+                              />
+                            </label>
+                          ))}
+                        </div>
+                      )}
+                      <pre>{bodyPackage}</pre>
+                      <button type="button" className="primary wide" onClick={() => void copyBody()}>
+                        {copiedBody ? `✓ ${bcopy.copied}` : bcopy.copy}
+                      </button>
+                    </div>
+                  )}
+
+                  {body === "phone" && (
                   <div className="startBar">
                     <div className="speed" role="group" aria-label="Speed">
                       {(["real", "demo"] as RunSpeed[]).map((s) => (
@@ -543,6 +649,7 @@ export default function CompanionPage() {
                       ▶ {copy.start}
                     </button>
                   </div>
+                  )}
                 </>
               )}
             </section>
@@ -1193,6 +1300,65 @@ export default function CompanionPage() {
         .who.you {
           background: #f1e3cd;
           color: #6d4d1f;
+        }
+        .bodies {
+          margin: 4px 0 12px;
+        }
+        .bodyRow {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 6px;
+        }
+        .bodyRow button {
+          min-height: 48px;
+          border: 1px solid #cfc6b8;
+          background: transparent;
+          color: #3e4a46;
+          border-radius: 12px;
+          font: inherit;
+          font-size: 14px;
+          padding: 0 6px;
+        }
+        .bodyRow button[aria-pressed="true"] {
+          background: #3f5f57;
+          border-color: #3f5f57;
+          color: #f6f2ea;
+        }
+        .packetHelp {
+          margin: 0 0 10px;
+          font-size: 14px;
+          color: #4f5b57;
+        }
+        .entities {
+          display: grid;
+          gap: 8px;
+          margin-bottom: 10px;
+        }
+        .entities label {
+          display: grid;
+          gap: 2px;
+          font-size: 13px;
+          color: #6b7772;
+        }
+        .entities input {
+          min-height: 44px;
+          border: 1px solid #cfc6b8;
+          border-radius: 10px;
+          padding: 0 10px;
+          font: 15px ui-monospace, SFMono-Regular, Menlo, monospace;
+          background: #fffdf9;
+          color: #2c3532;
+        }
+        .packet pre {
+          margin: 0 0 10px;
+          max-height: 360px;
+          overflow: auto;
+          background: #2f3a37;
+          color: #e9efe9;
+          border-radius: 12px;
+          padding: 12px;
+          font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace;
+          white-space: pre;
         }
         .startBar {
           position: sticky;
