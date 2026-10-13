@@ -438,6 +438,7 @@ export default function CareAgentPage() {
             <span className="platform">{copy.title}</span>
           </div>
           <nav className="navLinks" aria-label="Labs">
+            <Link href="/companion">Companion</Link>
             <Link href="/labs/robot-interface">{copy.navWorkspace}</Link>
             <Link href="/labs/future-care-room">{copy.navRoom}</Link>
             <Link href="/labs/nl-vision">{copy.navVision}</Link>

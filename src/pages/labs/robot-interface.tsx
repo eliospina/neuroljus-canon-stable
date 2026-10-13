@@ -482,6 +482,7 @@ export default function RobotInterfaceLab() {
             <Link href="/labs/nl-vision">NL-VISION</Link>
             <Link href="/labs/future-care-room">Care Room</Link>
             <Link href="/care-agent">Care Agent</Link>
+            <Link href="/companion">Companion</Link>
             <Link href="/">Platform</Link>
           </nav>
           <div className="navRight">
@@ -506,6 +507,8 @@ export default function RobotInterfaceLab() {
               <Link href="/labs/future-care-room">Enter the Future Care Room</Link>
               {" · "}
               <Link href="/care-agent">Describe a situation in words: Care Agent</Link>
+              {" · "}
+              <Link href="/companion">Run it on your phone: Companion</Link>
             </p>
           </div>
 

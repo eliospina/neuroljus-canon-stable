@@ -6,6 +6,11 @@ type Lang = "sv" | "en" | "es";
 
 const modules = [
   {
+    id: "MOD.COMPANION",
+    href: "/companion",
+    path: "/companion",
+  },
+  {
     id: "MOD.CARE_AGENT",
     href: "/care-agent",
     path: "/care-agent",
@@ -98,6 +103,10 @@ export default function Home() {
         ex1: "rejection_signal → STOP · notify_caregiver",
         ex2: "caregiver_pause → STOP · hand_back",
         modulesTitle: "Distribuerade moduler",
+        modCompanionTitle: "Companion",
+        modCompanionBody: "Omsorgsroboten som börjar i telefonen. Beskriv, tryck Starta: skärmen dämpas, mjukt brus, bildkort.",
+        heroCompanion: "Prova Companion i mobilen →",
+        navCompanion: "Companion",
         modAgentTitle: "Care Agent",
         modAgentBody: "Beskriv situationen med ord. Claude tolkar, planeraren beslutar, roboten får protokollet.",
         modCareTitle: "Care Room",
@@ -196,6 +205,10 @@ export default function Home() {
         ex1: "rejection_signal → STOP · notify_caregiver",
         ex2: "caregiver_pause → STOP · hand_back",
         modulesTitle: "Deployed modules",
+        modCompanionTitle: "Companion",
+        modCompanionBody: "The care robot that starts on your phone. Describe, press Start: the screen dims, soft noise, visual card.",
+        heroCompanion: "Try Companion on your phone →",
+        navCompanion: "Companion",
         modAgentTitle: "Care Agent",
         modAgentBody: "Describe the situation in words. Claude interprets, the planner decides, the robot gets the protocol.",
         modCareTitle: "Care Room",
@@ -294,6 +307,10 @@ export default function Home() {
         ex1: "rejection_signal → STOP · notify_caregiver",
         ex2: "caregiver_pause → STOP · hand_back",
         modulesTitle: "Módulos desplegados",
+        modCompanionTitle: "Companion",
+        modCompanionBody: "El robot de cuidado que empieza en el teléfono. Describe, pulsa Empezar: la pantalla se atenúa, ruido suave, tarjeta visual.",
+        heroCompanion: "Prueba Companion en tu móvil →",
+        navCompanion: "Companion",
         modAgentTitle: "Care Agent",
         modAgentBody: "Describe la situación con palabras. Claude interpreta, el planner decide, el robot recibe el protocolo.",
         modCareTitle: "Care Room",
@@ -354,6 +371,7 @@ export default function Home() {
   const copy = T[lang];
 
   const moduleCopy = [
+    { title: copy.modCompanionTitle, body: copy.modCompanionBody },
     { title: copy.modAgentTitle, body: copy.modAgentBody },
     { title: copy.modCareTitle, body: copy.modCareBody },
     { title: copy.modProtoTitle, body: copy.modProtoBody },
@@ -396,6 +414,7 @@ export default function Home() {
             <Link href="/labs/future-care-room">{copy.navLabs}</Link>
             <Link href="/labs/nl-vision">{copy.navVision}</Link>
             <Link href="/labs/robot-interface">{copy.navProtocol}</Link>
+            <Link href="/companion">{copy.navCompanion}</Link>
             <Link href="/care-agent">{copy.navAgent}</Link>
             <Link href="/about">{copy.navAbout}</Link>
             <Link href="/contact">{copy.navContact}</Link>
@@ -431,6 +450,9 @@ export default function Home() {
               <span>{copy.heroDim}</span>
             </h1>
             <p className="heroSub">{copy.heroSub}</p>
+            <p className="heroCompanion">
+              <Link href="/companion">{copy.heroCompanion}</Link>
+            </p>
           </section>
 
           <section className="shell metrics" aria-label="Platform metrics">
@@ -712,6 +734,18 @@ export default function Home() {
           font-size: 16px;
           line-height: 1.6;
           color: #a1a1aa;
+        }
+        .heroCompanion {
+          margin-top: 18px;
+        }
+        .heroCompanion :global(a) {
+          display: inline-block;
+          padding: 12px 18px;
+          border-radius: 10px;
+          background: #3ecf9a;
+          color: #09090b;
+          font-weight: 600;
+          text-decoration: none;
         }
         .metrics {
           display: grid;
