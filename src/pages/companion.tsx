@@ -416,7 +416,7 @@ export default function CompanionPage() {
           content="Describe what is happening. Claude interprets, a deterministic planner decides, the caregiver presses Start. Today the body is a phone; tomorrow a ROS2 robot."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <meta name="theme-color" content="#efe9df" />
+        <meta name="theme-color" content="#09090b" />
       </Head>
 
       <div className="page">
@@ -853,8 +853,8 @@ export default function CompanionPage() {
       <style jsx>{`
         .page {
           min-height: 100vh;
-          background: #efe9df;
-          color: #2c3532;
+          background: #09090b;
+          color: #fafafa;
           font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
           line-height: 1.5;
         }
@@ -867,14 +867,14 @@ export default function CompanionPage() {
           margin: 0 auto;
         }
         .top :global(.brand) {
-          color: #2c3532;
+          color: #fafafa;
           text-decoration: none;
           font-weight: 700;
           font-size: 17px;
         }
         .top :global(.brand span) {
           font-weight: 400;
-          color: #5c6b66;
+          color: #a1a1aa;
         }
         .lang {
           display: flex;
@@ -884,18 +884,18 @@ export default function CompanionPage() {
         .speed button {
           min-height: 40px;
           min-width: 44px;
-          border: 1px solid #cfc6b8;
+          border: 1px solid #3f3f46;
           background: transparent;
-          color: #3e4a46;
-          border-radius: 10px;
+          color: #d4d4d8;
+          border-radius: 6px;
           font: inherit;
           font-size: 14px;
         }
         .lang button[aria-pressed="true"],
         .speed button[aria-pressed="true"] {
-          background: #3f5f57;
-          border-color: #3f5f57;
-          color: #f6f2ea;
+          background: #3ecf9a;
+          border-color: #3ecf9a;
+          color: #09090b;
         }
         main {
           max-width: 640px;
@@ -909,9 +909,9 @@ export default function CompanionPage() {
           display: inline-block;
           margin: 0 0 10px;
           padding: 6px 12px;
-          border-radius: 999px;
-          background: #dfe7e1;
-          color: #2f4d45;
+          border-radius: 6px;
+          background: rgba(62, 207, 154, 0.08);
+          color: #3ecf9a;
           font-size: 14px;
           font-weight: 600;
         }
@@ -925,7 +925,7 @@ export default function CompanionPage() {
         .sub {
           margin: 0 0 14px;
           font-size: 16px;
-          color: #46524e;
+          color: #d4d4d8;
         }
         .how {
           list-style: none;
@@ -940,9 +940,9 @@ export default function CompanionPage() {
           align-items: center;
           gap: 8px;
           font-size: 14px;
-          background: #f7f3ec;
-          border: 1px solid #ddd4c6;
-          border-radius: 999px;
+          background: #111114;
+          border: 1px solid #27272a;
+          border-radius: 6px;
           padding: 6px 12px 6px 6px;
         }
         .how b {
@@ -951,13 +951,13 @@ export default function CompanionPage() {
           width: 22px;
           height: 22px;
           border-radius: 50%;
-          background: #3f5f57;
-          color: #f6f2ea;
+          background: #3ecf9a;
+          color: #09090b;
           font-size: 12px;
         }
         .card {
-          background: #f8f5ef;
-          border: 1px solid #ddd4c6;
+          background: #111114;
+          border: 1px solid #27272a;
           border-radius: 16px;
           padding: 16px;
           margin-bottom: 14px;
@@ -972,25 +972,25 @@ export default function CompanionPage() {
           font-size: 13px;
           text-transform: uppercase;
           letter-spacing: 0.04em;
-          color: #6b7772;
+          color: #a1a1aa;
           margin-top: 14px;
         }
         textarea {
           width: 100%;
           box-sizing: border-box;
-          border: 1px solid #cfc6b8;
-          border-radius: 12px;
+          border: 1px solid #3f3f46;
+          border-radius: 8px;
           padding: 12px;
           font: inherit;
           font-size: 17px;
-          background: #fffdf9;
-          color: #2c3532;
+          background: #0c0c0e;
+          color: #fafafa;
           resize: vertical;
         }
         textarea:focus,
         button:focus-visible,
         a:focus-visible {
-          outline: 3px solid #8fb3a7;
+          outline: 3px solid #3ecf9a;
           outline-offset: 2px;
         }
         .hint {
@@ -998,7 +998,7 @@ export default function CompanionPage() {
           gap: 6px;
           align-items: baseline;
           font-size: 13px;
-          color: #6b7772;
+          color: #a1a1aa;
           margin: 6px 0 12px;
         }
         .count {
@@ -1008,9 +1008,9 @@ export default function CompanionPage() {
         .primary {
           min-height: 52px;
           border: 0;
-          border-radius: 14px;
-          background: #3f5f57;
-          color: #f6f2ea;
+          border-radius: 8px;
+          background: #3ecf9a;
+          color: #09090b;
           font: inherit;
           font-size: 17px;
           font-weight: 600;
@@ -1033,24 +1033,24 @@ export default function CompanionPage() {
           align-items: flex-start;
           min-height: 48px;
           padding: 10px 12px;
-          border-radius: 12px;
-          border: 1px solid #ddd4c6;
-          background: #fffdf9;
-          color: #2c3532;
+          border-radius: 8px;
+          border: 1px solid #27272a;
+          background: #0c0c0e;
+          color: #fafafa;
           font: inherit;
           font-size: 15px;
         }
         .example b {
           font-size: 12px;
-          color: #3f5f57;
+          color: #3ecf9a;
           padding-top: 2px;
         }
         .example.warn {
-          border-color: #e2c9a4;
-          background: #fbf3e6;
+          border-color: rgba(251, 191, 36, 0.35);
+          background: rgba(251, 191, 36, 0.08);
         }
         .error {
-          color: #8a3b2e;
+          color: #fca5a5;
           margin: 10px 0 0;
         }
         .interp {
@@ -1065,23 +1065,23 @@ export default function CompanionPage() {
         }
         .meta span {
           font-size: 13px;
-          background: #ebe5da;
-          border-radius: 999px;
+          background: #18181b;
+          border-radius: 6px;
           padding: 3px 10px;
-          color: #46524e;
+          color: #d4d4d8;
         }
         .notice {
           font-size: 14px;
-          color: #7a5a2a;
+          color: #fbbf24;
           margin: 10px 0 0;
         }
         .escalation {
-          background: #fbf0e3;
-          border-color: #e2c9a4;
+          background: rgba(248, 113, 113, 0.08);
+          border-color: rgba(251, 191, 36, 0.35);
         }
         .only {
           font-size: 14px;
-          color: #6d4d1f;
+          color: #fbbf24;
           margin: 0;
         }
         .escalation .big {
@@ -1095,9 +1095,9 @@ export default function CompanionPage() {
           margin-top: 12px;
           min-height: 52px;
           line-height: 52px;
-          border-radius: 14px;
-          background: #9a4a36;
-          color: #fff8f2;
+          border-radius: 8px;
+          background: #f87171;
+          color: #09090b;
           font-weight: 700;
           font-size: 18px;
           text-decoration: none;
@@ -1108,30 +1108,30 @@ export default function CompanionPage() {
           width: 100%;
           text-align: left;
           padding: 0 14px;
-          border-radius: 14px;
-          border: 1px dashed #b9ae9c;
-          background: #f7f3ec;
-          color: #2c3532;
+          border-radius: 8px;
+          border: 1px dashed #3f3f46;
+          background: #111114;
+          color: #fafafa;
           font: inherit;
           font-size: 16px;
         }
         .respects {
           margin-top: 10px;
           padding: 10px 12px;
-          border-radius: 12px;
-          background: #dfe7e1;
-          color: #2f4d45;
+          border-radius: 8px;
+          background: rgba(62, 207, 154, 0.08);
+          color: #3ecf9a;
           font-size: 15px;
         }
         .calmItem {
           font-size: 20px !important;
           font-weight: 500 !important;
           margin-top: 14px !important;
-          color: #3f5f57;
+          color: #3ecf9a;
         }
         .noVoice {
           font-size: 18px !important;
-          color: #3f5f57;
+          color: #3ecf9a;
         }
         .rate {
           width: 100%;
@@ -1154,10 +1154,10 @@ export default function CompanionPage() {
           align-items: center;
           justify-content: center;
           gap: 2px;
-          border-radius: 14px;
-          border: 2px solid #d6cdbf;
-          background: #fbf8f2;
-          color: #2c3532;
+          border-radius: 8px;
+          border: 2px solid #3f3f46;
+          background: #111114;
+          color: #fafafa;
           font: inherit;
           font-size: 16px;
           font-weight: 600;
@@ -1166,30 +1166,30 @@ export default function CompanionPage() {
           font-size: 22px;
         }
         .rateBtn.on {
-          border-color: #3f5f57;
-          background: #dfe7e1;
+          border-color: #3ecf9a;
+          background: rgba(62, 207, 154, 0.08);
         }
         .saved {
           font-size: 14px !important;
-          color: #3f5f57;
+          color: #3ecf9a;
           margin: 8px 0 0 !important;
         }
         .helps {
           position: fixed;
           inset: 0;
           z-index: 40;
-          background: #efe9df;
-          color: #2c3532;
+          background: #09090b;
+          color: #fafafa;
           font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
           overflow-y: auto;
         }
         .helps h2 {
           margin: 0;
           font-size: 24px;
-          color: #2c3532;
+          color: #fafafa;
         }
         .helpsList strong {
-          color: #2c3532;
+          color: #fafafa;
         }
         .helpsInner {
           max-width: 640px;
@@ -1199,10 +1199,10 @@ export default function CompanionPage() {
         .ghostBtn {
           min-height: 44px;
           padding: 0 14px;
-          border-radius: 12px;
-          border: 1px solid #cfc6b8;
+          border-radius: 8px;
+          border: 1px solid #3f3f46;
           background: transparent;
-          color: #2c3532;
+          color: #fafafa;
           font: inherit;
         }
         .helpsList {
@@ -1211,34 +1211,34 @@ export default function CompanionPage() {
           margin: 0;
         }
         .helpsList li {
-          background: #f8f5ef;
-          border: 1px solid #ddd4c6;
-          border-radius: 14px;
+          background: #111114;
+          border: 1px solid #27272a;
+          border-radius: 8px;
           padding: 12px 14px;
           margin-bottom: 8px;
         }
         .helpsList p {
           margin: 2px 0 0;
           font-size: 14px;
-          color: #4f5b57;
+          color: #d4d4d8;
         }
         .counts {
           display: flex;
           gap: 10px;
         }
         .up {
-          color: #2f4d45;
+          color: #3ecf9a;
           font-weight: 600;
         }
         .down {
-          color: #8a3b2e;
+          color: #fca5a5;
         }
         .sharedNote {
           font-size: 13px;
-          color: #6b7772;
+          color: #a1a1aa;
         }
         .sharedNote :global(a) {
-          color: #3f5f57;
+          color: #3ecf9a;
         }
         .planHead {
           display: flex;
@@ -1250,7 +1250,7 @@ export default function CompanionPage() {
           font-size: 20px;
         }
         .planHead span {
-          color: #6b7772;
+          color: #a1a1aa;
         }
         .targets {
           display: grid;
@@ -1259,13 +1259,13 @@ export default function CompanionPage() {
           margin: 12px 0;
         }
         .targets div {
-          background: #ebe5da;
-          border-radius: 12px;
+          background: #18181b;
+          border-radius: 8px;
           padding: 8px 10px;
         }
         .targets dt {
           font-size: 12px;
-          color: #6b7772;
+          color: #a1a1aa;
         }
         .targets dd {
           margin: 0;
@@ -1281,12 +1281,12 @@ export default function CompanionPage() {
           display: flex;
           gap: 12px;
           padding: 10px 0;
-          border-top: 1px solid #e6dfd3;
+          border-top: 1px solid #27272a;
         }
         .min {
           min-width: 44px;
           font-variant-numeric: tabular-nums;
-          color: #3f5f57;
+          color: #3ecf9a;
           font-weight: 600;
         }
         .timeline strong {
@@ -1296,7 +1296,7 @@ export default function CompanionPage() {
         .timeline p {
           margin: 2px 0 0;
           font-size: 14px;
-          color: #4f5b57;
+          color: #d4d4d8;
         }
         .who {
           font-style: normal;
@@ -1307,12 +1307,12 @@ export default function CompanionPage() {
           margin-right: 6px;
         }
         .who.phone {
-          background: #dfe7e1;
-          color: #2f4d45;
+          background: rgba(62, 207, 154, 0.08);
+          color: #3ecf9a;
         }
         .who.you {
-          background: #f1e3cd;
-          color: #6d4d1f;
+          background: rgba(251, 191, 36, 0.1);
+          color: #fbbf24;
         }
         .bodies {
           margin: 4px 0 12px;
@@ -1324,23 +1324,23 @@ export default function CompanionPage() {
         }
         .bodyRow button {
           min-height: 48px;
-          border: 1px solid #cfc6b8;
+          border: 1px solid #3f3f46;
           background: transparent;
-          color: #3e4a46;
-          border-radius: 12px;
+          color: #d4d4d8;
+          border-radius: 8px;
           font: inherit;
           font-size: 14px;
           padding: 0 6px;
         }
         .bodyRow button[aria-pressed="true"] {
-          background: #3f5f57;
-          border-color: #3f5f57;
-          color: #f6f2ea;
+          background: #3ecf9a;
+          border-color: #3ecf9a;
+          color: #09090b;
         }
         .packetHelp {
           margin: 0 0 10px;
           font-size: 14px;
-          color: #4f5b57;
+          color: #d4d4d8;
         }
         .entities {
           display: grid;
@@ -1351,24 +1351,24 @@ export default function CompanionPage() {
           display: grid;
           gap: 2px;
           font-size: 13px;
-          color: #6b7772;
+          color: #a1a1aa;
         }
         .entities input {
           min-height: 44px;
-          border: 1px solid #cfc6b8;
-          border-radius: 10px;
+          border: 1px solid #3f3f46;
+          border-radius: 6px;
           padding: 0 10px;
           font: 15px ui-monospace, SFMono-Regular, Menlo, monospace;
-          background: #fffdf9;
-          color: #2c3532;
+          background: #0c0c0e;
+          color: #fafafa;
         }
         .packet pre {
           margin: 0 0 10px;
           max-height: 360px;
           overflow: auto;
-          background: #2f3a37;
-          color: #e9efe9;
-          border-radius: 12px;
+          background: #0c0c0e;
+          color: #d4d4d8;
+          border-radius: 8px;
           padding: 12px;
           font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, monospace;
           white-space: pre;
@@ -1376,7 +1376,7 @@ export default function CompanionPage() {
         .startBar {
           position: sticky;
           bottom: 0;
-          background: #efe9df;
+          background: #09090b;
           padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
           display: grid;
           gap: 8px;
@@ -1395,7 +1395,7 @@ export default function CompanionPage() {
         .foot {
           margin-top: 18px;
           font-size: 13px;
-          color: #6b7772;
+          color: #a1a1aa;
         }
         .foot p {
           margin: 0 0 6px;
@@ -1406,15 +1406,15 @@ export default function CompanionPage() {
           margin-top: 10px;
         }
         .foot :global(a) {
-          color: #3f5f57;
+          color: #3ecf9a;
         }
 
         .runner {
           position: fixed;
           inset: 0;
           z-index: 50;
-          background: #e8e1d5;
-          color: #2c3532;
+          background: #0c0c0e;
+          color: #fafafa;
           display: flex;
           flex-direction: column;
           font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -1425,7 +1425,7 @@ export default function CompanionPage() {
           gap: 10px;
           padding: calc(14px + env(safe-area-inset-top)) 18px 0;
           font-size: 15px;
-          color: #4f5b57;
+          color: #d4d4d8;
           font-variant-numeric: tabular-nums;
         }
         .stage {
@@ -1440,10 +1440,10 @@ export default function CompanionPage() {
         .visualCard {
           width: 100%;
           max-width: 520px;
-          background: #fbf8f2;
+          background: #111114;
           border-radius: 24px;
           padding: 28px 20px;
-          border: 1px solid #d9cfbf;
+          border: 1px solid #27272a;
         }
         .pictos {
           display: flex;
@@ -1464,12 +1464,12 @@ export default function CompanionPage() {
         }
         .ringBg {
           fill: none;
-          stroke: #d6cdbf;
+          stroke: #3f3f46;
           stroke-width: 6;
         }
         .ring {
           fill: none;
-          stroke: #6f9488;
+          stroke: #3ecf9a;
           stroke-width: 6;
           stroke-linecap: round;
           transition: stroke-dasharray 1s linear;
@@ -1482,8 +1482,8 @@ export default function CompanionPage() {
         .youHint {
           margin: 18px 0 0;
           font-size: 17px;
-          background: #f1e3cd;
-          border-radius: 14px;
+          background: rgba(251, 191, 36, 0.1);
+          border-radius: 8px;
           padding: 10px 14px;
           max-width: 520px;
         }
@@ -1521,12 +1521,12 @@ export default function CompanionPage() {
           font: inherit;
           font-size: 22px;
           font-weight: 700;
-          background: #f6f2ea;
-          color: #2c3532;
+          background: #18181b;
+          color: #fafafa;
         }
         .ctl.stop {
-          background: #9a4a36;
-          color: #fff8f2;
+          background: #f87171;
+          color: #09090b;
         }
         @media (min-width: 720px) {
           h1 {

@@ -183,7 +183,7 @@ export default function LibraryPage({ items, counts }: Props) {
           content="Open-access autism research verified by code (DOI, licence, retraction) with practical sheets for caregivers in Spanish, English and Swedish."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#efe9df" />
+        <meta name="theme-color" content="#09090b" />
       </Head>
       <div className="page">
         <header className="top">
@@ -293,8 +293,8 @@ export default function LibraryPage({ items, counts }: Props) {
       <style jsx>{`
         .page {
           min-height: 100vh;
-          background: #efe9df;
-          color: #2c3532;
+          background: #09090b;
+          color: #fafafa;
           font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
           line-height: 1.5;
         }
@@ -307,13 +307,13 @@ export default function LibraryPage({ items, counts }: Props) {
           margin: 0 auto;
         }
         .top :global(.brand) {
-          color: #2c3532;
+          color: #fafafa;
           text-decoration: none;
           font-weight: 700;
         }
         .top :global(.brand span) {
           font-weight: 400;
-          color: #5c6b66;
+          color: #a1a1aa;
         }
         .lang {
           display: flex;
@@ -322,17 +322,17 @@ export default function LibraryPage({ items, counts }: Props) {
         .lang button {
           min-height: 40px;
           min-width: 44px;
-          border: 1px solid #cfc6b8;
+          border: 1px solid #3f3f46;
           background: transparent;
-          color: #3e4a46;
-          border-radius: 10px;
+          color: #d4d4d8;
+          border-radius: 6px;
           font: inherit;
           font-size: 14px;
         }
         .lang button[aria-pressed="true"] {
-          background: #3f5f57;
-          border-color: #3f5f57;
-          color: #f6f2ea;
+          background: #3ecf9a;
+          border-color: #3ecf9a;
+          color: #09090b;
         }
         main {
           max-width: 760px;
@@ -354,17 +354,17 @@ export default function LibraryPage({ items, counts }: Props) {
         }
         .sub {
           margin: 0 0 8px;
-          color: #46524e;
+          color: #d4d4d8;
         }
         .stats {
           font-size: 14px;
-          color: #2f4d45;
-          background: #dfe7e1;
-          border-radius: 12px;
+          color: #3ecf9a;
+          background: rgba(62, 207, 154, 0.08);
+          border-radius: 8px;
           padding: 8px 12px;
         }
         .muted {
-          color: #6b7772;
+          color: #a1a1aa;
           font-size: 14px;
         }
         .small {
@@ -378,9 +378,9 @@ export default function LibraryPage({ items, counts }: Props) {
         }
         .seed,
         .list li {
-          background: #f8f5ef;
-          border: 1px solid #ddd4c6;
-          border-radius: 14px;
+          background: #111114;
+          border: 1px solid #27272a;
+          border-radius: 8px;
           padding: 12px 14px;
           margin-bottom: 10px;
         }
@@ -395,28 +395,28 @@ export default function LibraryPage({ items, counts }: Props) {
           gap: 6px 10px;
           align-items: center;
           font-size: 13px;
-          color: #4f5b57;
+          color: #d4d4d8;
           margin: 0 0 6px;
         }
         .meta a {
-          color: #3f5f57;
+          color: #3ecf9a;
         }
         .kind {
-          background: #ebe5da;
-          border-radius: 999px;
+          background: #18181b;
+          border-radius: 6px;
           padding: 2px 9px;
         }
         .kind.part {
-          background: #e4e9f4;
-          color: #2f3f5f;
+          background: rgba(124, 227, 247, 0.08);
+          color: #7ce3f7;
         }
         .limits {
           font-size: 14px;
           margin: 0;
-          color: #4f5b57;
+          color: #d4d4d8;
         }
         .limits b {
-          color: #2c3532;
+          color: #fafafa;
         }
         .controls {
           display: grid;
@@ -426,17 +426,17 @@ export default function LibraryPage({ items, counts }: Props) {
         input,
         select {
           min-height: 46px;
-          border: 1px solid #cfc6b8;
-          border-radius: 12px;
+          border: 1px solid #3f3f46;
+          border-radius: 8px;
           padding: 0 12px;
           font: inherit;
           font-size: 16px;
-          background: #fffdf9;
-          color: #2c3532;
+          background: #0c0c0e;
+          color: #fafafa;
         }
         details summary {
           cursor: pointer;
-          color: #3f5f57;
+          color: #3ecf9a;
           font-weight: 600;
           font-size: 14px;
         }
@@ -453,18 +453,18 @@ export default function LibraryPage({ items, counts }: Props) {
           font-size: 13px;
         }
         .links a {
-          color: #3f5f57;
+          color: #3ecf9a;
         }
         .doi {
           font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
         }
         .lic {
-          color: #6b7772;
+          color: #a1a1aa;
         }
         .foot {
           margin-top: 24px;
           font-size: 13px;
-          color: #6b7772;
+          color: #a1a1aa;
         }
         .foot nav {
           display: flex;
@@ -472,7 +472,7 @@ export default function LibraryPage({ items, counts }: Props) {
           margin-top: 8px;
         }
         .foot :global(a) {
-          color: #3f5f57;
+          color: #3ecf9a;
         }
         @media (min-width: 600px) {
           .controls {

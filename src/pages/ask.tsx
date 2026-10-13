@@ -236,7 +236,7 @@ export default function AskPage() {
           content="Practical, cited answers for caregivers and autistic people. Science from a verified library, known practice, data from this person and new ideas — each labelled."
         />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <meta name="theme-color" content="#efe9df" />
+        <meta name="theme-color" content="#09090b" />
       </Head>
       <div className="page">
         <header className="top">
@@ -415,8 +415,8 @@ export default function AskPage() {
       <style jsx>{`
         .page {
           min-height: 100vh;
-          background: #efe9df;
-          color: #2c3532;
+          background: #09090b;
+          color: #fafafa;
           font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
           line-height: 1.5;
         }
@@ -429,13 +429,13 @@ export default function AskPage() {
           margin: 0 auto;
         }
         .top :global(.brand) {
-          color: #2c3532;
+          color: #fafafa;
           text-decoration: none;
           font-weight: 700;
         }
         .top :global(.brand span) {
           font-weight: 400;
-          color: #5c6b66;
+          color: #a1a1aa;
         }
         .lang {
           display: flex;
@@ -444,17 +444,17 @@ export default function AskPage() {
         .lang button {
           min-height: 40px;
           min-width: 44px;
-          border: 1px solid #cfc6b8;
+          border: 1px solid #3f3f46;
           background: transparent;
-          color: #3e4a46;
-          border-radius: 10px;
+          color: #d4d4d8;
+          border-radius: 6px;
           font: inherit;
           font-size: 14px;
         }
         .lang button[aria-pressed="true"] {
-          background: #3f5f57;
-          border-color: #3f5f57;
-          color: #f6f2ea;
+          background: #3ecf9a;
+          border-color: #3ecf9a;
+          color: #09090b;
         }
         main {
           max-width: 640px;
@@ -467,11 +467,11 @@ export default function AskPage() {
         }
         .sub {
           margin: 0 0 14px;
-          color: #46524e;
+          color: #d4d4d8;
         }
         .card {
-          background: #f8f5ef;
-          border: 1px solid #ddd4c6;
+          background: #111114;
+          border: 1px solid #27272a;
           border-radius: 16px;
           padding: 16px;
         }
@@ -484,34 +484,34 @@ export default function AskPage() {
           font-size: 13px;
           text-transform: uppercase;
           letter-spacing: 0.04em;
-          color: #6b7772;
+          color: #a1a1aa;
           margin-top: 14px;
         }
         textarea {
           width: 100%;
           box-sizing: border-box;
-          border: 1px solid #cfc6b8;
-          border-radius: 12px;
+          border: 1px solid #3f3f46;
+          border-radius: 8px;
           padding: 12px;
           font: inherit;
           font-size: 17px;
-          background: #fffdf9;
-          color: #2c3532;
+          background: #0c0c0e;
+          color: #fafafa;
           resize: vertical;
         }
         .hint {
           display: flex;
           justify-content: flex-end;
           font-size: 13px;
-          color: #6b7772;
+          color: #a1a1aa;
           margin: 6px 0 10px;
         }
         .primary {
           min-height: 52px;
           border: 0;
-          border-radius: 14px;
-          background: #3f5f57;
-          color: #f6f2ea;
+          border-radius: 8px;
+          background: #3ecf9a;
+          color: #09090b;
           font: inherit;
           font-size: 17px;
           font-weight: 600;
@@ -530,18 +530,18 @@ export default function AskPage() {
           text-align: left;
           min-height: 46px;
           padding: 10px 12px;
-          border-radius: 12px;
-          border: 1px solid #ddd4c6;
-          background: #fffdf9;
-          color: #2c3532;
+          border-radius: 8px;
+          border: 1px solid #27272a;
+          background: #0c0c0e;
+          color: #fafafa;
           font: inherit;
           font-size: 15px;
         }
         .error {
-          color: #8a3b2e;
+          color: #fca5a5;
         }
         .muted {
-          color: #6b7772;
+          color: #a1a1aa;
         }
         .small {
           font-size: 13px;
@@ -551,21 +551,21 @@ export default function AskPage() {
         }
         .notice {
           font-size: 14px;
-          color: #7a5a2a;
-          background: #fbf3e6;
-          border-radius: 12px;
+          color: #fbbf24;
+          background: rgba(251, 191, 36, 0.08);
+          border-radius: 8px;
           padding: 8px 12px;
         }
         .seg {
-          background: #f8f5ef;
-          border: 1px solid #ddd4c6;
-          border-radius: 14px;
+          background: #111114;
+          border: 1px solid #27272a;
+          border-radius: 8px;
           padding: 12px 14px;
           margin-bottom: 10px;
         }
         .seg.safety {
-          background: #fbf0e3;
-          border-color: #e2c9a4;
+          background: rgba(248, 113, 113, 0.08);
+          border-color: rgba(251, 191, 36, 0.35);
         }
         .seg p {
           margin: 6px 0 0;
@@ -577,32 +577,32 @@ export default function AskPage() {
           font-weight: 700;
           letter-spacing: 0.03em;
           text-transform: uppercase;
-          border-radius: 999px;
+          border-radius: 6px;
           padding: 3px 10px;
         }
         .lab.science {
-          background: #dfe7e1;
-          color: #2f4d45;
+          background: rgba(62, 207, 154, 0.08);
+          color: #3ecf9a;
         }
         .lab.practice {
-          background: #ebe5da;
-          color: #4f5b57;
+          background: #18181b;
+          color: #d4d4d8;
         }
         .lab.person {
-          background: #e4e9f4;
-          color: #2f3f5f;
+          background: rgba(124, 227, 247, 0.08);
+          color: #7ce3f7;
         }
         .lab.idea {
-          background: #f1e3cd;
-          color: #6d4d1f;
+          background: rgba(251, 191, 36, 0.1);
+          color: #fbbf24;
         }
         .lab.safety {
-          background: #9a4a36;
-          color: #fff8f2;
+          background: #f87171;
+          color: #09090b;
         }
         .cites a {
           margin-left: 6px;
-          color: #3f5f57;
+          color: #3ecf9a;
           font-size: 14px;
           text-decoration: none;
           font-weight: 600;
@@ -617,13 +617,13 @@ export default function AskPage() {
           margin-bottom: 8px;
         }
         .sources a {
-          color: #3f5f57;
+          color: #3ecf9a;
         }
         .n {
           font-weight: 700;
         }
         .meta {
-          color: #6b7772;
+          color: #a1a1aa;
         }
         .legend {
           margin-top: 14px;
@@ -644,7 +644,7 @@ export default function AskPage() {
           margin: 10px 0 0;
         }
         .ideas li {
-          border-top: 1px solid #e6dfd3;
+          border-top: 1px solid #27272a;
           padding: 10px 0;
         }
         .ideaText {
@@ -654,14 +654,14 @@ export default function AskPage() {
         .status {
           margin: 0 0 6px;
           font-size: 13px;
-          color: #6b7772;
+          color: #a1a1aa;
         }
         .status.person_data {
-          color: #2f3f5f;
+          color: #7ce3f7;
           font-weight: 600;
         }
         .status.not_helping {
-          color: #8a3b2e;
+          color: #fca5a5;
         }
         .ideaRow {
           display: flex;
@@ -673,22 +673,22 @@ export default function AskPage() {
           min-height: 36px;
           line-height: 36px;
           padding: 0 12px;
-          border-radius: 10px;
-          border: 1px solid #cfc6b8;
+          border-radius: 6px;
+          border: 1px solid #3f3f46;
           background: transparent;
-          color: #3f5f57;
+          color: #3ecf9a;
           font: inherit;
           font-size: 14px;
           text-decoration: none;
         }
         .danger {
-          color: #8a3b2e !important;
-          border-color: #e2c0b5 !important;
+          color: #fca5a5 !important;
+          border-color: rgba(248, 113, 113, 0.35) !important;
         }
         .foot {
           margin-top: 20px;
           font-size: 13px;
-          color: #6b7772;
+          color: #a1a1aa;
         }
         .foot nav {
           display: flex;
@@ -696,7 +696,7 @@ export default function AskPage() {
           margin-top: 8px;
         }
         .foot :global(a) {
-          color: #3f5f57;
+          color: #3ecf9a;
         }
       `}</style>
     </>
