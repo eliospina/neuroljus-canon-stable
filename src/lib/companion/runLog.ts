@@ -1,13 +1,16 @@
 /**
  * Companion — local run log (log_observation on the phone body).
  *
- * Only structured fields: scenario, commands, how the run ended. Never the
+ * Only structured fields: scenario, commands, how the run ended, the caregiver's
+ * one-tap outcome. Never the
  * caregiver's text, never names. Lives in this browser only.
  */
 
 import type { Command, ScenarioId } from "../careProtocol/types";
 
 export type RunEnd = "completed" | "caregiver_pause";
+/** The caregiver's one-tap rating after the run. */
+export type RunOutcome = "helped" | "no_change" | "worse";
 
 export type CompanionRun = {
   id: string;
@@ -15,6 +18,7 @@ export type CompanionRun = {
   scenario: ScenarioId;
   commands: Command[];
   ended: RunEnd;
+  outcome?: RunOutcome;
 };
 
 export const RUN_LOG_KEY = "neuroljus.companion.runs.v0";

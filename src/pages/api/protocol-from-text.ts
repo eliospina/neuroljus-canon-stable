@@ -14,6 +14,7 @@ import {
   MAX_INTENT_TEXT_CHARS,
   parseCareIntent,
   plannerInputFromIntent,
+  sanitizeHelpfulRoutines,
   type IntentLang,
 } from "@/lib/careProtocol/intentParser";
 import { getReflectionProvider } from "@/lib/careReflection/provider";
@@ -91,6 +92,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       (req.method === "POST" ? firstString(body.text) : firstString(req.query.text)).trim();
     const lang = sanitizeLang(req.method === "POST" ? body.lang : firstString(req.query.lang));
     const visionContext = req.method === "POST" ? sanitizeVision(body.visionContext) : null;
+    // Anonymous on-device summary of what helped before: enums and counts only.
+    const history = req.method === "POST" ? sanitizeHelpfulRoutines(body.helpfulRoutines) : [];
 
     if (!text) {
       return res.status(400).json({ ok: false, error: "Please describe what is happening." });
@@ -114,6 +117,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         lang,
         apiKey,
         signal: controller.signal,
+        history,
         // Status and API error type only: never the caregiver text.
         onError: (status, detail) => console.error("Care agent upstream error", status, detail),
       });

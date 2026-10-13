@@ -24,12 +24,16 @@ import {
   type RunSpeed,
 } from "@/lib/companion/phoneBody";
 import { BrownNoise, requestWakeLock, softVibrate } from "@/lib/companion/phoneRuntime";
-import { addRun, type RunEnd } from "@/lib/companion/runLog";
+import { addRun, readRuns, type CompanionRun, type RunEnd } from "@/lib/companion/runLog";
+import { helpfulSummary, OUTCOMES, rankRoutines, routineKey, setRunOutcome, type Outcome } from "@/lib/companion/outcomes";
+import { addPatternNote } from "@/lib/carePatterns/localStore";
 import {
   CARD_PICTOS,
   COMMAND_LABELS,
   CONSTRAINT_TEXT,
   EXAMPLES,
+  OUTCOME_MARK,
+  OUTCOME_UI,
   fill,
   PHONE_ACTION_TEXT,
   PROFILE_OPTIONS,
@@ -89,6 +93,7 @@ export default function CompanionPage() {
   const [lang, setLang] = useLang("en");
   const copy = UI[lang];
   const pcopy = PROFILE_UI[lang];
+  const ocopy = OUTCOME_UI[lang];
 
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
@@ -102,6 +107,10 @@ export default function CompanionPage() {
   const [audioOk, setAudioOk] = useState(true);
   const [profile, setProfile] = useState<SensoryProfile | null>(null);
   const [editingProfile, setEditingProfile] = useState(false);
+  const [runs, setRuns] = useState<CompanionRun[]>([]);
+  const [lastRunId, setLastRunId] = useState<string | null>(null);
+  const [rated, setRated] = useState<Outcome | null>(null);
+  const [showHelps, setShowHelps] = useState(false);
 
   const elapsedBefore = useRef(0); // ms accumulated before the current segment
   const segmentStart = useRef(0);
@@ -118,10 +127,13 @@ export default function CompanionPage() {
     }
     try {
       setProfile(readProfile(window.localStorage));
+      setRuns(readRuns(window.localStorage));
     } catch {
       setProfile(null);
     }
   }, []);
+
+  const ranked = useMemo(() => rankRoutines(runs), [runs]);
 
   // The person's profile is a hard limit: fused in code, then the plan is rebuilt locally.
   const fusion = useMemo(() => (result ? applyProfile(result.plannerInput, profile) : null), [result, profile]);
@@ -155,14 +167,16 @@ export default function CompanionPage() {
   const logRun = useCallback(
     (ended: RunEnd) => {
       if (!result) return;
+      setRated(null);
       try {
-        addRun(window.localStorage, {
+        const entry = addRun(window.localStorage, {
           scenario: result.scenario,
           commands: steps.map((s) => s.command),
           ended,
         });
+        setLastRunId(entry.id);
       } catch {
-        /* storage unavailable */
+        setLastRunId(null);
       }
     },
     [result, steps]
@@ -220,6 +234,32 @@ export default function CompanionPage() {
     setMinute(0);
   }, [releaseBody]);
 
+  const rate = useCallback(
+    (outcome: Outcome) => {
+      if (!lastRunId || !result) return;
+      try {
+        const before = readRuns(window.localStorage);
+        const run = setRunOutcome(window.localStorage, lastRunId, outcome);
+        if (run && rated === null) {
+          const key = routineKey(run.scenario, run.commands);
+          addPatternNote({
+            gesture: `Companion · ${SCENARIO_NAMES[lang][run.scenario]}`,
+            context: run.commands.map((c) => COMMAND_LABELS[lang][c]).join(" → "),
+            eased: outcome === "helped" ? ocopy.noteHelped : "",
+            worsened: outcome === "worse" ? ocopy.noteWorse : "",
+            uncertainty: outcome === "no_change" ? ocopy.noteNoChange : ocopy.noteUncertainty,
+            seenBefore: before.some((r) => r.id !== run.id && r.outcome && routineKey(r.scenario, r.commands) === key),
+          });
+        }
+        setRuns(readRuns(window.localStorage));
+      } catch {
+        /* storage unavailable */
+      }
+      setRated(outcome);
+    },
+    [lastRunId, result, rated, lang, ocopy]
+  );
+
   // Drive the body from the deterministic phone state.
   useEffect(() => {
     if (!state) return;
@@ -258,7 +298,8 @@ export default function CompanionPage() {
         const r = await fetch("/api/protocol-from-text", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: value, lang, visionContext: vision }),
+          // Only an anonymous summary of what helped before: scenario, commands, counts.
+          body: JSON.stringify({ text: value, lang, visionContext: vision, helpfulRoutines: helpfulSummary(runs) }),
         });
         const j = (await r.json()) as AgentResponse | { ok: false; error?: string };
         if (!r.ok || !j.ok) {
@@ -275,7 +316,7 @@ export default function CompanionPage() {
         setBusy(false);
       }
     },
-    [text, busy, lang, vision, copy.error]
+    [text, busy, lang, vision, runs, copy.error]
   );
 
   const onPhone = (step: PlannedStep) => phoneMapping[step.command].onPhone && (step.command !== "reduce_sound" || noiseAllowed);
@@ -354,6 +395,10 @@ export default function CompanionPage() {
                   <span aria-hidden="true">🧩</span> {pcopy.create}
                 </>
               )}
+            </button>
+            <button type="button" className="profileChip" onClick={() => setShowHelps(true)}>
+              <span aria-hidden="true">📈</span> {ocopy.open}
+              {ranked.length > 0 ? ` (${ranked.length})` : ""}
             </button>
           </section>
 
@@ -543,6 +588,36 @@ export default function CompanionPage() {
         />
       )}
 
+      {showHelps && (
+        <div className="helps" role="dialog" aria-modal="true" aria-labelledby="helps-title">
+          <div className="helpsInner">
+            <div className="planHead">
+              <h2 id="helps-title">{ocopy.title}</h2>
+              <button type="button" className="ghostBtn" onClick={() => setShowHelps(false)}>
+                {ocopy.close}
+              </button>
+            </div>
+            <p className="sub">{ranked.length > 0 ? ocopy.intro : ocopy.empty}</p>
+            <ol className="helpsList">
+              {ranked.map((r) => (
+                <li key={r.key}>
+                  <strong>{SCENARIO_NAMES[lang][r.scenario]}</strong>
+                  <p>{r.commands.map((c) => COMMAND_LABELS[lang][c]).join(" · ")}</p>
+                  <p className="counts">
+                    <span className="up">{fill(ocopy.ofRuns, { helped: r.helped, rated: r.rated })}</span>
+                    {r.worse > 0 && <span className="down">{fill(ocopy.worseCount, { worse: r.worse })}</span>}
+                  </p>
+                </li>
+              ))}
+            </ol>
+            <p className="sharedNote">{ocopy.shared}</p>
+            <p className="sharedNote">
+              <Link href="/labs/pattern-notebook">Pattern Notebook →</Link>
+            </p>
+          </div>
+        </div>
+      )}
+
       {phase !== "idle" && result && (
         <div className="runner" role="dialog" aria-modal="true" aria-label={copy.title}>
           {running && state && (
@@ -608,6 +683,26 @@ export default function CompanionPage() {
             <div className="stage end">
               <h2>{phase === "done" ? copy.doneTitle : copy.stoppedTitle}</h2>
               <p>{phase === "done" ? copy.doneSub : copy.stoppedSub}</p>
+              {lastRunId && (
+                <div className="rate">
+                  <p className="ask">{ocopy.ask}</p>
+                  <div className="rateRow" role="group" aria-label={ocopy.ask}>
+                    {OUTCOMES.map((o) => (
+                      <button
+                        key={o}
+                        type="button"
+                        className={`rateBtn ${rated === o ? "on" : ""}`}
+                        aria-pressed={rated === o}
+                        onClick={() => rate(o)}
+                      >
+                        <span aria-hidden="true">{OUTCOME_MARK[o]}</span>
+                        {ocopy[o]}
+                      </button>
+                    ))}
+                  </div>
+                  {rated && <p className="saved">{ocopy.saved}</p>}
+                </div>
+              )}
               <button type="button" className="primary wide" onClick={close}>
                 {copy.back}
               </button>
@@ -916,6 +1011,113 @@ export default function CompanionPage() {
         }
         .noVoice {
           font-size: 18px !important;
+          color: #3f5f57;
+        }
+        .rate {
+          width: 100%;
+          max-width: 520px;
+          margin-bottom: 18px;
+        }
+        .ask {
+          font-weight: 600;
+          margin: 0 0 8px !important;
+        }
+        .rateRow {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 8px;
+        }
+        .rateBtn {
+          min-height: 72px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 2px;
+          border-radius: 14px;
+          border: 2px solid #d6cdbf;
+          background: #fbf8f2;
+          color: #2c3532;
+          font: inherit;
+          font-size: 16px;
+          font-weight: 600;
+        }
+        .rateBtn span {
+          font-size: 22px;
+        }
+        .rateBtn.on {
+          border-color: #3f5f57;
+          background: #dfe7e1;
+        }
+        .saved {
+          font-size: 14px !important;
+          color: #3f5f57;
+          margin: 8px 0 0 !important;
+        }
+        .helps {
+          position: fixed;
+          inset: 0;
+          z-index: 40;
+          background: #efe9df;
+          color: #2c3532;
+          font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+          overflow-y: auto;
+        }
+        .helps h2 {
+          margin: 0;
+          font-size: 24px;
+          color: #2c3532;
+        }
+        .helpsList strong {
+          color: #2c3532;
+        }
+        .helpsInner {
+          max-width: 640px;
+          margin: 0 auto;
+          padding: calc(16px + env(safe-area-inset-top)) 16px 32px;
+        }
+        .ghostBtn {
+          min-height: 44px;
+          padding: 0 14px;
+          border-radius: 12px;
+          border: 1px solid #cfc6b8;
+          background: transparent;
+          color: #2c3532;
+          font: inherit;
+        }
+        .helpsList {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+        }
+        .helpsList li {
+          background: #f8f5ef;
+          border: 1px solid #ddd4c6;
+          border-radius: 14px;
+          padding: 12px 14px;
+          margin-bottom: 8px;
+        }
+        .helpsList p {
+          margin: 2px 0 0;
+          font-size: 14px;
+          color: #4f5b57;
+        }
+        .counts {
+          display: flex;
+          gap: 10px;
+        }
+        .up {
+          color: #2f4d45;
+          font-weight: 600;
+        }
+        .down {
+          color: #8a3b2e;
+        }
+        .sharedNote {
+          font-size: 13px;
+          color: #6b7772;
+        }
+        .sharedNote :global(a) {
           color: #3f5f57;
         }
         .planHead {

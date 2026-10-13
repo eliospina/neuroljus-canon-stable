@@ -491,3 +491,73 @@ export const SILENT_PHONE_TEXT: Record<CompanionLang, string> = {
   en: "The phone stays silent (profile). Turn the radio or TV down yourself.",
   sv: "Telefonen förblir tyst (profil). Sänk radio eller tv själv.",
 };
+
+// ---------------------------------------------------------------------------
+// What helps (phase 3)
+// ---------------------------------------------------------------------------
+
+export const OUTCOME_UI: Record<CompanionLang, Record<string, string>> = {
+  es: {
+    ask: "¿Cómo fue?",
+    helped: "Ayudó",
+    no_change: "Sin cambio",
+    worse: "Empeoró",
+    saved: "Guardado en el Pattern Notebook de este dispositivo.",
+    open: "Lo que le ayuda",
+    title: "Lo que le ayuda",
+    intro: "Rutinas valoradas en este dispositivo, de la que más ayudó a la que menos.",
+    empty: "Todavía no hay valoraciones. Después de cada rutina, un toque basta.",
+    ofRuns: "ayudó {helped} de {rated}",
+    worseCount: "empeoró {worse}",
+    shared: "Al planificar, Claude solo recibe un resumen anónimo de las 3 rutinas que más ayudaron: escenario, comandos y conteos. Sin nombres ni texto.",
+    close: "Cerrar",
+    noteHelped: "La rutina ayudó.",
+    noteWorse: "La rutina empeoró la situación.",
+    noteUncertainty: "Valoración rápida del cuidador tras una ejecución de Companion. Una sola observación; no es diagnóstico.",
+    noteNoChange: "Sin cambio visible. Valoración rápida del cuidador tras una ejecución de Companion; no es diagnóstico.",
+  },
+  en: {
+    ask: "How did it go?",
+    helped: "Helped",
+    no_change: "No change",
+    worse: "Worse",
+    saved: "Saved to the Pattern Notebook on this device.",
+    open: "What helps",
+    title: "What helps",
+    intro: "Routines rated on this device, from most to least helpful.",
+    empty: "No ratings yet. After each routine, one tap is enough.",
+    ofRuns: "helped {helped} of {rated}",
+    worseCount: "worse {worse}",
+    shared: "When planning, Claude only receives an anonymous summary of the 3 routines that helped most: scenario, commands and counts. No names, no text.",
+    close: "Close",
+    noteHelped: "The routine helped.",
+    noteWorse: "The routine made things worse.",
+    noteUncertainty: "Caregiver's quick rating after one Companion run. A single observation; not a diagnosis.",
+    noteNoChange: "No visible change. Caregiver's quick rating after one Companion run; not a diagnosis.",
+  },
+  sv: {
+    ask: "Hur gick det?",
+    helped: "Hjälpte",
+    no_change: "Ingen skillnad",
+    worse: "Sämre",
+    saved: "Sparat i Pattern Notebook på den här enheten.",
+    open: "Det som hjälper",
+    title: "Det som hjälper",
+    intro: "Rutiner som bedömts på den här enheten, från mest till minst hjälpsam.",
+    empty: "Inga bedömningar än. Efter varje rutin räcker ett tryck.",
+    ofRuns: "hjälpte {helped} av {rated}",
+    worseCount: "sämre {worse}",
+    shared: "Vid planering får Claude bara en anonym sammanfattning av de 3 rutiner som hjälpt mest: scenario, kommandon och antal. Inga namn, ingen text.",
+    close: "Stäng",
+    noteHelped: "Rutinen hjälpte.",
+    noteWorse: "Rutinen gjorde det sämre.",
+    noteUncertainty: "Vårdgivarens snabba bedömning efter en Companion-körning. En enda observation; ingen diagnos.",
+    noteNoChange: "Ingen synlig skillnad. Vårdgivarens snabba bedömning efter en Companion-körning; ingen diagnos.",
+  },
+};
+
+export const OUTCOME_MARK: Record<"helped" | "no_change" | "worse", string> = {
+  helped: "↑",
+  no_change: "=",
+  worse: "↓",
+};
