@@ -3,17 +3,23 @@ name: Care Agent smoke
 # Protected preview deployments answer 401/403 and are skipped; production is public.
 on:
   deployment_status:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: "Deployment URL to smoke (default: production)"
+        required: false
+        default: "https://neuroljus.com"
 jobs:
   smoke:
-    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment_url != ''
+    if: github.event_name == 'workflow_dispatch' || (github.event.deployment_status.state == 'success' && github.event.deployment_status.environment_url != '')
     runs-on: ubuntu-latest
     steps:
       - name: Call /api/protocol-from-text on the deployment
         env:
-          BASE: ${{ github.event.deployment_status.environment_url }}
+          BASE: ${{ github.event.inputs.base_url || github.event.deployment_status.environment_url }}
         run: |
           set -uo pipefail
-          echo "Deployment: $BASE (${{ github.event.deployment.environment }})"
+          echo "Deployment: $BASE (${{ github.event.deployment.environment || 'manual' }})"
           URL="$BASE/api/protocol-from-text?lang=en&text=It%20is%208pm%2C%20Mia%20is%20still%20spinning%20in%20the%20living%20room%20and%20the%20lights%20are%20bright.%20We%20need%20to%20start%20the%20bedtime%20routine."
           for attempt in 1 2 3 4 5; do
             code=$(curl -sS -o body.json -w "%{http_code}" -m 40 "$URL" || echo 000)
