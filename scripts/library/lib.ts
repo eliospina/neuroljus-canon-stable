@@ -57,8 +57,8 @@ export type LibraryDoc = {
   /** Hand-curated key finding (seed entries only). */
   seed?: {
     claim: { es: string; en: string; sv: string };
-    supports: string;
-    doesNotSupport: string;
+    supports: { es: string; en: string; sv: string };
+    doesNotSupport: { es: string; en: string; sv: string };
   };
   verified: {
     crossref: boolean;
