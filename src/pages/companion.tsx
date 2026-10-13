@@ -3,7 +3,18 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { PlannedStep, PlannerInput, PlannerResult, ScenarioId, VisionSnapshot } from "@/lib/careProtocol/types";
 import { readLatestLocalVisionSnapshot } from "@/lib/careProtocol/nlVisionBridge";
+import { buildCarePlan } from "@/lib/careProtocol/planner";
 import { useLang } from "@/components/SiteLayout";
+import ProfileEditor from "@/components/companion/ProfileEditor";
+import {
+  applyProfile,
+  defaultProfile,
+  deleteProfile,
+  readProfile,
+  writeProfile,
+  type ProfileConstraint,
+  type SensoryProfile,
+} from "@/lib/companion/profile";
 import {
   phoneMapping,
   phoneStateAt,
@@ -17,10 +28,14 @@ import { addRun, type RunEnd } from "@/lib/companion/runLog";
 import {
   CARD_PICTOS,
   COMMAND_LABELS,
+  CONSTRAINT_TEXT,
   EXAMPLES,
   fill,
   PHONE_ACTION_TEXT,
+  PROFILE_OPTIONS,
+  PROFILE_UI,
   SCENARIO_NAMES,
+  SILENT_PHONE_TEXT,
   UI,
   VISUAL_CARDS,
   type CompanionLang,
@@ -43,6 +58,28 @@ type RunPhase = "idle" | "running" | "paused" | "done" | "stopped";
 
 const MAX_CHARS = 500;
 
+function constraintText(c: ProfileConstraint, lang: CompanionLang): string {
+  const t = CONSTRAINT_TEXT[lang];
+  switch (c.kind) {
+    case "light_capped":
+      return fill(t.light_capped, { from: c.from, to: c.to });
+    case "more_space":
+      return fill(t.more_space, { to: c.to.toFixed(1) });
+    case "no_noise":
+      return c.because === "silence" ? t.no_noise_silence : t.no_noise_hum;
+    case "avoid_sounds":
+      return fill(t.avoid_sounds, {
+        sounds: c.sounds.map((s) => PROFILE_OPTIONS.botheringSounds[s].label[lang].toLowerCase()).join(", "),
+      });
+    case "calm_item": {
+      const o = PROFILE_OPTIONS.calmItem[c.item];
+      return fill(t.calm_item, { item: `${o.picto} ${o.label[lang].toLowerCase()}` });
+    }
+    default:
+      return t[c.kind];
+  }
+}
+
 function mmss(seconds: number): string {
   const s = Math.max(0, Math.ceil(seconds));
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
@@ -51,6 +88,7 @@ function mmss(seconds: number): string {
 export default function CompanionPage() {
   const [lang, setLang] = useLang("en");
   const copy = UI[lang];
+  const pcopy = PROFILE_UI[lang];
 
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
@@ -62,6 +100,8 @@ export default function CompanionPage() {
   const [phase, setPhase] = useState<RunPhase>("idle");
   const [minute, setMinute] = useState(0);
   const [audioOk, setAudioOk] = useState(true);
+  const [profile, setProfile] = useState<SensoryProfile | null>(null);
+  const [editingProfile, setEditingProfile] = useState(false);
 
   const elapsedBefore = useRef(0); // ms accumulated before the current segment
   const segmentStart = useRef(0);
@@ -76,16 +116,25 @@ export default function CompanionPage() {
     } catch {
       setVision(null);
     }
+    try {
+      setProfile(readProfile(window.localStorage));
+    } catch {
+      setProfile(null);
+    }
   }, []);
 
-  const steps = useMemo<PlannedStep[]>(() => result?.plan.steps ?? [], [result]);
-  const env = result?.plannerInput.environment;
+  // The person's profile is a hard limit: fused in code, then the plan is rebuilt locally.
+  const fusion = useMemo(() => (result ? applyProfile(result.plannerInput, profile) : null), [result, profile]);
+  const plan = useMemo<PlannerResult | null>(() => (fusion ? buildCarePlan(fusion.input) : null), [fusion]);
+  const noiseAllowed = fusion?.phone.noise ?? true;
+  const steps = useMemo<PlannedStep[]>(() => plan?.steps ?? [], [plan]);
+  const env = fusion?.input.environment;
   const total = totalMinutes(steps);
   const secPerMin = SECONDS_PER_MINUTE[speed];
 
   const state: PhoneState | null = useMemo(
-    () => (env && phase !== "idle" ? phoneStateAt(steps, env, minute, { noise: true }) : null),
-    [env, steps, minute, phase]
+    () => (env && phase !== "idle" ? phoneStateAt(steps, env, minute, { noise: noiseAllowed }) : null),
+    [env, steps, minute, phase, noiseAllowed]
   );
 
   const clearTimer = () => {
@@ -229,7 +278,10 @@ export default function CompanionPage() {
     [text, busy, lang, vision, copy.error]
   );
 
+  const onPhone = (step: PlannedStep) => phoneMapping[step.command].onPhone && (step.command !== "reduce_sound" || noiseAllowed);
+
   const actionText = (step: PlannedStep) => {
+    if (step.command === "reduce_sound" && !noiseAllowed) return SILENT_PHONE_TEXT[lang];
     const m = phoneMapping[step.command];
     return fill(PHONE_ACTION_TEXT[lang][m.action], {
       light: env?.light ?? 0,
@@ -240,6 +292,8 @@ export default function CompanionPage() {
 
   const cardKey: ScenarioId | "escalated" = result?.escalate ? "escalated" : result?.scenario ?? "sensory_overload";
   const running = phase === "running" || phase === "paused";
+  const profileName = profile?.name.trim() || pcopy.person;
+  const calmItem = profile?.calmItem ? PROFILE_OPTIONS.calmItem[profile.calmItem] : null;
   const activeStep = state && state.activeStep >= 0 && state.activeStep < steps.length ? steps[state.activeStep] : null;
   const remaining = (total - minute) * secPerMin;
 
@@ -290,6 +344,17 @@ export default function CompanionPage() {
                 {copy.how3}
               </li>
             </ol>
+            <button type="button" className="profileChip" onClick={() => setEditingProfile(true)}>
+              {profile ? (
+                <>
+                  <span aria-hidden="true">🧩</span> {pcopy.edit}: <b>{profileName}</b> ✓
+                </>
+              ) : (
+                <>
+                  <span aria-hidden="true">🧩</span> {pcopy.create}
+                </>
+              )}
+            </button>
           </section>
 
           <section className="card">
@@ -404,8 +469,8 @@ export default function CompanionPage() {
                           <div>
                             <strong>{COMMAND_LABELS[lang][step.command]}</strong>
                             <p>
-                              <em className={phoneMapping[step.command].onPhone ? "who phone" : "who you"}>
-                                {phoneMapping[step.command].onPhone ? copy.phone : copy.you}
+                              <em className={onPhone(step) ? "who phone" : "who you"}>
+                                {onPhone(step) ? copy.phone : copy.you}
                               </em>
                               {actionText(step)}
                             </p>
@@ -413,6 +478,12 @@ export default function CompanionPage() {
                         </li>
                       ))}
                     </ol>
+                    {profile && fusion && fusion.constraints.length > 0 && (
+                      <div className="respects">
+                        <strong>{fill(pcopy.respects, { name: profileName })}:</strong>{" "}
+                        {fusion.constraints.map((c) => constraintText(c, lang)).join(" · ")}
+                      </div>
+                    )}
                   </div>
 
                   <div className="startBar">
@@ -445,6 +516,33 @@ export default function CompanionPage() {
         </main>
       </div>
 
+      {editingProfile && (
+        <ProfileEditor
+          lang={lang}
+          initial={profile ?? defaultProfile()}
+          hasSaved={profile !== null}
+          onClose={() => setEditingProfile(false)}
+          onSave={(p) => {
+            try {
+              writeProfile(window.localStorage, p);
+            } catch {
+              /* storage unavailable: keep it for this session */
+            }
+            setProfile(p);
+            setEditingProfile(false);
+          }}
+          onDelete={() => {
+            try {
+              deleteProfile(window.localStorage);
+            } catch {
+              /* nothing stored */
+            }
+            setProfile(null);
+            setEditingProfile(false);
+          }}
+        />
+      )}
+
       {phase !== "idle" && result && (
         <div className="runner" role="dialog" aria-modal="true" aria-label={copy.title}>
           {running && state && (
@@ -469,6 +567,11 @@ export default function CompanionPage() {
                       ))}
                     </div>
                     <p>{VISUAL_CARDS[lang][cardKey]}</p>
+                    {calmItem && (
+                      <p className="calmItem">
+                        {pcopy.yourCalm}: <span aria-hidden="true">{calmItem.picto}</span> {calmItem.label[lang]}
+                      </p>
+                    )}
                   </div>
                 ) : (
                   <div className="calm">
@@ -484,6 +587,11 @@ export default function CompanionPage() {
                       />
                     </svg>
                     <p>{state.quiet ? copy.quiet : mmss(remaining)}</p>
+                    {state.quiet && profile?.pauseVoice === "silence" && (
+                      <p className="noVoice">
+                        <span aria-hidden="true">🤐</span> {pcopy.noVoice}
+                      </p>
+                    )}
                   </div>
                 )}
                 {state.caregiverHints.includes("step_back") && env && (
@@ -778,6 +886,37 @@ export default function CompanionPage() {
           font-weight: 700;
           font-size: 18px;
           text-decoration: none;
+        }
+        .profileChip {
+          margin-top: 12px;
+          min-height: 48px;
+          width: 100%;
+          text-align: left;
+          padding: 0 14px;
+          border-radius: 14px;
+          border: 1px dashed #b9ae9c;
+          background: #f7f3ec;
+          color: #2c3532;
+          font: inherit;
+          font-size: 16px;
+        }
+        .respects {
+          margin-top: 10px;
+          padding: 10px 12px;
+          border-radius: 12px;
+          background: #dfe7e1;
+          color: #2f4d45;
+          font-size: 15px;
+        }
+        .calmItem {
+          font-size: 20px !important;
+          font-weight: 500 !important;
+          margin-top: 14px !important;
+          color: #3f5f57;
+        }
+        .noVoice {
+          font-size: 18px !important;
+          color: #3f5f57;
         }
         .planHead {
           display: flex;

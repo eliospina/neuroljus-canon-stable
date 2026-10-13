@@ -323,3 +323,171 @@ export const SCENARIO_NAMES: Record<CompanionLang, Record<ScenarioId, string>> =
 export function fill(template: string, values: Record<string, string | number>): string {
   return template.replace(/\{(\w+)\}/g, (_, key: string) => String(values[key] ?? ""));
 }
+
+// ---------------------------------------------------------------------------
+// Sensory profile (phase 2)
+// ---------------------------------------------------------------------------
+
+export const PROFILE_UI: Record<CompanionLang, Record<string, string>> = {
+  es: {
+    create: "Crear el perfil de la persona",
+    edit: "Perfil",
+    title: "Su perfil sensorial",
+    intro: "Rellénalo con la persona, o deja que elija tocando. Ningún plan puede saltarse este perfil.",
+    name: "Nombre (solo en este teléfono)",
+    calmingSound: "¿Qué sonido te calma?",
+    botheringSounds: "¿Qué sonidos te molestan?",
+    light: "¿Qué luz te gusta?",
+    pauseVoice: "En la pausa, ¿voz o silencio?",
+    space: "¿Cuánto espacio?",
+    visualCards: "¿Tarjetas con dibujos?",
+    calmItem: "¿Qué te calma?",
+    save: "Guardar perfil",
+    close: "Cerrar",
+    export: "Exportar JSON",
+    import: "Importar JSON",
+    delete: "Borrar perfil",
+    importError: "Ese archivo no es un perfil válido.",
+    local: "Se guarda solo en este dispositivo. Nunca se envía.",
+    respects: "Respeta el perfil de {name}",
+    person: "la persona",
+    yourCalm: "Tu calma",
+    noVoice: "Sin voz",
+  },
+  en: {
+    create: "Create the person's profile",
+    edit: "Profile",
+    title: "Their sensory profile",
+    intro: "Fill it in with the person, or let them choose by tapping. No plan can skip this profile.",
+    name: "Name (only on this phone)",
+    calmingSound: "Which sound calms you?",
+    botheringSounds: "Which sounds bother you?",
+    light: "Which light do you like?",
+    pauseVoice: "During the pause, voice or silence?",
+    space: "How much space?",
+    visualCards: "Picture cards?",
+    calmItem: "What calms you?",
+    save: "Save profile",
+    close: "Close",
+    export: "Export JSON",
+    import: "Import JSON",
+    delete: "Delete profile",
+    importError: "That file is not a valid profile.",
+    local: "Saved only on this device. Never sent.",
+    respects: "Respects {name}'s profile",
+    person: "the person",
+    yourCalm: "Your calm",
+    noVoice: "No voice",
+  },
+  sv: {
+    create: "Skapa personens profil",
+    edit: "Profil",
+    title: "Sensorisk profil",
+    intro: "Fyll i den tillsammans med personen, eller låt personen välja genom att trycka. Ingen plan kan gå förbi profilen.",
+    name: "Namn (bara i den här telefonen)",
+    calmingSound: "Vilket ljud lugnar dig?",
+    botheringSounds: "Vilka ljud stör dig?",
+    light: "Vilket ljus gillar du?",
+    pauseVoice: "Under pausen, röst eller tystnad?",
+    space: "Hur mycket utrymme?",
+    visualCards: "Bildkort?",
+    calmItem: "Vad lugnar dig?",
+    save: "Spara profil",
+    close: "Stäng",
+    export: "Exportera JSON",
+    import: "Importera JSON",
+    delete: "Radera profil",
+    importError: "Filen är inte en giltig profil.",
+    local: "Sparas bara på den här enheten. Skickas aldrig.",
+    respects: "Följer {name}s profil",
+    person: "personen",
+    yourCalm: "Ditt lugn",
+    noVoice: "Ingen röst",
+  },
+};
+
+type Option = { picto: string; label: Record<CompanionLang, string> };
+
+export const PROFILE_OPTIONS = {
+  calmingSound: {
+    soft_noise: { picto: "🌊", label: { es: "Ruido suave", en: "Soft noise", sv: "Mjukt brus" } },
+    silence: { picto: "🤫", label: { es: "Silencio", en: "Silence", sv: "Tystnad" } },
+  },
+  botheringSounds: {
+    voices: { picto: "🗣️", label: { es: "Voces", en: "Voices", sv: "Röster" } },
+    music: { picto: "🎵", label: { es: "Música", en: "Music", sv: "Musik" } },
+    loud_sudden: { picto: "💥", label: { es: "Ruidos de golpe", en: "Sudden noises", sv: "Plötsliga ljud" } },
+    hum: { picto: "🌀", label: { es: "Zumbidos", en: "Humming", sv: "Surr" } },
+  },
+  light: {
+    very_soft: { picto: "🌑", label: { es: "Muy suave", en: "Very soft", sv: "Mycket mjukt" } },
+    soft: { picto: "🌙", label: { es: "Suave", en: "Soft", sv: "Mjukt" } },
+    normal: { picto: "☀️", label: { es: "Normal", en: "Normal", sv: "Normalt" } },
+  },
+  pauseVoice: {
+    silence: { picto: "🤐", label: { es: "Sin voz", en: "No voice", sv: "Ingen röst" } },
+    soft_voice: { picto: "💬", label: { es: "Voz suave", en: "Soft voice", sv: "Mjuk röst" } },
+  },
+  space: {
+    more_space: { picto: "↔️", label: { es: "Más espacio", en: "More space", sv: "Mer utrymme" } },
+    close_ok: { picto: "🙂", label: { es: "Cerca está bien", en: "Close is fine", sv: "Nära går bra" } },
+  },
+  visualCards: {
+    yes: { picto: "🖼️", label: { es: "Sí", en: "Yes", sv: "Ja" } },
+    no: { picto: "🚫", label: { es: "No", en: "No", sv: "Nej" } },
+  },
+  calmItem: {
+    headphones: { picto: "🎧", label: { es: "Auriculares", en: "Headphones", sv: "Hörlurar" } },
+    soft_toy: { picto: "🧸", label: { es: "Peluche", en: "Soft toy", sv: "Gosedjur" } },
+    blanket: { picto: "🛌", label: { es: "Manta", en: "Blanket", sv: "Filt" } },
+    water: { picto: "💧", label: { es: "Agua", en: "Water", sv: "Vatten" } },
+    window: { picto: "🪟", label: { es: "Ventana", en: "Window", sv: "Fönster" } },
+    music: { picto: "🎶", label: { es: "Su música", en: "Their music", sv: "Sin musik" } },
+    tablet: { picto: "📱", label: { es: "Tablet", en: "Tablet", sv: "Surfplatta" } },
+    fidget: { picto: "🧩", label: { es: "Juguete", en: "Fidget", sv: "Pillersak" } },
+  },
+} satisfies Record<string, Record<string, Option>>;
+
+/** One short line per profile constraint shown with the plan. */
+export const CONSTRAINT_TEXT: Record<CompanionLang, Record<string, string>> = {
+  es: {
+    light_capped: "luz máx. {to}% (el plan proponía {from}%)",
+    more_space: "al menos {to} m de espacio",
+    no_noise_silence: "sin ruido: prefiere silencio",
+    no_noise_hum: "sin ruido: le molestan los zumbidos",
+    no_cards: "sin tarjetas visuales",
+    no_voice: "sin voz durante la pausa",
+    avoid_sounds: "evita: {sounds}",
+    calm_item: "ofrece: {item}",
+    rejection_stops: "si dice que no, se para",
+  },
+  en: {
+    light_capped: "light max {to}% (the plan proposed {from}%)",
+    more_space: "at least {to} m of space",
+    no_noise_silence: "no noise: prefers silence",
+    no_noise_hum: "no noise: humming bothers them",
+    no_cards: "no visual cards",
+    no_voice: "no voice during the pause",
+    avoid_sounds: "avoid: {sounds}",
+    calm_item: "offer: {item}",
+    rejection_stops: "if they say no, it stops",
+  },
+  sv: {
+    light_capped: "ljus max {to}% (planen föreslog {from}%)",
+    more_space: "minst {to} m utrymme",
+    no_noise_silence: "inget brus: föredrar tystnad",
+    no_noise_hum: "inget brus: surr stör",
+    no_cards: "inga bildkort",
+    no_voice: "ingen röst under pausen",
+    avoid_sounds: "undvik: {sounds}",
+    calm_item: "erbjud: {item}",
+    rejection_stops: "säger personen nej, stoppar det",
+  },
+};
+
+/** Phone text for reduce_sound when the profile rules noise out. */
+export const SILENT_PHONE_TEXT: Record<CompanionLang, string> = {
+  es: "El teléfono se queda en silencio (perfil). Baja tú la radio o la tele.",
+  en: "The phone stays silent (profile). Turn the radio or TV down yourself.",
+  sv: "Telefonen förblir tyst (profil). Sänk radio eller tv själv.",
+};
