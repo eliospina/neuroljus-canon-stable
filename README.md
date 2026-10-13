@@ -46,6 +46,7 @@ Near-term research tools:
 - **Future Care Room** (`/labs/future-care-room`) — an interactive care-room simulation where caregiver settings become a living care protocol.
 - **Robot Care Interface** (`/labs/robot-interface`) — the technical protocol workspace: routine builder, simulator, audit trail, adapter packets (ROS2/MQTT/HTTP/offline).
 - **Care protocol engine** (`src/lib/careProtocol/`) — deterministic, local, tested (`npm test`).
+- **Care Agent** (`/care-agent`) — natural-language description → Claude interprets → the deterministic planner emits the protocol and adapter packets.
 - **Research collaboration** for ethics, privacy, accessibility, validation design, and future evidence-building.
 
 Neuroljus does not currently offer diagnosis, medical advice, clinical deployment, institutional pilots, or automated interpretation of autistic communication. Diagnostic support is a future horizon to be built only with qualified research and care partners.
@@ -147,6 +148,16 @@ To set it up on a fresh Vercel project:
 - Keeps caregiver knowledge, consent, privacy, and human override central
 - Prioritizes within-person longitudinal observations over universal claims about autism
 - Rejects claims that AI or robots can understand, translate, or infer inner states with certainty
+
+## Care Agent (`/care-agent`)
+
+A caregiver describes what is happening in Spanish, English or Swedish ("Leo se tapa los oídos, hay mucha gente en la cocina"). Three layers, in this order:
+
+1. **Claude interprets.** `src/lib/careProtocol/intentParser.ts` sends the text to Claude with a strict JSON schema and gets back only protocol settings: scenario, light/sound/distance targets, allowed commands, a one-sentence interpretation and a confidence level. Unknown or out-of-range values are discarded and the closest scenario preset fills the gap.
+2. **The deterministic planner decides.** `buildCarePlan()` turns those settings into the timed `planned_sequence`, the `care_command_protocol_v0` document and the four adapter packets (ROS2, MQTT, HTTP, offline). Claude never writes an envelope.
+3. **Safety exceptions cannot be skipped.** The preset's exceptions are a floor the model can only extend. A description of physical risk, self-injury or a medical emergency is caught locally before any network call (and by Claude as a second check): no automatic action is planned, only `notify_caregiver` and `log_observation`, with the message "This needs a person. If there is danger, call 112."
+
+Endpoint: `POST /api/protocol-from-text` with `{ text, lang, visionContext? }` (max 500 characters, 15 s timeout, the text is never logged). If Claude is unreachable the endpoint still answers from the presets and says so (`source: "fallback"`). The latest local NL-VISION snapshot is attached exactly as in the Care Room.
 
 ## Product Status
 

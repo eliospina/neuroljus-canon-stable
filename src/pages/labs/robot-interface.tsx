@@ -481,6 +481,7 @@ export default function RobotInterfaceLab() {
           <nav className="navLinks" aria-label="Labs">
             <Link href="/labs/nl-vision">NL-VISION</Link>
             <Link href="/labs/future-care-room">Care Room</Link>
+            <Link href="/care-agent">Care Agent</Link>
             <Link href="/">Platform</Link>
           </nav>
           <div className="navRight">
@@ -503,6 +504,8 @@ export default function RobotInterfaceLab() {
             <p className="roomLink">
               Prefer the experiential view?{" "}
               <Link href="/labs/future-care-room">Enter the Future Care Room</Link>
+              {" · "}
+              <Link href="/care-agent">Describe a situation in words: Care Agent</Link>
             </p>
           </div>
 
