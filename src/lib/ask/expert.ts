@@ -228,11 +228,9 @@ export function personSegments(history: HelpfulRoutine[], lang: AskLang): AskSeg
 
 const LANG_NAME: Record<AskLang, string> = { es: "Spanish", en: "English", sv: "Swedish" };
 
-export function buildAskSystemPrompt(lang: AskLang, hasPersonData: boolean): string {
+/** The source-label protocol shared by Ask NeuroLjus and Care Chat. */
+export function labelFormatInstructions(hasPersonData: boolean): string {
   return (
-    "You are Ask NeuroLjus, an autism expert for caregivers and autistic people. Help first: concrete, practical, for this situation, today. " +
-    `Answer in ${LANG_NAME[lang]} unless the question is clearly in another language. Use respectful, neurodiversity-affirming language (identity-first, no 'suffers from', no 'low functioning', no 'challenging behaviour'; describe what happens and what helps). ` +
-    "Science is a tool, not a cage: use everything you know, lean on the attached studies when they apply, and feel free to propose new ideas. Every idea must say where it comes from.\n\n" +
     "FORMAT — plain text, short paragraphs, no markdown headings. Start every paragraph with exactly one tag:\n" +
     "[SCIENCE] a point supported by an attached study — cite it with the citation feature (the citation must come from the attached documents; never cite from memory).\n" +
     "[PRACTICE] care knowledge you bring without a citation.\n" +
@@ -240,7 +238,17 @@ export function buildAskSystemPrompt(lang: AskLang, hasPersonData: boolean): str
       ? "[PERSON] refers to the data from this person that is given to you; repeat its numbers exactly, never invent new ones.\n"
       : "") +
     "[IDEA] a new hypothesis worth trying — mark it as something to test, never as a fact.\n" +
-    "Begin with 2-5 practical steps as [PRACTICE] or [SCIENCE] paragraphs (one step per paragraph), then what to avoid, then at most two [IDEA] paragraphs. 120-260 words total. No lists of what you cannot do.\n\n" +
+    "A [SCIENCE] paragraph must cite from the attached documents, never from memory; if no attached study fits, use [PRACTICE]."
+  );
+}
+
+export function buildAskSystemPrompt(lang: AskLang, hasPersonData: boolean): string {
+  return (
+    "You are Ask NeuroLjus, an autism expert for caregivers and autistic people. Help first: concrete, practical, for this situation, today. " +
+    `Answer in ${LANG_NAME[lang]} unless the question is clearly in another language. Use respectful, neurodiversity-affirming language (identity-first, no 'suffers from', no 'low functioning', no 'challenging behaviour'; describe what happens and what helps). ` +
+    "Science is a tool, not a cage: use everything you know, lean on the attached studies when they apply, and feel free to propose new ideas. Every idea must say where it comes from.\n\n" +
+    labelFormatInstructions(hasPersonData) +
+    "\nBegin with 2-5 practical steps as [PRACTICE] or [SCIENCE] paragraphs (one step per paragraph), then what to avoid, then at most two [IDEA] paragraphs. 120-260 words total. No lists of what you cannot do.\n\n" +
     "SAFETY: never diagnose, never recommend or dose medication; for medical questions say a clinician (in Sweden 1177) decides. If the question describes physical danger, self-injury, abuse or an emergency, first say that this needs a person now and to call 112, then help with what is safe. " +
     "If an attached study does not fit the question, ignore it. Never present a study as a rule for every person."
   );
@@ -288,6 +296,38 @@ export function parseAnswer(payload: AnthropicPayload, docCount: number): AskSeg
   return segments;
 }
 
+export function documentBlocks(docs: LibraryDoc[]): Array<Record<string, unknown>> {
+  return docs.map((d) => ({
+    type: "document",
+    source: { type: "text", media_type: "text/plain", data: documentText(d) },
+    title: `${d.title.slice(0, 120)} (${d.year})`,
+    context: JSON.stringify({ doi: d.doi, kind: d.kind, year: d.year, participatory: d.participatory, license: d.license }),
+    citations: { enabled: true },
+  }));
+}
+
+/** One Claude call: attached library documents + a text turn → labelled segments with citations. */
+export async function answerWithDocuments(input: {
+  system: string;
+  userText: string;
+  docs: LibraryDoc[];
+  deps: ClaudeDeps;
+  maxTokens?: number;
+}): Promise<AskSegment[]> {
+  const content = [...documentBlocks(input.docs), { type: "text", text: input.userText }];
+  const payload = await callClaude(
+    {
+      max_tokens: input.maxTokens ?? 1200,
+      system: input.system,
+      messages: [{ role: "user", content }],
+      output_config: { effort: "medium" },
+    },
+    input.deps
+  );
+  if (!payload || payload.stop_reason === "refusal") return [];
+  return parseAnswer(payload, input.docs.length);
+}
+
 export async function answerWithClaude(input: {
   question: string;
   lang: AskLang;
@@ -296,27 +336,18 @@ export async function answerWithClaude(input: {
   deps: ClaudeDeps;
 }): Promise<AskSegment[]> {
   const { question, lang, docs, person, deps } = input;
-  const content: Array<Record<string, unknown>> = docs.map((d) => ({
-    type: "document",
-    source: { type: "text", media_type: "text/plain", data: documentText(d) },
-    title: `${d.title.slice(0, 120)} (${d.year})`,
-    context: JSON.stringify({ doi: d.doi, kind: d.kind, year: d.year, participatory: d.participatory, license: d.license }),
-    citations: { enabled: true },
-  }));
   const personBlock = person.length > 0 ? `\n\nData from this person (computed on the device):\n${person.map((p) => `- ${p.text}`).join("\n")}` : "";
-  content.push({ type: "text", text: `Question:\n${question}${personBlock}` });
+  return answerWithDocuments({
+    system: buildAskSystemPrompt(lang, person.length > 0),
+    userText: `Question:\n${question}${personBlock}`,
+    docs,
+    deps,
+  });
+}
 
-  const payload = await callClaude(
-    {
-      max_tokens: 1200,
-      system: buildAskSystemPrompt(lang, person.length > 0),
-      messages: [{ role: "user", content }],
-      output_config: { effort: "medium" },
-    },
-    deps
-  );
-  if (!payload || payload.stop_reason === "refusal") return [];
-  return parseAnswer(payload, docs.length);
+/** Plain text of a labelled answer, for clients that only show text. */
+export function segmentsToText(segments: AskSegment[]): string {
+  return segments.map((s) => (s.sources.length > 0 ? `${s.text} ${s.sources.map((n) => `[${n}]`).join("")}` : s.text)).join("\n\n");
 }
 
 // ---------------------------------------------------------------------------

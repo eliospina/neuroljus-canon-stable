@@ -8,8 +8,39 @@
 
 // src/components/CareChat.tsx
 import { useEffect, useRef, useState } from "react";
+import type { AskLabel, AskSegment, AskSource } from "@/lib/ask/expert";
 
-type Msg = { role: "user" | "assistant"; content: string };
+type Msg = {
+  role: "user" | "assistant";
+  content: string;
+  segments?: AskSegment[];
+  sources?: AskSource[];
+};
+
+const LABELS: Record<Lang, Record<AskLabel, string>> = {
+  es: { science: "Ciencia", practice: "Práctica conocida", person: "Datos de esta persona", idea: "Idea nueva de la IA", safety: "Seguridad" },
+  en: { science: "Science", practice: "Known practice", person: "Data from this person", idea: "New idea from the AI", safety: "Safety" },
+  sv: { science: "Vetenskap", practice: "Känd praxis", person: "Data om den här personen", idea: "Ny idé från AI:n", safety: "Säkerhet" },
+};
+
+const LABEL_STYLE: Record<AskLabel, React.CSSProperties> = {
+  science: { background: "#dfe7e1", color: "#2f4d45" },
+  practice: { background: "#ebe5da", color: "#4f5b57" },
+  person: { background: "#e4e9f4", color: "#2f3f5f" },
+  idea: { background: "#f1e3cd", color: "#6d4d1f" },
+  safety: { background: "#9a4a36", color: "#fff8f2" },
+};
+
+const chip: React.CSSProperties = {
+  display: "inline-block",
+  fontSize: 11,
+  fontWeight: 700,
+  letterSpacing: "0.03em",
+  textTransform: "uppercase",
+  borderRadius: 999,
+  padding: "2px 8px",
+  marginBottom: 4,
+};
 type Lang = "sv" | "en" | "es";
 
 const T: Record<Lang, Record<string, string>> = {
@@ -115,7 +146,7 @@ export default function CareChat() {
         body: JSON.stringify({ messages: msgs.concat({ role: "user", content }), metrics, notes, lang }),
       });
       const j = await r.json();
-      setMsgs((m) => [...m, { role: "assistant", content: j.content }]);
+      setMsgs((m) => [...m, { role: "assistant", content: j.content, segments: j.segments, sources: j.sources }]);
     } catch (error) {
       console.error('Chat error:', error);
       setMsgs((m) => [...m, { role: "assistant", content: T[lang].error }]);
@@ -146,7 +177,30 @@ export default function CareChat() {
       {/* Thread */}
       <div style={thread} aria-live="polite">
         {msgs.map((m, i) => (
-          <div key={i} style={m.role === "user" ? userBubble : aiBubble}>{m.content}</div>
+          <div key={i} style={m.role === "user" ? userBubble : aiBubble}>
+            {m.segments && m.segments.length > 0 ? (
+              <>
+                {m.segments.map((seg, k) => (
+                  <div key={k} style={{ marginBottom: 8 }}>
+                    <span style={{ ...chip, ...LABEL_STYLE[seg.label] }}>{LABELS[lang][seg.label]}</span>
+                    <div>
+                      {seg.text}
+                      {seg.sources.map((n) => {
+                        const src = m.sources?.find((x) => x.n === n);
+                        return src ? (
+                          <a key={n} href={`https://doi.org/${src.doi}`} target="_blank" rel="noreferrer" title={src.title} style={{ marginLeft: 4, fontWeight: 700 }}>
+                            [{n}]
+                          </a>
+                        ) : null;
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </>
+            ) : (
+              m.content
+            )}
+          </div>
         ))}
         <div ref={endRef} />
       </div>

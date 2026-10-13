@@ -7,6 +7,15 @@ import {
   offlineReflectionReply,
 } from "@/lib/careReflection/provider";
 import { formatScientificSimulation } from "@/lib/nlVision/scientificReflection";
+import {
+  answerWithDocuments,
+  labelFormatInstructions,
+  localSearchTerms,
+  retrieve,
+  segmentsToText,
+  toSources,
+} from "@/lib/ask/expert";
+import { getAnthropicModel } from "@/lib/careReflection/provider";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 type Lang = "sv" | "en" | "es";
@@ -198,6 +207,32 @@ Raw prototype numbers (last local window):
             content: "I'm experiencing a technical issue right now. Please try again in a moment.",
             provider: "anthropic",
           });
+        }
+
+        // Care Chat uses the same expert as Ask NeuroLjus: the latest caregiver
+        // message retrieves verified library studies, and the answer carries
+        // source labels with native citations. Falls back to the plain reply.
+        const lastUser = [...messages].reverse().find((m) => m.role === "user")?.content ?? "";
+        const docs = retrieve(localSearchTerms(lastUser), []);
+        try {
+          const segments = await answerWithDocuments({
+            system: `${system}\n\n${labelFormatInstructions(false)}\nKeep the reply under 220 words.`,
+            userText: userContent,
+            docs,
+            deps: { apiKey: anthropicKey, model: getAnthropicModel(), signal: controller.signal },
+            maxTokens: ANTHROPIC_MAX_TOKENS + 400,
+          });
+          if (segments.length > 0) {
+            return res.status(200).json({
+              role: "assistant",
+              content: segmentsToText(segments),
+              segments,
+              sources: toSources(docs).filter((src) => segments.some((seg) => seg.sources.includes(src.n))),
+              provider: "anthropic",
+            });
+          }
+        } catch (error) {
+          console.error("Care Chat expert path failed, using plain reply:", error instanceof Error ? error.message : "error");
         }
 
         const result = await callAnthropicReflection({
