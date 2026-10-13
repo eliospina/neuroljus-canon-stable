@@ -20,6 +20,7 @@
 import { localRiskScreen, type HelpfulRoutine, sanitizeHelpfulRoutines } from "../careProtocol/intentParser";
 import { COMMAND_LABELS } from "../companion/i18n";
 import { searchLibrary, TOPIC_LABELS, type LibraryDoc, type TopicId } from "../library";
+import { emergencyInfo } from "../emergency";
 
 export type AskLang = "es" | "en" | "sv";
 export type AskLabel = "science" | "practice" | "person" | "idea" | "safety";
@@ -58,11 +59,10 @@ export type AskResult = {
   notice: string | null;
 };
 
-export const EMERGENCY: Record<AskLang, string> = {
-  es: "Esto necesita a una persona ahora. Si hay peligro físico, autolesión o una emergencia médica, llama al 112. En Suecia, para dudas médicas no urgentes: 1177.",
-  en: "This needs a person now. If there is physical danger, self-injury or a medical emergency, call 112. In Sweden, for non-urgent medical questions: 1177.",
-  sv: "Det här behöver en människa nu. Vid fysisk fara, självskada eller medicinsk nödsituation: ring 112. För icke-akuta medicinska frågor i Sverige: 1177.",
-};
+/** Emergency wording with the caller's country number (generic when unknown; 1177 only in Sweden). */
+export function emergencyText(lang: AskLang, country: string | null | undefined): string {
+  return emergencyInfo(country, lang, true).text;
+}
 
 const FALLBACK_NOTICE: Record<AskLang, string> = {
   es: "El asistente no respondió a tiempo. Esto es lo que dice la biblioteca sobre tu pregunta.",
@@ -242,14 +242,17 @@ export function labelFormatInstructions(hasPersonData: boolean): string {
   );
 }
 
-export function buildAskSystemPrompt(lang: AskLang, hasPersonData: boolean): string {
+export function buildAskSystemPrompt(lang: AskLang, hasPersonData: boolean, country: string | null = null): string {
+  const e = emergencyInfo(country, lang, true);
+  const emergencyRule = e.number ? `call ${e.number}` : "call the local emergency number";
+  const medicalRule = e.medical ? " (in Sweden 1177)" : "";
   return (
     "You are Ask NeuroLjus, an autism expert for caregivers and autistic people. Help first: concrete, practical, for this situation, today. " +
     `Answer in ${LANG_NAME[lang]} unless the question is clearly in another language. Use respectful, neurodiversity-affirming language (identity-first, no 'suffers from', no 'low functioning', no 'challenging behaviour'; describe what happens and what helps). ` +
     "Science is a tool, not a cage: use everything you know, lean on the attached studies when they apply, and feel free to propose new ideas. Every idea must say where it comes from.\n\n" +
     labelFormatInstructions(hasPersonData) +
     "\nBegin with 2-5 practical steps as [PRACTICE] or [SCIENCE] paragraphs (one step per paragraph), then what to avoid, then at most two [IDEA] paragraphs. 120-260 words total. No lists of what you cannot do.\n\n" +
-    "SAFETY: never diagnose, never recommend or dose medication; for medical questions say a clinician (in Sweden 1177) decides. If the question describes physical danger, self-injury, abuse or an emergency, first say that this needs a person now and to call 112, then help with what is safe. " +
+    `SAFETY: never diagnose, never recommend or dose medication; for medical questions say a clinician${medicalRule} decides. If the question describes physical danger, self-injury, abuse or an emergency, first say that this needs a person now and to ${emergencyRule}, then help with what is safe. ` +
     "If an attached study does not fit the question, ignore it. Never present a study as a rule for every person."
   );
 }
@@ -334,11 +337,12 @@ export async function answerWithClaude(input: {
   docs: LibraryDoc[];
   person: AskSegment[];
   deps: ClaudeDeps;
+  country?: string | null;
 }): Promise<AskSegment[]> {
   const { question, lang, docs, person, deps } = input;
   const personBlock = person.length > 0 ? `\n\nData from this person (computed on the device):\n${person.map((p) => `- ${p.text}`).join("\n")}` : "";
   return answerWithDocuments({
-    system: buildAskSystemPrompt(lang, person.length > 0),
+    system: buildAskSystemPrompt(lang, person.length > 0, input.country ?? null),
     userText: `Question:\n${question}${personBlock}`,
     docs,
     deps,
@@ -374,6 +378,7 @@ export async function ask(input: {
   model: string;
   signal?: AbortSignal;
   fetchImpl?: typeof fetch;
+  country?: string | null;
   onError?: (detail: string) => void;
 }): Promise<AskResult> {
   const question = input.question.trim().slice(0, MAX_QUESTION_CHARS);
@@ -401,11 +406,11 @@ export async function ask(input: {
 
   const docs = retrieve(terms, topics);
   const sources = toSources(docs);
-  const safety: AskSegment[] = emergency ? [{ label: "safety", text: EMERGENCY[lang], sources: [] }] : [];
+  const safety: AskSegment[] = emergency ? [{ label: "safety", text: emergencyText(lang, input.country), sources: [] }] : [];
 
   if (deps && claudeOk) {
     try {
-      const segments = await answerWithClaude({ question, lang, docs, person, deps });
+      const segments = await answerWithClaude({ question, lang, docs, person, deps, country: input.country ?? null });
       if (segments.length > 0) {
         return {
           ok: true,

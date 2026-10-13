@@ -23,6 +23,7 @@ import type {
   VisionSnapshot,
 } from "./types";
 import { scenarioPresets } from "./scenarios";
+import { emergencyInfo } from "../emergency";
 
 export type IntentLang = "sv" | "en" | "es";
 export type Confidence = "low" | "medium" | "high";
@@ -98,11 +99,16 @@ const CLOSING_COMMANDS: Command[] = ["notify_caregiver", "log_observation"];
 export const ESCALATION_COMMANDS: Command[] = ["notify_caregiver", "log_observation"];
 const ESCALATION_DURATION_MINUTES = 2;
 
+/** Default (Sweden / EU) wording; protocol-from-text resolves the number from the caller's country. */
 export const escalationMessages: Record<IntentLang, string> = {
   es: "Esto necesita a una persona. Si hay peligro, llama al 112.",
   en: "This needs a person. If there is danger, call 112.",
   sv: "Det här behöver en människa. Vid fara, ring 112.",
 };
+
+export function escalationMessageFor(lang: IntentLang, country: string | null | undefined): string {
+  return emergencyInfo(country, lang).text;
+}
 
 const fallbackNotices: Record<IntentLang, string> = {
   es: "No se pudo contactar al asistente. Se usó el preset más cercano.",
@@ -259,7 +265,8 @@ export function escalatedIntent(
   scenario: ScenarioId,
   lang: IntentLang,
   interpretation?: string,
-  discarded: string[] = []
+  discarded: string[] = [],
+  country: string | null = null
 ): ParsedIntent {
   const preset = scenarioPresets[scenario];
   return {
@@ -268,7 +275,7 @@ export function escalatedIntent(
     allowedCommands: [...ESCALATION_COMMANDS],
     safetyExceptions: unionKeepOrder(preset.exceptions, ["caregiver_pause", "unknown_event"]),
     durationMinutes: ESCALATION_DURATION_MINUTES,
-    interpretation: interpretation?.trim() || escalationMessages[lang],
+    interpretation: interpretation?.trim() || (country ? escalationMessageFor(lang, country) : escalationMessages[lang]),
     confidence: "high",
     escalate: true,
     discarded,
@@ -594,14 +601,17 @@ export async function parseCareIntent(input: {
   signal?: AbortSignal;
   fetchImpl?: typeof fetch;
   history?: HelpfulRoutine[];
+  /** ISO country code of the caller, for the emergency number in escalations. */
+  country?: string | null;
   onError?: (status: number, detail: string) => void;
 }): Promise<IntentResult> {
   const text = input.text.trim().slice(0, MAX_INTENT_TEXT_CHARS);
   const lang = input.lang;
+  const country = input.country ?? null;
 
   if (localRiskScreen(text)) {
     return {
-      intent: escalatedIntent(guessScenario(text), lang),
+      intent: escalatedIntent(guessScenario(text), lang, undefined, [], country),
       source: "risk_screen",
       notice: riskNotices[lang],
     };
@@ -628,7 +638,7 @@ export async function parseCareIntent(input: {
     }
     if (result.refusal) {
       return {
-        intent: escalatedIntent(guessScenario(text), lang),
+        intent: escalatedIntent(guessScenario(text), lang, undefined, [], country),
         source: "claude",
         notice: riskNotices[lang],
       };

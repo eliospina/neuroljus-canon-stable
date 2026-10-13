@@ -93,12 +93,19 @@ test("ask: emergency wording comes first, Claude answer is labelled, person data
     apiKey: "k",
     model: "m",
     fetchImpl,
+    country: "SE",
     helpfulRoutines: [{ scenario: "sensory_overload", commands: ["step_back"], helped: 2, rated: 2, name: "Leo" }],
   });
   assert.equal(r.emergency, true);
   assert.equal(r.source, "claude");
   assert.equal(r.segments[0].label, "safety");
   assert.match(r.segments[0].text, /112/);
+  assert.match(r.segments[0].text, /1177/, "1177 only in Sweden");
+  const co = await ask({ question: "Se golpea la cabeza contra la pared", lang: "es", apiKey: null, model: "m", country: "CO" });
+  assert.match(co.segments[0].text, /123/);
+  assert.doesNotMatch(co.segments[0].text, /1177/);
+  const unknown = await ask({ question: "Se golpea la cabeza contra la pared", lang: "es", apiKey: null, model: "m" });
+  assert.match(unknown.segments[0].text, /número de emergencias de tu país/);
   assert.ok(r.segments.some((s) => s.label === "science" && s.sources.length === 1));
   assert.equal(r.segments[r.segments.length - 1].label, "person");
   assert.doesNotMatch(JSON.stringify(calls), /Leo/, "names never reach the model");

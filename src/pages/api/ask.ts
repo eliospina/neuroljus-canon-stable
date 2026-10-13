@@ -7,6 +7,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ask, ASK_TIMEOUT_MS, MAX_QUESTION_CHARS, type AskLang } from "@/lib/ask/expert";
 import { getAnthropicModel, getReflectionProvider } from "@/lib/careReflection/provider";
+import { countryFromHeaders } from "@/lib/emergency";
 
 export const config = { maxDuration: 30 };
 
@@ -65,6 +66,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         apiKey,
         model: getAnthropicModel(),
         signal: controller.signal,
+        country: countryFromHeaders(req.headers),
         // Status and stage only: never the question.
         onError: (detail) => console.error("Ask upstream error", detail),
       });

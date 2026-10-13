@@ -80,7 +80,7 @@ function main() {
     "| \"Research with autistic adults describes stimming as self-regulation\" | \"The camera detected distress\" |",
     "| \"Studies suggest sensory-adapted environments reduce discomfort at the dentist\" | Any medication or dosing advice |",
     "",
-    "Neuroljus does not diagnose, prescribe or replace clinicians. If there is danger: 112. Medical questions in Sweden: 1177.",
+    "Neuroljus does not diagnose, prescribe or replace clinicians. If there is danger, call your country's emergency number (112 in Sweden and the EU). Non-urgent medical questions in Sweden: 1177.",
     "",
     "## Full list",
     "",

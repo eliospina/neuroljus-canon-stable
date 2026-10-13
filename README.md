@@ -158,7 +158,7 @@ A caregiver describes what is happening in Spanish, English or Swedish ("Leo se 
 
 1. **Claude interprets.** `src/lib/careProtocol/intentParser.ts` sends the text to Claude with a strict JSON schema and gets back only protocol settings: scenario, light/sound/distance targets, allowed commands, a one-sentence interpretation and a confidence level. Unknown or out-of-range values are discarded and the closest scenario preset fills the gap.
 2. **The deterministic planner decides.** `buildCarePlan()` turns those settings into the timed `planned_sequence`, the `care_command_protocol_v0` document and the four adapter packets (ROS2, MQTT, HTTP, offline). Claude never writes an envelope.
-3. **Safety exceptions cannot be skipped.** The preset's exceptions are a floor the model can only extend. A description of physical risk, self-injury or a medical emergency is caught locally before any network call (and by Claude as a second check): no automatic action is planned, only `notify_caregiver` and `log_observation`, with the message "This needs a person. If there is danger, call 112."
+3. **Safety exceptions cannot be skipped.** The preset's exceptions are a floor the model can only extend. A description of physical risk, self-injury or a medical emergency is caught locally before any network call (and by Claude as a second check): no automatic action is planned, only `notify_caregiver` and `log_observation`, with the message "This needs a person. If there is danger, call 112." (the number follows the caller's country: 112 in Sweden and the EU, 911 in the US and Mexico, 123 in Colombia, 999 in the UK, 000 in Australia; a generic line when unknown — `src/lib/emergency.ts`)
 
 Endpoint: `POST /api/protocol-from-text` with `{ text, lang, visionContext? }` (max 500 characters, 15 s timeout, the text is never logged). If Claude is unreachable the endpoint still answers from the presets and says so (`source: "fallback"`). The latest local NL-VISION snapshot is attached exactly as in the Care Room.
 
@@ -197,7 +197,7 @@ The science NeuroLjus grounds its answers on, verified by code rather than by tr
 - `npm run library` re-runs ingestion, seeds and build; the library grows, it never silently shrinks. `npm run library:sheets` needs `ANTHROPIC_API_KEY`.
 - Data lives in `data/library/` and is read at runtime by `src/lib/library` (no network). `/library` lists everything with its DOI, licence and sheet.
 
-The library does not diagnose or prescribe. If there is danger: 112. Medical questions in Sweden: 1177.
+The library does not diagnose or prescribe. If there is danger, call your country's emergency number (112 in Sweden and the EU). Non-urgent medical questions in Sweden: 1177.
 
 ## Product Status
 
