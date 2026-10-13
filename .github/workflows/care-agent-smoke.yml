@@ -1,6 +1,6 @@
 name: Care Agent smoke
 # Calls the deployed /api/protocol-from-text once a Vercel deployment is live.
-# Protected preview deployments answer 401/403 and are skipped; production is public.
+# Protected preview deployments answer 401/403/302 and are skipped; production is public.
 on:
   deployment_status:
   workflow_dispatch:
@@ -25,7 +25,8 @@ jobs:
             code=$(curl -sS -o body.json -w "%{http_code}" -m 40 "$URL" || echo 000)
             echo "attempt $attempt → HTTP $code"
             if [ "$code" = "200" ]; then break; fi
-            if [ "$code" = "401" ] || [ "$code" = "403" ]; then
+            # Vercel Authentication answers 401/403, or 302 to the SSO page for GET requests.
+            if [ "$code" = "401" ] || [ "$code" = "403" ] || { [ "$code" = "302" ] && grep -q "Vercel Authentication\|sso-api" body.json; }; then
               echo "Deployment protection is on for this URL; smoke skipped."; exit 0
             fi
             sleep 15
