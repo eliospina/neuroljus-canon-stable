@@ -561,3 +561,76 @@ export const OUTCOME_MARK: Record<"helped" | "no_change" | "worse", string> = {
   no_change: "=",
   worse: "↓",
 };
+
+// ---------------------------------------------------------------------------
+// More bodies (phase 4)
+// ---------------------------------------------------------------------------
+
+export type BodyId = "phone" | "home" | "ros2" | "mqtt" | "http" | "offline";
+export const BODIES: BodyId[] = ["phone", "home", "ros2", "mqtt", "http", "offline"];
+
+export const BODY_UI: Record<CompanionLang, Record<string, string>> = {
+  es: {
+    label: "Cuerpo",
+    phone: "📱 Teléfono",
+    home: "🏠 Casa",
+    ros2: "🤖 Robot (ROS2)",
+    mqtt: "📡 MQTT",
+    http: "🔌 HTTP",
+    offline: "📄 Offline",
+    homeHelp:
+      "Script de Home Assistant: pégalo en scripts.yaml y ejecútalo tú. Para pararlo: script.turn_off. Sin tokens: esta web nunca llama a tu casa.",
+    packetHelp: "El mismo plan, el mismo contrato care_command_protocol_v0. Ruta: {route}.",
+    copy: "Copiar",
+    copied: "Copiado",
+    entLight: "Luz",
+    entMedia: "Altavoz",
+    entNotify: "Aviso al móvil",
+    notifyMessage: "NeuroLjus: «{routine}» ha terminado.",
+    noteStepBack: "Da espacio: unos {distance} m.",
+    notePause: "Pausa: sin preguntas ni peticiones.",
+    noteCard: "Muestra la tarjeta: {card}",
+  },
+  en: {
+    label: "Body",
+    phone: "📱 Phone",
+    home: "🏠 Home",
+    ros2: "🤖 Robot (ROS2)",
+    mqtt: "📡 MQTT",
+    http: "🔌 HTTP",
+    offline: "📄 Offline",
+    homeHelp:
+      "Home Assistant script: paste it into scripts.yaml and run it yourself. To stop it: script.turn_off. No tokens: this page never calls your house.",
+    packetHelp: "Same plan, same care_command_protocol_v0 contract. Route: {route}.",
+    copy: "Copy",
+    copied: "Copied",
+    entLight: "Light",
+    entMedia: "Speaker",
+    entNotify: "Phone notice",
+    notifyMessage: "NeuroLjus: “{routine}” has finished.",
+    noteStepBack: "Give space: about {distance} m.",
+    notePause: "Pause: no questions, no demands.",
+    noteCard: "Show the card: {card}",
+  },
+  sv: {
+    label: "Kropp",
+    phone: "📱 Telefon",
+    home: "🏠 Hemmet",
+    ros2: "🤖 Robot (ROS2)",
+    mqtt: "📡 MQTT",
+    http: "🔌 HTTP",
+    offline: "📄 Offline",
+    homeHelp:
+      "Home Assistant-skript: klistra in i scripts.yaml och kör det själv. Stoppa med script.turn_off. Inga tokens: sidan anropar aldrig ditt hem.",
+    packetHelp: "Samma plan, samma care_command_protocol_v0-kontrakt. Rutt: {route}.",
+    copy: "Kopiera",
+    copied: "Kopierat",
+    entLight: "Lampa",
+    entMedia: "Högtalare",
+    entNotify: "Avisering till mobilen",
+    notifyMessage: "NeuroLjus: ”{routine}” är klar.",
+    noteStepBack: "Ge utrymme: cirka {distance} m.",
+    notePause: "Paus: inga frågor, inga krav.",
+    noteCard: "Visa kortet: {card}",
+  },
+};
