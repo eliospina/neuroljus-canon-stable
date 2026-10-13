@@ -9,7 +9,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { buildCarePlan } from "@/lib/careProtocol/planner";
 import type { VisionSnapshot } from "@/lib/careProtocol/types";
 import {
-  escalationMessages,
   INTENT_TIMEOUT_MS,
   MAX_INTENT_TEXT_CHARS,
   parseCareIntent,
@@ -18,6 +17,7 @@ import {
   type IntentLang,
 } from "@/lib/careProtocol/intentParser";
 import { getReflectionProvider } from "@/lib/careReflection/provider";
+import { countryFromHeaders, emergencyInfo } from "@/lib/emergency";
 
 export const config = { maxDuration: 20 };
 
@@ -94,6 +94,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const visionContext = req.method === "POST" ? sanitizeVision(body.visionContext) : null;
     // Anonymous on-device summary of what helped before: enums and counts only.
     const history = req.method === "POST" ? sanitizeHelpfulRoutines(body.helpfulRoutines) : [];
+    const country = countryFromHeaders(req.headers);
+    const emergency = emergencyInfo(country, lang);
 
     if (!text) {
       return res.status(400).json({ ok: false, error: "Please describe what is happening." });
@@ -118,6 +120,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         apiKey,
         signal: controller.signal,
         history,
+        country,
         // Status and API error type only: never the caregiver text.
         onError: (status, detail) => console.error("Care agent upstream error", status, detail),
       });
@@ -134,7 +137,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       source: result.source,
       notice: result.notice ?? null,
       escalate: result.intent.escalate,
-      escalationMessage: result.intent.escalate ? escalationMessages[lang] : null,
+      escalationMessage: result.intent.escalate ? emergency.text : null,
+      emergency: { number: emergency.number, call: emergency.call, text: emergency.text },
       interpretation: result.intent.interpretation,
       confidence: result.intent.confidence,
       discarded: result.intent.discarded,

@@ -63,6 +63,7 @@ type AgentResponse = {
   notice: string | null;
   escalate: boolean;
   escalationMessage: string | null;
+  emergency?: { number: string | null; call: string | null; text: string };
   interpretation: string;
   confidence: "low" | "medium" | "high";
   scenario: ScenarioId;
@@ -546,9 +547,11 @@ export default function CompanionPage() {
                   <p className="only">
                     {steps.map((s) => COMMAND_LABELS[lang][s.command]).join(" · ")}
                   </p>
-                  <a className="call" href="tel:112">
-                    {copy.call112}
-                  </a>
+                  {result.emergency?.number && result.emergency.call && (
+                    <a className="call" href={`tel:${result.emergency.number}`}>
+                      {result.emergency.call}
+                    </a>
+                  )}
                 </div>
               ) : (
                 <>

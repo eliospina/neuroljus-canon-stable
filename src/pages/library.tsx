@@ -16,6 +16,7 @@ type Item = {
   kind: EvidenceKind;
   participatory: boolean;
   open: boolean;
+  license: string;
   topics: TopicId[];
   hasSheet: boolean;
   seed: { claim: { es: string; en: string; sv: string }; supports: string; doesNotSupport: string } | null;
@@ -34,6 +35,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     kind: d.kind,
     participatory: d.participatory,
     open: d.openText,
+    license: d.license === "unknown" ? "" : d.license,
     topics: d.topics,
     hasSheet: d.sheet !== null,
     seed: d.seed ?? null,
@@ -65,6 +67,8 @@ const T: Record<Lang, Record<string, string>> = {
     all: "Todos los temas",
     sheet: "Para un cuidador mañana por la mañana",
     noSheet: "Solo metadatos y enlace (licencia no abierta).",
+    sheetPending: "Ficha práctica pendiente.",
+    metadataOnly: "solo metadatos y enlace",
     participatory: "con personas autistas",
     systematic_review: "revisión sistemática",
     meta_analysis: "metaanálisis",
@@ -73,7 +77,7 @@ const T: Record<Lang, Record<string, string>> = {
     results: "resultados",
     open: "Abrir estudio",
     sources: "Fuentes y licencias",
-    disclaimer: "NeuroLjus no diagnostica ni receta. Si hay peligro: 112. Dudas médicas en Suecia: 1177.",
+    disclaimer: "NeuroLjus no diagnostica ni receta. Si hay peligro, llama al número de emergencias de tu país (112 en Suecia y la UE). Dudas médicas no urgentes en Suecia: 1177.",
     navAsk: "Pregunta a NeuroLjus",
     navCompanion: "Companion",
     navHome: "Inicio",
@@ -90,6 +94,8 @@ const T: Record<Lang, Record<string, string>> = {
     all: "All topics",
     sheet: "For a caregiver tomorrow morning",
     noSheet: "Metadata and link only (licence not open).",
+    sheetPending: "Practical sheet pending.",
+    metadataOnly: "metadata and link only",
     participatory: "with autistic people",
     systematic_review: "systematic review",
     meta_analysis: "meta-analysis",
@@ -98,7 +104,7 @@ const T: Record<Lang, Record<string, string>> = {
     results: "results",
     open: "Open study",
     sources: "Sources and licences",
-    disclaimer: "NeuroLjus does not diagnose or prescribe. If there is danger: 112. Medical questions in Sweden: 1177.",
+    disclaimer: "NeuroLjus does not diagnose or prescribe. If there is danger, call your country's emergency number (112 in Sweden and the EU). Non-urgent medical questions in Sweden: 1177.",
     navAsk: "Ask NeuroLjus",
     navCompanion: "Companion",
     navHome: "Home",
@@ -115,6 +121,8 @@ const T: Record<Lang, Record<string, string>> = {
     all: "Alla ämnen",
     sheet: "För en vårdgivare i morgon bitti",
     noSheet: "Endast metadata och länk (licensen är inte öppen).",
+    sheetPending: "Praktiskt blad kommer.",
+    metadataOnly: "endast metadata och länk",
     participatory: "med autistiska personer",
     systematic_review: "systematisk översikt",
     meta_analysis: "metaanalys",
@@ -123,7 +131,7 @@ const T: Record<Lang, Record<string, string>> = {
     results: "resultat",
     open: "Öppna studien",
     sources: "Källor och licenser",
-    disclaimer: "NeuroLjus diagnostiserar inte och förskriver inte. Vid fara: 112. Medicinska frågor i Sverige: 1177.",
+    disclaimer: "NeuroLjus diagnostiserar inte och förskriver inte. Vid fara, ring ditt lands nödnummer (112 i Sverige och EU). Icke-akuta medicinska frågor i Sverige: 1177.",
     navAsk: "Fråga NeuroLjus",
     navCompanion: "Companion",
     navHome: "Hem",
@@ -255,14 +263,14 @@ export default function LibraryPage({ items, counts }: Props) {
                       <p>{sheets[`${i.id}:${lang}`] ?? "…"}</p>
                     </details>
                   ) : (
-                    <p className="muted small">{t.noSheet}</p>
+                    <p className="muted small">{i.open ? t.sheetPending : t.noSheet}</p>
                   )}
                   <p className="links">
                     <a href={`https://doi.org/${i.doi}`} target="_blank" rel="noreferrer">
                       {t.open} →
                     </a>
                     <span className="doi">{i.doi}</span>
-                    <span className="lic">{i.open ? "open licence" : "metadata only"}</span>
+                    <span className="lic">{i.license ? i.license.toUpperCase() : t.metadataOnly}</span>
                   </p>
                 </li>
               ))}
