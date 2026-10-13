@@ -22,13 +22,14 @@ jobs:
           echo "Deployment: $BASE (${{ github.event.deployment.environment || 'manual' }})"
           URL="$BASE/api/protocol-from-text?lang=en&text=It%20is%208pm%2C%20Mia%20is%20still%20spinning%20in%20the%20living%20room%20and%20the%20lights%20are%20bright.%20We%20need%20to%20start%20the%20bedtime%20routine."
           for attempt in 1 2 3 4 5; do
-            code=$(curl -sS -o body.json -w "%{http_code}" -m 40 "$URL" || echo 000)
-            echo "attempt $attempt → HTTP $code"
-            if [ "$code" = "200" ]; then break; fi
-            # Vercel Authentication answers 401/403, or 302 to the SSO page for GET requests.
-            if [ "$code" = "401" ] || [ "$code" = "403" ] || { [ "$code" = "302" ] && grep -q "Vercel Authentication\|sso-api" body.json; }; then
+            # -L follows the apex→www host redirect (307) that the public domain answers with.
+            code=$(curl -sSL -o body.json -w "%{http_code}" -m 40 "$URL" || echo 000)
+            echo "attempt $attempt → HTTP $code (final: $(curl -sSL -o /dev/null -w '%{url_effective}' -m 40 "$URL" || echo '?'))"
+            # Vercel Authentication answers 401/403, or redirects to its SSO page.
+            if [ "$code" = "401" ] || [ "$code" = "403" ] || grep -q "Vercel Authentication\|sso-api\|vercel.com/sso" body.json; then
               echo "Deployment protection is on for this URL; smoke skipped."; exit 0
             fi
+            if [ "$code" = "200" ] && python3 -c "import json,sys; json.load(open('body.json'))" 2>/dev/null; then break; fi
             sleep 15
           done
           [ "$code" = "200" ] || { echo "::error::endpoint did not answer 200"; head -c 600 body.json; exit 1; }
