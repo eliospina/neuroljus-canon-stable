@@ -4,7 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useLang, type Lang } from "@/components/SiteLayout";
 import type { AskLabel, AskResult } from "@/lib/ask/expert";
 import { helpfulSummary } from "@/lib/companion/outcomes";
-import { readRuns } from "@/lib/companion/runLog";
+import { readRuns, type CompanionRun } from "@/lib/companion/runLog";
+import { allIdeaStats, deleteIdea, MIN_RATED_RUNS, saveIdea, type IdeaStats } from "@/lib/ask/ideas";
 
 const MAX = 800;
 
@@ -27,6 +28,16 @@ const T: Record<Lang, Record<string, string>> = {
     legend: "Ciencia: cita un estudio verificado de la biblioteca · Práctica conocida: conocimiento de cuidado sin cita · Datos de esta persona: lo medido en Companion en este dispositivo, calculado por código · Idea nueva: hipótesis por probar, no un hecho.",
     disclaimer: "No diagnostica ni receta. Si hay peligro: 112. Dudas médicas en Suecia: 1177. Tu pregunta no se guarda en ningún registro.",
     personOn: "Se incluye un resumen anónimo de lo que ha ayudado en este dispositivo.",
+    saveIdea: "Guardar idea",
+    saved: "Guardada",
+    ideas: "Cuaderno de ideas",
+    ideasIntro: "Las ideas nuevas de la IA se guardan aquí. Pruébalas como rutina en Companion y valora cada vez; el código cuenta los casos.",
+    tryIdea: "Probar en Companion",
+    untested: "Sin probar",
+    testing: "Probando: {rated} de {min} valoraciones",
+    person_data: "Ya es dato de esta persona: ayudó {helped} de {rated}",
+    not_helping: "No le ayuda: ayudó {helped} de {rated}",
+    delete: "Borrar",
     navLibrary: "Biblioteca",
     navCompanion: "Companion",
     navHome: "Inicio",
@@ -54,6 +65,16 @@ const T: Record<Lang, Record<string, string>> = {
     legend: "Science: cites a verified study from the library · Known practice: care knowledge without a citation · Data from this person: what Companion measured on this device, computed by code · New idea: a hypothesis to try, not a fact.",
     disclaimer: "No diagnosis, no prescriptions. If there is danger: 112. Medical questions in Sweden: 1177. Your question is not stored in any log.",
     personOn: "An anonymous summary of what has helped on this device is included.",
+    saveIdea: "Save idea",
+    saved: "Saved",
+    ideas: "Ideas notebook",
+    ideasIntro: "New ideas from the AI are kept here. Try them as a Companion routine and rate each run; the code counts the cases.",
+    tryIdea: "Try in Companion",
+    untested: "Untested",
+    testing: "Testing: {rated} of {min} ratings",
+    person_data: "Now data from this person: helped {helped} of {rated}",
+    not_helping: "Not helping: helped {helped} of {rated}",
+    delete: "Delete",
     navLibrary: "Library",
     navCompanion: "Companion",
     navHome: "Home",
@@ -81,6 +102,16 @@ const T: Record<Lang, Record<string, string>> = {
     legend: "Vetenskap: citerar en verifierad studie i biblioteket · Känd praxis: omsorgskunskap utan citat · Data om den här personen: det Companion mätt på den här enheten, beräknat av kod · Ny idé: en hypotes att pröva, inte ett faktum.",
     disclaimer: "Ingen diagnos, inga recept. Vid fara: 112. Medicinska frågor i Sverige: 1177. Din fråga sparas inte i någon logg.",
     personOn: "En anonym sammanfattning av vad som hjälpt på den här enheten ingår.",
+    saveIdea: "Spara idé",
+    saved: "Sparad",
+    ideas: "Idébok",
+    ideasIntro: "Nya idéer från AI:n sparas här. Prova dem som en Companion-rutin och bedöm varje gång; koden räknar fallen.",
+    tryIdea: "Prova i Companion",
+    untested: "Oprövad",
+    testing: "Prövas: {rated} av {min} bedömningar",
+    person_data: "Nu data om den här personen: hjälpte {helped} av {rated}",
+    not_helping: "Hjälper inte: hjälpte {helped} av {rated}",
+    delete: "Radera",
     navLibrary: "Bibliotek",
     navCompanion: "Companion",
     navHome: "Hem",
@@ -135,14 +166,35 @@ export default function AskPage() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AskResult | null>(null);
   const [history, setHistory] = useState<ReturnType<typeof helpfulSummary>>([]);
+  const [ideas, setIdeas] = useState<IdeaStats[]>([]);
+  const [savedIdeas, setSavedIdeas] = useState<Record<number, string>>({});
 
-  useEffect(() => {
+  const refreshLocal = useCallback(() => {
     try {
-      setHistory(helpfulSummary(readRuns(window.localStorage)));
+      const runs: CompanionRun[] = readRuns(window.localStorage);
+      setHistory(helpfulSummary(runs));
+      setIdeas(allIdeaStats(window.localStorage, runs));
     } catch {
       setHistory([]);
+      setIdeas([]);
     }
   }, []);
+
+  useEffect(() => {
+    refreshLocal();
+  }, [refreshLocal]);
+
+  const keepIdea = (index: number, text: string) => {
+    try {
+      const idea = saveIdea(window.localStorage, text, lang);
+      setSavedIdeas((prev) => ({ ...prev, [index]: idea.id }));
+      refreshLocal();
+    } catch {
+      /* storage unavailable */
+    }
+  };
+
+  const fillT = (key: string, v: Record<string, number>) => t[key].replace(/\{(\w+)\}/g, (_, k: string) => String(v[k] ?? ""));
 
   const submit = useCallback(
     async (text?: string) => {
@@ -150,6 +202,7 @@ export default function AskPage() {
       if (!question || busy) return;
       setBusy(true);
       setError(null);
+      setSavedIdeas({});
       try {
         const r = await fetch("/api/ask", {
           method: "POST",
@@ -262,6 +315,19 @@ export default function AskPage() {
               {result.segments.map((s, i) => (
                 <div key={i} className={`seg ${s.label}`}>
                   <span className={LABEL_CLASS[s.label]}>{t[s.label]}</span>
+                  {s.label === "idea" && (
+                    <span className="ideaActions">
+                      {savedIdeas[i] ? (
+                        <Link href={`/companion?idea=${encodeURIComponent(savedIdeas[i])}`} className="ghost">
+                          {t.tryIdea} →
+                        </Link>
+                      ) : (
+                        <button type="button" className="ghost" onClick={() => keepIdea(i, s.text)}>
+                          {t.saveIdea}
+                        </button>
+                      )}
+                    </span>
+                  )}
                   <p>
                     {s.text}
                     {s.sources.length > 0 && (
@@ -301,6 +367,38 @@ export default function AskPage() {
                 </div>
               )}
               <p className="muted small legend">{t.legend}</p>
+            </section>
+          )}
+
+          {ideas.length > 0 && (
+            <section className="card ideas" aria-labelledby="ideas-title">
+              <h2 id="ideas-title">{t.ideas}</h2>
+              <p className="muted small">{t.ideasIntro}</p>
+              <ul>
+                {ideas.map((st) => (
+                  <li key={st.idea.id}>
+                    <p className="ideaText">{st.idea.text}</p>
+                    <p className={`status ${st.status}`}>
+                      {fillT(st.status, { rated: st.rated, min: MIN_RATED_RUNS, helped: st.helped })}
+                    </p>
+                    <div className="ideaRow">
+                      <Link href={`/companion?idea=${encodeURIComponent(st.idea.id)}`} className="ghost">
+                        {t.tryIdea} →
+                      </Link>
+                      <button
+                        type="button"
+                        className="ghost danger"
+                        onClick={() => {
+                          deleteIdea(window.localStorage, st.idea.id);
+                          refreshLocal();
+                        }}
+                      >
+                        {t.delete}
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </section>
           )}
 
@@ -529,6 +627,63 @@ export default function AskPage() {
         }
         .legend {
           margin-top: 14px;
+        }
+        .ideaActions {
+          float: right;
+        }
+        .ideas {
+          margin-top: 16px;
+        }
+        .ideas h2 {
+          font-size: 20px;
+          margin: 0 0 4px;
+        }
+        .ideas ul {
+          list-style: none;
+          padding: 0;
+          margin: 10px 0 0;
+        }
+        .ideas li {
+          border-top: 1px solid #e6dfd3;
+          padding: 10px 0;
+        }
+        .ideaText {
+          margin: 0 0 4px;
+          font-size: 15px;
+        }
+        .status {
+          margin: 0 0 6px;
+          font-size: 13px;
+          color: #6b7772;
+        }
+        .status.person_data {
+          color: #2f3f5f;
+          font-weight: 600;
+        }
+        .status.not_helping {
+          color: #8a3b2e;
+        }
+        .ideaRow {
+          display: flex;
+          gap: 8px;
+        }
+        .ideas :global(.ghost),
+        .ideaActions :global(.ghost) {
+          display: inline-block;
+          min-height: 36px;
+          line-height: 36px;
+          padding: 0 12px;
+          border-radius: 10px;
+          border: 1px solid #cfc6b8;
+          background: transparent;
+          color: #3f5f57;
+          font: inherit;
+          font-size: 14px;
+          text-decoration: none;
+        }
+        .danger {
+          color: #8a3b2e !important;
+          border-color: #e2c0b5 !important;
         }
         .foot {
           margin-top: 20px;

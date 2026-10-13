@@ -19,6 +19,8 @@ export type CompanionRun = {
   commands: Command[];
   ended: RunEnd;
   outcome?: RunOutcome;
+  /** Set when the run was started to try an idea from Ask NeuroLjus. */
+  ideaId?: string;
 };
 
 export const RUN_LOG_KEY = "neuroljus.companion.runs.v0";

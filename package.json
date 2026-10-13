@@ -11,7 +11,8 @@
     "test": "tsx --test tests/*.test.ts",
     "library": "tsx scripts/library/ingest.ts && tsx scripts/library/seeds.ts && tsx scripts/library/build.ts",
     "library:sheets": "tsx scripts/library/sheets.ts",
-    "library:build": "tsx scripts/library/build.ts"
+    "library:build": "tsx scripts/library/build.ts",
+    "eval:ask": "tsx scripts/ask/eval.ts"
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "^1.0.0",

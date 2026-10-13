@@ -27,6 +27,7 @@ import { BrownNoise, requestWakeLock, softVibrate } from "@/lib/companion/phoneR
 import { addRun, readRuns, type CompanionRun, type RunEnd } from "@/lib/companion/runLog";
 import { helpfulSummary, OUTCOMES, rankRoutines, routineKey, setRunOutcome, type Outcome } from "@/lib/companion/outcomes";
 import { addPatternNote } from "@/lib/carePatterns/localStore";
+import { readIdeas } from "@/lib/ask/ideas";
 import {
   DEFAULT_ENTITIES,
   homeAssistantScript,
@@ -108,6 +109,8 @@ export default function CompanionPage() {
   const bcopy = BODY_UI[lang];
 
   const [text, setText] = useState("");
+  // Set when this routine is a trial of an idea saved from Ask NeuroLjus (?idea=ID).
+  const ideaId = useRef<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AgentResponse | null>(null);
@@ -141,6 +144,12 @@ export default function CompanionPage() {
       setVision(null);
     }
     try {
+      const wanted = new URLSearchParams(window.location.search).get("idea");
+      const idea = wanted ? readIdeas(window.localStorage).find((i) => i.id === wanted) : undefined;
+      if (idea) {
+        ideaId.current = idea.id;
+        setText(idea.text.slice(0, MAX_CHARS));
+      }
       setProfile(readProfile(window.localStorage));
       setRuns(readRuns(window.localStorage));
       const storedEntities = window.localStorage.getItem(ENTITIES_KEY);
@@ -200,6 +209,7 @@ export default function CompanionPage() {
           scenario: result.scenario,
           commands: steps.map((s) => s.command),
           ended,
+          ...(ideaId.current ? { ideaId: ideaId.current } : {}),
         });
         setLastRunId(entry.id);
       } catch {

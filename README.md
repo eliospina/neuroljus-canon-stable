@@ -46,6 +46,7 @@ Near-term research tools:
 - **Future Care Room** (`/labs/future-care-room`) — an interactive care-room simulation where caregiver settings become a living care protocol.
 - **Robot Care Interface** (`/labs/robot-interface`) — the technical protocol workspace: routine builder, simulator, audit trail, adapter packets (ROS2/MQTT/HTTP/offline).
 - **Care protocol engine** (`src/lib/careProtocol/`) — deterministic, local, tested (`npm test`).
+- **Ask NeuroLjus** (`/ask`) — practical, labelled answers: science cited from the verified library, known practice, data from this person (by code), new ideas to try.
 - **Autism library** (`/library`) — 500+ open-access studies verified by code (DOI, licence, retraction), with key findings and practical sheets in three languages.
 - **Companion** (`/companion`) — the care robot that starts on a phone: describe the situation, press Start, and the phone itself runs the plan. The same plan exports to Home Assistant, ROS2, MQTT, HTTP or an offline playbook.
 - **Care Agent** (`/care-agent`) — natural-language description → Claude interprets → the deterministic planner emits the protocol and adapter packets.
@@ -173,6 +174,17 @@ The robot is only a body. Neuroljus is the brain and the ethics. Today the body 
 - **More bodies: the house today, the robot tomorrow.** A body selector — Phone, Home (Home Assistant), Robot (ROS2), MQTT, HTTP, Offline — shows the exact package for the same plan with a copy button. "Home" generates a ready-to-paste Home Assistant script (`src/lib/companion/homeAssistant.ts`): `light.turn_on` with `brightness_pct`, warm `color_temp_kelvin` and a transition, `media_player.volume_set`, a `notify` to the caregiver's phone and `logbook.log` for what the house cannot do, with `delay`s that follow the planned timing. No tokens are stored and the page never calls the house; the caregiver runs the script and stops it with `script.turn_off`.
 - **Escalation.** Physical risk, self-injury, a medical emergency or anything that does not fit: no Start button, only `notify_caregiver` + `log_observation`, the message "This needs a person. If there is danger, call 112." and a call button.
 - **Local-first, low stimulation.** History stays on the device; the caregiver text is never logged. Soft colours, no flashing, large buttons, `prefers-reduced-motion` respected.
+
+## Ask NeuroLjus (`/ask`)
+
+An autism expert for caregivers and autistic people. Help first; science is a tool, not a cage. Every idea says where it comes from:
+
+- **Ciencia / Science** — cites a verified study from the library through Claude's native citations (`document` blocks with `citations: {enabled: true}`); a "science" paragraph without a citation is downgraded by code.
+- **Práctica conocida / Known practice** — care knowledge Claude brings without a citation.
+- **Datos de esta persona / Data from this person** — what Companion measured on this device, computed **by code** with counts (the model only repeats the numbers). Only an anonymous summary (scenario, commands, counts) leaves the device.
+- **Idea nueva de la IA / New idea** — a hypothesis to try, never a fact. Ideas can be saved on the device (`src/lib/ask/ideas.ts`) and tried as a Companion routine (`/companion?idea=…`); each "Helped / No change / Worse" is counted by code, and after three rated runs the idea becomes data about this person — measured, not invented.
+
+Pipeline (`src/lib/ask/expert.ts`): question (ES/EN/SV, max 800 chars) → Claude turns it into English search terms (local keyword map as fallback) → 8 documents from the library (BM25, evidence and seed boost) → Claude answers with citations. Local risk screen puts the emergency message first; no diagnosis, no medication; the question is never logged. Care Chat uses the same expert and labels. `npm run eval:ask` runs 30 real everyday questions (`tests/ask/questions.json`) against the deployed endpoint and checks citations, labels, emergencies, diagnosis verdicts and dosing.
 
 ## Autism library (`/library`)
 
