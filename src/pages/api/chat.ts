@@ -38,7 +38,9 @@ const MAX_OUTPUT_TOKENS = 500; // OpenAI adapter output cap (cost control)
 // OpenAI-compatible endpoint; system prompt lives in care_agent/PROMPT.md.
 const NEMOTRON_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
 const NEMOTRON_MODEL = "nvidia/nemotron-3-super-120b-a12b";
-const NEMOTRON_MAX_TOKENS = 800;
+const NEMOTRON_MAX_TOKENS = 1200;
+// Nemotron replies can take well over the 25s used for the other providers.
+const NEMOTRON_TIMEOUT_MS = 90_000;
 
 // Loaded once per server instance at startup.
 const NEMOTRON_PROMPT = (() => {
@@ -214,7 +216,10 @@ Raw prototype numbers (last local window):
     }
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 25_000);
+    const timeout = setTimeout(
+      () => controller.abort(),
+      provider === "nemotron" ? NEMOTRON_TIMEOUT_MS : 25_000
+    );
 
     try {
       if (provider === "nemotron") {
