@@ -42,6 +42,7 @@ const chip: React.CSSProperties = {
   marginBottom: 4,
 };
 type Lang = "sv" | "en" | "es";
+type Engine = "default" | "nemotron";
 
 const T: Record<Lang, Record<string, string>> = {
   sv: {
@@ -104,6 +105,7 @@ const greetingValues = new Set(Object.values(GREETING));
 
 export default function CareChat() {
   const [lang, setLang] = useState<Lang>("sv");
+  const [engine, setEngine] = useState<Engine>("default");
   const [msgs, setMsgs] = useState<Msg[]>([{ role: "assistant", content: GREETING.sv }]);
   const [input, setInput] = useState("");
   const [notes, setNotes] = useState("");
@@ -143,7 +145,13 @@ export default function CareChat() {
       const r = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: msgs.concat({ role: "user", content }), metrics, notes, lang }),
+        body: JSON.stringify({
+          messages: msgs.concat({ role: "user", content }),
+          metrics,
+          notes,
+          lang,
+          ...(engine === "nemotron" ? { provider: "nemotron" } : {}),
+        }),
       });
       const j = await r.json();
       setMsgs((m) => [...m, { role: "assistant", content: j.content, segments: j.segments, sources: j.sources }]);
@@ -164,7 +172,11 @@ export default function CareChat() {
           <div style={{ opacity: 0.8, fontSize: 12 }}>{T[lang].subtitle}</div>
         </div>
         <div style={{ display: "flex", gap: 6 }}>
-          <span style={engineBadge}>Neuroljus AI</span>
+          <span style={engineBadge}>{engine === "nemotron" ? "Powered by NVIDIA Nemotron" : "Neuroljus AI"}</span>
+          <select value={engine} onChange={(e)=>setEngine(e.target.value as Engine)} style={langSel} aria-label="AI engine">
+            <option value="default">Claude</option>
+            <option value="nemotron">Nemotron</option>
+          </select>
           <select value={lang} onChange={(e)=>setLang(e.target.value as Lang)} style={langSel} aria-label="Language">
             <option value="sv">SV</option>
             <option value="en">EN</option>

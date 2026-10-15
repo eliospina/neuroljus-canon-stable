@@ -1,4 +1,6 @@
 // src/pages/api/chat.ts
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
   callAnthropicReflection,
@@ -31,6 +33,22 @@ const MAX_NOTES_CHARS = 2_000;
 // reply gets a little more room than the optional OpenAI adapter.
 const ANTHROPIC_MAX_TOKENS = 800;
 const MAX_OUTPUT_TOKENS = 500; // OpenAI adapter output cap (cost control)
+
+// Optional NVIDIA Nemotron provider, chosen per request with provider: "nemotron".
+// OpenAI-compatible endpoint; system prompt lives in care_agent/PROMPT.md.
+const NEMOTRON_URL = "https://integrate.api.nvidia.com/v1/chat/completions";
+const NEMOTRON_MODEL = "nvidia/nemotron-3-super-120b-a12b";
+const NEMOTRON_MAX_TOKENS = 800;
+
+// Loaded once per server instance at startup.
+const NEMOTRON_PROMPT = (() => {
+  try {
+    return readFileSync(path.join(process.cwd(), "care_agent", "PROMPT.md"), "utf8").trim();
+  } catch (error) {
+    console.error("care_agent/PROMPT.md could not be loaded:", error instanceof Error ? error.message : "error");
+    return "";
+  }
+})();
 
 // In-memory store. Note: on serverless this is per-instance, not global,
 // but it still meaningfully slows down abuse from a single source.
@@ -116,6 +134,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       metrics?: any;
       notes?: unknown;
       lang?: unknown;
+      provider?: unknown;
     };
 
     const messages = sanitizeMessages(body.messages);
@@ -185,7 +204,7 @@ Raw prototype numbers (last local window):
       .map((m) => `${m.role.toUpperCase()}: ${m.content}`)
       .join("\n")}`;
 
-    const provider = getReflectionProvider();
+    const provider = body.provider === "nemotron" ? "nemotron" : getReflectionProvider();
     if (provider === "none") {
       return res.status(200).json({
         role: "assistant",
@@ -198,6 +217,50 @@ Raw prototype numbers (last local window):
     const timeout = setTimeout(() => controller.abort(), 25_000);
 
     try {
+      if (provider === "nemotron") {
+        const nvidiaKey = process.env.NVIDIA_API_KEY;
+        if (!nvidiaKey || !NEMOTRON_PROMPT) {
+          console.error("Nemotron provider not configured (NVIDIA_API_KEY or care_agent/PROMPT.md missing)");
+          return res.status(500).json({
+            role: "assistant",
+            content: "I'm experiencing a technical issue right now. Please try again in a moment.",
+            provider: "nemotron",
+          });
+        }
+
+        const r = await fetch(NEMOTRON_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${nvidiaKey}` },
+          signal: controller.signal,
+          body: JSON.stringify({
+            model: NEMOTRON_MODEL,
+            temperature: 0.3,
+            max_tokens: NEMOTRON_MAX_TOKENS,
+            messages: [{ role: "system", content: NEMOTRON_PROMPT }, ...messages],
+          }),
+        });
+        let j: any = null;
+        try {
+          j = await r.json();
+        } catch {
+          j = null;
+        }
+        if (!r.ok) {
+          console.error("NVIDIA API returned an error", r.status, j?.error?.message ?? j?.detail);
+          return res.status(502).json({
+            role: "assistant",
+            content: degradedReflectionReply(lang, metrics),
+            provider: "nemotron",
+            upstreamStatus: r.status,
+          });
+        }
+
+        const content =
+          j?.choices?.[0]?.message?.content ||
+          "I'm having trouble processing that right now. Could you please try rephrasing your question?";
+        return res.status(200).json({ role: "assistant", content, provider: "nemotron" });
+      }
+
       if (provider === "anthropic") {
         const anthropicKey = process.env.ANTHROPIC_API_KEY;
         if (!anthropicKey) {

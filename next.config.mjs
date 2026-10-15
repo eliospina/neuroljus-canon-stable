@@ -8,5 +8,7 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   outputFileTracingRoot: projectRoot,
+  // Care Chat's Nemotron provider reads its system prompt from disk.
+  outputFileTracingIncludes: { "/api/chat": ["./care_agent/PROMPT.md"] },
 };
 export default nextConfig;
