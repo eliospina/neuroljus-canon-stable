@@ -11,7 +11,7 @@ abstract: >-
   is explicitly non-diagnostic, GDPR-aligned, and architected so that users
   retain ownership and control of their data.
 type: software
-license: CC-BY-4.0
+license: Apache-2.0
 authors:
   - given-names: Elizabeth
     family-names: Ospina
@@ -46,3 +46,4 @@ preferred-citation:
     name: "NeuroLjus"
   url: "https://neuroljus.com"
   doi: 10.5281/zenodo.20775583
+  license: CC-BY-4.0

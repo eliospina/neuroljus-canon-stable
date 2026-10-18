@@ -1,0 +1,14 @@
+NeuroLjus
+Copyright 2026 Elizabeth Ospina (ORCID: 0009-0004-7291-3340)
+
+Source code in this repository is licensed under the Apache License,
+Version 2.0 (see LICENSE).
+
+The strategic white paper, research documents and other written
+documentation (docs/, VALIDATION.md and other prose) are licensed under
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+(see LICENSE-docs).
+
+Third-party material keeps its own licence. In particular, abstracts and
+metadata in data/library/ come from the cited publications and are stored
+only under the open licence recorded for each entry.
