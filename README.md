@@ -213,6 +213,12 @@ The project is not currently offered as a clinical product, diagnostic tool, ins
 
 Future robotics or institutional work requires evidence, consent models, privacy review, accessibility validation, and explicit reopening approval.
 
+## License
+
+- **Code** (everything under `src/`, `scripts/`, `tests/`, configuration and other source files): [Apache License 2.0](LICENSE). The code is open source.
+- **White paper, research and documentation** (`docs/`, `VALIDATION.md` and other prose): [CC BY 4.0](LICENSE-docs).
+- **Third-party material** keeps its own licence: library abstracts in `data/library/` carry the open licence recorded for each study. See [NOTICE](NOTICE).
+
 ## Optional: Analytics (Plausible)
 Add the Plausible script to `_app.tsx` or `_document.tsx` once the domain is live.
 
