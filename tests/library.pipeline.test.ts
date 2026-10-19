@@ -82,3 +82,33 @@ test("an expert note becomes a library document labelled as practice, with no st
   assert.equal(d.citation?.locator, "ch. 3");
   assert.ok(d.url.startsWith("https://"));
 });
+
+test("the sheet screen accepts faithful numbers and rejects named medicines", async () => {
+  const { localSheetScreen, usageCostUsd } = await import("../scripts/library/sheetPrompt");
+  const words = "This practical sheet repeats the study in calm and simple words for caregivers and keeps every claim close to the abstract it came from today.";
+  const source = "Results. Data from 48,186 autistic people. Most adults (68.3%) and parents (82.5%) agreed. 22 infants with and 19 without family history.";
+  const ok = localSheetScreen({ es: `${words} Más de 48.000 personas; 68 %.`, en: `${words} Over 48,000 people; 82.5%; 41 infants.`, sv: `${words} Över 48 000 autistiska personer deltog.` }, source);
+  assert.deepEqual(ok, { reject: [], review: [] });
+  const invented = localSheetScreen({ es: `${words} 75 %.`, en: words, sv: words }, source);
+  assert.deepEqual(invented.reject, []);
+  assert.ok(invented.review.some((r) => /number 75/.test(r)), "an untraceable number goes to the model check");
+  const med = localSheetScreen({ es: words, en: `${words} Melatonin can help.`, sv: words }, source);
+  assert.ok(med.reject.some((r) => /melatonin/i.test(r)));
+  // Sonnet 5.5: $2 / $10 per MTok, batches at half price.
+  assert.equal(usageCostUsd({ requests: 1, input: 1_000_000, output: 100_000, cacheRead: 0, cacheWrite: 0 }, false), 3);
+  assert.equal(usageCostUsd({ requests: 1, input: 1_000_000, output: 100_000, cacheRead: 0, cacheWrite: 0 }, true), 1.5);
+});
+
+test("sheet tranches: aggression first with the strongest evidence first, then crisis, pain and family, then the rest", async () => {
+  const { tranches } = await import("../scripts/library/sheetsBatch");
+  const base = { pmid: null, pmcid: null, doi: "10.1/x", authors: "", journal: "", participatory: false, license: "CC BY", openText: true, citedBy: 0, url: "https://x", abstract: "text", sheet: null, verified: { crossref: true, retracted: false as const, checkedAt: "2026-10-19" } };
+  const doc = (id: string, kind: string, topics: string[], year = 2020) => ({ ...base, id, title: id, kind, topics, year }) as never;
+  const t = tranches([
+    doc("cb-study", "study", ["challenging_behavior"], 2024),
+    doc("cb-meta", "meta_analysis", ["challenging_behavior"], 2015),
+    doc("pain", "review", ["pain_health"]),
+    doc("sleep", "review", ["sleep"]),
+    { ...(doc("done", "review", ["sleep"]) as object), sheet: { es: "a", en: "b", sv: "c" } } as never,
+  ]);
+  assert.deepEqual(t.map((x) => x.docs.map((d) => d.id)), [["cb-meta", "cb-study"], ["pain"], ["sleep"]]);
+});
