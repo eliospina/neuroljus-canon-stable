@@ -83,17 +83,34 @@ test("an expert note becomes a library document labelled as practice, with no st
   assert.ok(d.url.startsWith("https://"));
 });
 
-test("the sheet screen accepts faithful numbers and rejects named medicines", async () => {
-  const { localSheetScreen, usageCostUsd } = await import("../scripts/library/sheetPrompt");
+test("the sheet screen accepts numbers as written and rejects calculated ones and named medicines", async () => {
+  const { localSheetScreen, usageCostUsd, needsHelpLine } = await import("../scripts/library/sheetPrompt");
   const words = "This practical sheet repeats the study in calm and simple words for caregivers and keeps every claim close to the abstract it came from today.";
-  const source = "Results. Data from 48,186 autistic people. Most adults (68.3%) and parents (82.5%) agreed. 22 infants with and 19 without family history.";
-  const ok = localSheetScreen({ es: `${words} Más de 48.000 personas; 68 %.`, en: `${words} Over 48,000 people; 82.5%; 41 infants.`, sv: `${words} Över 48 000 autistiska personer deltog.` }, source);
+  const source = "Results. Data from 48,186 autistic people. Most adults (68.3%) and parents (82.5%) agreed. Ninety-seven children, 22 infants with and 19 without family history.";
+  const ok = localSheetScreen({ es: `${words} Participaron 48.186 personas; 68,3 %.`, en: `${words} Over 48,186 people; 82.5%; 97 children.`, sv: `${words} 48 186 autistiska personer deltog.` }, source);
   assert.deepEqual(ok, { reject: [], review: [] });
-  const invented = localSheetScreen({ es: `${words} 75 %.`, en: words, sv: words }, source);
-  assert.deepEqual(invented.reject, []);
-  assert.ok(invented.review.some((r) => /number 75/.test(r)), "an untraceable number goes to the model check");
+  // Rounded, summed or invented figures are rejected: numbers must be as written.
+  for (const bad of ["48.000", "68 %", "41", "75 %"]) {
+    const r = localSheetScreen({ es: `${words} ${bad}.`, en: words, sv: words }, source);
+    assert.ok(r.reject.some((x) => /not in the source as written/.test(x)), `${bad} is rejected`);
+  }
   const med = localSheetScreen({ es: words, en: `${words} Melatonin can help.`, sv: words }, source);
   assert.ok(med.reject.some((r) => /melatonin/i.test(r)));
+  // Suicide and self-injury sheets must point to professional help and the country's emergency number.
+  assert.ok(needsHelpLine({ title: "Non-Suicidal Self-Injury in autism", abstract: "" }));
+  assert.ok(!needsHelpLine({ title: "Sleep in autistic children", abstract: "Bedtime routines." }));
+  const noHelp = localSheetScreen({ es: words, en: words, sv: words }, source, { requireHelp: true });
+  assert.equal(noHelp.reject.length, 6);
+  const help = localSheetScreen(
+    {
+      es: `${words} Busca ayuda profesional y, si hay peligro inmediato, llama al número de emergencias de tu país.`,
+      en: `${words} Seek professional help and, in immediate danger, call the emergency number of your country.`,
+      sv: `${words} Sök professionell hjälp och ring larmnumret i ditt land vid akut fara.`,
+    },
+    source,
+    { requireHelp: true }
+  );
+  assert.deepEqual(help.reject, []);
   // Sonnet 5.5: $2 / $10 per MTok, batches at half price.
   assert.equal(usageCostUsd({ requests: 1, input: 1_000_000, output: 100_000, cacheRead: 0, cacheWrite: 0 }, false), 3);
   assert.equal(usageCostUsd({ requests: 1, input: 1_000_000, output: 100_000, cacheRead: 0, cacheWrite: 0 }, true), 1.5);

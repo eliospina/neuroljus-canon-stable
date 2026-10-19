@@ -15,6 +15,10 @@
  *   npx tsx scripts/library/sheetsBatch.ts collect
  *       Fetches every ended batch, applies sheets and verdicts to docs.json, and
  *       records the real token usage. Re-run until nothing is pending.
+ *   npx tsx scripts/library/sheetsBatch.ts review
+ *       Writes data/library/sheet-review-list.json: every document whose sheet failed a
+ *       check (with the rejected text and the reasons) or has no sheet. Failed sheets
+ *       are never published; the owner decides on each one.
  *   npx tsx scripts/library/sheetsBatch.ts cost
  *       Real cost so far, from the usage the API reported.
  *
@@ -33,6 +37,7 @@ import {
   addUsage,
   emptyUsage,
   localSheetScreen,
+  needsHelpLine,
   parseSheet,
   parseVerdict,
   sheetParams,
@@ -44,6 +49,7 @@ import {
 
 const STATE_PATH = path.resolve(process.cwd(), "data/library/batches.json");
 const SAMPLES_PATH = path.resolve(process.cwd(), "data/library/sheet-samples.json");
+const REVIEW_PATH = path.resolve(process.cwd(), "data/library/sheet-review-list.json");
 
 type BatchKind = "sheets" | "verify";
 type BatchRecord = {
@@ -57,10 +63,17 @@ type BatchRecord = {
   usage?: UsageTotals;
   outcome?: Record<string, number>;
 };
+type Verification = {
+  verdict: "pass" | "fail";
+  issues: string[];
+  checkedAt: string;
+  /** The sheet that failed, kept here for the owner's review (never published). */
+  rejectedSheet?: { es: string; en: string; sv: string };
+};
 type State = {
   batches: BatchRecord[];
   /** Per document: the last verification result. */
-  verification: Record<string, { verdict: "pass" | "fail"; issues: string[]; checkedAt: string }>;
+  verification: Record<string, Verification>;
   sampleUsage?: UsageTotals;
 };
 
@@ -131,7 +144,7 @@ async function sample(client: Anthropic) {
     const msg = await client.messages.create(sheetParams(d, model()));
     addUsage(usage, msg.usage);
     const sheet = parseSheet(msg);
-    const screen = sheet ? localSheetScreen(sheet, sheetUserMessage(d)) : { reject: ["no sheet returned"], review: [] };
+    const screen = sheet ? localSheetScreen(sheet, sheetUserMessage(d), { requireHelp: needsHelpLine(d) }) : { reject: ["no sheet returned"], review: [] };
     out.push({ id: d.id, doi: d.doi, title: d.title, year: d.year, kind: d.kind, sheet, screen, usage: msg.usage });
     console.log(`\n=== ${d.title} (${d.year}, ${d.kind}) ===`);
     if (sheet) for (const l of ["es", "en", "sv"] as const) console.log(`[${l}] ${sheet[l]}\n`);
@@ -188,9 +201,9 @@ async function verify(client: Anthropic) {
   for (const d of docs) {
     if (!d.sheet || !d.abstract) continue;
     if (state.verification[d.id]?.verdict === "pass") continue;
-    const screen = localSheetScreen(d.sheet, sheetUserMessage(d));
+    const screen = localSheetScreen(d.sheet, sheetUserMessage(d), { requireHelp: needsHelpLine(d) });
     if (screen.reject.length > 0) {
-      state.verification[d.id] = { verdict: "fail", issues: screen.reject.map((i) => `code: ${i}`), checkedAt: new Date().toISOString().slice(0, 10) };
+      state.verification[d.id] = { verdict: "fail", issues: screen.reject.map((i) => `code: ${i}`), checkedAt: new Date().toISOString().slice(0, 10), rejectedSheet: d.sheet };
       d.sheet = null;
       failedByCode.push(d.id);
     } else toCheck.push({ doc: d, flags: screen.review });
@@ -240,12 +253,14 @@ async function collect(client: Anthropic) {
       if (b.kind === "sheets") {
         const sheet = parseSheet(r.result.message);
         if (!sheet) {
-          bump(r.result.message.stop_reason === "refusal" ? "refused" : "unparseable");
+          const why = r.result.message.stop_reason === "refusal" ? "refused" : "unparseable";
+          state.verification[doc.id] = { verdict: "fail", issues: [`no sheet: model reply ${why}`], checkedAt: today };
+          bump(why);
           continue;
         }
-        const screen = localSheetScreen(sheet, sheetUserMessage(doc));
+        const screen = localSheetScreen(sheet, sheetUserMessage(doc), { requireHelp: needsHelpLine(doc) });
         if (screen.reject.length > 0) {
-          state.verification[doc.id] = { verdict: "fail", issues: screen.reject.map((i) => `code: ${i}`), checkedAt: today };
+          state.verification[doc.id] = { verdict: "fail", issues: screen.reject.map((i) => `code: ${i}`), checkedAt: today, rejectedSheet: sheet };
           bump("rejected by code screen");
           continue;
         }
@@ -255,7 +270,10 @@ async function collect(client: Anthropic) {
       } else {
         const v = parseVerdict(r.result.message);
         if (!v) {
-          bump("no verdict");
+          // No verdict means no proof: the sheet is not published.
+          state.verification[doc.id] = { verdict: "fail", issues: ["verification returned no verdict"], checkedAt: today, rejectedSheet: doc.sheet ?? undefined };
+          doc.sheet = null;
+          bump("no verdict (sheet removed)");
           continue;
         }
         const pass = v.verdict === "pass" && v.supported && !v.diagnosis_or_medication && v.languages_match;
@@ -269,6 +287,7 @@ async function collect(client: Anthropic) {
                 ...(v.languages_match ? [] : ["languages differ"]),
               ],
           checkedAt: today,
+          ...(pass || !doc.sheet ? {} : { rejectedSheet: doc.sheet }),
         };
         if (!pass) doc.sheet = null;
         bump(pass ? "pass" : "fail (sheet removed)");
@@ -282,6 +301,28 @@ async function collect(client: Anthropic) {
     writeState(state);
   }
   cost();
+}
+
+/** The owner's review list: every failed sheet with its text and reasons, plus documents still without a sheet. */
+function review() {
+  const state = readState();
+  const docs = readDocs();
+  const failed = docs
+    .filter((d) => state.verification[d.id]?.verdict === "fail")
+    .map((d) => ({
+      id: d.id,
+      doi: d.doi,
+      url: d.url,
+      title: d.title,
+      year: d.year,
+      kind: d.kind,
+      topics: d.topics,
+      issues: state.verification[d.id].issues,
+      rejectedSheet: state.verification[d.id].rejectedSheet ?? null,
+    }));
+  const unverified = docs.filter((d) => d.sheet && state.verification[d.id]?.verdict !== "pass").map((d) => d.id);
+  writeFileSync(REVIEW_PATH, JSON.stringify({ generatedAt: new Date().toISOString(), failed, publishedWithoutPass: unverified }, null, 1) + "\n");
+  console.log(`Review list: ${failed.length} failed sheets, ${unverified.length} published sheets without a pass → data/library/sheet-review-list.json`);
 }
 
 function cost() {
@@ -304,6 +345,7 @@ async function main() {
   const cmd = process.argv[2];
   if (cmd === "plan") return plan();
   if (cmd === "cost") return cost();
+  if (cmd === "review") return review();
   loadEnvLocal();
   if (!process.env.ANTHROPIC_API_KEY) {
     console.error("ANTHROPIC_API_KEY is not set (environment or .env.local). Nothing done.");
@@ -314,7 +356,7 @@ async function main() {
   if (cmd === "submit") return submit(client);
   if (cmd === "verify") return verify(client);
   if (cmd === "collect") return collect(client);
-  console.error("Usage: sheetsBatch.ts sample|plan|submit|verify|collect|cost");
+  console.error("Usage: sheetsBatch.ts sample|plan|submit|verify|collect|review|cost");
   process.exit(2);
 }
 
