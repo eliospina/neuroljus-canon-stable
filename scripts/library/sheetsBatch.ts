@@ -15,6 +15,10 @@
  *   npx tsx scripts/library/sheetsBatch.ts collect
  *       Fetches every ended batch, applies sheets and verdicts to docs.json, and
  *       records the real token usage. Re-run until nothing is pending.
+ *   npx tsx scripts/library/sheetsBatch.ts restore
+ *       Puts the unverified sheets saved in data/library/pending-sheets.json back into
+ *       docs.json (only where a document has no sheet), so a verification batch can be
+ *       collected from another session. Nothing is marked as verified.
  *   npx tsx scripts/library/sheetsBatch.ts review
  *       Writes data/library/sheet-review-list.json: every document whose sheet failed a
  *       check (with the rejected text and the reasons) or has no sheet. Failed sheets
@@ -49,6 +53,7 @@ import {
 
 const STATE_PATH = path.resolve(process.cwd(), "data/library/batches.json");
 const SAMPLES_PATH = path.resolve(process.cwd(), "data/library/sheet-samples.json");
+const PENDING_PATH = path.resolve(process.cwd(), "data/library/pending-sheets.json");
 const REVIEW_PATH = path.resolve(process.cwd(), "data/library/sheet-review-list.json");
 
 type BatchKind = "sheets" | "verify";
@@ -303,6 +308,22 @@ async function collect(client: Anthropic) {
   cost();
 }
 
+/** Puts the sheets saved in pending-sheets.json back into docs.json where a document has none. */
+function restore() {
+  const pending = JSON.parse(readFileSync(PENDING_PATH, "utf8")) as { sheets: Record<string, { es: string; en: string; sv: string }> };
+  const docs = readDocs();
+  let put = 0;
+  for (const d of docs) {
+    const sheet = pending.sheets[d.id];
+    if (sheet && !d.sheet) {
+      d.sheet = sheet;
+      put++;
+    }
+  }
+  writeDocs(docs);
+  console.log(`Restored ${put} unverified sheets of ${Object.keys(pending.sheets).length} into docs.json. Run collect to apply the verdicts.`);
+}
+
 /** The owner's review list: every failed sheet with its text and reasons, plus documents still without a sheet. */
 function review() {
   const state = readState();
@@ -346,6 +367,7 @@ async function main() {
   if (cmd === "plan") return plan();
   if (cmd === "cost") return cost();
   if (cmd === "review") return review();
+  if (cmd === "restore") return restore();
   loadEnvLocal();
   if (!process.env.ANTHROPIC_API_KEY) {
     console.error("ANTHROPIC_API_KEY is not set (environment or .env.local). Nothing done.");
@@ -356,7 +378,7 @@ async function main() {
   if (cmd === "submit") return submit(client);
   if (cmd === "verify") return verify(client);
   if (cmd === "collect") return collect(client);
-  console.error("Usage: sheetsBatch.ts sample|plan|submit|verify|collect|review|cost");
+  console.error("Usage: sheetsBatch.ts sample|plan|submit|verify|collect|review|restore|cost");
   process.exit(2);
 }
 
