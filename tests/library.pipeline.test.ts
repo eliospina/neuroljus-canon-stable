@@ -112,3 +112,19 @@ test("sheet tranches: aggression first with the strongest evidence first, then c
   ]);
   assert.deepEqual(t.map((x) => x.docs.map((d) => d.id)), [["cb-meta", "cb-study"], ["pain"], ["sleep"]]);
 });
+
+test("ingestion leaves out medicines, supplements, diets and other biomedical treatments", async () => {
+  const { isBiomedical } = await import("../scripts/library/ingest");
+  for (const t of [
+    "Effects of Probiotics on Autism Spectrum Disorder in Children: A Systematic Review",
+    "Aripiprazole for irritability in autistic children: a randomized controlled trial",
+    "A ketogenic diet in autism",
+    "Transcranial direct current stimulation in autistic children",
+    "Melatonin for sleep problems in autism",
+  ]) assert.equal(isBiomedical(t), true, t);
+  for (const t of [
+    "Non-pharmacological interventions for aggression in autistic adults: a systematic review",
+    "Parent training for disruptive behavior in autism: a randomized trial",
+    "Functional communication training to reduce self-injury",
+  ]) assert.equal(isBiomedical(t), false, t);
+});

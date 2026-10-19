@@ -66,6 +66,19 @@ function score(r: EpmcResult, participatoryTier: boolean): number {
   return s;
 }
 
+/**
+ * Out of scope: studies of medicines, supplements, diets and other biomedical
+ * treatments (brain stimulation, microbiota transplants, acupuncture…).
+ * Neuroljus never covers them; caregivers take those questions to a
+ * clinician. Non-pharmacological and drug-free work stays in.
+ */
+export const BIOMEDICAL =
+  /\b(?<!non-)(?<!non )(?<!drug-free )(risperidon\w*|aripiprazol\w*|antipsychotic\w*|melatonin|methylphenidate|atomoxetine|guanfacine|clonidine|fluoxetine|sertraline|citalopram|ssris?|oxytocin|vasopressin|bumetanide|memantine|cannabi\w*|cbd|probiotic\w*|prebiotic\w*|omega-3|fatty acids?|vitamin\w*|supplement\w*|diet|diets|dietary|gluten|casein|ketogenic|microbiota transfer\w*|f(a)?ecal|stem cells?|drugs?|pharmacotherap\w*|pharmacolog\w*|psychopharmacolog\w*|medications?|placebo|sulforaphane|n-acetylcysteine|folinic|propranolol|ketamine|midazolam|suramin|transcranial|tms|tdcs|neurofeedback|acupuncture|hyperbaric|chelation|lithium|valproate|naltrexone|arbaclofen|balovaptan)\b/i;
+
+export function isBiomedical(title: string): boolean {
+  return BIOMEDICAL.test(title.replace(/\bnon-?pharmacological\b/gi, "").replace(/\bdrug-free\b/gi, ""));
+}
+
 /** Off-topic guard: the abstract must actually be about autistic people, not a passing mention. */
 function aboutAutism(r: EpmcResult): boolean {
   const text = `${r.title ?? ""} ${r.abstractText ?? ""}`.toLowerCase();
@@ -81,6 +94,7 @@ function eligible(r: EpmcResult): string | null {
   if (!normalizeDoi(r.doi)) return "no DOI";
   if ((Number(r.pubYear) || 0) < 2010) return "before 2010";
   if (!aboutAutism(r)) return "not about autism";
+  if (isBiomedical(r.title)) return "medicine, supplement, diet or other biomedical treatment (out of scope)";
   const types = (r.pubTypeList?.pubType ?? []).map((t) => t.toLowerCase());
   if (types.some((t) => /erratum|correction|comment|letter|editorial|case reports|news|published erratum/.test(t))) return "not a study";
   return null;
@@ -278,7 +292,9 @@ async function main() {
   console.log(`\nWrote ${docs.length} documents (${withText} with open-licence abstract text) → data/library/docs.json`);
 }
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+if (process.argv[1]?.endsWith("ingest.ts")) {
+  main().catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });
+}

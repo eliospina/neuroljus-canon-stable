@@ -48,11 +48,12 @@ test("abstract text is stored only under an open licence", () => {
 });
 
 test("evidence mix: reviews and research with autistic people are well represented", () => {
-  const strong = LIBRARY_DOCS.filter((d) => d.kind === "systematic_review" || d.kind === "meta_analysis").length;
+  // Strong evidence: systematic reviews, meta-analyses, controlled trials and clinical guidelines.
+  const strong = LIBRARY_DOCS.filter((d) => ["systematic_review", "meta_analysis", "trial", "guideline"].includes(d.kind)).length;
   const reviews = LIBRARY_DOCS.filter((d) => d.kind === "review").length;
   const participatory = LIBRARY_DOCS.filter((d) => d.participatory).length;
-  assert.ok(strong / LIBRARY_DOCS.length >= 0.3, `only ${strong} systematic reviews / meta-analyses`);
-  assert.ok((strong + reviews) / LIBRARY_DOCS.length >= 0.55, `only ${strong + reviews} reviews of any kind`);
+  assert.ok(strong / LIBRARY_DOCS.length >= 0.35, `only ${strong} reviews, meta-analyses, trials and guidelines`);
+  assert.ok((strong + reviews) / LIBRARY_DOCS.length >= 0.6, `only ${strong + reviews} reviews, trials and guidelines of any kind`);
   assert.ok(participatory >= 100, `only ${participatory} participatory documents`);
 });
 

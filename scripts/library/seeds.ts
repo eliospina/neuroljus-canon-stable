@@ -679,7 +679,9 @@ async function main() {
         console.log(`✗ Crossref ${check?.exists ? "retracted" : "missing"}: ${seed.title}`);
         continue;
       }
-      if (similarity(seed.title, m.title) < 0.7 || (m.year !== null && Math.abs(m.year - seed.year) > 1)) {
+      // Crossref may keep only the main title (no subtitle), so match in either direction.
+      const sim = Math.max(similarity(seed.title, m.title), similarity(m.title, seed.title));
+      if (sim < 0.7 || m.title.split(/\s+/).length < 4 || (m.year !== null && Math.abs(m.year - seed.year) > 1)) {
         console.log(`✗ Crossref title/year mismatch for ${doi}: "${m.title}" (${m.year})`);
         continue;
       }
