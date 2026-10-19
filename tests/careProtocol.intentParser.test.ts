@@ -119,6 +119,32 @@ test("local risk screen escalates before any network call, in es/en/sv", async (
   }
 });
 
+test("risk screen sees accented words and does not treat falling asleep as a fall", () => {
+  for (const text of [
+    "se cayó de la silla",
+    "Se Cayó al piso",
+    "SE CAYÓ",
+    "tuvo una caída",
+    "sangró por la nariz",
+    "le dio una convulsión",
+    "he fell down the stairs",
+    "she fell",
+    "Elin föll i trappan",
+    "han svimmade",
+    "ring 112",
+  ]) {
+    assert.equal(localRiskScreen(text), true, text);
+  }
+  for (const text of [
+    "my son fell asleep on the sofa",
+    "Elin föll i sömn i soffan",
+    "se quedó dormido en el sofá",
+    "1120 kr på kvittot",
+  ]) {
+    assert.equal(localRiskScreen(text), false, text);
+  }
+});
+
 test("parseCareIntent uses structured output and never sends the raw text anywhere else", async () => {
   const { impl, calls } = mockFetch(() =>
     claudeReply({
