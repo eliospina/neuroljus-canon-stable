@@ -122,6 +122,32 @@ export async function fetchJson<T>(url: string, tries = 3): Promise<T | null> {
   return null;
 }
 
+/**
+ * Stop before doing anything if a source cannot be reached. fetchJson treats a
+ * failure as "no record", so without this a network problem would look like
+ * "nothing found" and every DOI would fail Crossref. Node's fetch ignores
+ * HTTPS_PROXY unless NODE_USE_ENV_PROXY=1.
+ */
+export async function assertReachable(): Promise<void> {
+  const probes = [
+    `https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=autism&format=json&pageSize=1`,
+    `https://api.crossref.org/works/10.1177/1098300712458324`,
+  ];
+  for (const url of probes) {
+    let ok = false;
+    try {
+      ok = (await fetch(url, { headers: { "User-Agent": USER_AGENT, Accept: "application/json" } })).ok;
+    } catch {
+      ok = false;
+    }
+    if (!ok) {
+      throw new Error(
+        `Cannot reach ${new URL(url).host}. Nothing was changed. Behind a proxy, run with NODE_USE_ENV_PROXY=1.`
+      );
+    }
+  }
+}
+
 /** Normalise a DOI: lower-case, no URL prefix, no trailing punctuation. */
 export function normalizeDoi(input: string | null | undefined): string | null {
   if (!input) return null;

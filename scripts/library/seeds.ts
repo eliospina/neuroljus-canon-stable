@@ -19,6 +19,7 @@
  */
 
 import {
+  assertReachable,
   crossrefCheck,
   officialUrlResolves,
   epmcIsRetracted,
@@ -609,6 +610,7 @@ function similarity(a: string, b: string): number {
 }
 
 async function main() {
+  await assertReachable();
   const docs = readDocs();
   const byDoi = new Map(docs.filter((d) => d.doi).map((d) => [d.doi, d]));
   const byId = new Map(docs.filter((d) => !d.doi).map((d) => [d.id, d]));

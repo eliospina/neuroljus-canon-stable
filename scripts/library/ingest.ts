@@ -4,6 +4,8 @@
  *   npx tsx scripts/library/ingest.ts            # full run (re-executable, merges with existing docs)
  *   npx tsx scripts/library/ingest.ts --max 3000 # cap on total documents (default 3000)
  *   npx tsx scripts/library/ingest.ts --dry      # search and rank only, write nothing
+ *   npx tsx scripts/library/ingest.ts --all      # no per-topic targets: every eligible document (up to --max)
+ *   Behind an HTTPS proxy (cloud sessions) prefix with NODE_USE_ENV_PROXY=1.
  *
  * Rules applied by code, per document:
  *   - open access in Europe PMC, abstract present, English, 2010 or later
@@ -19,6 +21,7 @@
  */
 
 import {
+  assertReachable,
   crossrefCheck,
   epmcIsRetracted,
   epmcKind,
@@ -41,6 +44,7 @@ import { BASE_QUERY, EVIDENCE_QUERY, PARTICIPATORY_QUERY, QUERY_PACKS, TOPICS, T
 const args = process.argv.slice(2);
 const DRY = args.includes("--dry");
 const MAX_TOTAL = Number(args[args.indexOf("--max") + 1]) || 3000;
+const ALL = args.includes("--all");
 const REPORT_PATH = path.resolve(process.cwd(), "data/library/ingest-report.json");
 const MIN_ABSTRACT_CHARS = 400;
 
@@ -83,6 +87,7 @@ function eligible(r: EpmcResult): string | null {
 }
 
 async function main() {
+  await assertReachable();
   const existing = readDocs();
   const byDoi = new Map<string, Candidate>();
   const rejected = new Map<string, number>();
@@ -139,7 +144,7 @@ async function main() {
   while (progress) {
     progress = false;
     for (const topic of TOPICS) {
-      if ((taken.get(topic.id) ?? 0) >= topic.target) continue;
+      if (!ALL && (taken.get(topic.id) ?? 0) >= topic.target) continue;
       const list = perTopic.get(topic.id) ?? [];
       while (list.length > 0) {
         const c = list.shift()!;
@@ -181,6 +186,7 @@ async function main() {
         {
           ranAt: new Date().toISOString().slice(0, 10),
           cap: MAX_TOTAL,
+          perTopicTargets: ALL ? "off (--all)" : "on",
           previousDocuments: existing.length,
           selectedBeforeVerification: ranked.length,
           eligibleBeyondTopicTargets: leftOver,
@@ -252,6 +258,13 @@ async function main() {
   const kept = new Set(docs.map((d) => d.doi || d.id));
   for (const d of existing) {
     if (!d.doi && !kept.has(d.id)) docs.push(d);
+  }
+
+  // Re-runs extend the library; they never shrink it by surprise.
+  const lost = existing.filter((d) => !docs.some((x) => (x.doi || x.id) === (d.doi || d.id)));
+  if (lost.length > 0 && !args.includes("--allow-drop")) {
+    writeReport({ aborted: `would drop ${lost.length} existing documents`, wouldDrop: lost.map((d) => d.doi || d.id) });
+    throw new Error(`${lost.length} existing documents would be dropped (see ingest-report.json). Nothing written. Use --allow-drop to accept.`);
   }
 
   writeDocs(docs);
