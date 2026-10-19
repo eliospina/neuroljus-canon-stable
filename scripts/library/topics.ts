@@ -90,7 +90,7 @@ export const TOPICS: Topic[] = [
   {
     id: "challenging_behavior",
     label: { es: "Agresión, autolesión y crisis graves", en: "Aggression, self-injury and severe distress", sv: "Aggression, självskada och svåra kriser" },
-    terms: '("challenging behavio*" OR "problem behavio*" OR aggress* OR "self-injur*" OR "self-harm*" OR "disruptive behavio*" OR tantrum* OR "behavio* that challenges" OR "property destruction" OR elopement OR "restraint" OR "seclusion")',
+    terms: '("challenging behavio*" OR "problem behavio*" OR "behavio* problems" OR aggress* OR "self-injur*" OR "self-harm*" OR suicid* OR "disruptive behavio*" OR tantrum* OR meltdown* OR anger OR outburst* OR "behavio* that challenges" OR "property destruction" OR elopement OR "restraint" OR "seclusion")',
     target: 160,
   },
 ];

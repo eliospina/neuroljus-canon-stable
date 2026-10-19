@@ -39,6 +39,7 @@ import {
 } from "./lib";
 import { writeFileSync } from "node:fs";
 import path from "node:path";
+import { classifyTopics } from "./topicMatch";
 import { BASE_QUERY, EVIDENCE_QUERY, PARTICIPATORY_QUERY, QUERY_PACKS, TOPICS, TRIAL_QUERY } from "./topics";
 
 const args = process.argv.slice(2);
@@ -73,7 +74,7 @@ function score(r: EpmcResult, participatoryTier: boolean): number {
  * clinician. Non-pharmacological and drug-free work stays in.
  */
 export const BIOMEDICAL =
-  /\b(?<!non-)(?<!non )(?<!drug-free )(risperidon\w*|aripiprazol\w*|antipsychotic\w*|melatonin|methylphenidate|atomoxetine|guanfacine|clonidine|fluoxetine|sertraline|citalopram|ssris?|oxytocin|vasopressin|bumetanide|memantine|cannabi\w*|cbd|probiotic\w*|prebiotic\w*|omega-3|fatty acids?|vitamin\w*|supplement\w*|diet|diets|dietary|gluten|casein|ketogenic|microbiota transfer\w*|f(a)?ecal|stem cells?|drugs?|pharmacotherap\w*|pharmacolog\w*|psychopharmacolog\w*|medications?|placebo|sulforaphane|n-acetylcysteine|folinic|propranolol|ketamine|midazolam|suramin|transcranial|tms|tdcs|neurofeedback|acupuncture|hyperbaric|chelation|lithium|valproate|naltrexone|arbaclofen|balovaptan)\b/i;
+  /\b(?<!non-)(?<!non )(?<!drug-free )(risperidon\w*|aripiprazol\w*|antipsychotic\w*|melatonin|methylphenidate|atomoxetine|guanfacine|clonidine|fluoxetine|sertraline|citalopram|ssris?|oxytocin|vasopressin|bumetanide|memantine|cannabi\w*|cbd|probiotic\w*|prebiotic\w*|omega-3|fatty acids?|vitamin\w*|supplement\w*|diet|diets|dietary|gluten|casein|ketogenic|microbiota transfer\w*|f(a)?ecal|stem cells?|drugs?|pharmacotherap\w*|pharmacolog\w*|psychopharmacolog\w*|medications?|placebo|sulforaphane|n-acetylcysteine|folinic|propranolol|ketamine|midazolam|suramin|transcranial|tms|tdcs|neurofeedback|deep brain stimulation|brain stimulation|mood stabili[sz]ers?|psychotropic\w*|anticonvulsant\w*|antiepileptic\w*|antidepressant\w*|stimulants?|acupuncture|hyperbaric|chelation|lithium|valproate|naltrexone|arbaclofen|balovaptan)\b/i;
 
 export function isBiomedical(title: string): boolean {
   return BIOMEDICAL.test(title.replace(/\bnon-?pharmacological\b/gi, "").replace(/\bdrug-free\b/gi, ""));
@@ -237,6 +238,16 @@ async function main() {
       continue;
     }
     const r = c.r;
+    // Topics come from the title and abstract, not from which search found it
+    // (Europe PMC also matches full text). Curated documents keep theirs.
+    const classified = classifyTopics({ title: r.title ?? prev?.title ?? "", abstract: r.abstractText ?? prev?.abstract ?? null });
+    const topics = prev?.sheet
+      ? [...new Set([...prev.topics.filter((t) => t !== "challenging_behavior"), ...classified.filter((t) => t === "challenging_behavior")])].sort()
+      : classified;
+    if (topics.length === 0) {
+      crossrefRejected.set("fits no topic (title and abstract)", (crossrefRejected.get("fits no topic (title and abstract)") ?? 0) + 1);
+      continue;
+    }
     const license = (r.license ?? prev?.license ?? "").trim();
     const openText = isOpenLicense(license);
     const abstract = openText ? stripHtml(r.abstractText ?? prev?.abstract ?? "") : null;
@@ -257,7 +268,7 @@ async function main() {
       license: license || "unknown",
       openText,
       citedBy: r.citedByCount ?? prev?.citedBy ?? 0,
-      topics: [...c.topics].sort(),
+      topics,
       url: pmcid ? `https://europepmc.org/article/PMC/${pmcid}` : pmid ? `https://europepmc.org/article/MED/${pmid}` : `https://doi.org/${c.doi}`,
       abstract,
       sheet: prev?.sheet ?? null,

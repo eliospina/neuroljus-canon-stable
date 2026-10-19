@@ -33,5 +33,47 @@
     "2022 Pharmacological and dietary-supplement treatments for autism spectrum disorder: a systematic review and network meta-analysis.",
     "2022 Vitamin D: Before, during and after Pregnancy: Effect on Neonates and Children.",
     "2022 An Update on Psychopharmacological Treatment of Autism Spectrum Disorder."
-  ]
+  ],
+  "retag": {
+    "ranAt": "2026-10-19",
+    "note": "Topics re-classified on title and abstract (Europe PMC also matches full text). Pre-existing documents keep their topics.",
+    "before": 2172,
+    "after": 1736,
+    "droppedNoTopic": 431,
+    "droppedBiomedical": 5,
+    "topicsBefore": {
+      "adult_life": 413,
+      "anxiety": 374,
+      "challenging_behavior": 1025,
+      "communication_aac": 543,
+      "crisis_regulation": 467,
+      "family_caregivers": 946,
+      "feeding": 359,
+      "pain_health": 518,
+      "school": 396,
+      "sensory": 404,
+      "sleep": 399,
+      "transitions": 611,
+      "women_girls": 369
+    },
+    "topicsAfter": {
+      "adult_life": 655,
+      "anxiety": 427,
+      "challenging_behavior": 95,
+      "communication_aac": 158,
+      "crisis_regulation": 174,
+      "family_caregivers": 757,
+      "feeding": 199,
+      "pain_health": 478,
+      "school": 371,
+      "sensory": 411,
+      "sleep": 182,
+      "transitions": 451,
+      "women_girls": 364
+    },
+    "challengingBehaviorPrecision": {
+      "beforeFix": "5/30 random sample",
+      "afterFix": "29/30 random sample (seed 4242)"
+    }
+  }
 }

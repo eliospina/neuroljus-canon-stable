@@ -128,3 +128,27 @@ test("ingestion leaves out medicines, supplements, diets and other biomedical tr
     "Functional communication training to reduce self-injury",
   ]) assert.equal(isBiomedical(t), false, t);
 });
+
+test("topics come from title and abstract; the aggression topic needs it to be what the study is about", async () => {
+  const { classifyTopics } = await import("../scripts/library/topicMatch");
+  const cb = (title: string, abstract: string | null = null) => classifyTopics({ title, abstract }).includes("challenging_behavior");
+  assert.equal(cb("Parent-Child Interaction Therapy for Children with Disruptive Behaviors and Autism: A Randomized Clinical Trial."), true);
+  assert.equal(cb("The Prevalence of Self-injurious Behaviour in Autism: A Meta-analytic Study."), true);
+  assert.equal(
+    cb(
+      "Feasibility of autism adapted safety plans",
+      "Autistic people are a high-risk group for self-harm and suicide. We piloted safety plans. Self-harm and suicidal thoughts were measured at follow-up."
+    ),
+    true
+  );
+  // Aggression listed among many co-occurring traits is not what the study is about.
+  assert.equal(
+    cb(
+      "Studying autism in rodent models: reconciling endophenotypes with comorbidities.",
+      "Autism patients commonly exhibit comorbid traits including seizures, anxiety, aggressive behavior and gastrointestinal problems. We review rodent models."
+    ),
+    false
+  );
+  assert.equal(cb("The Brain-Gut-Microbiome System: Pathways and Implications for Autism Spectrum Disorder.", "Gut microbiota may modulate brain function."), false);
+  assert.deepEqual(classifyTopics({ title: "Sleep problems in autistic children", abstract: null }), ["sleep"]);
+});
