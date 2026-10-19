@@ -15,6 +15,10 @@ test("emergency number follows the country", () => {
   assert.equal(emergencyNumber("CL"), "131");
   assert.equal(emergencyNumber("PE"), "106");
   assert.equal(emergencyNumber("UY"), "911");
+  assert.equal(emergencyNumber("AR"), "911");
+  assert.equal(emergencyNumber("EC"), "911");
+  assert.equal(emergencyNumber("PH"), "911");
+  assert.equal(emergencyNumber("CA"), "911");
   assert.equal(emergencyNumber("ZZ"), null);
   assert.equal(emergencyNumber(null), null);
 });
