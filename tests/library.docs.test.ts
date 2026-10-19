@@ -8,11 +8,28 @@ const DOI = /^10\.\d{4,9}\/\S+$/;
 test("the library has a real number of verified, non-retracted documents with DOIs", () => {
   assert.ok(LIBRARY_DOCS.length >= 300, `expected ≥ 300 documents, got ${LIBRARY_DOCS.length}`);
   const dois = new Set<string>();
+  const ids = new Set<string>();
   for (const d of LIBRARY_DOCS) {
+    assert.ok(!ids.has(d.id), `duplicate id ${d.id}`);
+    ids.add(d.id);
+    if (d.kind === "guideline" || d.kind === "expert_practice") {
+      // No DOI: a guideline is checked against its official page, an expert note carries its book citation.
+      assert.equal(d.doi, "", `${d.id} should link by url`);
+      assert.equal(d.verified.source, d.kind === "guideline" ? "official_url" : "expert_citation");
+      assert.ok(d.seed, `${d.id} needs the project's own summary`);
+      assert.equal(d.abstract, null, `${d.id} must not store source text`);
+      if (d.kind === "expert_practice") assert.ok(d.citation?.author && d.citation.book && d.citation.locator, `${d.id} citation`);
+      continue;
+    }
     assert.match(d.doi, DOI, `${d.id} has a malformed DOI`);
     assert.ok(!dois.has(d.doi), `duplicate DOI ${d.doi}`);
     dois.add(d.doi);
     assert.equal(d.verified.crossref, true, `${d.doi} not verified in Crossref`);
+    if (d.verified.source === "crossref_only") {
+      assert.ok(d.seed, `${d.doi} is Crossref-only, so it must be a seed`);
+      assert.equal(d.abstract, null, `${d.doi} is Crossref-only and must not store an abstract`);
+      assert.equal(d.sheet, null);
+    }
     assert.equal(d.verified.retracted, false);
     assert.ok(d.year >= 2008, `${d.doi} year ${d.year}`);
     assert.ok(d.title.length > 10);

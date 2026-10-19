@@ -15,7 +15,8 @@ export type TopicId =
   | "family_caregivers"
   | "transitions"
   | "women_girls"
-  | "pain_health";
+  | "pain_health"
+  | "challenging_behavior";
 
 export const TOPIC_LABELS: Record<TopicId, { es: string; en: string; sv: string }> = {
   sensory: { es: "Procesamiento sensorial", en: "Sensory processing", sv: "Sensorisk bearbetning" },
@@ -30,12 +31,14 @@ export const TOPIC_LABELS: Record<TopicId, { es: string; en: string; sv: string 
   transitions: { es: "Cambios de rutina y transiciones", en: "Routine changes and transitions", sv: "Rutinförändringar och övergångar" },
   women_girls: { es: "Autismo en mujeres", en: "Autism in women and girls", sv: "Autism hos kvinnor och flickor" },
   pain_health: { es: "Dolor y salud", en: "Pain and health", sv: "Smärta och hälsa" },
+  challenging_behavior: { es: "Agresión, autolesión y crisis graves", en: "Aggression, self-injury and severe distress", sv: "Aggression, självskada och svåra kriser" },
 };
 
 export const TOPIC_ORDER: TopicId[] = [
   "sensory",
   "communication_aac",
   "crisis_regulation",
+  "challenging_behavior",
   "transitions",
   "sleep",
   "anxiety",

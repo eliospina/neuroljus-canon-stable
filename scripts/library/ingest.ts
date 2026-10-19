@@ -2,7 +2,7 @@
  * Library ingestion: Europe PMC → filter → verify (Crossref) → data/library/docs.json
  *
  *   npx tsx scripts/library/ingest.ts            # full run (re-executable, merges with existing docs)
- *   npx tsx scripts/library/ingest.ts --max 500  # cap on total documents (default 500)
+ *   npx tsx scripts/library/ingest.ts --max 3000 # cap on total documents (default 3000)
  *   npx tsx scripts/library/ingest.ts --dry      # search and rank only, write nothing
  *
  * Rules applied by code, per document:
@@ -10,7 +10,10 @@
  *   - not retracted (Europe PMC publication types + Crossref retraction notices)
  *   - DOI present and resolving in Crossref
  *   - abstract text is stored only under an open (CC) licence; otherwise metadata and link only
- *   - systematic reviews, meta-analyses and participatory research with autistic people rank first
+ *   - systematic reviews, meta-analyses, controlled trials and participatory research with autistic people rank first
+ *
+ * Every run writes data/library/ingest-report.json: candidates, selected
+ * documents, and every rejection with its reason.
  *
  * No API keys are used. Practical sheets are added later by sheets.ts.
  */
@@ -31,11 +34,14 @@ import {
   type LibraryDoc,
   type TopicId,
 } from "./lib";
-import { BASE_QUERY, EVIDENCE_QUERY, PARTICIPATORY_QUERY, TOPICS } from "./topics";
+import { writeFileSync } from "node:fs";
+import path from "node:path";
+import { BASE_QUERY, EVIDENCE_QUERY, PARTICIPATORY_QUERY, QUERY_PACKS, TOPICS, TRIAL_QUERY } from "./topics";
 
 const args = process.argv.slice(2);
 const DRY = args.includes("--dry");
-const MAX_TOTAL = Number(args[args.indexOf("--max") + 1]) || 500;
+const MAX_TOTAL = Number(args[args.indexOf("--max") + 1]) || 3000;
+const REPORT_PATH = path.resolve(process.cwd(), "data/library/ingest-report.json");
 const MIN_ABSTRACT_CHARS = 400;
 
 type Candidate = { r: EpmcResult; doi: string; topics: Set<TopicId>; score: number };
@@ -47,6 +53,7 @@ function score(r: EpmcResult, participatoryTier: boolean): number {
   let s = cited;
   if (kind === "meta_analysis") s += 6;
   else if (kind === "systematic_review") s += 5;
+  else if (kind === "trial") s += 4;
   else if (kind === "review") s += 3;
   if (epmcParticipatory(r)) s += 3;
   if (participatoryTier) s += 1;
@@ -82,15 +89,26 @@ async function main() {
 
   // Collect ranked candidates per topic, then assign round-robin so each topic
   // fills with documents of its own instead of the same highly cited reviews.
-  const perTopic = new Map<TopicId, Candidate[]>();
-  for (const topic of TOPICS) {
+  const perTopic = new Map<TopicId, Candidate[]>(TOPICS.map((t) => [t.id, []]));
+  // Topics first, then the focused packs; a pack's documents queue under its
+  // first topic and are tagged with all of its topics.
+  const sources = [
+    ...TOPICS.map((t) => ({ id: t.id, terms: t.terms, topics: [t.id] as TopicId[] })),
+    ...QUERY_PACKS.map((p) => ({ id: `pack:${p.id}`, terms: p.terms, topics: p.topics })),
+  ];
+  const seenBySource = new Map<string, Set<string>>();
+  for (const src of sources) {
     const tiers: Array<{ q: string; sort: string; max: number; participatory: boolean }> = [
-      { q: `${BASE_QUERY} AND ${EVIDENCE_QUERY} AND ${topic.terms}`, sort: "CITED desc", max: 200, participatory: false },
-      { q: `${BASE_QUERY} AND ${EVIDENCE_QUERY} AND ${topic.terms}`, sort: "FIRST_PDATE desc", max: 100, participatory: false },
-      { q: `${BASE_QUERY} AND ${PARTICIPATORY_QUERY} AND ${topic.terms}`, sort: "CITED desc", max: 150, participatory: true },
+      { q: `${BASE_QUERY} AND ${EVIDENCE_QUERY} AND ${src.terms}`, sort: "CITED desc", max: 300, participatory: false },
+      { q: `${BASE_QUERY} AND ${EVIDENCE_QUERY} AND ${src.terms}`, sort: "FIRST_PDATE desc", max: 150, participatory: false },
+      { q: `${BASE_QUERY} AND ${TRIAL_QUERY} AND ${src.terms}`, sort: "CITED desc", max: 200, participatory: false },
+      { q: `${BASE_QUERY} AND ${PARTICIPATORY_QUERY} AND ${src.terms}`, sort: "CITED desc", max: 200, participatory: true },
     ];
-    const seen = new Set<string>();
-    const topicCandidates: Candidate[] = [];
+    const primary = src.topics[0];
+    const seen = seenBySource.get(primary) ?? new Set<string>();
+    seenBySource.set(primary, seen);
+    const list = perTopic.get(primary)!;
+    let added = 0;
     for (const tier of tiers) {
       const results = await epmcSearch(tier.q, { sort: tier.sort, max: tier.max });
       for (const r of results) {
@@ -100,16 +118,21 @@ async function main() {
           rejected.set(why ?? "no DOI", (rejected.get(why ?? "no DOI") ?? 0) + 1);
           continue;
         }
+        const already = list.find((c) => c.doi === doi);
+        if (already) {
+          for (const t of src.topics) already.topics.add(t);
+          continue;
+        }
         if (seen.has(doi)) continue;
         seen.add(doi);
-        topicCandidates.push({ r, doi, topics: new Set([topic.id]), score: score(r, tier.participatory) });
+        list.push({ r, doi, topics: new Set(src.topics), score: score(r, tier.participatory) });
+        added += 1;
       }
       await sleep(400);
     }
-    topicCandidates.sort((a, b) => b.score - a.score);
-    perTopic.set(topic.id, topicCandidates);
-    console.log(`${topic.id}: ${topicCandidates.length} candidates`);
+    console.log(`${src.id}: +${added} candidates`);
   }
+  for (const list of perTopic.values()) list.sort((a, b) => b.score - a.score);
 
   const taken = new Map<TopicId, number>(TOPICS.map((t) => [t.id, 0]));
   let progress = true;
@@ -123,7 +146,7 @@ async function main() {
         const prev = byDoi.get(c.doi);
         if (prev) {
           // Already in the library through another topic: tag it, it does not count here.
-          prev.topics.add(topic.id);
+          for (const t of c.topics) prev.topics.add(t);
           continue;
         }
         byDoi.set(c.doi, c);
@@ -137,7 +160,7 @@ async function main() {
 
   // Keep previously ingested docs too (re-runs extend the library; they never silently drop).
   for (const d of existing) {
-    if (!byDoi.has(d.doi)) {
+    if (d.doi && !byDoi.has(d.doi)) {
       byDoi.set(d.doi, {
         r: { id: d.id, source: "", doi: d.doi, title: d.title, abstractText: d.abstract ?? "", pmid: d.pmid ?? undefined, pmcid: d.pmcid ?? undefined, pubYear: String(d.year), citedByCount: d.citedBy, license: d.license, isOpenAccess: "Y", authorString: d.authors, journalTitle: d.journal },
         doi: d.doi,
@@ -147,11 +170,35 @@ async function main() {
     }
   }
 
+  // What the topic targets left unused (eligible, but beyond each topic's quota).
+  const leftOver = [...perTopic.values()].reduce((n, l) => n + l.filter((c) => !byDoi.has(c.doi)).length, 0);
   const ranked = [...byDoi.values()].sort((a, b) => b.score - a.score).slice(0, MAX_TOTAL);
   console.log(`\n${ranked.length} unique documents selected (cap ${MAX_TOTAL}). Rejections:`, Object.fromEntries(rejected));
-  if (DRY) return;
+  const writeReport = (extra: Record<string, unknown>) =>
+    writeFileSync(
+      REPORT_PATH,
+      JSON.stringify(
+        {
+          ranAt: new Date().toISOString().slice(0, 10),
+          cap: MAX_TOTAL,
+          previousDocuments: existing.length,
+          selectedBeforeVerification: ranked.length,
+          eligibleBeyondTopicTargets: leftOver,
+          // Counted per search hit: one record can be rejected by several queries.
+          rejectedSearchHits: Object.fromEntries([...rejected.entries()].sort((a, b) => b[1] - a[1])),
+          ...extra,
+        },
+        null,
+        2
+      ) + "\n"
+    );
+  if (DRY) {
+    writeReport({ dry: true });
+    return;
+  }
 
   const existingById = new Map(existing.map((d) => [d.doi, d]));
+  const crossrefRejected = new Map<string, number>();
   const docs: LibraryDoc[] = [];
   let i = 0;
   for (const c of ranked) {
@@ -161,10 +208,12 @@ async function main() {
     await sleep(120);
     if (!check.exists) {
       console.log(`  skip ${c.doi}: DOI not found in Crossref`);
+      crossrefRejected.set("DOI not found in Crossref", (crossrefRejected.get("DOI not found in Crossref") ?? 0) + 1);
       continue;
     }
     if (check.retracted || check.isRetractionNotice) {
       console.log(`  skip ${c.doi}: retracted (Crossref)`);
+      crossrefRejected.set("retracted (Crossref)", (crossrefRejected.get("retracted (Crossref)") ?? 0) + 1);
       continue;
     }
     const r = c.r;
@@ -193,12 +242,25 @@ async function main() {
       abstract,
       sheet: prev?.sheet ?? null,
       seed: prev?.seed,
-      verified: { crossref: true, retracted: false, checkedAt: new Date().toISOString().slice(0, 10) },
+      verified: { crossref: true, retracted: false, checkedAt: new Date().toISOString().slice(0, 10), source: prev?.verified.source ?? "europepmc" },
+      ...(prev?.citation ? { citation: prev.citation } : {}),
     });
     if (i % 25 === 0) console.log(`  verified ${i}/${ranked.length}`);
   }
 
+  // Seeds, guidelines and expert notes are not Europe PMC search results: keep them as they are.
+  const kept = new Set(docs.map((d) => d.doi || d.id));
+  for (const d of existing) {
+    if (!d.doi && !kept.has(d.id)) docs.push(d);
+  }
+
   writeDocs(docs);
+  const added = docs.filter((d) => !existingById.has(d.doi)).length;
+  writeReport({
+    written: docs.length,
+    added,
+    rejectedAtVerification: Object.fromEntries(crossrefRejected),
+  });
   const withText = docs.filter((d) => d.openText).length;
   console.log(`\nWrote ${docs.length} documents (${withText} with open-licence abstract text) → data/library/docs.json`);
 }

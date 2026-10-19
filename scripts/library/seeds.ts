@@ -8,10 +8,19 @@
  *
  * A seed that cannot be resolved or verified is reported and left out:
  * nothing enters the library on memory alone.
+ *
+ * Seeds not in Europe PMC (or not open access) may carry a DOI: they enter
+ * as "crossref_only" when Crossref resolves the DOI, the work is not
+ * retracted, and its title and year match. Only metadata and the project's
+ * own claim are stored, never the abstract.
+ *
+ * Guidelines without a DOI (e.g. NICE) carry their official URL instead and
+ * enter as "official_url" when that page answers.
  */
 
 import {
   crossrefCheck,
+  officialUrlResolves,
   epmcIsRetracted,
   epmcKind,
   epmcParticipatory,
@@ -34,6 +43,10 @@ type Seed = {
   title: string;
   year: number;
   topics: TopicId[];
+  /** Known DOI: looked up first, and the Crossref-only fallback when Europe PMC has no record. */
+  doi?: string;
+  /** Guideline without a DOI: the official page that must answer. */
+  guideline?: { id: string; url: string; publisher: string };
   claim: { es: string; en: string; sv: string };
   supports: { es: string; en: string; sv: string };
   doesNotSupport: { es: string; en: string; sv: string };
@@ -500,6 +513,90 @@ export const SEEDS: Seed[] = [
       sv: "Att utfallen är givna; stöd förändrar dem.",
     },
   },
+  {
+    title: "Positive family intervention for severe challenging behavior I: a multisite randomized clinical trial",
+    year: 2013,
+    doi: "10.1177/1098300712458324",
+    topics: ["challenging_behavior", "family_caregivers"],
+    claim: {
+      es: "En un ensayo aleatorizado con familias de niños con discapacidades del desarrollo y conducta muy difícil, añadir al apoyo conductual positivo un trabajo sobre el pesimismo de los padres mejoró más la conducta que el apoyo conductual solo. Ambos grupos mejoraron.",
+      en: "In a randomized trial with families of children with developmental disabilities and severe behaviour that challenges, adding work on parents' pessimism to positive behaviour support improved behaviour more than positive behaviour support alone. Both groups improved.",
+      sv: "I en randomiserad studie med familjer till barn med utvecklingsfunktionsnedsättningar och mycket svårt beteende gav positivt beteendestöd plus arbete med föräldrarnas pessimism större förbättring än enbart positivt beteendestöd. Båda grupperna förbättrades.",
+    },
+    supports: {
+      es: "Cuidar también los pensamientos y el desgaste del cuidador dentro de un plan de conducta, no solo la conducta del niño.",
+      en: "Caring for the caregiver's own thoughts and exhaustion inside a behaviour plan, not only the child's behaviour.",
+      sv: "Att även ta hand om vårdgivarens egna tankar och utmattning i en beteendeplan, inte bara barnets beteende.",
+    },
+    doesNotSupport: {
+      es: "Que sea un resultado específico para niños autistas (el grupo mezclaba discapacidades del desarrollo) ni que los padres tengan la culpa de la conducta.",
+      en: "That the result is specific to autistic children (the group mixed developmental disabilities), or that parents are to blame for the behaviour.",
+      sv: "Att resultatet gäller specifikt autistiska barn (gruppen blandade olika utvecklingsfunktionsnedsättningar), eller att föräldrarna bär skulden för beteendet.",
+    },
+  },
+  {
+    title: "Parent management training and collaborative & proactive solutions: a randomized control trial for oppositional youth",
+    year: 2016,
+    doi: "10.1080/15374416.2015.1004681",
+    topics: ["challenging_behavior", "family_caregivers"],
+    claim: {
+      es: "En un ensayo aleatorizado con niños y adolescentes con conducta oposicionista, Soluciones Colaborativas y Proactivas (CPS) y el entrenamiento de padres (PMT) funcionaron mejor que la lista de espera y de forma parecida entre sí, con mejoras mantenidas meses después.",
+      en: "In a randomized trial with oppositional children and adolescents, Collaborative & Proactive Solutions (CPS) and Parent Management Training (PMT) both did better than a waitlist and about equally well, with gains kept months later.",
+      sv: "I en randomiserad studie med trotsiga barn och ungdomar gav både Collaborative & Proactive Solutions (CPS) och föräldraträning (PMT) bättre resultat än väntelista och ungefär lika bra som varandra, med förbättringar som höll i sig månader senare.",
+    },
+    supports: {
+      es: "Resolver problemas junto con la persona (qué le cuesta y qué necesita) como alternativa con evidencia a premios y castigos.",
+      en: "Solving problems together with the person (what is hard and what they need) as an evidence-based alternative to rewards and punishments.",
+      sv: "Att lösa problem tillsammans med personen (vad som är svårt och vad den behöver) som ett evidensbaserat alternativ till belöningar och straff.",
+    },
+    doesNotSupport: {
+      es: "Que el resultado se traslade sin más a personas autistas o que no hablan: el estudio fue sobre conducta oposicionista, no sobre autismo.",
+      en: "That the result carries over directly to autistic or non-speaking people: the study was about oppositional behaviour, not autism.",
+      sv: "Att resultatet direkt gäller autistiska eller icke-talande personer: studien handlade om trotsbeteende, inte autism.",
+    },
+  },
+  {
+    title: "Community-delivered collaborative and proactive solutions and parent management training for oppositional youth: a randomized trial",
+    year: 2023,
+    doi: "10.1016/j.beth.2022.10.005",
+    topics: ["challenging_behavior", "family_caregivers"],
+    claim: {
+      es: "En servicios comunitarios, un ensayo aleatorizado encontró que CPS fue tan eficaz como el entrenamiento de padres para la conducta oposicionista, con mejoras mantenidas en el seguimiento.",
+      en: "In community services, a randomized trial found CPS as effective as parent management training for oppositional behaviour, with gains kept at follow-up.",
+      sv: "I kommunal verksamhet fann en randomiserad studie att CPS var lika effektivt som föräldraträning vid trotsbeteende, med förbättringar som höll vid uppföljning.",
+    },
+    supports: {
+      es: "Que el enfoque colaborativo también funciona fuera de clínicas universitarias, en servicios del día a día.",
+      en: "That the collaborative approach also works outside university clinics, in everyday services.",
+      sv: "Att det samarbetsinriktade arbetssättet fungerar även utanför universitetskliniker, i vardaglig verksamhet.",
+    },
+    doesNotSupport: {
+      es: "Conclusiones directas sobre autismo, discapacidad intelectual o personas que no hablan.",
+      en: "Direct conclusions about autism, intellectual disability or non-speaking people.",
+      sv: "Direkta slutsatser om autism, intellektuell funktionsnedsättning eller icke-talande personer.",
+    },
+  },
+  {
+    title: "Challenging behaviour and learning disabilities: prevention and interventions for people with learning disabilities whose behaviour challenges (NICE guideline NG11)",
+    year: 2015,
+    guideline: { id: "GUIDE:nice-ng11", url: "https://www.nice.org.uk/guidance/ng11", publisher: "National Institute for Health and Care Excellence (NICE)" },
+    topics: ["challenging_behavior", "pain_health", "family_caregivers"],
+    claim: {
+      es: "La guía británica NICE pide entender la conducta antes de actuar: buscar su función, revisar salud física y dolor, apoyar a la familia y reducir al mínimo las intervenciones restrictivas.",
+      en: "The UK NICE guideline asks to understand behaviour before acting: look for its function, check physical health and pain, support the family and keep restrictive interventions to a minimum.",
+      sv: "Den brittiska NICE-riktlinjen säger att man ska förstå beteendet innan man agerar: leta efter dess funktion, kontrollera kroppslig hälsa och smärta, stödja familjen och hålla begränsande åtgärder till ett minimum.",
+    },
+    supports: {
+      es: "Un plan basado en evaluación funcional y apoyo conductual positivo, revisando primero dolor y salud.",
+      en: "A plan built on functional assessment and positive behaviour support, checking pain and health first.",
+      sv: "En plan byggd på funktionell bedömning och positivt beteendestöd, där smärta och hälsa kontrolleras först.",
+    },
+    doesNotSupport: {
+      es: "Usar sujeción, encierro o castigo como estrategia, ni consejos sobre medicamentos (NeuroLjus nunca los da).",
+      en: "Using restraint, seclusion or punishment as a strategy, or advice on medication (NeuroLjus never gives it).",
+      sv: "Att använda fasthållning, avskiljning eller straff som strategi, eller råd om läkemedel (NeuroLjus ger aldrig sådana).",
+    },
+  },
 ];
 
 function similarity(a: string, b: string): number {
@@ -513,13 +610,53 @@ function similarity(a: string, b: string): number {
 
 async function main() {
   const docs = readDocs();
-  const byDoi = new Map(docs.map((d) => [d.doi, d]));
+  const byDoi = new Map(docs.filter((d) => d.doi).map((d) => [d.doi, d]));
+  const byId = new Map(docs.filter((d) => !d.doi).map((d) => [d.id, d]));
   let ok = 0;
+  const today = new Date().toISOString().slice(0, 10);
+  const seedFields = (seed: Seed) => ({ claim: seed.claim, supports: seed.supports, doesNotSupport: seed.doesNotSupport });
   for (const seed of SEEDS) {
+    if (seed.guideline) {
+      const g = seed.guideline;
+      if (!(await officialUrlResolves(g.url))) {
+        console.log(`✗ official page not reachable: ${g.url}`);
+        continue;
+      }
+      const prev = docs.find((d) => d.id === g.id);
+      const doc: LibraryDoc = {
+        id: g.id,
+        pmid: null,
+        pmcid: null,
+        doi: "",
+        title: seed.title,
+        authors: g.publisher,
+        journal: g.publisher,
+        year: seed.year,
+        kind: "guideline",
+        participatory: false,
+        license: "unknown",
+        openText: false,
+        citedBy: 0,
+        topics: [...new Set([...(prev?.topics ?? []), ...seed.topics])].sort() as TopicId[],
+        url: g.url,
+        abstract: null,
+        sheet: null,
+        seed: seedFields(seed),
+        verified: { crossref: false, retracted: false, checkedAt: today, source: "official_url" },
+      };
+      byId.set(g.id, doc);
+      ok += 1;
+      console.log(`✓ guideline · ${g.url}`);
+      continue;
+    }
     // Exact phrase first; then the distinctive words of the title. A match needs
     // ≥ 70 % of the seed's words in the record title and the right year (±1).
     const words = seed.title.toLowerCase().replace(/[^a-z0-9 ]+/g, " ").split(/\s+/).filter((w) => w.length > 3 && !STOP.has(w));
-    const queries = [`TITLE:"${seed.title.replace(/"/g, "")}"`, `TITLE:(${words.slice(0, 8).join(" AND ")})`];
+    const queries = [
+      ...(seed.doi ? [`DOI:"${seed.doi}"`] : []),
+      `TITLE:"${seed.title.replace(/"/g, "")}"`,
+      `TITLE:(${words.slice(0, 8).join(" AND ")})`,
+    ];
     let best: { r: EpmcResult; sim: number } | undefined;
     for (const q of queries) {
       const results = await epmcSearch(q, { max: 10 });
@@ -529,6 +666,46 @@ async function main() {
         .filter((x) => x.sim >= 0.7 && normalizeDoi(x.r.doi) && Math.abs((Number(x.r.pubYear) || 0) - seed.year) <= 1)
         .sort((a, b) => b.sim - a.sim || (Number(b.r.citedByCount) || 0) - (Number(a.r.citedByCount) || 0))[0];
       if (best) break;
+    }
+    if (!best && seed.doi) {
+      // Not in Europe PMC: Crossref alone may verify it, metadata only.
+      const doi = normalizeDoi(seed.doi);
+      const check = doi ? await crossrefCheck(doi) : null;
+      await sleep(150);
+      const m = check?.meta;
+      if (!doi || !check?.exists || check.retracted || check.isRetractionNotice || !m) {
+        console.log(`✗ Crossref ${check?.exists ? "retracted" : "missing"}: ${seed.title}`);
+        continue;
+      }
+      if (similarity(seed.title, m.title) < 0.7 || (m.year !== null && Math.abs(m.year - seed.year) > 1)) {
+        console.log(`✗ Crossref title/year mismatch for ${doi}: "${m.title}" (${m.year})`);
+        continue;
+      }
+      const prev = byDoi.get(doi);
+      byDoi.set(doi, {
+        id: `DOI:${doi}`,
+        pmid: null,
+        pmcid: null,
+        doi,
+        title: m.title,
+        authors: m.authors,
+        journal: m.journal,
+        year: m.year ?? seed.year,
+        kind: /randomi[sz]ed/i.test(m.title) ? "trial" : "study",
+        participatory: false,
+        license: "unknown",
+        openText: false,
+        citedBy: 0,
+        topics: [...new Set([...(prev?.topics ?? []), ...seed.topics])].sort() as TopicId[],
+        url: `https://doi.org/${doi}`,
+        abstract: null,
+        sheet: null,
+        seed: seedFields(seed),
+        verified: { crossref: true, retracted: false, checkedAt: today, source: "crossref_only" },
+      });
+      ok += 1;
+      console.log(`✓ ${doi} · crossref only · ${m.title.slice(0, 70)}`);
+      continue;
     }
     if (!best) {
       console.log(`✗ not found: ${seed.title}`);
@@ -568,14 +745,14 @@ async function main() {
       url: pmcid ? `https://europepmc.org/article/PMC/${pmcid}` : pmid ? `https://europepmc.org/article/MED/${pmid}` : `https://doi.org/${doi}`,
       abstract: openText && r.abstractText ? stripHtml(r.abstractText) : prev?.abstract ?? null,
       sheet: prev?.sheet ?? null,
-      seed: { claim: seed.claim, supports: seed.supports, doesNotSupport: seed.doesNotSupport },
-      verified: { crossref: true, retracted: false, checkedAt: new Date().toISOString().slice(0, 10) },
+      seed: seedFields(seed),
+      verified: { crossref: true, retracted: false, checkedAt: today, source: "europepmc" },
     };
     byDoi.set(doi, doc);
     ok += 1;
     console.log(`✓ ${doi} · ${doc.year} · ${doc.license || "no licence"} · ${doc.title.slice(0, 70)}`);
   }
-  writeDocs([...byDoi.values()]);
+  writeDocs([...byDoi.values(), ...byId.values()]);
   console.log(`\n${ok}/${SEEDS.length} seeds verified and merged.`);
 }
 

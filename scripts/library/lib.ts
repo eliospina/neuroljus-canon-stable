@@ -27,15 +27,35 @@ export type TopicId =
   | "family_caregivers"
   | "transitions"
   | "women_girls"
-  | "pain_health";
+  | "pain_health"
+  | "challenging_behavior";
 
-export type EvidenceKind = "systematic_review" | "meta_analysis" | "review" | "study";
+/**
+ * trial: randomized or controlled trial. guideline: clinical guidance from a
+ * public body (e.g. NICE). expert_practice: practice notes written by the
+ * project from a published book, in its own words, with the citation.
+ */
+export type EvidenceKind =
+  | "systematic_review"
+  | "meta_analysis"
+  | "review"
+  | "trial"
+  | "study"
+  | "guideline"
+  | "expert_practice";
+
+/** How the record was verified by code. */
+export type VerifiedSource = "europepmc" | "crossref_only" | "official_url" | "expert_citation";
+
+/** Book citation for expert_practice entries (never a quotation). */
+export type BookCitation = { author: string; book: string; year: number; locator: string };
 
 export type LibraryDoc = {
-  /** Europe PMC id: PMCID when available, else PMID. */
+  /** Europe PMC id: PMCID when available, else PMID; DOI:…, GUIDE:… or EXPERT:… otherwise. */
   id: string;
   pmid: string | null;
   pmcid: string | null;
+  /** Empty only for guideline and expert_practice entries, which link by url. */
   doi: string;
   title: string;
   authors: string;
@@ -60,10 +80,14 @@ export type LibraryDoc = {
     supports: { es: string; en: string; sv: string };
     doesNotSupport: { es: string; en: string; sv: string };
   };
+  /** expert_practice only: where the idea comes from. */
+  citation?: BookCitation;
   verified: {
     crossref: boolean;
     retracted: false;
     checkedAt: string;
+    /** Absent on documents ingested before this field existed (all from Europe PMC). */
+    source?: VerifiedSource;
   };
 };
 
@@ -187,6 +211,7 @@ export function epmcKind(r: EpmcResult): EvidenceKind {
   if (types.some((t) => t.includes("meta-analysis")) || /meta-analy/.test(title)) return "meta_analysis";
   if (types.some((t) => t.includes("systematic")) || /systematic review|scoping review|umbrella review/.test(title)) return "systematic_review";
   if (types.some((t) => t === "review")) return "review";
+  if (types.some((t) => /randomi[sz]ed controlled trial|controlled clinical trial|clinical trial/.test(t)) || /randomi[sz]ed (controlled |clinical )?trial/.test(title)) return "trial";
   return "study";
 }
 
@@ -207,16 +232,39 @@ type CrossrefWork = {
     title?: string[];
     "updated-by"?: Array<{ type?: string; label?: string }>;
     "update-to"?: Array<{ type?: string }>;
+    author?: Array<{ family?: string; given?: string }>;
+    "container-title"?: string[];
+    issued?: { "date-parts"?: number[][] };
+    "published-print"?: { "date-parts"?: number[][] };
+    "published-online"?: { "date-parts"?: number[][] };
   };
 };
 
-export type CrossrefCheck = { exists: boolean; retracted: boolean; isRetractionNotice: boolean };
+export type CrossrefMeta = { title: string; authors: string; journal: string; year: number | null };
+
+export type CrossrefCheck = { exists: boolean; retracted: boolean; isRetractionNotice: boolean; meta: CrossrefMeta | null };
+
+export function crossrefMeta(m: NonNullable<CrossrefWork["message"]>): CrossrefMeta {
+  const year = m.issued?.["date-parts"]?.[0]?.[0] ?? m["published-print"]?.["date-parts"]?.[0]?.[0] ?? m["published-online"]?.["date-parts"]?.[0]?.[0] ?? null;
+  const authors = (m.author ?? []).map((a) => [a.family, a.given?.[0]].filter(Boolean).join(" ")).filter(Boolean).join(", ");
+  return { title: stripHtml(m.title?.[0] ?? ""), authors: authors.slice(0, 200), journal: m["container-title"]?.[0] ?? "", year };
+}
 
 export async function crossrefCheck(doi: string): Promise<CrossrefCheck> {
   const j = await fetchJson<CrossrefWork>(`https://api.crossref.org/works/${encodeURIComponent(doi)}`);
   const m = j?.message;
-  if (!m?.DOI) return { exists: false, retracted: false, isRetractionNotice: false };
+  if (!m?.DOI) return { exists: false, retracted: false, isRetractionNotice: false, meta: null };
   const retracted = (m["updated-by"] ?? []).some((u) => /retract/i.test(`${u.type ?? ""} ${u.label ?? ""}`));
   const isRetractionNotice = (m["update-to"] ?? []).some((u) => /retract/i.test(u.type ?? ""));
-  return { exists: true, retracted, isRetractionNotice };
+  return { exists: true, retracted, isRetractionNotice, meta: crossrefMeta(m) };
+}
+
+/** True when an official page answers 200 (guidelines without a DOI). */
+export async function officialUrlResolves(url: string): Promise<boolean> {
+  try {
+    const res = await fetch(url, { method: "GET", redirect: "follow", headers: { "User-Agent": USER_AGENT } });
+    return res.ok;
+  } catch {
+    return false;
+  }
 }

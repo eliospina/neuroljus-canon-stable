@@ -3,13 +3,15 @@ import Link from "next/link";
 import type { GetStaticProps } from "next";
 import { useCallback, useMemo, useState } from "react";
 import { useLang, type Lang } from "@/components/SiteLayout";
-import { LIBRARY_DOCS, type EvidenceKind } from "@/lib/library";
+import { LIBRARY_DOCS, docLink, type EvidenceKind } from "@/lib/library";
 import { TOPIC_LABELS, TOPIC_ORDER, type TopicId } from "@/lib/library/topics";
 
 /** What the page needs per document (abstracts stay on the server). */
 type Item = {
   id: string;
   doi: string;
+  /** DOI link, or the guideline / book link when there is no DOI. */
+  link: string;
   title: string;
   authors: string;
   journal: string;
@@ -29,6 +31,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
   const items: Item[] = LIBRARY_DOCS.map((d) => ({
     id: d.id,
     doi: d.doi,
+    link: docLink(d),
     title: d.title,
     authors: d.authors.split(",")[0].trim() + (d.authors.includes(",") ? " et al." : ""),
     journal: d.journal,
@@ -75,6 +78,9 @@ const T: Record<Lang, Record<string, string>> = {
     meta_analysis: "metaanálisis",
     review: "revisión",
     study: "estudio",
+    trial: "ensayo controlado",
+    guideline: "guía clínica",
+    expert_practice: "práctica de experto",
     results: "resultados",
     open: "Abrir estudio",
     sources: "Fuentes y licencias",
@@ -102,6 +108,9 @@ const T: Record<Lang, Record<string, string>> = {
     meta_analysis: "meta-analysis",
     review: "review",
     study: "study",
+    trial: "controlled trial",
+    guideline: "clinical guideline",
+    expert_practice: "expert practice",
     results: "results",
     open: "Open study",
     sources: "Sources and licences",
@@ -129,6 +138,9 @@ const T: Record<Lang, Record<string, string>> = {
     meta_analysis: "metaanalys",
     review: "översikt",
     study: "studie",
+    trial: "kontrollerad studie",
+    guideline: "klinisk riktlinje",
+    expert_practice: "expertpraktik",
     results: "resultat",
     open: "Öppna studien",
     sources: "Källor och licenser",
@@ -214,7 +226,7 @@ export default function LibraryPage({ items, counts }: Props) {
                   <p className="meta">
                     <span className="kind">{t[s.kind]}</span>
                     {s.participatory && <span className="kind part">{t.participatory}</span>}
-                    <a href={`https://doi.org/${s.doi}`} target="_blank" rel="noreferrer">
+                    <a href={s.link} target="_blank" rel="noreferrer">
                       {s.authors} ({s.year}) · {s.journal}
                     </a>
                   </p>
@@ -267,10 +279,10 @@ export default function LibraryPage({ items, counts }: Props) {
                     <p className="muted small">{i.open ? t.sheetPending : t.noSheet}</p>
                   )}
                   <p className="links">
-                    <a href={`https://doi.org/${i.doi}`} target="_blank" rel="noreferrer">
+                    <a href={i.link} target="_blank" rel="noreferrer">
                       {t.open} →
                     </a>
-                    <span className="doi">{i.doi}</span>
+                    {i.doi && <span className="doi">{i.doi}</span>}
                     <span className="lic">{i.license ? i.license.toUpperCase() : t.metadataOnly}</span>
                   </p>
                 </li>
@@ -485,5 +497,5 @@ export default function LibraryPage({ items, counts }: Props) {
 }
 
 function rank(k: EvidenceKind): number {
-  return k === "meta_analysis" ? 3 : k === "systematic_review" ? 2 : k === "review" ? 1 : 0;
+  return k === "meta_analysis" ? 4 : k === "systematic_review" || k === "guideline" ? 3 : k === "trial" ? 2 : k === "review" ? 1 : 0;
 }

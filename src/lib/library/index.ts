@@ -14,12 +14,20 @@ import { SEARCH_OPTIONS } from "./searchOptions";
 export type { TopicId } from "./topics";
 import type { TopicId } from "./topics";
 
-export type EvidenceKind = "systematic_review" | "meta_analysis" | "review" | "study";
+export type EvidenceKind =
+  | "systematic_review"
+  | "meta_analysis"
+  | "review"
+  | "trial"
+  | "study"
+  | "guideline"
+  | "expert_practice";
 
 export type LibraryDoc = {
   id: string;
   pmid: string | null;
   pmcid: string | null;
+  /** Empty for guideline and expert_practice entries: link with url. */
   doi: string;
   title: string;
   authors: string;
@@ -35,7 +43,14 @@ export type LibraryDoc = {
   abstract: string | null;
   sheet: { es: string; en: string; sv: string } | null;
   seed?: { claim: { es: string; en: string; sv: string }; supports: { es: string; en: string; sv: string }; doesNotSupport: { es: string; en: string; sv: string } };
-  verified: { crossref: boolean; retracted: false; checkedAt: string };
+  /** expert_practice only: the book the idea comes from (never a quotation). */
+  citation?: { author: string; book: string; year: number; locator: string };
+  verified: {
+    crossref: boolean;
+    retracted: false;
+    checkedAt: string;
+    source?: "europepmc" | "crossref_only" | "official_url" | "expert_citation";
+  };
 };
 
 export const LIBRARY_DOCS = docsJson as LibraryDoc[];
@@ -67,6 +82,8 @@ function kindBoost(d: LibraryDoc): number {
   let b = d.seed ? 2 : 0;
   if (d.kind === "meta_analysis") b += 1.5;
   else if (d.kind === "systematic_review") b += 1.2;
+  else if (d.kind === "guideline") b += 1.2;
+  else if (d.kind === "trial") b += 1;
   else if (d.kind === "review") b += 0.5;
   if (d.participatory) b += 0.5;
   return b;
@@ -74,6 +91,11 @@ function kindBoost(d: LibraryDoc): number {
 
 export function getDoc(id: string): LibraryDoc | undefined {
   return BY_ID.get(id);
+}
+
+/** Where a document links: its DOI when it has one, otherwise its own url. */
+export function docLink(d: Pick<LibraryDoc, "doi" | "url">): string {
+  return d.doi ? `https://doi.org/${d.doi}` : d.url;
 }
 
 export { TOPIC_LABELS, TOPIC_ORDER } from "./topics";

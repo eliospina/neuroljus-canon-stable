@@ -46,6 +46,9 @@ const T: Record<Lang, Record<string, string>> = {
     meta_analysis: "metaanálisis",
     review: "revisión",
     study: "estudio",
+    trial: "ensayo controlado",
+    guideline: "guía clínica",
+    expert_practice: "práctica de experto",
   },
   en: {
     title: "Ask NeuroLjus",
@@ -83,6 +86,9 @@ const T: Record<Lang, Record<string, string>> = {
     meta_analysis: "meta-analysis",
     review: "review",
     study: "study",
+    trial: "controlled trial",
+    guideline: "clinical guideline",
+    expert_practice: "expert practice",
   },
   sv: {
     title: "Fråga NeuroLjus",
@@ -120,6 +126,9 @@ const T: Record<Lang, Record<string, string>> = {
     meta_analysis: "metaanalys",
     review: "översikt",
     study: "studie",
+    trial: "kontrollerad studie",
+    guideline: "klinisk riktlinje",
+    expert_practice: "expertpraktik",
   },
 };
 
@@ -354,7 +363,7 @@ export default function AskPage() {
                       .map((src) => (
                         <li key={src.n} id={`src-${src.n}`}>
                           <span className="n">[{src.n}]</span>{" "}
-                          <a href={`https://doi.org/${src.doi}`} target="_blank" rel="noreferrer">
+                          <a href={src.doi ? `https://doi.org/${src.doi}` : src.url} target="_blank" rel="noreferrer">
                             {src.title}
                           </a>{" "}
                           <span className="meta">
