@@ -90,11 +90,11 @@ test("state: language, country, caller, phase and steps given are derived from t
 
 // ---------------------------------------------------------------- guard
 
-test("guard: emergency only when severe, no filler, no repeat, no medication, sentence cap, tags stripped", () => {
+test("guard: emergency words never drop a sentence; no filler, no repeat, no medication, sentence cap, tags stripped", () => {
   const base = { lang: "es" as const, severe: false, previous: ["Retira la demanda y baja el ruido."], maxSentences: 4 };
   const said = new Set<string>();
-  assert.equal(judgeSentence("Si hay peligro, llama al 112.", base, 0, said).reason, "emergency");
-  assert.equal(judgeSentence("Si hay peligro, llama al 112.", { ...base, severe: true }, 0, said).keep, true);
+  assert.equal(judgeSentence("El número de emergencias es el 123.", base, 0, said).keep, true, "no severe signal, still spoken");
+  assert.equal(judgeSentence("El número de emergencias es el 123.", base, 4, said).keep, true, "the number is never cut by the cap");
   assert.equal(judgeSentence("Lo siento mucho, debe ser agotador.", base, 0, said).reason, "filler");
   assert.equal(judgeSentence("Retira la demanda y baja el ruido.", base, 0, said).reason, "repeat");
   assert.equal(judgeSentence("Dale melatonina para dormir.", base, 0, said).reason, "medication");
@@ -102,9 +102,9 @@ test("guard: emergency only when severe, no filler, no repeat, no medication, se
   assert.equal(judgeSentence("Pon un cojín entre su cabeza y la pared.", base, 4, said).reason, "limit");
 
   const g = new SpeechGuard(base);
-  const out = [...g.push("[slow] Pon algo blando bajo su cabeza. Lo siento mucho. Llama a emerg"), ...g.push("encias ahora. Espera en silencio a distancia. Dime qué pasa ahora."), ...g.flush()];
-  assert.deepEqual(out, ["Pon algo blando bajo su cabeza.", "Espera en silencio a distancia.", "Dime qué pasa ahora."]);
-  assert.deepEqual(g.dropped.map((d) => d.reason), ["filler", "emergency"]);
+  const out = [...g.push("[slow] Pon algo blando bajo su cabeza. Lo siento mucho. El número de emerg"), ...g.push("encias es el 123. Espera en silencio a distancia. Dime qué pasa ahora."), ...g.flush()];
+  assert.deepEqual(out, ["Pon algo blando bajo su cabeza.", "El número de emergencias es el 123.", "Espera en silencio a distancia.", "Dime qué pasa ahora."]);
+  assert.deepEqual(g.dropped.map((d) => d.reason), ["filler"]);
   // Sentences stream as soon as they are complete: the first one came out of the first push.
   const g2 = new SpeechGuard(base);
   assert.deepEqual(g2.push("Primera frase completa. Segunda a medi"), ["Primera frase completa."]);
@@ -120,17 +120,18 @@ test("brain: static block is per language and stable; dynamic block carries tria
 
   const s = deriveCallState([{ role: "user", content: "Mi hijo se golpea la cabeza y le sale sangre que no para. Estamos en España." }]);
   const dyn = dynamicBlock(s, { docs: [], ms: 3, timedOut: false }, null);
-  assert.match(dyn, /SEVERE SIGNAL present \(bleeding_not_stopping\)/);
-  assert.match(dyn, /llama al 112/);
+  assert.match(dyn, /severe signal present \(bleeding_not_stopping\)/);
+  assert.match(dyn, /El número de emergencias es el 112\./);
   assert.match(dyn, /protocol: 4 Autolesión/);
   const fb = fallbackSpeech(s);
-  assert.match(fb, /^Si hay peligro, llama al 112\./);
+  assert.match(fb, /^El número de emergencias es el 112\./);
 
   const calm = deriveCallState([{ role: "user", content: "Mi hijo se golpea la cabeza con la mano" }]);
   const dynCalm = dynamicBlock(calm, { docs: [], ms: 3, timedOut: false }, null);
-  assert.match(dynCalm, /NEVER mention emergencies/);
+  assert.match(dynCalm, /emergency number for this country, as information/);
+  assert.doesNotMatch(dynCalm, /NEVER mention/);
   assert.match(dynCalm, /triage: NOT asked yet/);
-  assert.doesNotMatch(fallbackSpeech(calm), /112|emergencias/);
+  assert.doesNotMatch(fallbackSpeech(calm), /112|emergencias/, "without a severe signal the fallback gives steps, not the number");
 
   assert.deepEqual(toClaudeMessages([{ role: "system", content: "x" }, { role: "assistant", content: "hola" }, { role: "user", content: "a" }, { role: "user", content: "b" }]), [{ role: "user", content: "a\nb" }]);
   assert.equal(conversationKey([{ role: "user", content: "hola" }], undefined), conversationKey([{ role: "user", content: "hola" }, { role: "assistant", content: "x" }], undefined));
@@ -171,11 +172,11 @@ test("scenarios: every turn passes the rules with the scripted model", async () 
       const text = r.sentences.join(" ");
       const previous = messages.filter((m) => m.role === "assistant").map((m) => String(m.content));
       const severeAllowed = s.expect.severeFrom !== undefined && i >= s.expect.severeFrom;
-      for (const p of checkTurn({ text, previousAssistant: previous, severeAllowed, suicidal: s.expect.suicidal, maxSentences: s.expect.person ? 2 : 4, sourceAllowed: r.retrieval.docs.length > 0 || r.state.protocol !== null, firstSentenceMs: r.firstSentenceMs, firstSentenceBudgetMs: 900 })) failures.push(`${s.id} t${i + 1}: ${p}`);
+      for (const p of checkTurn({ text, previousAssistant: previous, severeAllowed, suicidal: s.expect.suicidal, asksWhomToCall: s.expect.whomTurns?.includes(i) ?? false, maxSentences: s.expect.person ? 2 : 4, sourceAllowed: r.retrieval.docs.length > 0 || r.state.protocol !== null, firstSentenceMs: r.firstSentenceMs, firstSentenceBudgetMs: 900 })) failures.push(`${s.id} t${i + 1}: ${p}`);
       if (severeAllowed !== r.state.severe) failures.push(`${s.id} t${i + 1}: severe=${r.state.severe}, expected ${severeAllowed}`);
       // The guard caught the scripted model's deliberate violations.
       assert.ok(r.dropped.some((d) => d.reason === "filler"), `${s.id} t${i + 1}: filler dropped`);
-      if (!severeAllowed) assert.ok(r.dropped.some((d) => d.reason === "emergency"), `${s.id} t${i + 1}: emergency leak dropped`);
+      if (s.expect.whomTurns?.includes(i)) assert.match(r.sentences[0], /123/, `${s.id} t${i + 1}: the number comes first`);
       if (r.retrieval.docs.length > 0) hadDocs = true;
       if (SOURCE_WORDS.test(text)) cited = true;
       messages.push({ role: "assistant", content: text });
@@ -194,6 +195,12 @@ test("brain: with no model the protocol speaks, with a refusing model the protoc
   assert.equal(r.source, "fallback");
   assert.ok(r.sentences.length >= 1 && r.sentences.length <= 4);
   assert.doesNotMatch(r.sentences.join(" "), /112|emergencias/);
+
+  // "¿A quién llamo?" is answered first, by code, whatever the model says.
+  const whom = await brainTurnText({ messages: [{ role: "user", content: "Se me soltó y corrió a la calle, hay carros, no lo alcanzo. Estamos en Colombia." }, { role: "assistant", content: "Ponte entre él y la calle." }, { role: "user", content: "¿A quién llamo?" }], apiKey: null, model: "x", modelStream: mockModelStream, noWeb: true, log: () => undefined });
+  assert.equal(whom.state.protocol, "physical_danger");
+  assert.equal(whom.state.asksWhomToCall, true);
+  assert.equal(whom.sentences[0], "El número de emergencias es el 123.");
 
   const refusing = async function* (): AsyncIterable<string> { throw new Error("refusal"); };
   const r2 = await brainTurnText({ messages: msgs, apiKey: null, model: "x", modelStream: () => refusing(), noWeb: true });
@@ -246,7 +253,6 @@ test("http: auth by header or bearer, 503 unconfigured, OpenAI-shaped SSE with [
   assert.equal(parsed[0].choices[0].delta.role, "assistant");
   const content = parsed.map((p: any) => p.choices[0].delta.content ?? "").join("");
   assert.ok(content.length > 10, content);
-  assert.doesNotMatch(content, /112|emergencias/);
   assert.equal(parsed[parsed.length - 1].choices[0].finish_reason, "stop");
 
   res = sseRes();

@@ -20,6 +20,8 @@ export type CallState = {
   caller: CallerRole;
   /** A calm question (nothing happening now): answer from the library, no protocol steps. */
   calm: boolean;
+  /** This turn asks whom to call: the emergency number goes first, by code. */
+  asksWhomToCall: boolean;
   /** Chosen protocol, or null when nothing matched (an uncovered case: library and web instead). */
   protocol: ProtocolId | null;
   /** True when a keyword matched; false when the fallback protocol would have been used. */
@@ -148,6 +150,15 @@ export function stepWasGiven(step: string, assistantTexts: string[]): boolean {
   return false;
 }
 
+// --- "whom do I call?" -----------------------------------------------------
+
+const WHOM = w("a qui[ée]n (llamo|llamamos|le marco|marco|debo llamar|puedo llamar)|qu[ée] n[úu]mero|a d[oó]nde llamo|a qui[ée]n\\??$|who (do|should|can) (i|we) call|whom (do|should) (i|we) call|what number|who do i ring|vem (ska|kan) (jag|vi) ringa|vilket nummer|vem ringer jag");
+
+/** The caller asks whom to call or what number: the answer is the country's emergency number, first. */
+export function asksWhomToCall(text: string): boolean {
+  return WHOM.test(text.normalize("NFC").trim());
+}
+
 // --- calm question ---------------------------------------------------------
 
 const CALM = w("nada urgente|no es urgente|sin urgencia|una pregunta|quer[ií]a preguntar|c[oó]mo (preparo|preparar|puedo preparar|le explico|hago para que)|la (pr[oó]xima|semana que viene)|nothing urgent|not urgent|no rush|a question|how (do|can|should) i (prepare|explain|get him|get her|help him|help her)|next (week|month)|inget akut|inte br[åa]ttom|en fr[åa]ga|hur (f[öo]rbereder|kan jag f[öo]rbereda|f[öo]rklarar) jag|n[äa]sta (vecka|m[åa]nad)");
@@ -200,6 +211,7 @@ export function deriveCallState(messages: ChatMessage[], hints: { lang?: Emergen
   const choice = triage.signals.includes("suicidal") ? { id: "self_injury" as ProtocolId, matched: true } : stickyProtocol(user, triage.severe);
   const protocol = choice.matched ? choice.id : null;
   const calm = !triage.severe && isCalmQuestion(current);
+  const whom = asksWhomToCall(current);
 
   // Phase advances monotonically with the caller's signals.
   let phase: PhaseId = "agitation";
@@ -214,7 +226,7 @@ export function deriveCallState(messages: ChatMessage[], hints: { lang?: Emergen
     for (const ph of PHASE_IDS) p.phases[ph].steps.forEach((s, i) => { if (stepWasGiven(s[lang], assistant)) stepsGiven.push(`${ph}.${i}`); });
   }
 
-  return { lang, country, caller, calm, protocol, matched: choice.matched, phase, severe: triage.severe, signals: triage.signals, triageAsked, triageClear, stepsGiven, turn: user.length, current, userText: user, assistantText: assistant };
+  return { lang, country, caller, calm, asksWhomToCall: whom, protocol, matched: choice.matched, phase, severe: triage.severe, signals: triage.signals, triageAsked, triageClear, stepsGiven, turn: user.length, current, userText: user, assistantText: assistant };
 }
 
 /** Protocols that exist, for the uncovered-case log. */

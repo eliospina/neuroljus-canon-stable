@@ -16,9 +16,9 @@ const words = (alternatives: string) => new RegExp(`${EDGE_L}(?:${alternatives})
 /** Keywords per protocol (es / en / sv). Each distinct keyword found adds one point. */
 const KEYWORDS: Record<ProtocolId, RegExp[]> = {
   physical_danger: [
-    words("peligro|se escap\\p{L}*|escap[oó]|huy\\p{L}*|corre a la calle|la calle|tr[aá]fico|coches?|ventana|balc[oó]n|fuego|incendio|piscina|r[ií]o|se pierde|perdid\\p{L}*"),
-    words("danger\\p{L}*|runs? (off|away|out|into the street)|bolt\\p{L}*|elope\\p{L}*|wander\\p{L}*|traffic|street|road|window|balcony|fire|pool|river|drown\\p{L}*|lost|missing"),
-    words("fara|farlig\\p{L}*|springer (ut|iväg|i väg)|rymmer|rymt|gatan|trafik\\p{L}*|f[öo]nster|balkong|brand|pool|vattnet|drunkn\\p{L}*|borta"),
+    words("peligro|se escap\\p{L}*|escap[oó]|huy\\p{L}*|corre a la calle|la calle|tr[aá]fico|coches?|carros?|autos?|camiones?|ventana|balc[oó]n|fuego|incendio|piscina|r[ií]o|se pierde|perdid\\p{L}*"),
+    words("danger\\p{L}*|runs? (off|away|out|into the street)|bolt\\p{L}*|elope\\p{L}*|wander\\p{L}*|traffic|cars?|trucks?|street|road|window|balcony|fire|pool|river|drown\\p{L}*|lost|missing"),
+    words("fara|farlig\\p{L}*|springer (ut|iväg|i väg)|rymmer|rymt|gatan|trafik\\p{L}*|bilar(na)?|f[öo]nster|balkong|brand|pool|vattnet|drunkn\\p{L}*|borta"),
   ],
   aggression_objects: [
     words("tira\\p{L}* (cosas|objetos|platos|juguetes)|rompe\\p{L}*|romp[ií]\\p{L}*|lanza\\p{L}*|golpea (la )?(puerta|pared|mesa|objetos)|destroz\\p{L}*|patea (la )?(puerta|pared|mesa)"),
