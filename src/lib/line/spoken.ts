@@ -35,7 +35,19 @@ export function stop(text: string): string {
   return /[.!?…]$/.test(t) ? t : `${t}.`;
 }
 
-export const MEDICATION_ASK = /(?<![\p{L}\p{N}])(medicament\p{L}*|medicaci[oó]n|medicin(a|as|e)\b|dosis|dosificar|receta\p{L}*|pastillas?|medication\p{L}*|medicine|dose|dosage|prescri\p{L}*|pills?|l[äa]kemedel|medicin\p{L}*|dos(er|en)?\b|tabletter)(?![\p{L}\p{N}])/iu;
+/**
+ * Medication wording, es/en/sv. Bare "dos" is left out on purpose ("dos años",
+ * "a las dos" are not medication) and so is "receta" alone ("receta de cocina").
+ */
+export const MEDICATION_ASK =
+  /(?<![\p{L}\p{N}])(medicament\p{L}*|medicaci[oó]n|medicin(a|as|e)|dosis|dosificar|dosering\p{L}*|doser|dosen|dose|dosage|receta m[ée]dica|prescri\p{L}*|pastillas?|pills?|tabletter|medication\p{L}*|l[äa]kemedel|melatonin\p{L}*|risperidon\p{L}*|aripiprazol\p{L}*|metilfenidat\p{L}*|methylphenidat\p{L}*|metylfenidat\p{L}*|fluoxetin\p{L}*|sertralin\p{L}*)(?![\p{L}\p{N}])/iu;
+
+const DIAGNOSIS_VERDICT = /(?<![\p{L}\p{N}])(s[ií],? (tiene|es) autis\p{L}*|(tu|su) (hij[oa]|hermano|hermana|pareja) (es|tiene) autis\p{L}*|your (son|daughter|child|partner|brother|sister) (is|has) autis\p{L}*|(din|ditt) (son|dotter|barn) (har|[äa]r) autis\p{L}*)(?![\p{L}\p{N}])/iu;
+
+/** A sentence that tells the caller their relative is autistic: not ours to say, so it is never read aloud. */
+export function claimsDiagnosis(text: string): boolean {
+  return DIAGNOSIS_VERDICT.test(text);
+}
 
 const CLINICIAN: Record<EmergencyLang, string> = {
   es: "De medicamentos y dosis no puedo hablar. Eso lo decide su médico o su médica. Si quieres, te ayudo con lo que sí puedes hacer hoy.",

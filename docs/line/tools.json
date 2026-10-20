@@ -63,7 +63,7 @@
             },
             "country": {
               "type": "string",
-              "description": "País de la persona que llama, código de dos letras (por ejemplo SE, ES, CO, MX). Si no lo sabes, no lo envíes."
+              "description": "País de la persona que llama, código de dos letras (por ejemplo SE, ES, CO, MX). Pregúntalo al empezar la llamada y envíalo siempre que lo sepas: sin él, el número de emergencias que se dice es genérico («el de tu país»)."
             }
           }
         }
@@ -105,7 +105,7 @@
             },
             "country": {
               "type": "string",
-              "description": "País de la persona que llama, código de dos letras (por ejemplo SE, ES, CO, MX). Si no lo sabes, no lo envíes."
+              "description": "País de la persona que llama, código de dos letras (por ejemplo SE, ES, CO, MX). Pregúntalo al empezar la llamada y envíalo siempre que lo sepas: sin él, el número de emergencias que se dice es genérico («el de tu país»)."
             }
           }
         }
@@ -147,7 +147,7 @@
             },
             "country": {
               "type": "string",
-              "description": "País de la persona que llama, código de dos letras (por ejemplo SE, ES, CO, MX). Si no lo sabes, no lo envíes."
+              "description": "País de la persona que llama, código de dos letras (por ejemplo SE, ES, CO, MX). Pregúntalo al empezar la llamada y envíalo siempre que lo sepas: sin él, el número de emergencias que se dice es genérico («el de tu país»)."
             }
           }
         }

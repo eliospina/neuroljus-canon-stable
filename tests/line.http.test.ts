@@ -69,3 +69,17 @@ test("responses are never cached", async () => {
   await protocolRoute(mockReq(body), res);
   assert.equal(res.headers_["cache-control"], "no-store");
 });
+
+test("failed secrets are limited in their own bucket and do not use up the agent's budget", async () => {
+  process.env.LINE_UNAUTH_LIMIT_PER_MIN = "3";
+  const codes: number[] = [];
+  for (let i = 0; i < 5; i++) {
+    const res = mockRes();
+    await protocolRoute(mockReq(body, { secret: "wrong" }), res);
+    codes.push(res.statusCode);
+  }
+  assert.deepEqual(codes, [401, 401, 401, 429, 429]);
+  const ok = mockRes();
+  await protocolRoute(mockReq(body), ok);
+  assert.equal(ok.statusCode, 200);
+});

@@ -7,7 +7,7 @@
 
 import { localRiskScreen } from "../careProtocol/intentParser";
 import { dangerSentence, type EmergencyLang } from "../emergency";
-import { clinicianSentence, firstSentences, MEDICATION_ASK } from "./spoken";
+import { clinicianSentence, firstSentences, MEDICATION_ASK, claimsDiagnosis } from "./spoken";
 
 export const LINE_SEARCH_TIMEOUT_MS = 9_000;
 export const MAX_SEARCHES = 3;
@@ -141,7 +141,7 @@ export async function buildLineSearch(input: {
     }
     const { text, sources } = parseSearch(payload.content ?? []);
     const speech = firstSentences(text, MAX_SENTENCES);
-    if (!speech || MEDICATION_ASK.test(speech)) return { ok: true, mode: "none", risk: false, use_tool: null, speech: "", sources: [] };
+    if (!speech || MEDICATION_ASK.test(speech) || claimsDiagnosis(speech)) return { ok: true, mode: "none", risk: false, use_tool: null, speech: "", sources: [] };
     return { ok: true, mode: "web", risk: false, use_tool: null, speech, sources };
   } catch (e) {
     input.onError?.(e instanceof Error && e.name === "AbortError" ? "timeout" : "upstream");

@@ -9,7 +9,7 @@ import { lineEndpoint, MAX_SITUATION_CHARS, parseCountry, parseLang, textField }
 
 export const config = { maxDuration: 10, api: { bodyParser: { sizeLimit: "16kb" } } };
 
-export default lineEndpoint("ask", { env: "LINE_RATE_LIMIT_PER_MIN", fallback: 30 }, async (body, req, res) => {
+export default lineEndpoint("ask", { env: "LINE_RATE_LIMIT_PER_MIN", fallback: 30 }, async (body, _req, res) => {
   const question = textField(body, "question");
   if (!question) return void res.status(400).json({ ok: false, error: "question is required." });
   if (question.length > MAX_SITUATION_CHARS) return void res.status(400).json({ ok: false, error: "question is too long." });
@@ -20,7 +20,7 @@ export default lineEndpoint("ask", { env: "LINE_RATE_LIMIT_PER_MIN", fallback: 3
     const result = await buildLineAsk({
       question,
       lang: parseLang(body.lang),
-      country: parseCountry(body.country, req),
+      country: parseCountry(body.country),
       apiKey: process.env.ANTHROPIC_API_KEY || null,
       model: getAnthropicModel(),
       signal: controller.signal,

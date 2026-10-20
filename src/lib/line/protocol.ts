@@ -26,7 +26,7 @@ const KEYWORDS: Record<ProtocolId, RegExp[]> = {
     words("kastar|kastade|sl[åa]r s[oö]nder|krossar|f[öo]rst[öo]r\\p{L}*|sparkar (p[åa] )?(d[öo]rren|v[äa]ggen|bordet)|slamrar"),
   ],
   aggression_people: [
-    words("pega (a|al|a la)|pega\\p{L}*|golpea (a|al|a la)|muerde (a|al)|empuja\\p{L}*|araña|ara[ñn]a\\p{L}*|patea (a|al)|agrede\\p{L}*|agresi[oó]n|pelea\\p{L}*|tira del pelo"),
+    words("(me|te|le|nos|les) pega\\p{L}*|pega (a|al|a la)|golpea (a|al|a la)|muerde (a|al)|empuja\\p{L}*|araña|ara[ñn]a\\p{L}*|patea (a|al)|agrede\\p{L}*|agresi[oó]n|pelea\\p{L}*|tira del pelo"),
     words("hits? (me|him|her|us|his|my|the)|hitting (me|him|her|us)|bit(es|ing)? (me|him|her)|push\\p{L}*|scratch\\p{L}*|kick(s|ing)? (me|him|her)|aggress\\p{L}*|attack\\p{L}*|fight\\p{L}*|pulls? (my |his |her )?hair"),
     words("sl[åa]r (mig|honom|henne|oss|mamma|pappa|syskon\\p{L}*)|bits? (mig|honom|henne)|knuffar|rivs?|sparkar (mig|honom|henne)|aggressiv\\p{L}*|attackerar|sl[åa]ss|sl[åa]ss|sl[åa]r andra|dra[r]? h[åa]r"),
   ],

@@ -4,7 +4,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import protocolRoute from "../src/pages/api/line/protocol";
 import { buildLineProtocol, chooseProtocol } from "../src/lib/line/protocol";
-import { resetLineRateLimits } from "../src/lib/line/http";
+import { parseCountry, resetLineRateLimits } from "../src/lib/line/http";
 import { PROTOCOLS, PHASE_IDS } from "../src/lib/protocols";
 import { SECRET, mockReq, mockRes } from "./helpers/lineHttp";
 
@@ -118,11 +118,23 @@ test("endpoint: validates input and returns the protocol", async () => {
   assert.equal(res.json_.risk, false);
 });
 
-test("endpoint: country falls back to the Vercel header, and risk comes first", async () => {
-  const res = mockRes();
-  await protocolRoute(mockReq({ situation: "no respira", lang: "es" }, { headers: { "x-vercel-ip-country": "AR" } }), res);
+test("endpoint: the country comes only from the body, never from the Vercel header (that is ElevenLabs' datacenter)", async () => {
+  let res = mockRes();
+  await protocolRoute(mockReq({ situation: "no respira", lang: "es", country: "se" }, { headers: { "x-vercel-ip-country": "US" } }), res);
   assert.equal(res.json_.risk, true);
-  assert.ok(res.json_.speech.startsWith("Si hay peligro, llama al 911."));
+  assert.ok(res.json_.speech.startsWith("Si hay peligro, llama al 112."));
+
+  res = mockRes();
+  await protocolRoute(mockReq({ situation: "no respira", lang: "es" }, { headers: { "x-vercel-ip-country": "US" } }), res);
+  assert.ok(res.json_.speech.startsWith("Si hay peligro, llama al número de emergencias de tu país."), res.json_.speech);
+  assert.doesNotMatch(res.json_.speech, /911/);
+  assert.equal(parseCountry(undefined), null);
+  assert.equal(parseCountry("S"), null);
+});
+
+test("hitting oneself is self-injury, hitting someone else is aggression toward people", () => {
+  for (const t of ["Mi hijo se pega en la cabeza con la mano", "Se pega en la cara cuando se frustra"]) assert.equal(chooseProtocol(t, false).id, "self_injury", t);
+  for (const t of ["Me pega cuando le digo que no", "Le pega a su hermano", "Pega a la maestra"]) assert.equal(chooseProtocol(t, false).id, "aggression_people", t);
 });
 
 test("endpoint: never logs the situation", async () => {

@@ -8,7 +8,7 @@
 import { localRiskScreen } from "../careProtocol/intentParser";
 import { dangerSentence, type EmergencyLang } from "../emergency";
 import { answerWithDocuments, fallbackSegments, localSearchTerms, retrieve, toSources, type AskSegment, type AskSource } from "../ask/expert";
-import { clinicianSentence, firstSentences, MEDICATION_ASK } from "./spoken";
+import { clinicianSentence, firstSentences, MEDICATION_ASK, claimsDiagnosis } from "./spoken";
 
 export const LINE_ASK_TIMEOUT_MS = 2_800;
 const MAX_SENTENCES = 3;
@@ -97,7 +97,7 @@ export async function buildLineAsk(input: {
       });
       const speech = firstSentences(segments.map((s) => s.text).join(" "), MAX_SENTENCES);
       // A medication mention that slipped through the model is not read aloud.
-      if (speech && !MEDICATION_ASK.test(speech)) {
+      if (speech && !MEDICATION_ASK.test(speech) && !claimsDiagnosis(speech)) {
         const cited = pickSources(segments, sources);
         // No study cited: the library did not back this answer, so the agent may try the search tool.
         return { ok: true, mode: "claude", risk: false, use_tool: null, speech, sources: cited, library_empty: cited.length === 0 };

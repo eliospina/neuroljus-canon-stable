@@ -10,7 +10,7 @@
 
 import { createHash, timingSafeEqual } from "node:crypto";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { countryFromHeaders, type EmergencyLang } from "../emergency";
+import type { EmergencyLang } from "../emergency";
 
 export const LINE_SECRET_HEADER = "x-line-secret";
 export const MAX_SITUATION_CHARS = 800;
@@ -52,10 +52,13 @@ export function parseLang(input: unknown): EmergencyLang {
   return input === "es" || input === "sv" || input === "en" ? input : "en";
 }
 
-/** Country from the body (two letters), else from the request's IP header, else null. */
-export function parseCountry(input: unknown, req: NextApiRequest): string | null {
-  if (typeof input === "string" && /^[A-Za-z]{2}$/.test(input.trim())) return input.trim().toUpperCase();
-  return countryFromHeaders(req.headers);
+/**
+ * Country from the body (two letters), else null. Never from x-vercel-ip-country:
+ * calls come from the ElevenLabs servers, so that header is the datacenter's
+ * country, not the caller's. Null gives the generic "your country's emergency number".
+ */
+export function parseCountry(input: unknown): string | null {
+  return typeof input === "string" && /^[A-Za-z]{2}$/.test(input.trim()) ? input.trim().toUpperCase() : null;
 }
 
 /** Text field from the body, trimmed; null when missing or empty. */
@@ -80,6 +83,11 @@ export function lineEndpoint(name: string, perMinute: { env: string; fallback: n
       return res.status(503).json({ ok: false, error: "Not configured." });
     }
     if (!secretMatches(req.headers[LINE_SECRET_HEADER], secret)) {
+      // Failed attempts have their own bucket, so a flood without the secret cannot use up the agent's budget.
+      if (rateLimited(`${name}:unauth`, limitFromEnv("LINE_UNAUTH_LIMIT_PER_MIN", 20))) {
+        res.setHeader("Retry-After", "30");
+        return res.status(429).json({ ok: false, error: "Too many requests." });
+      }
       return res.status(401).json({ ok: false, error: "Unauthorized." });
     }
     if (rateLimited(name, limitFromEnv(perMinute.env, perMinute.fallback))) {

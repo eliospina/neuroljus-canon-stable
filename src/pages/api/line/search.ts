@@ -10,7 +10,7 @@ import { LINE_SEARCH_TIMEOUT_MS, buildLineSearch } from "@/lib/line/search";
 
 export const config = { maxDuration: 15, api: { bodyParser: { sizeLimit: "16kb" } } };
 
-export default lineEndpoint("search", { env: "LINE_SEARCH_RATE_LIMIT_PER_MIN", fallback: 10 }, async (body, req, res) => {
+export default lineEndpoint("search", { env: "LINE_SEARCH_RATE_LIMIT_PER_MIN", fallback: 10 }, async (body, _req, res) => {
   const query = textField(body, "query");
   if (!query) return void res.status(400).json({ ok: false, error: "query is required." });
   if (query.length > MAX_SITUATION_CHARS) return void res.status(400).json({ ok: false, error: "query is too long." });
@@ -21,7 +21,7 @@ export default lineEndpoint("search", { env: "LINE_SEARCH_RATE_LIMIT_PER_MIN", f
     const result = await buildLineSearch({
       query,
       lang: parseLang(body.lang),
-      country: parseCountry(body.country, req),
+      country: parseCountry(body.country),
       apiKey: process.env.ANTHROPIC_API_KEY || null,
       model: getAnthropicModel(),
       signal: controller.signal,

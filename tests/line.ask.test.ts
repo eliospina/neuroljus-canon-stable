@@ -3,6 +3,7 @@ import { beforeEach, afterEach, test } from "node:test";
 import askRoute from "../src/pages/api/line/ask";
 import { buildLineAsk } from "../src/lib/line/ask";
 import { resetLineRateLimits } from "../src/lib/line/http";
+import { MEDICATION_ASK } from "../src/lib/line/spoken";
 import { SECRET, mockReq, mockRes } from "./helpers/lineHttp";
 
 const OLD = { ...process.env };
@@ -49,6 +50,21 @@ test("medication questions get the clinician sentence, with no network", async (
     assert.equal(r.mode, "medication", q);
     assert.equal(r.sources.length, 0);
   }
+});
+
+test("medication wording is caught, ordinary Spanish with dos or receta is not", () => {
+  for (const q of ["¿Cuánta melatonina le doy?", "¿Qué dosis le corresponde?", "Which medication helps?", "What dose of risperidone?", "Vilken dosering av melatonin?", "¿Puede tomar fluoxetina?", "Necesito una receta médica"]) {
+    assert.ok(MEDICATION_ASK.test(q), q);
+  }
+  for (const q of ["Mi hijo tiene dos años y no duerme", "Se despierta a las dos de la mañana", "¿Una receta para que coma verduras?", "He is two and won't eat", "Han är två år och vaknar"]) {
+    assert.ok(!MEDICATION_ASK.test(q), q);
+  }
+});
+
+test("an answer that tells the caller their child is autistic is not read aloud", async () => {
+  const r = await buildLineAsk({ ...base, question: "Mi hijo no duerme por la noche", fetchImpl: claude([{ text: "[PRACTICE] Sí, tu hijo es autista y por eso no duerme." }]) });
+  assert.equal(r.mode, "library");
+  assert.doesNotMatch(r.speech, /tu hijo es autista/i);
 });
 
 test("claude answer: at most three sentences and two sources with title and year", async () => {

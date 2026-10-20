@@ -18,7 +18,7 @@ Todas: `POST`, JSON, cabecera `x-line-secret: <LINE_API_SECRET>`. Respuestas `20
 - `ask` recibe `{question, lang, country}`. Devuelve `{mode, risk, use_tool, speech, sources[{title, year}], library_empty}`: máximo tres frases y dos fuentes. Con riesgo no busca y devuelve `use_tool: "protocol"`. Con preguntas sobre medicación responde que lo decide el médico, sin red.
 - `search` recibe `{query, lang, country}`. Devuelve `{mode, risk, use_tool, speech, sources[{title, site}]}`. Usa la búsqueda web de Anthropic con `max_uses: 3` y `allowed_domains`. Se bloquea con riesgo.
 
-`country` es opcional: si falta, se usa `x-vercel-ip-country` (que en llamadas desde ElevenLabs será el de sus servidores, no el de la persona; por eso la herramienta pide el país en el cuerpo).
+`country` es opcional y sale solo del cuerpo. Nunca se usa `x-vercel-ip-country`: las llamadas vienen de los servidores de ElevenLabs y ese país no es el de la persona. Sin `country`, la frase de emergencias es la genérica («el número de emergencias de tu país»).
 
 ## Dominios permitidos en `search`
 
@@ -33,6 +33,7 @@ who.int, paho.org, nice.org.uk, cdc.gov, nih.gov, pubmed.ncbi.nlm.nih.gov, pmc.n
 | `ANTHROPIC_MODEL` | No | Por defecto `claude-sonnet-5-5`. |
 | `LINE_RATE_LIMIT_PER_MIN` | No | Peticiones por minuto a `protocol` (por defecto 60) y a `ask` (por defecto 30), contadas por endpoint. |
 | `LINE_SEARCH_RATE_LIMIT_PER_MIN` | No | Peticiones por minuto a `search` (por defecto 10). |
+| `LINE_UNAUTH_LIMIT_PER_MIN` | No | Intentos fallidos de secreto por minuto y endpoint antes de responder 429 (por defecto 20). Cuentan aparte, no gastan el cupo del agente. |
 
 Además, la búsqueda web debe estar activada para la organización en la consola de Anthropic (Privacy / Web search).
 
