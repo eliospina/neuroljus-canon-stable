@@ -58,7 +58,7 @@ export const aggressionPeople: CrisisProtocol = {
           "För bort andra personer, särskilt barn, och ta dig själv i säkerhet."
         ),
         tri(
-          "Aumenta la distancia; si hace falta, pon una mesa o un cojín entre vosotros.",
+          "Aumenta la distancia; si hace falta, pon una mesa o un cojín entre ustedes.",
           "Increase the distance; if needed, put a table or cushion between you.",
           "Öka avståndet; vid behov, ställ ett bord eller en kudde mellan er."
         ),
@@ -98,7 +98,7 @@ export const aggressionPeople: CrisisProtocol = {
           "Vänta tyst på säkert avstånd; prata inte om det som hände."
         ),
         tri(
-          "Ofrece agua o su objeto de calma, sin esperar que lo coja.",
+          "Ofrece agua o su objeto de calma, sin esperar que lo tome.",
           "Offer water or their calming object without expecting them to take it.",
           "Erbjud vatten eller tröstobjektet utan att vänta dig att personen tar det."
         ),
@@ -137,9 +137,9 @@ export const aggressionPeople: CrisisProtocol = {
           "Kolla om någon är skadad, personen och andra, och ta hand om det först."
         ),
         tri(
-          "No pidas disculpas ni expliques consecuencias ahora: hablar no ayuda en este momento.",
-          "Do not ask for apologies or explain consequences now: talking does not help at this moment.",
-          "Be inte om ursäkt och förklara inga konsekvenser nu: samtal hjälper inte just då."
+          "No le pidas que pida perdón ni expliques consecuencias ahora: hablar no ayuda en este momento.",
+          "Do not ask them to say sorry or explain consequences now: talking does not help at this moment.",
+          "Be inte personen säga förlåt och förklara inga konsekvenser nu: samtal hjälper inte just då."
         ),
         tri("Más tarde, con calma, rellena el registro ABC.", "Later, when calm, fill in the ABC log.", "Fyll i ABC-loggen senare, när det är lugnt."),
         tri("Cuida también de quien recibió el golpe y de ti.", "Look after whoever was hit, and yourself.", "Ta hand om den som blev slagen, och om dig själv."),

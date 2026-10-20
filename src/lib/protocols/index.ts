@@ -6,7 +6,16 @@
 
 import { emergencyInfo } from "../emergency";
 import { FUNCTION_LABELS } from "./functions";
+import { physicalDanger } from "./physicalDanger";
+import { aggressionObjects } from "./aggressionObjects";
 import { aggressionPeople } from "./aggressionPeople";
+import { selfInjury } from "./selfInjury";
+import { overloadMeltdown } from "./overloadMeltdown";
+import { shutdown } from "./shutdown";
+import { transitionsRefusal } from "./transitionsRefusal";
+import { sleep } from "./sleep";
+import { possiblePain } from "./possiblePain";
+import { caregiverExhausted } from "./caregiverExhausted";
 import {
   PHASE_IDS,
   type CrisisProtocol,
@@ -20,7 +29,19 @@ import {
 export * from "./types";
 export { FUNCTION_LABELS } from "./functions";
 
-export const PROTOCOLS: CrisisProtocol[] = [aggressionPeople].sort((a, b) => a.number - b.number);
+/** The ten protocols of the line, in order. */
+export const PROTOCOLS: CrisisProtocol[] = [
+  physicalDanger,
+  aggressionObjects,
+  aggressionPeople,
+  selfInjury,
+  overloadMeltdown,
+  shutdown,
+  transitionsRefusal,
+  sleep,
+  possiblePain,
+  caregiverExhausted,
+].sort((a, b) => a.number - b.number);
 
 export function getProtocol(id: ProtocolId): CrisisProtocol | undefined {
   return PROTOCOLS.find((p) => p.id === id);

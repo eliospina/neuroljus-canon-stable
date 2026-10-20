@@ -33,9 +33,9 @@ function texts(p: CrisisProtocol): Array<{ where: string; value: Tri; kind: "ste
   return out;
 }
 
-test("the registry holds known protocols in line order, without repeats", () => {
+test("the registry holds the ten protocols of the line, in order, without repeats", () => {
   const ids = PROTOCOLS.map((p) => p.id);
-  assert.equal(new Set(ids).size, ids.length);
+  assert.deepEqual(ids, [...PROTOCOL_IDS], "all ten, in line order");
   for (const p of PROTOCOLS) {
     assert.ok(PROTOCOL_IDS.includes(p.id), p.id);
     assert.equal(p.number, PROTOCOL_IDS.indexOf(p.id) + 1, `${p.id} keeps its number in the line`);
@@ -54,6 +54,21 @@ test("every protocol is complete in es, en and sv", () => {
     }
     assert.ok(p.never.length >= 3, `${p.id} lists what never to do`);
     assert.ok(p.escalate.callWhen.length >= 1 && p.escalate.contactWhen.length >= 1, `${p.id} says when to escalate`);
+  }
+});
+
+test("Spanish is neutral Latin American: no peninsular forms", () => {
+  // vosotros/os, -áis/-éis endings, plural imperatives in -ad/-ed/-id, Spain-only vocabulary and the
+  // interjection "vale". Word edges are Unicode lookarounds: JavaScript's \b treats "ñ" as a boundary.
+  const L = "[\\p{L}\\p{N}]";
+  const peninsular = new RegExp(
+    `(?<!${L})(vosotr[oa]s|os|coger|cog(e|é|ed|ió|en|erlo|erla)|ordenador|móvil|coche|piso|tenéis|habéis|sois|estáis|pod[ée]is|quer[ée]is|buscad|llamad|pensad|mirad|hablad|poned|haced|salid|venid)(?!${L})` +
+      `|\\p{L}+(áis|éis)(?!${L})|(?<!${L})vale\\s*[,.!?]`,
+    "iu"
+  );
+  for (const p of PROTOCOLS) for (const { where, value } of texts(p)) {
+    const m = value.es.match(peninsular);
+    assert.equal(m, null, `${where} [es] uses a peninsular form: "${m?.[0]}" in "${value.es}"`);
   }
 });
 
