@@ -4,7 +4,7 @@
  * situation, language, country and phase always give the same answer.
  */
 
-import { localRiskScreen } from "../careProtocol/intentParser";
+import { severeSignals } from "./triage";
 import { dangerSentence, type EmergencyLang } from "../emergency";
 import { PHASE_IDS, PROTOCOLS, getProtocol, renderProtocol, type PhaseId, type ProtocolId } from "../protocols";
 import { plainSpeech, stop } from "./spoken";
@@ -36,18 +36,18 @@ const KEYWORDS: Record<ProtocolId, RegExp[]> = {
     words("sl[åa]r sig|bits? sig|skadar sig|sj[äa]lvskad\\p{L}*|sl[åa]r huvudet|huvudet (i|mot)|rivs? sig|pillar s[öo]nder"),
   ],
   overload_meltdown: [
-    words("meltdown|rabieta|crisis|sobrecarga|ruido|grita\\p{L}*|llora\\p{L}*|gritos|se descontrola|no se calma|se tapa (los )?o[ií]dos|supermercado|mucha gente|luz(es)? fuerte"),
-    words("melt\\p{L}*|overload\\p{L}*|overwhelm\\p{L}*|noise|loud|scream\\p{L}*|cry(ing)?|tantrum|crisis|can'?t calm|covers? (his|her|their) ears|supermarket|crowd\\p{L}*"),
+    words("meltdown|rabieta|sobrecarga|ruido|grita\\p{L}*|llora\\p{L}*|gritos|se descontrola|no se calma|se tapa (los )?o[ií]dos|supermercado|mucha gente|luz(es)? fuerte"),
+    words("melt\\p{L}*|overload\\p{L}*|overwhelm\\p{L}*|noise|loud|scream\\p{L}*|cry(ing)?|tantrum|can'?t calm|covers? (his|her|their) ears|supermarket|crowd\\p{L}*"),
     words("utbrott|[öo]verbelast\\p{L}*|ljud|skriker|skrik\\p{L}*|gr[åa]ter|lugnar sig inte|h[åa]ller f[öo]r [öo]ronen|mataff[äa]r|mycket folk|starkt ljus"),
   ],
   shutdown: [
-    words("shutdown|bloqueo|bloquead\\p{L}*|se queda (quiet\\p{L}*|inm[óo]vil|callad\\p{L}*|congelad\\p{L}*)|congelad\\p{L}*|no responde|no reacciona|se apaga|ausente|desconect\\p{L}*"),
-    words("shut ?down|shuts? down|frozen|freeze|freezes|unresponsive|doesn'?t respond|not responding|withdrawn|zones? out|blank|spaced out"),
-    words("blockerad\\p{L}*|blockering|fryser|frusen|svarar inte|reagerar inte|st[äa]ngd|st[äa]nger av|frånvarande|dragit sig undan"),
+    words("shutdown|bloqueo|bloquead\\p{L}*|se queda (quiet\\p{L}*|inm[óo]vil|callad\\p{L}*|congelad\\p{L}*)|congelad\\p{L}*|no responde|no reacciona|se apaga|ausente|desconect\\p{L}*|no puedo (hablar|moverme)|no puede (hablar|moverse)"),
+    words("shut ?down|shuts? down|frozen|freeze|freezes|unresponsive|doesn'?t respond|not responding|withdrawn|zones? out|blank|spaced out|can'?t (speak|talk|move)|locked up"),
+    words("blockerad\\p{L}*|blockering|fryser|frusen|svarar inte|reagerar inte|st[äa]ngd|st[äa]nger av|frånvarande|dragit sig undan|helt l[åa]st|kan inte (prata|tala|r[öo]ra (mig|sig))"),
   ],
   transitions_refusal: [
-    words("transici[oó]n|cambio|se niega|no quiere (ir|salir|parar|vestirse|ba[ñn]arse|comer|entrar|apagar)|rechaza\\p{L}*|no quiere|negativa|se resiste|salir de casa|apagar la (tele|tablet)|vestirse|ba[ñn]o|cambiar de actividad"),
-    words("transition\\p{L}*|refus\\p{L}*|won'?t (go|leave|stop|get dressed|eat|come|turn off)|doesn'?t want to|resist\\p{L}*|change of plan|leaving the house|turn(ing)? off the (tv|tablet)|get(ting)? dressed|bath"),
+    words("transici[oó]n|cambio|se niega|no quiere (ir|salir|parar|vestirse|ba[ñn]arse|comer|entrar|apagar|cambiar)|rechaza\\p{L}*|negativa|se resiste|salir de casa|apagar la (tele|tablet)|vestirse|ba[ñn]o|cambiar de actividad"),
+    words("transition\\p{L}*|refus\\p{L}*|won'?t (go|leave|stop|get dressed|eat|come|turn off)|doesn'?t want to (go|leave|stop|get dressed|eat|come|turn off|bathe|change)|resist\\p{L}*|change of plan|leaving the house|turn(ing)? off the (tv|tablet)|get(ting)? dressed|bath"),
     words("[öo]verg[åa]ng\\p{L}*|f[öo]r[äa]ndring|v[äa]grar|vill inte (g[åa]|sluta|kl[äa] p[åa] sig|ata|komma|st[äa]nga)|nekar|motsätter sig|l[äa]mna hemmet|st[äa]nga av|kl[äa] p[åa] sig|bad"),
   ],
   sleep: [
@@ -69,6 +69,10 @@ const KEYWORDS: Record<ProtocolId, RegExp[]> = {
 
 const DEFAULT_PROTOCOL: ProtocolId = "overload_meltdown";
 
+/** Tie-break order: clinical urgency, not the number in the line. */
+export const URGENCY: ProtocolId[] = ["physical_danger", "self_injury", "aggression_people", "aggression_objects", "overload_meltdown", "shutdown", "possible_pain", "transitions_refusal", "sleep", "caregiver_exhausted"];
+export const urgencyRank = (id: ProtocolId): number => URGENCY.indexOf(id);
+
 /** Number of distinct keywords of the protocol found in the text. */
 function score(text: string, id: ProtocolId): number {
   const found = new Set<string>();
@@ -78,9 +82,15 @@ function score(text: string, id: ProtocolId): number {
 
 export type ProtocolChoice = { id: ProtocolId; matched: boolean };
 
+/** Keyword score of every protocol for a text (distinct keywords found). */
+export function protocolScores(text: string): Record<ProtocolId, number> {
+  const t = text.normalize("NFC");
+  return Object.fromEntries(PROTOCOLS.map((p) => [p.id, score(t, p.id)])) as Record<ProtocolId, number>;
+}
+
 /**
- * Picks one protocol. Highest keyword score wins; ties go to the lower number
- * (the more urgent protocol). With a risk signal and no keyword match, protocol
+ * Picks one protocol. Highest keyword score wins; ties go to the more urgent
+ * protocol (URGENCY order: self-injury before aggression toward objects). With a risk signal and no keyword match, protocol
  * 1 (physical danger); with no signal at all, protocol 5 (sensory overload),
  * the broadest one, flagged `matched: false` so the agent can ask one question.
  */
@@ -88,7 +98,7 @@ export function chooseProtocol(situation: string, risk: boolean): ProtocolChoice
   const text = situation.normalize("NFC");
   let best: ProtocolChoice | null = null;
   let bestScore = 0;
-  for (const p of PROTOCOLS) {
+  for (const p of [...PROTOCOLS].sort((a, b) => urgencyRank(a.id) - urgencyRank(b.id))) {
     const s = score(text, p.id);
     if (s > bestScore) {
       best = { id: p.id, matched: true };
@@ -134,7 +144,7 @@ export function buildLineProtocol(input: {
   protocolId?: ProtocolId;
 }): LineProtocolResult {
   const { situation, lang, country } = input;
-  const risk = localRiskScreen(situation);
+  const risk = severeSignals(situation).severe;
   const chosen = input.protocolId && getProtocol(input.protocolId) ? { id: input.protocolId, matched: true } : chooseProtocol(situation, risk);
   const rendered = renderProtocol(getProtocol(chosen.id)!, lang, country);
   const phase = input.phase && PHASE_IDS.includes(input.phase) ? input.phase : "agitation";
@@ -151,7 +161,7 @@ export function buildLineProtocol(input: {
   parts.push(`${CONNECT[lang].protocol} ${rendered.title.toLowerCase()}.`);
   parts.push(stop(ph.goal));
   for (const s of ph.steps.slice(0, STEP_LIMIT)) parts.push(stop(s));
-  const say = ph.say.slice(0, SAY_LIMIT).map((s) => s.replace(/[.!?]+$/, ""));
+  const say = ph.sayToPerson.slice(0, SAY_LIMIT).map((s) => s.replace(/[.!?]+$/, ""));
   if (say.length > 0) parts.push(`${CONNECT[lang].say}: ${say.map((s) => `«${s}»`).join(", ")}.`);
   // At the peak, remind when to call, once.
   if (phase === "peak" && !risk) parts.push(rendered.escalate.callLine);

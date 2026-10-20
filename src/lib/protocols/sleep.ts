@@ -27,7 +27,7 @@ export const sleep: CrisisProtocol = {
         tri("Lo que calma a esta persona: peso de una manta, presión, un sonido constante, un objeto.", "What calms this person: the weight of a blanket, pressure, a steady sound, an object.", "Det som lugnar den här personen: tyngden av en filt, tryck, ett jämnt ljud, ett föremål."),
         tri("Revisa hambre, sed, baño, dolor, ropa que molesta, temperatura.", "Check hunger, thirst, toilet, pain, bothersome clothing, temperature.", "Kolla hunger, törst, toalett, smärta, kläder som stör, temperatur."),
       ],
-      say: [tri("Pijama, dientes, cama.", "Pyjamas, teeth, bed.", "Pyjamas, tänder, säng."), tri("Ya es hora de descansar.", "Time to rest now.", "Nu är det dags att vila."), tri("Estoy cerca.", "I'm nearby.", "Jag är nära.")],
+      sayToPerson: [tri("Pijama, dientes, cama.", "Pyjamas, teeth, bed.", "Pyjamas, tänder, säng."), tri("Ya es hora de descansar.", "Time to rest now.", "Nu är det dags att vila."), tri("Estoy cerca.", "I'm nearby.", "Jag är nära.")],
     },
     peak: {
       goal: tri("Pasar la noche con el menor estímulo posible.", "Get through the night with as little stimulation as possible.", "Ta er genom natten med så lite stimulans som möjligt."),
@@ -37,7 +37,7 @@ export const sleep: CrisisProtocol = {
         tri("Si llora o está angustiada, quédate cerca en silencio hasta que baje, sin sacarla de la habitación.", "If they cry or are distressed, stay nearby in silence until it eases, without taking them out of the room.", "Om personen gråter eller är upprörd: stanna nära i tystnad tills det släpper, utan att ta personen ut ur rummet."),
         tri("Si tú necesitas dormir, túrnense; nadie aguanta noches seguidas.", "If you need sleep, take turns; no one lasts night after night.", "Om du behöver sova, turas om; ingen håller natt efter natt."),
       ],
-      say: [tri("Es de noche. A dormir.", "It's night. Sleep time.", "Det är natt. Dags att sova."), tri("Estoy aquí.", "I'm here.", "Jag är här."), tri("Shh.", "Shh.", "Sch.")],
+      sayToPerson: [tri("Es de noche. A dormir.", "It's night. Sleep time.", "Det är natt. Dags att sova."), tri("Estoy aquí.", "I'm here.", "Jag är här."), tri("Shh.", "Shh.", "Sch.")],
     },
     descent: {
       goal: tri("Volver a dormir sin reiniciar la noche.", "Get back to sleep without restarting the night.", "Somna om utan att starta om natten."),
@@ -46,7 +46,7 @@ export const sleep: CrisisProtocol = {
         tri("Retírate poco a poco: primero al lado, luego a la puerta, luego fuera.", "Withdraw gradually: first beside, then at the door, then outside.", "Dra dig tillbaka stegvis: först intill, sedan vid dörren, sedan utanför."),
         tri("Si se despertó muy temprano y ya no duerme, actividad tranquila con poca luz hasta la hora acordada.", "If they woke very early and will not sleep, quiet activity in low light until the agreed time.", "Om personen vaknade mycket tidigt och inte sover mer: lugn aktivitet i svagt ljus fram till den överenskomna tiden."),
       ],
-      say: [tri("Todavía es noche.", "It's still night.", "Det är fortfarande natt."), tri("Yo me quedo un poco.", "I'll stay a little.", "Jag stannar en stund."), tri("Hasta mañana.", "See you in the morning.", "Vi ses i morgon.")],
+      sayToPerson: [tri("Todavía es noche.", "It's still night.", "Det är fortfarande natt."), tri("Yo me quedo un poco.", "I'll stay a little.", "Jag stannar en stund."), tri("Hasta mañana.", "See you in the morning.", "Vi ses i morgon.")],
     },
     recovery: {
       goal: tri("Cuidar el día para cuidar la noche.", "Look after the day to look after the night.", "Ta hand om dagen för att ta hand om natten."),
@@ -56,7 +56,7 @@ export const sleep: CrisisProtocol = {
         tri("Lleva un diario de sueño sencillo: hora de acostarse, de dormirse, despertares, hora de levantarse. Dos semanas bastan para ver un patrón.", "Keep a simple sleep diary: bedtime, time of falling asleep, wakings, getting-up time. A couple of weeks is enough to see a pattern.", "För en enkel sömndagbok: läggtid, insomningstid, uppvaknanden, uppstigningstid. Ett par veckor räcker för att se ett mönster."),
         tri("Baja las exigencias del día siguiente a una mala noche; para la persona y para ti.", "Lower the demands the day after a bad night; for the person and for you.", "Sänk kraven dagen efter en dålig natt; för personen och för dig."),
       ],
-      say: [tri("Hoy vamos despacio.", "Today we go slow.", "I dag tar vi det lugnt."), tri("Mañana otra vez.", "Tomorrow again.", "I morgon igen."), tri("Lo estás haciendo bien.", "You're doing well.", "Du gör det bra.")],
+      sayToPerson: [tri("Hoy vamos despacio.", "Today we go slow.", "I dag tar vi det lugnt."), tri("Mañana otra vez.", "Tomorrow again.", "I morgon igen."), tri("Lo estás haciendo bien.", "You're doing well.", "Du gör det bra.")],
     },
   },
   never: [

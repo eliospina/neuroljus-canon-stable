@@ -1,0 +1,122 @@
+/**
+ * Voice-line brain evaluation without voice.
+ *
+ *   npm run line:eval                  # scripted model, in process (same as CI)
+ *   npm run line:eval -- --live        # the deployed brain with Claude:
+ *                                      #   LINE_BRAIN_URL=https://neuroljus.com/api/line/brain
+ *                                      #   LINE_API_SECRET=...
+ *
+ * Runs scripts/line-eval/scenarios.ts turn by turn and checks each answer:
+ * sentence count, no filler / medication / diagnosis / markdown, no emergency
+ * wording without a severe signal, no repeated sentence, a source named when
+ * the library had documents (scripted mode), and time to the first sentence.
+ * Exits 1 when anything fails.
+ */
+
+import { brainTurnText } from "../src/lib/line/brain";
+import { getAnthropicModel } from "../src/lib/careReflection/provider";
+import type { ChatMessage } from "../src/lib/line/state";
+import { checkTurn, SOURCE_WORDS } from "./line-eval/checks";
+import { mockModelStream } from "./line-eval/mockModel";
+import { SCENARIOS, type Scenario } from "./line-eval/scenarios";
+
+const LIVE = process.argv.includes("--live");
+const BASE = (process.env.LINE_BRAIN_URL || "").replace(/\/$/, "");
+const SECRET = process.env.LINE_API_SECRET || "";
+const FIRST_BUDGET_MS = LIVE ? Number(process.env.LINE_EVAL_FIRST_MS || 1500) : 900;
+
+type TurnOut = { text: string; firstMs: number; totalMs: number; docs: number; protocol: string | null; source?: string };
+
+async function liveTurn(messages: ChatMessage[]): Promise<TurnOut> {
+  const t0 = performance.now();
+  const res = await fetch(`${BASE}/chat/completions`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "x-line-secret": SECRET },
+    body: JSON.stringify({ model: "neuroljus-line", stream: true, messages }),
+  });
+  if (!res.ok || !res.body) throw new Error(`HTTP ${res.status}`);
+  const reader = res.body.getReader();
+  const dec = new TextDecoder();
+  let buf = "";
+  let text = "";
+  let firstMs = 0;
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) break;
+    buf += dec.decode(value, { stream: true });
+    let i;
+    while ((i = buf.indexOf("\n\n")) >= 0) {
+      const line = buf.slice(0, i).trim();
+      buf = buf.slice(i + 2);
+      if (!line.startsWith("data:")) continue;
+      const data = line.slice(5).trim();
+      if (data === "[DONE]") continue;
+      const delta = JSON.parse(data).choices?.[0]?.delta?.content;
+      if (delta) {
+        if (!firstMs) firstMs = Math.round(performance.now() - t0);
+        text += delta;
+      }
+    }
+  }
+  return { text: text.trim(), firstMs, totalMs: Math.round(performance.now() - t0), docs: -1, protocol: null };
+}
+
+async function mockTurn(messages: ChatMessage[]): Promise<TurnOut> {
+  const r = await brainTurnText({ messages, apiKey: null, model: getAnthropicModel(), modelStream: mockModelStream, noWeb: true, log: () => undefined });
+  return { text: r.sentences.join(" "), firstMs: r.firstSentenceMs, totalMs: r.totalMs, docs: r.retrieval.docs.length, protocol: r.state.protocol, source: r.source };
+}
+
+export async function runScenario(s: Scenario, turnFn: (m: ChatMessage[]) => Promise<TurnOut>): Promise<{ failures: string[]; lines: string[] }> {
+  const messages: ChatMessage[] = [];
+  const failures: string[] = [];
+  const lines: string[] = [];
+  let hadDocs = false;
+  let cited = false;
+  for (let i = 0; i < s.turns.length; i++) {
+    messages.push({ role: "user", content: s.turns[i] });
+    const out = await turnFn(messages);
+    const previous = messages.filter((m) => m.role === "assistant").map((m) => String(m.content));
+    const problems = checkTurn({
+      text: out.text,
+      previousAssistant: previous,
+      severeAllowed: s.expect.severeFrom !== undefined && i >= s.expect.severeFrom,
+      suicidal: s.expect.suicidal,
+      maxSentences: s.expect.person ? 2 : 4,
+      sourceAllowed: LIVE || out.docs > 0 || out.protocol !== null,
+      firstSentenceMs: out.firstMs,
+      firstSentenceBudgetMs: FIRST_BUDGET_MS,
+    });
+    lines.push(`  t${i + 1} ${out.firstMs}ms/${out.totalMs}ms${out.source ? ` ${out.source}` : ""} | ${out.text}`);
+    for (const p of problems) failures.push(`${s.id} t${i + 1}: ${p}`);
+    if (out.docs > 0) hadDocs = true;
+    if (SOURCE_WORDS.test(out.text)) cited = true;
+    messages.push({ role: "assistant", content: out.text });
+  }
+  if (!LIVE && hadDocs && !cited && !s.expect.person) failures.push(`${s.id}: the library had documents in this call but no source was ever named`);
+  return { failures, lines };
+}
+
+async function main() {
+  if (LIVE && (!BASE || !SECRET)) {
+    console.error("--live needs LINE_BRAIN_URL and LINE_API_SECRET");
+    process.exit(2);
+  }
+  const turnFn = LIVE ? liveTurn : mockTurn;
+  let failed = 0;
+  for (const s of SCENARIOS) {
+    const { failures, lines } = await runScenario(s, turnFn);
+    console.log(`\n${failures.length ? "FAIL" : "ok  "} ${s.id} (${s.lang})`);
+    for (const l of lines) console.log(l);
+    for (const f of failures) console.log(`  ✗ ${f}`);
+    failed += failures.length;
+  }
+  console.log(`\n${failed === 0 ? "All scenarios pass" : `${failed} problem(s)`} · mode: ${LIVE ? "live" : "scripted model"} · first-sentence budget ${FIRST_BUDGET_MS} ms`);
+  process.exit(failed === 0 ? 0 : 1);
+}
+
+if (process.argv[1]?.endsWith("line-eval.ts")) {
+  main().catch((e) => {
+    console.error(e instanceof Error ? e.message : e);
+    process.exit(1);
+  });
+}

@@ -27,7 +27,7 @@ export const possiblePain: CrisisProtocol = {
         tri("Baja las exigencias y el ruido mientras averiguas.", "Lower demands and noise while you find out.", "Sänk krav och ljud medan du tar reda på det."),
         tri("Ofrece lo que suele aliviar sin medicar: calor local, frío, postura cómoda, agua, ir al baño.", "Offer what usually eases without giving anything to take: local warmth, cold, a comfortable position, water, going to the toilet.", "Erbjud det som brukar lindra utan preparat: lokal värme, kyla, en bekväm ställning, vatten, att gå på toaletten."),
       ],
-      say: [tri("¿Te duele aquí?", "Does it hurt here?", "Gör det ont här?"), tri("Te reviso con cuidado.", "I'll check you gently.", "Jag tittar försiktigt."), tri("Estoy aquí.", "I'm here.", "Jag är här.")],
+      sayToPerson: [tri("¿Te duele aquí?", "Does it hurt here?", "Gör det ont här?"), tri("Te reviso con cuidado.", "I'll check you gently.", "Jag tittar försiktigt."), tri("Estoy aquí.", "I'm here.", "Jag är här.")],
     },
     peak: {
       goal: tri("Aliviar y decidir si necesita un médico hoy.", "Ease it and decide whether a doctor is needed today.", "Lindra och avgör om läkare behövs i dag."),
@@ -37,7 +37,7 @@ export const possiblePain: CrisisProtocol = {
         tri("Llama al servicio de salud o al médico si algo de eso aparece o si el malestar es intenso.", "Call the health service or the doctor if any of that appears or the discomfort is intense.", "Ring vården eller läkaren om något av det visar sig eller om obehaget är kraftigt."),
         tri("Mientras tanto: poca luz, poco ruido, posición cómoda, tu presencia.", "Meanwhile: low light, low noise, a comfortable position, your presence.", "Under tiden: lågt ljus, lågt ljud, bekväm ställning, din närvaro."),
       ],
-      say: [tri("Te creo.", "I believe you.", "Jag tror dig."), tri("Vamos a aliviarlo.", "We'll ease it.", "Vi ska lindra det."), tri("Estoy contigo.", "I'm with you.", "Jag är med dig.")],
+      sayToPerson: [tri("Te creo.", "I believe you.", "Jag tror dig."), tri("Vamos a aliviarlo.", "We'll ease it.", "Vi ska lindra det."), tri("Estoy contigo.", "I'm with you.", "Jag är med dig.")],
     },
     descent: {
       goal: tri("Observar si el alivio cambia la conducta.", "Watch whether relief changes the behaviour.", "Se om lindringen förändrar beteendet."),
@@ -45,7 +45,7 @@ export const possiblePain: CrisisProtocol = {
         tri("Si tras el baño, el agua o el calor la persona se calma, anótalo: es una pista fuerte.", "If the person settles after the toilet, water or warmth, write it down: it is a strong clue.", "Om personen lugnar sig efter toaletten, vattnet eller värmen, skriv ner det: det är en stark ledtråd."),
         tri("Mantén el día ligero y vigila si vuelve.", "Keep the day light and watch whether it returns.", "Håll dagen lätt och håll koll på om det kommer tillbaka."),
       ],
-      say: [tri("¿Mejor así?", "Better like this?", "Bättre så?"), tri("Descansamos.", "We rest.", "Vi vilar."), tri("Aquí estoy.", "I'm here.", "Jag är här.")],
+      sayToPerson: [tri("¿Mejor así?", "Better like this?", "Bättre så?"), tri("Descansamos.", "We rest.", "Vi vilar."), tri("Aquí estoy.", "I'm here.", "Jag är här.")],
     },
     recovery: {
       goal: tri("Llevar la pista al médico.", "Take the clue to the doctor.", "Ta ledtråden till läkaren."),
@@ -55,7 +55,7 @@ export const possiblePain: CrisisProtocol = {
         tri("Pide que revisen dientes, oídos, estómago y estreñimiento aunque no haya quejas claras.", "Ask for teeth, ears, stomach and constipation to be checked even without clear complaints.", "Be om att tänder, öron, mage och förstoppning kontrolleras även utan tydliga klagomål."),
         tri("Acuerda con la persona una forma de señalar dolor: una imagen, una escala de caras, un gesto.", "Agree with the person on a way to signal pain: a picture, a faces scale, a gesture.", "Kom överens med personen om ett sätt att visa smärta: en bild, en skala med ansikten, en gest."),
       ],
-      say: [tri("Vamos a que te vean.", "Let's get you seen.", "Vi ska låta någon titta."), tri("Te creo.", "I believe you.", "Jag tror dig."), tri("Estás bien.", "You're okay.", "Du är okej.")],
+      sayToPerson: [tri("Vamos a que te vean.", "Let's get you seen.", "Vi ska låta någon titta."), tri("Te creo.", "I believe you.", "Jag tror dig."), tri("Estás bien.", "You're okay.", "Du är okej.")],
     },
   },
   never: [

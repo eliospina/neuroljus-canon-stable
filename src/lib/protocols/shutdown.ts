@@ -26,7 +26,7 @@ export const shutdown: CrisisProtocol = {
         tri("Quita exigencias y preguntas. Ofrece una pausa y un lugar tranquilo.", "Drop demands and questions. Offer a break and a quiet place.", "Ta bort krav och frågor. Erbjud en paus och en lugn plats."),
         tri("Ofrece una forma de comunicar sin hablar: señalar, escribir, un gesto acordado.", "Offer a way to communicate without speaking: pointing, writing, an agreed gesture.", "Erbjud ett sätt att kommunicera utan tal: peka, skriva, en överenskommen gest."),
       ],
-      say: [tri("Podemos parar.", "We can stop.", "Vi kan stanna."), tri("No hace falta hablar.", "No need to talk.", "Du behöver inte prata."), tri("Estoy aquí.", "I'm here.", "Jag är här.")],
+      sayToPerson: [tri("Podemos parar.", "We can stop.", "Vi kan stanna."), tri("No hace falta hablar.", "No need to talk.", "Du behöver inte prata."), tri("Estoy aquí.", "I'm here.", "Jag är här.")],
     },
     peak: {
       goal: tri("Acompañar sin exigir nada.", "Stay alongside without asking anything.", "Finnas med utan att kräva något."),
@@ -36,7 +36,7 @@ export const shutdown: CrisisProtocol = {
         tri("Deja agua, una manta o su objeto al alcance, sin ponerlo en sus manos.", "Leave water, a blanket or their object within reach, without putting it in their hands.", "Lämna vatten, en filt eller personens föremål inom räckhåll, utan att lägga det i händerna."),
         tri("Si debes comprobar que está bien, usa una pregunta de sí o no que pueda responder con un gesto.", "If you must check they are okay, use a yes or no question they can answer with a gesture.", "Om du måste kolla att personen är okej, ställ en ja- eller nej-fråga som går att svara på med en gest."),
       ],
-      say: [tri("Estoy aquí. Sin prisa.", "I'm here. No rush.", "Jag är här. Ingen brådska."), tri("No tienes que hablar.", "You don't have to talk.", "Du behöver inte prata."), tri("Tómate el tiempo.", "Take your time.", "Ta din tid.")],
+      sayToPerson: [tri("Estoy aquí. Sin prisa.", "I'm here. No rush.", "Jag är här. Ingen brådska."), tri("No tienes que hablar.", "You don't have to talk.", "Du behöver inte prata."), tri("Tómate el tiempo.", "Take your time.", "Ta din tid.")],
     },
     descent: {
       goal: tri("Dejar que vuelva a su ritmo.", "Let them come back at their pace.", "Låt personen komma tillbaka i sin takt."),
@@ -45,7 +45,7 @@ export const shutdown: CrisisProtocol = {
         tri("Ofrece algo sencillo y sin palabras: agua, salir a un lugar más tranquilo.", "Offer something simple and wordless: water, moving to a quieter place.", "Erbjud något enkelt utan ord: vatten, att gå till en lugnare plats."),
         tri("Acepta que la voz puede tardar más en volver que el movimiento.", "Accept that speech may take longer to return than movement.", "Acceptera att talet kan ta längre tid att komma tillbaka än rörelsen."),
       ],
-      say: [tri("Aquí estoy.", "I'm here.", "Jag är här."), tri("Todo bien.", "All good.", "Allt är bra."), tri("Cuando quieras.", "Whenever you're ready.", "När du vill.")],
+      sayToPerson: [tri("Aquí estoy.", "I'm here.", "Jag är här."), tri("Todo bien.", "All good.", "Allt är bra."), tri("Cuando quieras.", "Whenever you're ready.", "När du vill.")],
     },
     recovery: {
       goal: tri("Recuperar energía y bajar la carga de los próximos días.", "Recover energy and lower the load for the next days.", "Återhämta energi och sänk belastningen de kommande dagarna."),
@@ -55,7 +55,7 @@ export const shutdown: CrisisProtocol = {
         tri("Acuerden una señal para pedir pausa antes de llegar al apagado.", "Agree on a signal to ask for a break before reaching shutdown.", "Kom överens om en signal för att be om paus innan avstängningen."),
         tri("Rellena el registro ABC: qué se acumuló los días anteriores.", "Fill in the ABC log: what piled up over the previous days.", "Fyll i ABC-loggen: vad som staplades upp de föregående dagarna."),
       ],
-      say: [tri("Descansamos.", "We rest.", "Vi vilar."), tri("Hoy menos cosas.", "Fewer things today.", "Färre saker i dag."), tri("Estás bien.", "You're okay.", "Du är okej.")],
+      sayToPerson: [tri("Descansamos.", "We rest.", "Vi vilar."), tri("Hoy menos cosas.", "Fewer things today.", "Färre saker i dag."), tri("Estás bien.", "You're okay.", "Du är okej.")],
     },
   },
   never: [

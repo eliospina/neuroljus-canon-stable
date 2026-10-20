@@ -27,7 +27,7 @@ export const overloadMeltdown: CrisisProtocol = {
         tri("Dale sus protecciones si las usa: auriculares, gorra, lentes oscuros, su objeto.", "Give them their protections if they use them: headphones, cap, dark glasses, their object.", "Ge personen sina skydd om den använder dem: hörlurar, keps, mörka glasögon, sitt föremål."),
         tri("Deja de hablar y de preguntar. Una sola persona a cargo.", "Stop talking and asking. One person in charge.", "Sluta prata och fråga. En enda person ansvarar."),
       ],
-      say: [tri("Nos vamos.", "We're leaving.", "Vi går."), tri("Más tranquilo por aquí.", "Quieter this way.", "Lugnare här."), tri("Ya está, salimos.", "Done, we're out.", "Klart, vi går ut.")],
+      sayToPerson: [tri("Nos vamos.", "We're leaving.", "Vi går."), tri("Más tranquilo por aquí.", "Quieter this way.", "Lugnare här."), tri("Ya está, salimos.", "Done, we're out.", "Klart, vi går ut.")],
     },
     peak: {
       goal: tri("Menos de todo. Esperar.", "Less of everything. Wait.", "Mindre av allt. Vänta."),
@@ -37,7 +37,7 @@ export const overloadMeltdown: CrisisProtocol = {
         tri("Deja que el cuerpo haga lo que necesita: balancearse, taparse, tirarse al suelo, siempre que no se dañe.", "Let the body do what it needs: rocking, covering up, dropping to the floor, as long as it is not harmed.", "Låt kroppen göra vad den behöver: gunga, täcka sig, lägga sig på golvet, så länge den inte skadas."),
         tri("Aparta a quien mire o comente. Protege de las miradas.", "Move away anyone who stares or comments. Shield from onlookers.", "För bort den som stirrar eller kommenterar. Skydda från blickar."),
       ],
-      say: [tri("Estoy aquí.", "I'm here.", "Jag är här."), tri("No hablo más.", "No more talking.", "Jag säger inget mer."), tri("Tómate el tiempo.", "Take your time.", "Ta din tid.")],
+      sayToPerson: [tri("Estoy aquí.", "I'm here.", "Jag är här."), tri("No hablo más.", "No more talking.", "Jag säger inget mer."), tri("Tómate el tiempo.", "Take your time.", "Ta din tid.")],
     },
     descent: {
       goal: tri("No reiniciar la carga.", "Do not restart the load.", "Starta inte om belastningen."),
@@ -46,7 +46,7 @@ export const overloadMeltdown: CrisisProtocol = {
         tri("Ofrece agua y algo de peso o calor si le ayuda: manta, cojín.", "Offer water and something heavy or warm if it helps: blanket, cushion.", "Erbjud vatten och något tungt eller varmt om det hjälper: filt, kudde."),
         tri("No vuelvas al lugar o la tarea de antes todavía.", "Do not go back to the place or task from before yet.", "Gå inte tillbaka till platsen eller uppgiften ännu."),
       ],
-      say: [tri("Sin prisa.", "No hurry.", "Ingen brådska."), tri("Aquí estamos bien.", "We're fine here.", "Här är det bra."), tri("Respiramos.", "We breathe.", "Vi andas.")],
+      sayToPerson: [tri("Sin prisa.", "No hurry.", "Ingen brådska."), tri("Aquí estamos bien.", "We're fine here.", "Här är det bra."), tri("Respiramos.", "We breathe.", "Vi andas.")],
     },
     recovery: {
       goal: tri("Descansar y aprender los límites.", "Rest and learn the limits.", "Vila och lär dig gränserna."),
@@ -56,7 +56,7 @@ export const overloadMeltdown: CrisisProtocol = {
         tri("Pregunta a la persona, cuando esté bien, qué ayudó y qué empeoró. Su respuesta manda.", "Ask the person, when they are well, what helped and what made it worse. Their answer leads.", "Fråga personen, när den mår bra, vad som hjälpte och vad som gjorde det värre. Svaret styr."),
         tri("Planea la próxima vez: horario con menos gente, salida acordada, protecciones a mano.", "Plan next time: a time with fewer people, an agreed exit, protections at hand.", "Planera nästa gång: en tid med färre människor, en överenskommen utväg, skydd till hands."),
       ],
-      say: [tri("Ya pasó.", "It's over.", "Det är över."), tri("Hiciste lo que pudiste.", "You did what you could.", "Du gjorde vad du kunde."), tri("Descansamos.", "We rest.", "Vi vilar.")],
+      sayToPerson: [tri("Ya pasó.", "It's over.", "Det är över."), tri("Hiciste lo que pudiste.", "You did what you could.", "Du gjorde vad du kunde."), tri("Descansamos.", "We rest.", "Vi vilar.")],
     },
   },
   never: [

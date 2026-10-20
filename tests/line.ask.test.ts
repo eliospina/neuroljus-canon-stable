@@ -37,7 +37,7 @@ const base = { lang: "es" as const, country: "SE", apiKey: "k", model: "m" };
 
 test("risk in the question: emergency line only, no search, points to the protocol tool", async () => {
   const fetchImpl = (async () => assert.fail("must not call the network")) as unknown as typeof fetch;
-  const r = await buildLineAsk({ ...base, question: "se golpea y sangra", fetchImpl });
+  const r = await buildLineAsk({ ...base, question: "se golpea y sangra y no para", fetchImpl });
   assert.equal(r.mode, "risk");
   assert.equal(r.use_tool, "protocol");
   assert.equal(r.speech, "Si hay peligro, llama al 112.");

@@ -27,7 +27,7 @@ export const transitionsRefusal: CrisisProtocol = {
         tri("Deja que termine algo pequeño: la última pieza, el final de la canción.", "Let them finish something small: the last piece, the end of the song.", "Låt personen avsluta något litet: sista biten, slutet på låten."),
         tri("Ofrece una elección pequeña dentro del cambio: qué llevar, por dónde ir.", "Offer a small choice within the change: what to bring, which way to go.", "Erbjud ett litet val inom förändringen: vad som ska med, vilken väg."),
       ],
-      say: [tri("Primero esto, luego aquello.", "First this, then that.", "Först det här, sedan det."), tri("Una más y vamos.", "One more, then we go.", "En till, sedan går vi."), tri("Tú eliges: esto o esto.", "You choose: this or this.", "Du väljer: detta eller detta.")],
+      sayToPerson: [tri("Primero esto, luego aquello.", "First this, then that.", "Först det här, sedan det."), tri("Una más y vamos.", "One more, then we go.", "En till, sedan går vi."), tri("Tú eliges: esto o esto.", "You choose: this or this.", "Du väljer: detta eller detta.")],
     },
     peak: {
       goal: tri("No convertirlo en una lucha.", "Do not turn it into a fight.", "Gör det inte till en kamp."),
@@ -37,7 +37,7 @@ export const transitionsRefusal: CrisisProtocol = {
         tri("Baja la exigencia a un paso mínimo: solo ponerse de pie, solo tomar la mochila.", "Lower the demand to one minimal step: just standing up, just picking up the bag.", "Sänk kravet till ett minimalt steg: bara ställa sig upp, bara ta väskan."),
         tri("Si el cambio puede esperar, que espere. Si no, hazlo tú con calma y pocas palabras, llevando lo que la persona quiere llevar.", "If the change can wait, let it wait. If not, do it yourself calmly and with few words, carrying what the person wants to bring.", "Om förändringen kan vänta, låt den vänta. Om inte, gör den själv lugnt och med få ord, och ta med det personen vill ha med."),
       ],
-      say: [tri("Te espero.", "I'll wait for you.", "Jag väntar på dig."), tri("Solo un paso.", "Just one step.", "Bara ett steg."), tri("Lo llevamos.", "We'll take it with us.", "Vi tar det med oss.")],
+      sayToPerson: [tri("Te espero.", "I'll wait for you.", "Jag väntar på dig."), tri("Solo un paso.", "Just one step.", "Bara ett steg."), tri("Lo llevamos.", "We'll take it with us.", "Vi tar det med oss.")],
     },
     descent: {
       goal: tri("Cerrar el cambio sin castigo.", "Close the change without punishment.", "Avsluta förändringen utan straff."),
@@ -46,7 +46,7 @@ export const transitionsRefusal: CrisisProtocol = {
         tri("Cumple lo que mostraste que venía después.", "Deliver what you showed would come next.", "Leverera det du visade skulle komma sedan."),
         tri("Deja un rato de calma antes de la siguiente petición.", "Leave a calm stretch before the next request.", "Lämna en lugn stund innan nästa krav."),
       ],
-      say: [tri("Ya estamos.", "Here we are.", "Nu är vi här."), tri("Lo hiciste.", "You did it.", "Du gjorde det."), tri("Ahora tranquilos.", "Now we rest.", "Nu tar vi det lugnt.")],
+      sayToPerson: [tri("Ya estamos.", "Here we are.", "Nu är vi här."), tri("Lo hiciste.", "You did it.", "Du gjorde det."), tri("Ahora tranquilos.", "Now we rest.", "Nu tar vi det lugnt.")],
     },
     recovery: {
       goal: tri("Preparar mejor la próxima transición.", "Prepare the next transition better.", "Förbered nästa övergång bättre."),
@@ -56,7 +56,7 @@ export const transitionsRefusal: CrisisProtocol = {
         tri("Acuerda con la persona una forma de pedir «un minuto más» que puedas aceptar.", "Agree with the person on a way to ask for 'one more minute' that you can accept.", "Kom överens med personen om ett sätt att be om 'en minut till' som du kan gå med på."),
         tri("Rellena el registro ABC cuando estés en calma.", "Fill in the ABC log when you are calm.", "Fyll i ABC-loggen när du är lugn."),
       ],
-      say: [tri("Mañana avisamos antes.", "Tomorrow we warn earlier.", "I morgon förvarnar vi tidigare."), tri("Lo planeamos juntos.", "We plan it together.", "Vi planerar det tillsammans."), tri("Estás bien.", "You're okay.", "Du är okej.")],
+      sayToPerson: [tri("Mañana avisamos antes.", "Tomorrow we warn earlier.", "I morgon förvarnar vi tidigare."), tri("Lo planeamos juntos.", "We plan it together.", "Vi planerar det tillsammans."), tri("Estás bien.", "You're okay.", "Du är okej.")],
     },
   },
   never: [

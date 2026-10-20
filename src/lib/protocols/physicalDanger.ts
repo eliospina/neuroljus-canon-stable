@@ -49,7 +49,7 @@ export const physicalDanger: CrisisProtocol = {
         ),
         tri("Quita de la vista lo que corta, quema o pesa.", "Take out of sight what cuts, burns or is heavy.", "Ta bort det som skär, bränner eller är tungt ur sikte."),
       ],
-      say: [tri("Ven conmigo.", "Come with me.", "Kom med mig."), tri("Por aquí.", "This way.", "Den här vägen."), tri("Mira esto.", "Look at this.", "Titta här.")],
+      sayToPerson: [tri("Ven conmigo.", "Come with me.", "Kom med mig."), tri("Por aquí.", "This way.", "Den här vägen."), tri("Mira esto.", "Look at this.", "Titta här.")],
     },
     peak: {
       goal: tri("Que no se haga daño ahora.", "No harm right now.", "Ingen skada just nu."),
@@ -75,7 +75,7 @@ export const physicalDanger: CrisisProtocol = {
           "Om du inte får personen i säkerhet, ring ditt lands nödnummer medan du stannar vid personens sida."
         ),
       ],
-      say: [tri("Para. Conmigo.", "Stop. With me.", "Stanna. Med mig."), tri("Estoy aquí.", "I'm here.", "Jag är här."), tri("Dame la mano.", "Give me your hand.", "Ge mig handen.")],
+      sayToPerson: [tri("Para. Conmigo.", "Stop. With me.", "Stanna. Med mig."), tri("Estoy aquí.", "I'm here.", "Jag är här."), tri("Dame la mano.", "Give me your hand.", "Ge mig handen.")],
     },
     descent: {
       goal: tri("Volver a un lugar seguro y bajar la activación.", "Return to a safe place and bring activation down.", "Tillbaka till en säker plats och sänk aktiveringen."),
@@ -89,7 +89,7 @@ export const physicalDanger: CrisisProtocol = {
         tri("Baja tu propia voz y tu ritmo; tu calma marca la suya.", "Lower your own voice and pace; your calm sets theirs.", "Sänk din egen röst och ditt tempo; ditt lugn styr personens."),
         tri("Ofrece agua o su objeto de calma.", "Offer water or their calming object.", "Erbjud vatten eller tröstobjektet."),
       ],
-      say: [tri("Ya estás a salvo.", "You're safe now.", "Nu är du trygg."), tri("Respiramos.", "We breathe.", "Vi andas."), tri("Aquí estoy.", "I'm here.", "Jag är här.")],
+      sayToPerson: [tri("Ya estás a salvo.", "You're safe now.", "Nu är du trygg."), tri("Respiramos.", "We breathe.", "Vi andas."), tri("Aquí estoy.", "I'm here.", "Jag är här.")],
     },
     recovery: {
       goal: tri("Evitar la próxima vez.", "Prevent the next time.", "Förebygg nästa gång."),
@@ -111,7 +111,7 @@ export const physicalDanger: CrisisProtocol = {
         ),
         tri("Rellena el registro ABC cuando estés en calma.", "Fill in the ABC log when you are calm.", "Fyll i ABC-loggen när du är lugn."),
       ],
-      say: [tri("Ya pasó.", "It's over.", "Det är över."), tri("Vamos a casa.", "Let's go home.", "Vi går hem."), tri("Estás bien.", "You're okay.", "Du är okej.")],
+      sayToPerson: [tri("Ya pasó.", "It's over.", "Det är över."), tri("Vamos a casa.", "Let's go home.", "Vi går hem."), tri("Estás bien.", "You're okay.", "Du är okej.")],
     },
   },
   never: [

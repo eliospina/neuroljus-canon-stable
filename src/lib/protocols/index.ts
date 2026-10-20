@@ -54,7 +54,7 @@ export type RenderedProtocol = {
   /** Protocols 1 and 4 only: the safety sentence and the emergency line, shown before anything else. */
   emergencyFirst: string | null;
   recognize: string[];
-  phases: Array<{ id: PhaseId; goal: string; steps: string[]; say: string[] }>;
+  phases: Array<{ id: PhaseId; goal: string; steps: string[]; sayToPerson: string[] }>;
   never: string[];
   escalate: {
     callWhen: string[];
@@ -85,7 +85,7 @@ export function renderProtocol(p: CrisisProtocol, lang: ProtocolLang, country?: 
       id,
       goal: p.phases[id].goal[lang],
       steps: p.phases[id].steps.map((s) => s[lang]),
-      say: p.phases[id].say.map((s) => s[lang]),
+      sayToPerson: p.phases[id].sayToPerson.map((s) => s[lang]),
     })),
     never: p.never.map((n) => n[lang]),
     escalate: {

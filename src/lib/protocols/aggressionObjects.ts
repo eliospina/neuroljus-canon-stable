@@ -26,7 +26,7 @@ export const aggressionObjects: CrisisProtocol = {
         tri("Ofrece algo que sí se pueda golpear o tirar: un cojín, una pelota blanda, una caja de cartón.", "Offer something that can be hit or thrown: a cushion, a soft ball, a cardboard box.", "Erbjud något som får slås på eller kastas: en kudde, en mjuk boll, en kartong."),
         tri("Baja el ruido y la luz. Menos gente en la habitación.", "Lower noise and light. Fewer people in the room.", "Sänk ljud och ljus. Färre personer i rummet."),
       ],
-      say: [tri("Esto sí se puede tirar.", "This one you can throw.", "Den här får du kasta."), tri("Estoy aquí.", "I'm here.", "Jag är här."), tri("Sin prisa.", "No rush.", "Ingen brådska.")],
+      sayToPerson: [tri("Esto sí se puede tirar.", "This one you can throw.", "Den här får du kasta."), tri("Estoy aquí.", "I'm here.", "Jag är här."), tri("Sin prisa.", "No rush.", "Ingen brådska.")],
     },
     peak: {
       goal: tri("Que los objetos no hieran a nadie.", "No one gets hurt by the objects.", "Ingen skadas av föremålen."),
@@ -36,7 +36,7 @@ export const aggressionObjects: CrisisProtocol = {
         tri("Retira lo peligroso solo si puedes hacerlo sin forcejear.", "Remove what is dangerous only if you can do it without a struggle.", "Ta bort det farliga bara om du kan göra det utan kamp."),
         tri("No des órdenes ni razones. Voz baja, pocas palabras.", "No orders, no reasons. Low voice, few words.", "Inga order, inga argument. Låg röst, få ord."),
       ],
-      say: [tri("Me aparto.", "I'm stepping back.", "Jag backar."), tri("Estás a salvo.", "You're safe.", "Du är trygg."), tri("Espero aquí.", "I'll wait here.", "Jag väntar här.")],
+      sayToPerson: [tri("Me aparto.", "I'm stepping back.", "Jag backar."), tri("Estás a salvo.", "You're safe.", "Du är trygg."), tri("Espero aquí.", "I'll wait here.", "Jag väntar här.")],
     },
     descent: {
       goal: tri("Dejar que el cuerpo se calme.", "Let the body settle.", "Låt kroppen landa."),
@@ -45,7 +45,7 @@ export const aggressionObjects: CrisisProtocol = {
         tri("Espera en silencio a distancia. Ofrece agua.", "Wait quietly at a distance. Offer water.", "Vänta tyst på avstånd. Erbjud vatten."),
         tri("Acércate cuando los hombros bajen y la respiración sea más lenta.", "Come closer when the shoulders drop and breathing slows.", "Kom närmare när axlarna sjunker och andningen blir långsammare."),
       ],
-      say: [tri("Ya está.", "It's done.", "Det är klart."), tri("Respira.", "Breathe.", "Andas."), tri("Aquí estoy.", "I'm here.", "Jag är här.")],
+      sayToPerson: [tri("Ya está.", "It's done.", "Det är klart."), tri("Respira.", "Breathe.", "Andas."), tri("Aquí estoy.", "I'm here.", "Jag är här.")],
     },
     recovery: {
       goal: tri("Reparar sin culpa y entender el patrón.", "Repair without blame and understand the pattern.", "Återställ utan skuld och förstå mönstret."),
@@ -55,7 +55,7 @@ export const aggressionObjects: CrisisProtocol = {
         tri("Piensa qué objetos pueden vivir en otro sitio y qué se puede ofrecer para tirar o golpear sin peligro.", "Think about which objects could live elsewhere and what could be offered to throw or hit safely.", "Fundera på vilka föremål som kan stå någon annanstans och vad som kan erbjudas att kasta eller slå på utan fara."),
         tri("Rellena el registro ABC más tarde.", "Fill in the ABC log later.", "Fyll i ABC-loggen senare."),
       ],
-      say: [tri("Ya pasó.", "It's over.", "Det är över."), tri("Lo arreglamos juntos.", "We'll fix it together.", "Vi fixar det tillsammans."), tri("Estás bien.", "You're okay.", "Du är okej.")],
+      sayToPerson: [tri("Ya pasó.", "It's over.", "Det är över."), tri("Lo arreglamos juntos.", "We'll fix it together.", "Vi fixar det tillsammans."), tri("Estás bien.", "You're okay.", "Du är okej.")],
     },
   },
   never: [

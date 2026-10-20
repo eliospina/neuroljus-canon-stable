@@ -5,7 +5,7 @@
  * short spoken prompt and at most three sentences and two sources.
  */
 
-import { localRiskScreen } from "../careProtocol/intentParser";
+import { severeSignals } from "./triage";
 import { dangerSentence, type EmergencyLang } from "../emergency";
 import { answerWithDocuments, fallbackSegments, localSearchTerms, retrieve, toSources, type AskSegment, type AskSource } from "../ask/expert";
 import { clinicianSentence, firstSentences, MEDICATION_ASK, claimsDiagnosis } from "./spoken";
@@ -73,7 +73,7 @@ export async function buildLineAsk(input: {
 }): Promise<LineAskResult> {
   const { question, lang, country } = input;
 
-  if (localRiskScreen(question)) {
+  if (severeSignals(question).severe) {
     return { ok: true, mode: "risk", risk: true, use_tool: "protocol", speech: dangerSentence(country, lang), sources: [], library_empty: false };
   }
   if (MEDICATION_ASK.test(question)) {

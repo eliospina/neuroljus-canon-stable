@@ -32,7 +32,7 @@ export const selfInjury: CrisisProtocol = {
         tri("Ofrece una forma segura de la misma sensación: algo para morder, presión con un cojín, un paño frío.", "Offer a safe form of the same sensation: something to bite, pressure with a cushion, a cool cloth.", "Erbjud en säker form av samma känsla: något att bita på, tryck med en kudde, en sval duk."),
         tri("Pon cerca lo que suele calmar y aleja lo duro y lo filoso.", "Bring what usually calms within reach and move hard and sharp things away.", "Ha det som brukar lugna nära och flytta bort det hårda och vassa."),
       ],
-      say: [tri("Estoy aquí.", "I'm here.", "Jag är här."), tri("Te cuido.", "I've got you.", "Jag tar hand om dig."), tri("Toma esto.", "Take this.", "Ta den här.")],
+      sayToPerson: [tri("Estoy aquí.", "I'm here.", "Jag är här."), tri("Te cuido.", "I've got you.", "Jag tar hand om dig."), tri("Toma esto.", "Take this.", "Ta den här.")],
     },
     peak: {
       goal: tri("Reducir el daño sin forcejear.", "Reduce the harm without a struggle.", "Minska skadan utan kamp."),
@@ -43,7 +43,7 @@ export const selfInjury: CrisisProtocol = {
         tri("Si se muerde, ofrece algo seguro para morder en lugar de jalarle la mano de la boca.", "If they bite themself, offer something safe to bite instead of pulling their hand out of their mouth.", "Om personen biter sig, erbjud något säkert att bita på i stället för att dra handen ur munnen."),
         tri("Si hay sangre o un golpe fuerte en la cabeza, llama al número de emergencias de tu país.", "If there is blood or a hard blow to the head, call your country's emergency number.", "Om det blöder eller är ett hårt slag mot huvudet, ring ditt lands nödnummer."),
       ],
-      say: [tri("Estoy contigo.", "I'm with you.", "Jag är med dig."), tri("Aquí hay blando.", "Here, something soft.", "Här är något mjukt."), tri("Despacio.", "Slowly.", "Lugnt.")],
+      sayToPerson: [tri("Estoy contigo.", "I'm with you.", "Jag är med dig."), tri("Aquí hay blando.", "Here, something soft.", "Här är något mjukt."), tri("Despacio.", "Slowly.", "Lugnt.")],
     },
     descent: {
       goal: tri("Dejar que baje y revisar el cuerpo.", "Let it ease and check the body.", "Låt det klinga av och kolla kroppen."),
@@ -52,7 +52,7 @@ export const selfInjury: CrisisProtocol = {
         tri("Cuando lo permita, mira heridas, hinchazón y los ojos.", "When they allow it, check for wounds, swelling and the eyes.", "När personen tillåter, titta efter sår, svullnad och ögonen."),
         tri("Limpia y cubre los rasguños sin comentarlos.", "Clean and cover scratches without commenting on them.", "Rengör och täck rivsår utan att kommentera dem."),
       ],
-      say: [tri("Ya baja.", "It's easing.", "Det släpper."), tri("Te cuido.", "I've got you.", "Jag tar hand om dig."), tri("Respiramos.", "We breathe.", "Vi andas.")],
+      sayToPerson: [tri("Ya baja.", "It's easing.", "Det släpper."), tri("Te cuido.", "I've got you.", "Jag tar hand om dig."), tri("Respiramos.", "We breathe.", "Vi andas.")],
     },
     recovery: {
       goal: tri("Entender qué pedía el cuerpo.", "Understand what the body was asking for.", "Förstå vad kroppen bad om."),
@@ -62,7 +62,7 @@ export const selfInjury: CrisisProtocol = {
         tri("Busca con la persona formas seguras de la misma sensación y una manera de pedir pausa.", "Find with the person safe forms of the same sensation and a way to ask for a break.", "Hitta tillsammans med personen säkra former av samma känsla och ett sätt att be om paus."),
         tri("Rellena el registro ABC cuando estés en calma.", "Fill in the ABC log when you are calm.", "Fyll i ABC-loggen när du är lugn."),
       ],
-      say: [tri("Ya pasó.", "It's over.", "Det är över."), tri("Estás bien.", "You're okay.", "Du är okej."), tri("Descansamos.", "We rest.", "Vi vilar.")],
+      sayToPerson: [tri("Ya pasó.", "It's over.", "Det är över."), tri("Estás bien.", "You're okay.", "Du är okej."), tri("Descansamos.", "We rest.", "Vi vilar.")],
     },
   },
   never: [
