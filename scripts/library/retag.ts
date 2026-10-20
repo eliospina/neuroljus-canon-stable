@@ -35,7 +35,7 @@ function main() {
       kept.push(d);
       continue;
     }
-    if (isBiomedical(d.title)) {
+    if (isBiomedical(d.title, d.abstract ?? "")) {
       if (!d.sheet) {
         dropped.biomedical += 1;
         continue;

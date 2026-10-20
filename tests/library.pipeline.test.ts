@@ -111,6 +111,16 @@ test("the sheet screen accepts numbers as written and rejects calculated ones an
     { requireHelp: true }
   );
   assert.deepEqual(help.reject, []);
+  // The fixed closing sentence is added once to each language and always satisfies the screen.
+  const { appendHelpLine, HELP_LINE } = await import("../scripts/library/sheetPrompt");
+  const plain = { es: words, en: words, sv: words };
+  const withLine = appendHelpLine(plain);
+  for (const l of ["es", "en", "sv"] as const) assert.ok(withLine[l].endsWith(HELP_LINE[l]), l);
+  assert.deepEqual(appendHelpLine(withLine), withLine, "adding it twice changes nothing");
+  assert.deepEqual(localSheetScreen(withLine, source, { requireHelp: true }).reject, []);
+  // Swedish wording "det nationella nödnumret" is recognised.
+  const sv = localSheetScreen({ ...plain, sv: `${words} Sök professionell hjälp; ring det nationella nödnumret i ditt land.`, es: withLine.es, en: withLine.en }, source, { requireHelp: true });
+  assert.deepEqual(sv.reject, []);
   // Sonnet 5.5: $2 / $10 per MTok, batches at half price.
   assert.equal(usageCostUsd({ requests: 1, input: 1_000_000, output: 100_000, cacheRead: 0, cacheWrite: 0 }, false), 3);
   assert.equal(usageCostUsd({ requests: 1, input: 1_000_000, output: 100_000, cacheRead: 0, cacheWrite: 0 }, true), 1.5);
@@ -138,7 +148,15 @@ test("ingestion leaves out medicines, supplements, diets and other biomedical tr
     "A ketogenic diet in autism",
     "Transcranial direct current stimulation in autistic children",
     "Melatonin for sleep problems in autism",
+    "Microbiota in Autism Spectrum Disorder: A Systematic Review.",
+    "The Microbiota-Gut-Brain Connection and Its Role in Autism Spectrum Disorders",
+    "Folic Acid and Autism: A Systematic Review of the Current State of Knowledge.",
+    "The Effectiveness of Cobalamin (B12) Treatment for Autism Spectrum Disorder",
+    "Complementary and Alternative Medicine for Autism - A Systematic Review.",
   ]) assert.equal(isBiomedical(t), true, t);
+  // The abstract counts when it names medicines or supplements three times or more; a passing mention does not.
+  assert.equal(isBiomedical("Systematic review of sleep disturbances in autism", "Melatonin was used. Melatonin and vitamin D were compared."), true);
+  assert.equal(isBiomedical("Global autism prevalence and education", "Approved drugs such as risperidone and aripiprazole exist, but this review is about schools."), false);
   for (const t of [
     "Non-pharmacological interventions for aggression in autistic adults: a systematic review",
     "Parent training for disruptive behavior in autism: a randomized trial",

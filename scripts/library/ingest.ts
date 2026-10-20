@@ -76,8 +76,23 @@ function score(r: EpmcResult, participatoryTier: boolean): number {
 export const BIOMEDICAL =
   /\b(?<!non-)(?<!non )(?<!drug-free )(risperidon\w*|aripiprazol\w*|antipsychotic\w*|melatonin|methylphenidate|atomoxetine|guanfacine|clonidine|fluoxetine|sertraline|citalopram|ssris?|oxytocin|vasopressin|bumetanide|memantine|cannabi\w*|cbd|probiotic\w*|prebiotic\w*|omega-3|fatty acids?|vitamin\w*|supplement\w*|diet|diets|dietary|gluten|casein|ketogenic|microbiota transfer\w*|f(a)?ecal|stem cells?|drugs?|pharmacotherap\w*|pharmacolog\w*|psychopharmacolog\w*|medications?|placebo|sulforaphane|n-acetylcysteine|folinic|propranolol|ketamine|midazolam|suramin|transcranial|tms|tdcs|neurofeedback|deep brain stimulation|brain stimulation|mood stabili[sz]ers?|psychotropic\w*|anticonvulsant\w*|antiepileptic\w*|antidepressant\w*|stimulants?|acupuncture|hyperbaric|chelation|lithium|valproate|naltrexone|arbaclofen|balovaptan)\b/i;
 
-export function isBiomedical(title: string): boolean {
-  return BIOMEDICAL.test(title.replace(/\bnon-?pharmacological\b/gi, "").replace(/\bdrug-free\b/gi, ""));
+/** More titles that are about a treatment or a biological route to one: gut microbiota, folate, B12, complementary medicine. */
+const BIOMEDICAL_TITLE_EXTRA =
+  /\b(microbiota|microbiome|microbial interventions?|gut[- ]brain|leaky gut|intestinal microb\w*|folic acid|folate|cobalamin|b12|complementary and alternative medicine)\b/i;
+
+/**
+ * Named medicines and supplements. The title may not name them, so the abstract
+ * is checked too, from three mentions up: a study that tests, reviews or
+ * recommends one is out of scope, while one or two passing mentions (a
+ * prevalence paper citing the approved drugs) are not.
+ */
+const NAMED_AGENTS =
+  /\b(?<!non-)(risperidon\w*|aripiprazol\w*|melatonin|methylphenidate|atomoxetine|fluoxetine|sertraline|oxytocin|bumetanide|cannabidiol|cbd|probiotic\w*|omega-3|vitamin\w*|folic acid|folate|cobalamin|sulforaphane|n-acetylcysteine)\b/gi;
+const NAMED_AGENTS_MIN = 3;
+
+export function isBiomedical(title: string, abstract = ""): boolean {
+  const clean = title.replace(/\bnon-?pharmacological\b/gi, "").replace(/\bdrug-free\b/gi, "");
+  return BIOMEDICAL.test(clean) || BIOMEDICAL_TITLE_EXTRA.test(clean) || (abstract.match(NAMED_AGENTS) ?? []).length >= NAMED_AGENTS_MIN;
 }
 
 /** Off-topic guard: the abstract must actually be about autistic people, not a passing mention. */
@@ -95,7 +110,7 @@ function eligible(r: EpmcResult): string | null {
   if (!normalizeDoi(r.doi)) return "no DOI";
   if ((Number(r.pubYear) || 0) < 2010) return "before 2010";
   if (!aboutAutism(r)) return "not about autism";
-  if (isBiomedical(r.title)) return "medicine, supplement, diet or other biomedical treatment (out of scope)";
+  if (isBiomedical(r.title, stripHtml(r.abstractText))) return "medicine, supplement, diet or other biomedical treatment (out of scope)";
   const types = (r.pubTypeList?.pubType ?? []).map((t) => t.toLowerCase());
   if (types.some((t) => /erratum|correction|comment|letter|editorial|case reports|news|published erratum/.test(t))) return "not a study";
   return null;

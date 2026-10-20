@@ -19,6 +19,10 @@
  *       Puts the unverified sheets saved in data/library/pending-sheets.json back into
  *       docs.json (only where a document has no sheet), so a verification batch can be
  *       collected from another session. Nothing is marked as verified.
+ *   npx tsx scripts/library/sheetsBatch.ts helpline
+ *       Adds the fixed help line to every sheet on suicide or self-injury (published ones,
+ *       and failed ones whose only problem was the missing line) and clears their verdict,
+ *       so the next verify/collect checks them again.
  *   npx tsx scripts/library/sheetsBatch.ts review
  *       Writes data/library/sheet-review-list.json: every document whose sheet failed a
  *       check (with the rejected text and the reasons) or has no sheet. Failed sheets
@@ -39,6 +43,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { readDocs, writeDocs, type LibraryDoc, type TopicId } from "./lib";
 import {
   addUsage,
+  appendHelpLine,
   emptyUsage,
   localSheetScreen,
   needsHelpLine,
@@ -263,13 +268,15 @@ async function collect(client: Anthropic) {
           bump(why);
           continue;
         }
-        const screen = localSheetScreen(sheet, sheetUserMessage(doc), { requireHelp: needsHelpLine(doc) });
+        // Suicide and self-injury sheets always end with the fixed help line.
+        const final = needsHelpLine(doc) ? appendHelpLine(sheet) : sheet;
+        const screen = localSheetScreen(final, sheetUserMessage(doc), { requireHelp: needsHelpLine(doc) });
         if (screen.reject.length > 0) {
-          state.verification[doc.id] = { verdict: "fail", issues: screen.reject.map((i) => `code: ${i}`), checkedAt: today, rejectedSheet: sheet };
+          state.verification[doc.id] = { verdict: "fail", issues: screen.reject.map((i) => `code: ${i}`), checkedAt: today, rejectedSheet: final };
           bump("rejected by code screen");
           continue;
         }
-        doc.sheet = sheet;
+        doc.sheet = final;
         delete state.verification[doc.id];
         bump("written");
       } else {
@@ -324,6 +331,30 @@ function restore() {
   console.log(`Restored ${put} unverified sheets of ${Object.keys(pending.sheets).length} into docs.json. Run collect to apply the verdicts.`);
 }
 
+/** Adds HELP_LINE to every suicide / self-injury sheet and clears the verdict so verify checks it again. */
+function helpline() {
+  const state = readState();
+  const docs = readDocs();
+  const onlyHelp = (v?: Verification) => !!v && v.verdict === "fail" && v.issues.length > 0 && v.issues.every((i) => /no emergency number|no pointer to professional help/.test(i));
+  let published = 0;
+  let restored = 0;
+  for (const d of docs) {
+    if (!needsHelpLine(d)) continue;
+    const v = state.verification[d.id];
+    if (d.sheet) {
+      d.sheet = appendHelpLine(d.sheet);
+      published++;
+    } else if (onlyHelp(v) && v.rejectedSheet) {
+      d.sheet = appendHelpLine(v.rejectedSheet);
+      restored++;
+    } else continue;
+    delete state.verification[d.id];
+  }
+  writeDocs(docs);
+  writeState(state);
+  console.log(`Help line added: ${published} published sheets, ${restored} failed sheets restored. Run verify, then collect.`);
+}
+
 /** The owner's review list: every failed sheet with its text and reasons, plus documents still without a sheet. */
 function review() {
   const state = readState();
@@ -368,6 +399,7 @@ async function main() {
   if (cmd === "cost") return cost();
   if (cmd === "review") return review();
   if (cmd === "restore") return restore();
+  if (cmd === "helpline") return helpline();
   loadEnvLocal();
   if (!process.env.ANTHROPIC_API_KEY) {
     console.error("ANTHROPIC_API_KEY is not set (environment or .env.local). Nothing done.");
@@ -378,7 +410,7 @@ async function main() {
   if (cmd === "submit") return submit(client);
   if (cmd === "verify") return verify(client);
   if (cmd === "collect") return collect(client);
-  console.error("Usage: sheetsBatch.ts sample|plan|submit|verify|collect|review|restore|cost");
+  console.error("Usage: sheetsBatch.ts sample|plan|submit|verify|collect|review|restore|helpline|cost");
   process.exit(2);
 }
 

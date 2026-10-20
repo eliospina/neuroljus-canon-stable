@@ -39,6 +39,22 @@ export function needsHelpLine(doc: Pick<LibraryDoc, "title" | "abstract">): bool
   return HELP_TOPIC.test(`${doc.title} ${doc.abstract ?? ""}`);
 }
 
+/** Fixed closing sentence added by code to every sheet on suicide or self-injury. */
+export const HELP_LINE = {
+  es: "Si hay riesgo, busca ayuda profesional o llama al número de emergencias de tu país.",
+  en: "If there is risk, seek professional help or call your country's emergency number.",
+  sv: "Om det finns en risk, sök professionell hjälp eller ring ditt lands nödnummer.",
+} as const;
+
+/** The sheet with HELP_LINE at the end of each language (once: a sheet that already ends with it is returned as is). */
+export function appendHelpLine<T extends { es: string; en: string; sv: string }>(sheet: T): T {
+  const out = { ...sheet };
+  for (const lang of ["es", "en", "sv"] as const) {
+    if (!out[lang].trim().endsWith(HELP_LINE[lang])) out[lang] = `${out[lang].trim()} ${HELP_LINE[lang]}`;
+  }
+  return out;
+}
+
 const HELP_SYSTEM =
   " This study is about suicide or self-injury. The sheet must end, in every language, with a sentence that sends the reader to professional help (a clinician, a health service or a crisis service) " +
   "and says that in immediate danger they should call the emergency number of their country. Do not write a specific emergency number or any digit that is not in the abstract.";
@@ -136,7 +152,7 @@ const HELP_PRO = {
 const HELP_EMERGENCY = {
   es: /(número|numero|teléfono) de emergencias?|llam\p{L}* (a )?(los )?(servicios de )?emergencias|emergencias de (tu|su|vuestro) país/iu,
   en: /emergency (number|services)|call emergency|number for emergencies/iu,
-  sv: /larmnummer|nödnummer|ring (till )?(larm|nödnumret)|landets? (larm|nöd)/iu,
+  sv: /larmnum|nödnum|ring (till )?larm|landets? (larm|nöd)/iu,
 };
 
 export type SheetScreen = {
