@@ -174,7 +174,14 @@ export function retrieve(terms: string, topics: TopicId[]): LibraryDoc[] {
 
 export function documentText(d: LibraryDoc): string {
   const parts = [`${d.title} (${d.year}). ${d.kind.replace("_", " ")}${d.participatory ? ", research with autistic people" : ""}.`];
-  if (d.seed) parts.push(`Key finding: ${d.seed.claim.en} Supports: ${d.seed.supports.en} Does not support: ${d.seed.doesNotSupport.en}`);
+  if (d.kind === "expert_practice" && d.citation) {
+    parts.push(`Expert practice, not a study: ideas from ${d.citation.author}, ${d.citation.book} (${d.citation.year}), ${d.citation.locator}, in the project's own words.`);
+  }
+  if (d.kind === "guideline") parts.push(`Clinical guideline from ${d.authors}.`);
+  if (d.seed) {
+    const lead = d.kind === "expert_practice" ? "Practice" : "Key finding";
+    parts.push(`${lead}: ${d.seed.claim.en} Supports: ${d.seed.supports.en} Does not support: ${d.seed.doesNotSupport.en}`);
+  }
   if (d.sheet) parts.push(`Practical sheet: ${d.sheet.en}`);
   if (d.abstract) parts.push(d.abstract);
   return parts.join("\n\n");

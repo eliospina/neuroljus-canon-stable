@@ -1,0 +1,1733 @@
+{
+ "generatedAt": "2026-10-20T11:59:25.319Z",
+ "failed": [
+  {
+   "id": "PMC10359727",
+   "doi": "10.1016/j.eclinm.2023.102072",
+   "url": "https://europepmc.org/article/PMC/PMC10359727",
+   "title": "Metaverse-based social skills training programme for children with autism spectrum disorder to improve social interaction ability: an open-label, single-centre, randomised controlled pilot trial.",
+   "year": 2023,
+   "kind": "study",
+   "topics": [
+    "family_caregivers",
+    "transitions"
+   ],
+   "issues": [
+    "unsupported: Spanish version says 'con 15 niños' and 'solo niños' where the English and Swedish say 15 boys; the Spanish is ambiguous and does not clearly match the other versions",
+    "unsupported: 'no follow-up' limitation is not stated in the abstract (reasonable inference, but not given)",
+    "unsupported: 'at their pace and around their interests' is advice not drawn from the abstract (allowed as reasonable advice)",
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Si su hijo o hija autista disfruta de los juegos en línea, un programa de habilidades sociales dentro de una plataforma como Roblox, hecho en casa, podría ser una opción que explorar, siempre a su ritmo y según sus intereses. Evidencia: ensayo piloto aleatorizado en Corea con 15 niños de 7-12 años; el grupo del programa (cuatro sesiones de 60 min) mostró una mayor bajada en las puntuaciones de la escala SRS-2 que el grupo de control, y no hubo efectos adversos relacionados con el estudio. Límites: muestra muy pequeña, un solo centro, solo niños, sin enmascarar y sin seguimiento posterior; no demuestra que sirva a todas las personas.",
+    "en": "If your autistic child enjoys online games, a social skills programme run inside a platform like Roblox, done at home, may be worth exploring, at their pace and around their interests. Evidence: a randomised pilot trial in Korea with 15 boys aged 7-12; the programme group (four 60 min sessions) showed a larger drop in SRS-2 scores than the control group, and no adverse events related to the study were reported. Limits: very small sample, one centre, boys only, open-label and no later follow-up; it does not show this works for every child.",
+    "sv": "Om ditt autistiska barn gillar onlinespel kan ett socialt färdighetsprogram i en plattform som Roblox, hemma, vara värt att utforska, i barnets egen takt och utifrån dess intressen. Evidens: en randomiserad pilotstudie i Korea med 15 pojkar i åldern 7-12 år; programgruppen (fyra sessioner på 60 min) hade en större minskning av SRS-2-poängen än kontrollgruppen, och inga biverkningar kopplade till studien rapporterades. Begränsningar: mycket litet urval, ett centrum, endast pojkar, öppen studie och ingen senare uppföljning; den visar inte att detta fungerar för alla barn."
+   }
+  },
+  {
+   "id": "PMC10393275",
+   "doi": "10.3389/fpsyt.2023.1160994",
+   "url": "https://europepmc.org/article/PMC/PMC10393275",
+   "title": "The experiences of autistic doctors: a cross-sectional study.",
+   "year": 2023,
+   "kind": "study",
+   "topics": [
+    "adult_life",
+    "anxiety",
+    "family_caregivers",
+    "feeding",
+    "pain_health",
+    "school",
+    "sensory",
+    "transitions",
+    "women_girls"
+   ],
+   "issues": [
+    "unsupported: 'Seeing autism as a difference was linked to better wellbeing' is not stated in the abstract; it reports that viewing autism as a disorder was associated with prior suicide attempts, and only suggests that a neurodiversity-affirmative approach 'may lead to' better mental health"
+   ],
+   "rejectedSheet": {
+    "es": "Si eres una persona autista que trabaja en medicina, o cuidas a alguien que lo hace, vale la pena hablar de los apoyos en el trabajo y buscar colegas o redes de personas autistas. Un estudio transversal con 225 médicos autistas encontró que el 29% no había contado a nadie en el trabajo que era autista, y que el 46% había pedido adaptaciones pero solo la mitad las recibió. El 77% había pensado en el suicidio, el 24% lo había intentado y el 49% se había autolesionado. Ver el autismo como una diferencia se asoció con mejor bienestar. Es un estudio de asociaciones con una encuesta, por lo que no prueba causas y no describe a todas las personas. Si tú o alguien cercano pensáis en suicidio o autolesión, buscad ayuda profesional en un servicio de salud o de crisis; si hay peligro inmediato, llamad al número de emergencias de vuestro país. Si hay riesgo, busca ayuda profesional o llama al número de emergencias de tu país.",
+    "en": "If you are an autistic person working in medicine, or support someone who is, it is worth talking about workplace supports and finding colleagues or networks of autistic people. A cross-sectional study of 225 autistic doctors found that 29% had not told anyone at work they were autistic, and 46% had asked for adjustments but only half received them. 77% had considered suicide, 24% had attempted it and 49% had self-harmed. Seeing autism as a difference was linked to better wellbeing. This was a survey showing associations, so it cannot prove causes and does not describe every person. If you or someone close is thinking about suicide or self-harm, please contact a clinician, a health service or a crisis service; in immediate danger, call the emergency number of your country. If there is risk, seek professional help or call your country's emergency number.",
+    "sv": "Om du är autistisk och arbetar inom sjukvården, eller stödjer någon som gör det, är det värt att prata om stöd på arbetsplatsen och söka kollegor eller nätverk med andra autistiska personer. En tvärsnittsstudie med 225 autistiska läkare fann att 29% inte hade berättat för någon på jobbet att de är autistiska, och att 46% hade bett om anpassningar men bara hälften fick dem. 77% hade övervägt självmord, 24% hade försökt och 49% hade skadat sig själva. Att se autism som en skillnad hängde ihop med bättre mående. Det var en enkätstudie om samband, så den kan inte visa orsaker och beskriver inte alla personer. Om du eller någon nära dig tänker på självmord eller självskada, kontakta en läkare, vården eller en krisjour; vid akut fara, ring det nationella nödnumret i ditt land. Om det finns en risk, sök professionell hjälp eller ring ditt lands nödnummer."
+   }
+  },
+  {
+   "id": "PMC10512135",
+   "doi": "10.18502/ijph.v52i8.13401",
+   "url": "https://europepmc.org/article/PMC/PMC10512135",
+   "title": "Lived Experiences of Iranian Parents of Children with Autism Spectrum Disorder: A Systematic Review.",
+   "year": 2023,
+   "kind": "systematic_review",
+   "topics": [
+    "family_caregivers",
+    "pain_health"
+   ],
+   "issues": [
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Si cuidas a un niño autista, tus experiencias con el diagnóstico, los apoyos y el futuro son información valiosa: anótalas y compártelas con los profesionales y con otras familias. Esta revisión sistemática reunió 16 estudios sobre madres y padres iraníes de niños autistas. Describe experiencias difíciles: diagnósticos poco precisos, poco apoyo al recibirlo, tratamientos de baja calidad, estigma, problemas familiares y preocupación por el futuro. Límites: habla solo de familias de Irán, recoge la mirada de los progenitores y no la de las personas autistas, y no describe a cada familia.",
+    "en": "If you care for an autistic child, your own experiences with diagnosis, support and worries about the future are valuable information: note them down and share them with professionals and other families. This systematic review brought together 16 studies of Iranian parents of autistic children. It describes hard experiences: inaccurate diagnostic processes, little support at diagnosis, low-quality treatment, stigma, family problems and concern about the future. Limits: it covers only families in Iran, reflects the parents' views rather than those of autistic people, and does not describe every family.",
+    "sv": "Om du har en autistisk närstående, är dina egna erfarenheter av utredning, stöd och oro inför framtiden värdefull information: skriv ner dem och dela dem med vårdpersonal och andra familjer. Den här systematiska översikten sammanställde 16 studier om iranska föräldrar till autistiska barn. Den beskriver svåra erfarenheter: felaktiga utredningar, litet stöd vid diagnosen, behandling av låg kvalitet, stigma, problem i familjen och oro för framtiden. Begränsningar: den gäller bara familjer i Iran, speglar föräldrarnas perspektiv snarare än autistiska personers, och beskriver inte alla familjer."
+   }
+  },
+  {
+   "id": "PMC10571330",
+   "doi": "10.1186/s13063-023-07621-5",
+   "url": "https://europepmc.org/article/PMC/PMC10571330",
+   "title": "A randomised controlled trial of clinical and cost-effectiveness of the PASS Plus intervention for young children with autism spectrum disorder in New Delhi, India: study protocol for the COMPASS trial.",
+   "year": 2023,
+   "kind": "trial",
+   "topics": [
+    "adult_life",
+    "family_caregivers",
+    "school"
+   ],
+   "issues": [
+    "code: es: number 240 is not in the source as written",
+    "code: en: number 240 is not in the source as written",
+    "code: sv: number 240 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si buscas apoyo para la comunicación de tu hijo o hija autista, este estudio describe un programa en el que las familias practican la comunicación juntas, guiadas por personal sanitario no especialista. Puede ayudarte a preguntar en tu servicio de salud qué apoyos de este tipo existen. Es el protocolo de un ensayo aleatorizado en Nueva Delhi (India), con 240 niños y niñas de 2-9 años: las familias harán hasta 12 sesiones a lo largo de 8 meses. Aún no hay resultados, así que no sabemos si funciona, y puede no aplicarse a otros contextos ni a todas las familias.",
+    "en": "If you are looking for support with communication for your autistic child, this study describes a programme where families practise communicating together, guided by non-specialist health workers. It may help you ask your health service what similar support exists. It is the protocol of a randomised trial in New Delhi, India, with 240 children aged 2-9 years: families will do up to 12 sessions over 8 months. There are no results yet, so we do not know whether it works, and it may not apply to other settings or to every family.",
+    "sv": "Om du söker stöd för kommunikationen hos ditt autistiska barn beskriver den här studien ett program där familjer övar kommunikation tillsammans, med vägledning av hälsoarbetare utan specialistutbildning. Det kan hjälpa dig att fråga din vårdgivare vilka liknande stöd som finns. Det är protokollet för en randomiserad studie i New Delhi, Indien, med 240 barn i åldern 2-9 år: familjerna ska göra upp till 12 sessioner under 8 månader. Det finns inga resultat än, så vi vet inte om det fungerar, och det passar kanske inte i andra miljöer eller för alla familjer."
+   }
+  },
+  {
+   "id": "PMC10623813",
+   "doi": "10.1186/s11689-023-09505-w",
+   "url": "https://europepmc.org/article/PMC/PMC10623813",
+   "title": "Autism through midlife: trajectories of symptoms, behavioral functioning, and health.",
+   "year": 2023,
+   "kind": "study",
+   "topics": [
+    "feeding"
+   ],
+   "issues": [
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Para mañana: no des por hecho que las necesidades de una persona autista se quedan igual toda la vida. Conviene revisar con regularidad su salud física, sus rutinas diarias y su apoyo, también en la adultez media y más adelante. Es un estudio de seguimiento con 406 personas autistas de una comunidad, observadas durante 22 años desde la adolescencia hasta el inicio de la vejez. Muchos síntomas mejoraron en la adultez y la salud empeoró, pero cada medida cambió de forma distinta. Los resultados varían entre personas con y sin discapacidad intelectual y no valen como regla para cada persona.",
+    "en": "For tomorrow: don't assume an autistic person's needs stay the same across life. It helps to check in regularly on their physical health, daily routines and support, including in midlife and later. This was a follow-up study of 406 autistic people from a community, tracked over 22 years from adolescence into early old age. Most autism symptoms improved in adulthood while health worsened, but each measure changed in its own way. Results differed between people with and without intellectual disability, and they are not a rule for any one person.",
+    "sv": "Till i morgon: utgå inte från att en autistisk persons behov är desamma genom hela livet. Det hjälper att regelbundet följa upp fysisk hälsa, vardagsrutiner och stöd, även i medelåldern och senare. Detta var en uppföljningsstudie med 406 autistiska personer från ett lokalsamhälle, som följdes i 22 år från tonåren till tidig ålderdom. De flesta autismsymtom förbättrades i vuxen ålder medan hälsan försämrades, men varje mått förändrades på sitt sätt. Resultaten skilde sig mellan personer med och utan intellektuell funktionsnedsättning och gäller inte som regel för varje person."
+   }
+  },
+  {
+   "id": "PMC10651717",
+   "doi": "10.3389/fpsyt.2023.1225236",
+   "url": "https://europepmc.org/article/PMC/PMC10651717",
+   "title": "An individual-supported program to enhance placement in a sheltered work environment of autistic individuals mostly with intellectual disability: a prospective observational case series in an Italian community service.",
+   "year": 2023,
+   "kind": "study",
+   "topics": [
+    "adult_life",
+    "sensory",
+    "transitions"
+   ],
+   "issues": [
+    "unsupported: States the group was small; the abstract does not give the sample size or describe the group as small",
+    "unsupported: States there was no comparison group; the abstract implies a case series but does not explicitly say this"
+   ],
+   "rejectedSheet": {
+    "es": "Si acompaña a una persona autista con mayores necesidades de apoyo, un programa de trabajo individualizado en un taller protegido, con tareas adaptadas y un horario claro, puede ser una opción que merezca explorar. Es un estudio observacional de serie de casos en un centro de día italiano, con personas autistas de 12 a 31 años que acudieron tres veces por semana durante 1 año. Aumentó el tiempo trabajado por sesión, y mejoraron la autoorganización y áreas de funcionamiento independiente. Límites: no hubo grupo de comparación y el grupo fue pequeño, así que no prueba que funcione para todas las personas; hacen falta más estudios.",
+    "en": "If you support an autistic person with higher support needs, an individualised program in a sheltered workshop, with adapted tasks and a clear schedule, may be worth exploring. This was an observational case series in an Italian day centre, with autistic people aged 12 to 31 who attended three times a week for 1 year. Time worked per session increased, and self-organisation and some areas of independent functioning improved. Limits: there was no comparison group and the group was small, so it does not show this works for everyone; more studies are needed.",
+    "sv": "Om du stöttar en autistisk person med större stödbehov kan ett individanpassat program på en skyddad arbetsplats, med anpassade uppgifter och ett tydligt schema, vara värt att undersöka. Det var en observationell fallserie vid ett italienskt dagcenter, med autistiska personer mellan 12 och 31 år som deltog tre gånger i veckan i 1 år. Arbetad tid per tillfälle ökade, och självorganisering och vissa områden av självständigt fungerande förbättrades. Begränsningar: ingen jämförelsegrupp fanns och gruppen var liten, så det visar inte att det fungerar för alla; fler studier behövs."
+   }
+  },
+  {
+   "id": "PMC10742338",
+   "doi": "10.3390/brainsci13121656",
+   "url": "https://europepmc.org/article/PMC/PMC10742338",
+   "title": "Animacy Processing in Autism: Event-Related Potentials Reflect Social Functioning Skills.",
+   "year": 2023,
+   "kind": "study",
+   "topics": [
+    "adult_life"
+   ],
+   "issues": [
+    "unsupported: Spanish version says the study had 'pocas personas adultas' (few adults), which the abstract does not state and the English and Swedish versions omit, so the three versions differ",
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Si convives con una persona autista, puede ayudar ofrecer apoyos claros al interpretar situaciones sociales, como explicar con calma quién hace qué, sin dar por hecho que lo percibe igual que tú. Es un estudio con adultos jóvenes autistas y un grupo de comparación de edad y CI similares. Hicieron una tarea de nombrar imágenes con registro de EEG. El grupo autista acertó menos con imágenes de seres animados y mostró respuestas cerebrales distintas, relacionadas con sus dificultades sociales. Es un solo estudio, con pocas personas adultas, y no muestra causas ni sirve para todas las personas autistas.",
+    "en": "If you live with an autistic person, it may help to offer clear support when making sense of social situations, such as calmly explaining who is doing what, without assuming they perceive it the way you do. This was a study with young autistic adults and a comparison group matched for age and IQ. They did a picture naming task while EEG was recorded. The autistic group was less accurate with animate pictures and showed different brain responses, which were related to their social difficulties. It is a single study with adults, it cannot show cause, and it does not apply to every autistic person.",
+    "sv": "Om du lever nära en autistisk person kan det hjälpa att erbjuda tydligt stöd när sociala situationer ska tolkas, till exempel genom att lugnt förklara vem som gör vad, utan att anta att personen uppfattar det som du. Studien omfattade unga autistiska vuxna och en jämförelsegrupp matchad för ålder och IQ. De gjorde en bildbenämningsuppgift medan EEG registrerades. Den autistiska gruppen hade lägre träffsäkerhet på bilder av levande varelser och visade annorlunda hjärnsvar, som hängde ihop med deras sociala svårigheter. Det är en enskild studie med vuxna, den visar inte orsak och gäller inte alla autistiska personer."
+   }
+  },
+  {
+   "id": "PMC10750003",
+   "doi": "10.1111/mcn.13581",
+   "url": "https://europepmc.org/article/PMC/PMC10750003",
+   "title": "\"It felt like I had an old fashioned telephone ringing in my breasts\": An online survey of UK Autistic birthing parents' experiences of infant feeding.",
+   "year": 2024,
+   "kind": "study",
+   "topics": [
+    "sleep"
+   ],
+   "issues": [
+    "unsupported: Spanish version adds 'los sonidos' (sounds) as intense, which the English and Swedish versions do not mention and the abstract does not state",
+    "unsupported: English and Swedish say it is 'common' for feeding to feel painful or overwhelming, a prevalence claim the abstract does not give; it reports pain and sensory difficulties as possible ('could result')",
+    "unsupported: Spanish says 'es normal' that these feel intense, a normative claim not in the abstract; the Spanish also omits the pain element that the English and Swedish include",
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Si das el pecho o biberón a tu bebé y eres autista, es normal que el reflejo de eyección de la leche, los sonidos o la imprevisibilidad resulten intensos. Pedir apoyo adaptado puede ayudar, y conviene pedir una misma profesional de referencia. Es una encuesta en línea, realizada por un equipo liderado por personas autistas, con 193 personas autistas del Reino Unido que habían estado embarazadas; 152 tenían experiencia alimentando a sus bebés. Quienes recibieron apoyo para amamantar tuvieron mejores experiencias. Sus límites: son relatos propios de quienes decidieron responder, y no describen a todas las personas autistas ni sirven como regla general.",
+    "en": "If you are autistic and feeding your baby, it is common for the milk let-down reflex and the intensity or unpredictability of feeding to feel painful or overwhelming. Asking for tailored support, and for the same carer each time where possible, may help. This was an online survey by an autistic-led team, with 193 autistic people in the UK who had been pregnant; 152 had infant feeding experience. Those who got breastfeeding support reported better experiences. Its limits: it reflects the self-reported views of people who chose to respond, so it does not describe every autistic parent or set a rule for anyone.",
+    "sv": "Om du är autistisk och matar ditt barn är det vanligt att mjölkutdrivningsreflexen och matningens intensitet eller oförutsägbarhet känns smärtsam eller överväldigande. Det kan hjälpa att be om anpassat stöd och, om möjligt, samma vårdgivare varje gång. Det här var en webbenkät från ett autistiskt lett forskarteam med 193 autistiska personer i Storbritannien som varit gravida; 152 hade erfarenhet av barnmatning. De som fick stöd vid amning beskrev bättre upplevelser. Begränsning: svaren bygger på egna rapporter från dem som valde att delta, så de beskriver inte alla autistiska föräldrar och är ingen regel för någon."
+   }
+  },
+  {
+   "id": "PMC10963481",
+   "doi": "10.3389/fpsyt.2024.1299473",
+   "url": "https://europepmc.org/article/PMC/PMC10963481",
+   "title": "Access and cost of services for autistic children and adults in Italy: a carers' perspective.",
+   "year": 2024,
+   "kind": "study",
+   "topics": [
+    "adult_life",
+    "family_caregivers",
+    "pain_health",
+    "school"
+   ],
+   "issues": [
+    "code: es: number 303 is not in the source as written",
+    "code: en: number 303 is not in the source as written",
+    "code: sv: number 303 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si cuidas a una persona autista en Italia, llevar un registro sencillo de las horas de cuidado, los días de ausencia y lo que pagas por cada servicio puede ayudarte a hablar con la escuela, los servicios sociales o tu asociación. No estás sola ni solo en esa carga. Fue una encuesta en línea a 303 cuidadores de personas autistas, sobre los 6 meses anteriores. Los cuidadores dedicaron en promedio 58.84 ± 48.36 horas semanales y muchos pagaron de su bolsillo a psicólogos y terapeutas. Sus límites: son relatos de cuidadores, no de las propias personas autistas, y solo describen Italia, así que no valen para todas las familias ni para todos los casos.",
+    "en": "If you care for an autistic person in Italy, keeping a simple record of caregiving hours, days off work or school, and what you pay for each service can help when you talk with the school, social services or a support group. You are not alone in carrying this load. This was an online survey of 303 carers of autistic people, about the previous 6 months. Carers spent on average 58.84 ± 48.36 hours a week on caregiving, and many paid psychologists and therapists themselves. Its limits: the reports come from carers, not from autistic people themselves, and cover only Italy, so they do not describe every family or every situation.",
+    "sv": "Om du vårdar en autistisk person i Italien kan det hjälpa att föra enkla anteckningar om omsorgstimmar, frånvarodagar från jobb eller skola och vad du betalar för varje tjänst, när du pratar med skolan, socialtjänsten eller en stödgrupp. Du är inte ensam om bördan. Detta var en webbenkät till 303 anhöriga till autistiska personer, om de senaste 6 månaderna. De lade i genomsnitt 58.84 ± 48.36 timmar i veckan på omsorg, och många betalade själva psykologer och terapeuter. Begränsningar: uppgifterna kommer från anhöriga, inte från autistiska personer själva, och gäller bara Italien, så de speglar inte alla familjer eller situationer."
+   }
+  },
+  {
+   "id": "PMC11263417",
+   "doi": "10.1007/s00431-024-05578-4",
+   "url": "https://europepmc.org/article/PMC/PMC11263417",
+   "title": "Effect of fractional exhaled nitric oxide (F ENO )-based asthma management during pregnancy versus usual care on infant development, temperament, sensory function and autism signs.",
+   "year": 2024,
+   "kind": "trial",
+   "topics": [
+    "sensory"
+   ],
+   "issues": [
+    "code: es: number 222 is not in the source as written",
+    "code: en: number 222 is not in the source as written",
+    "code: sv: number 222 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si tienes asma y estás embarazada, o cuidas a alguien en esa situación, este estudio no muestra que medir el óxido nítrico exhalado para guiar el tratamiento cambie el desarrollo del bebé en su primer año. Las decisiones sobre el asma y su tratamiento deben hablarse con el equipo médico. Fue un ensayo aleatorizado con 222 bebés y 217 madres, que comparó ese manejo con la atención habitual; el desarrollo, el temperamento, lo sensorial y las señales de autismo fueron similares en ambos grupos. Sus límites: solo siguió a los bebés hasta los 12 meses, no dice nada sobre edades posteriores y no sirve como regla para cada familia.",
+    "en": "If you have asthma and are pregnant, or support someone who is, this study did not find that using a breath test (exhaled nitric oxide) to guide asthma care changed babies' development in their first year. Decisions about asthma care are for the medical team. It was a randomised trial with 222 infants and 217 mothers, comparing this approach with usual care; development, temperament, sensory function and autism signs were similar in both groups. Its limits: it followed babies only to 12 months, says nothing about later ages, and cannot be treated as a rule for every family.",
+    "sv": "Om du har astma och är gravid, eller stöttar någon som är det, visar den här studien inte att ett andningstest (utandat kväveoxid) som styr astmavården förändrade barnens utveckling under det första året. Beslut om astmavård hör hemma hos vårdteamet. Det var en randomiserad studie med 222 spädbarn och 217 mammor som jämförde metoden med vanlig vård; utveckling, temperament, sensorik och autismtecken var likartade i båda grupperna. Begränsningar: barnen följdes bara till 12 månader, studien säger inget om senare åldrar och gäller inte som regel för varje familj."
+   }
+  },
+  {
+   "id": "PMC11579173",
+   "doi": "10.1007/s11920-024-01533-0",
+   "url": "https://europepmc.org/article/PMC/PMC11579173",
+   "title": "Suicidal Thoughts and Behaviors in People on the Autism Spectrum.",
+   "year": 2024,
+   "kind": "review",
+   "topics": [
+    "challenging_behavior",
+    "crisis_regulation",
+    "family_caregivers"
+   ],
+   "issues": [
+    "unsupported: States that asking about suicide does not provoke risk (ES: 'preguntar no provoca el riesgo'), which the abstract does not say; this claim appears only in the Spanish version and not in the English or Swedish versions",
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Mañana, si te preocupa una persona autista, pregúntale con calma y sin juicios cómo se siente y si piensa en hacerse daño o en morir; preguntar no provoca el riesgo. Pueden ayudar un plan de seguridad y apoyos pensados para esa persona. Esta es una revisión de literatura reciente sobre pensamientos y conductas suicidas en personas autistas; resume factores de riesgo como el agotamiento autista, los problemas de salud mental y la regulación emocional. Sus límites: señala vacíos en factores protectores y en enfoques adaptados, y no sirve como regla para cada persona. Busca apoyo profesional (un clínico, un servicio de salud o un servicio de crisis); si hay peligro inmediato, llama al número de emergencias de tu país. Si hay riesgo, busca ayuda profesional o llama al número de emergencias de tu país.",
+    "en": "Tomorrow, if you are worried about an autistic person, ask calmly and without judgement how they are feeling and whether they think about hurting themselves or dying. Safety planning and supports tailored to that person can help. This is a review of recent literature on suicidal thoughts and behaviors in autistic people; it summarizes risk factors such as autistic burnout, mental health conditions and emotion dysregulation. Its limits: it names gaps in protective factors and tailored approaches, and it is not a rule for every person. Please seek professional help (a clinician, a health service or a crisis service); in immediate danger, call the emergency number of your country. If there is risk, seek professional help or call your country's emergency number.",
+    "sv": "I morgon, om du oroar dig för en autistisk person, fråga lugnt och utan att döma hur personen mår och om hen tänker på att skada sig själv eller dö. En säkerhetsplan och stöd anpassat efter just den personen kan hjälpa. Detta är en översikt av nyare forskning om självmordstankar och självmordsbeteenden hos autistiska personer; den sammanfattar riskfaktorer som autistisk utbrändhet, psykisk ohälsa och svårigheter att reglera känslor. Begränsningar: den pekar på kunskapsluckor om skyddande faktorer och anpassade metoder, och gäller inte som regel för varje person. Sök professionell hjälp (en läkare eller annan kliniker, vården eller en krisjour); vid akut fara, ring det nationella nödnumret i ditt land. Om det finns en risk, sök professionell hjälp eller ring ditt lands nödnummer."
+   }
+  },
+  {
+   "id": "PMC11658438",
+   "doi": "10.1016/j.hctj.2024.100067",
+   "url": "https://europepmc.org/article/PMC/PMC11658438",
+   "title": "Health care transition quadruple aim outcomes for IDD: Scoping review.",
+   "year": 2024,
+   "kind": "systematic_review",
+   "topics": [
+    "family_caregivers",
+    "pain_health",
+    "transitions"
+   ],
+   "issues": [
+    "code: es: number 103 is not in the source as written",
+    "code: en: number 103 is not in the source as written",
+    "code: sv: number 103 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si acompañas a una persona joven autista o con discapacidad intelectual en el paso a la atención médica de adultos, conviene planificarlo con tiempo y preguntar a los equipos médicos cómo medirán si el cambio funciona para ella y para su familia. Esta revisión de alcance buscó estudios y reunió 103 artículos sobre jóvenes de 18-26 años con discapacidades intelectuales y del desarrollo, incluido el autismo. Casi todos eran observacionales y usaban medidas muy distintas, a menudo creadas por los propios equipos. Por eso no ofrece una pauta única ni dice qué método de transición es mejor para cada persona.",
+    "en": "If you support an autistic or intellectually disabled young person moving to adult health care, it helps to plan early and ask the health teams how they will check that the move is working for them and their family. This scoping review gathered 103 articles about young adults aged 18-26 with intellectual and developmental disabilities, including autism. Most were observational and used many different measures, often developed by the teams themselves. So it offers no single guideline and cannot say which transition approach is best for any one person.",
+    "sv": "Om du stöttar en ung autistisk person eller en ung person med intellektuell funktionsnedsättning inför övergången till vuxensjukvård är det bra att planera i god tid och fråga vårdteamen hur de ska följa upp att övergången fungerar för personen och familjen. Denna översikt (scoping review) samlade 103 artiklar om unga vuxna i åldern 18-26 med intellektuella och utvecklingsrelaterade funktionsnedsättningar, inklusive autism. De flesta var observationsstudier med många olika mått, ofta egenutvecklade. Den ger därför ingen enskild riktlinje och visar inte vilken övergångsmetod som passar en enskild person bäst."
+   }
+  },
+  {
+   "id": "PMC11724683",
+   "doi": "10.1111/bjop.12731",
+   "url": "https://europepmc.org/article/PMC/PMC11724683",
+   "title": "Differential diagnosis of autism, attachment disorders, complex post-traumatic stress disorder and emotionally unstable personality disorder: A Delphi study.",
+   "year": 2025,
+   "kind": "study",
+   "topics": [
+    "sleep"
+   ],
+   "issues": [
+    "code: es: number 275 is not in the source as written",
+    "code: en: number 275 is not in the source as written",
+    "code: sv: number 275 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si le preocupa que una evaluación pueda confundir el autismo con otras condiciones, puede pedir que el equipo considere también el trauma, el apego y la personalidad, y que incluya la historia de vida y la voz de la persona autista. Este estudio Delphi, con cuestionarios en tres rondas a 106 profesionales internacionales, contó con grupos de personas con experiencia propia, clínicos e investigadores. 275 afirmaciones alcanzaron consenso, con al menos 80% de acuerdo. Recoge opiniones de profesionales, no resultados de pruebas en personas, y no sirve para decidir un diagnóstico individual.",
+    "en": "If you worry an assessment might confuse autism with other conditions, you can ask the team to also consider trauma, attachment and personality, and to include the person's life history and their own voice. This Delphi study used three rounds of questionnaires with 106 international professionals, with input from groups of experts by experience, clinicians and researchers. 275 statements reached consensus, meaning at least 80% agreement. It reflects professionals' opinions, not test results from people, and it cannot decide any individual's diagnosis.",
+    "sv": "Om du oroar dig för att en utredning kan förväxla autism med andra tillstånd kan du be teamet även beakta trauma, anknytning och personlighet, och ta med personens livshistoria och egen röst. Denna Delphi-studie använde tre frågeformulärsomgångar med 106 internationella yrkesverksamma, med stöd av grupper av experter genom erfarenhet, kliniker och forskare. 275 påståenden nådde konsensus, det vill säga minst 80% enighet. Den visar yrkespersoners åsikter, inte testresultat från människor, och kan inte avgöra någon enskild persons diagnos."
+   }
+  },
+  {
+   "id": "PMC11816471",
+   "doi": "10.1177/13623613241275468",
+   "url": "https://europepmc.org/article/PMC/PMC11816471",
+   "title": "Insistence on sameness, repetitive negative thinking and mental health in autistic and non-autistic adults.",
+   "year": 2025,
+   "kind": "study",
+   "topics": [
+    "adult_life",
+    "anxiety",
+    "transitions"
+   ],
+   "issues": [
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Si una persona autista da vueltas a los mismos pensamientos negativos, puede ayudar notarlo con calma y hablarlo con su profesional de salud mental, sin tratarlo como un fallo. Es un estudio con autistas adultos: 67 en entornos clínicos con depresión moderada, 54 de la comunidad y 66 adultos no autistas de la comunidad. Las conductas repetitivas se asociaron con más rumiación y obsesión, y estas con más depresión y ansiedad. Límites: el estudio no puede probar causas y no describe a todas las personas autistas; cada persona es distinta.",
+    "en": "If an autistic person keeps going over the same negative thoughts, it can help to notice this calmly and raise it with their mental health professional, without treating it as a failing. This is a study with autistic adults: 67 from clinical settings with moderate depression, 54 from the community, plus 66 non-autistic community adults. Repetitive behaviours were linked to more rumination and obsessing, and these to more depression and anxiety. Limits: it cannot prove cause, and it does not describe every autistic person; everyone is different.",
+    "sv": "Om en autistisk person älskar att älta samma negativa tankar kan det hjälpa att lugnt uppmärksamma det och ta upp det med personens psykiatriska vårdgivare, utan att se det som ett misslyckande. Det är en studie med autistiska vuxna: 67 från kliniska miljöer med måttlig depression, 54 från samhället samt 66 icke-autistiska vuxna. Repetitiva beteenden hängde ihop med mer grubblande och tvångstankar, och dessa med mer depression och ångest. Begränsningar: studien kan inte visa orsak och beskriver inte alla autistiska personer; alla är olika."
+   }
+  },
+  {
+   "id": "PMC11894889",
+   "doi": "10.1177/13623613241287586",
+   "url": "https://europepmc.org/article/PMC/PMC11894889",
+   "title": "Quality-of-life measurement in randomised controlled trials of mental health interventions for autistic adults: A systematic review.",
+   "year": 2025,
+   "kind": "systematic_review",
+   "topics": [
+    "adult_life"
+   ],
+   "issues": [
+    "unsupported: The Spanish and English versions say the review found 19 'trials' while the Swedish version says 19 'studies' (the abstract says 19 studies were eligible, randomised controlled trials being the review's scope), so the three versions are not identical in wording.",
+    "unsupported: The claim that measures 'were not always validated for autistic people' is not stated in the abstract; it only recommends using measures validated for autistic adults.",
+    "unsupported: The claim that the review 'does not show which intervention works' is not stated in the abstract, although it is a reasonable inference.",
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Si valoras un apoyo de salud mental para una persona autista adulta, pregunta a la persona qué significa para ella una buena calidad de vida y si el apoyo le ayuda con eso. Esta revisión sistemática buscó en varias bases de datos más de 10,000 registros y halló 19 ensayos de intervenciones de salud mental para adultos autistas; solo cinco midieron la calidad de vida, y de ellos tres incluyeron participación de la comunidad. Sus límites: no prueba qué intervención funciona, y las medidas variaron y no siempre estaban validadas para personas autistas. Las decisiones médicas corresponden a un profesional clínico.",
+    "en": "If you are weighing up mental health support for an autistic adult, ask the person what a good quality of life means to them and whether the support helps with that. This systematic review searched several databases, screened over 10,000 records and found 19 trials of mental health interventions for autistic adults; only five measured quality of life, and three of those involved the community. Its limits: it does not show which intervention works, and the measures varied and were not always validated for autistic people. Medical decisions belong to a clinician.",
+    "sv": "Om du överväger psykiskt stöd för en autistisk vuxen, fråga personen vad god livskvalitet betyder för hen och om stödet hjälper med det. Den här systematiska översikten sökte i flera databaser, gick igenom över 10,000 poster och hittade 19 studier av insatser för psykisk hälsa hos autistiska vuxna; bara fem mätte livskvalitet, och tre av dem involverade gemenskapen. Begränsningar: den visar inte vilken insats som fungerar, och måtten varierade och var inte alltid validerade för autistiska personer. Medicinska beslut hör till en läkare."
+   }
+  },
+  {
+   "id": "PMC12169857",
+   "doi": "10.1097/dbp.0000000000001358",
+   "url": "https://europepmc.org/article/PMC/PMC12169857",
+   "title": "In-home Tele-assessment for Autism in Toddlers: Validity, Reliability, and Caregiver Satisfaction with the TELE-ASD-PEDS.",
+   "year": 2025,
+   "kind": "trial",
+   "topics": [
+    "family_caregivers"
+   ],
+   "issues": [
+    "code: es: number 182 is not in the source as written",
+    "code: en: number 182 is not in the source as written",
+    "code: sv: number 182 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si su hija o hijo pequeño espera una evaluación de autismo y llegar a una consulta presencial es difícil, pregunte si ofrecen evaluación por telemedicina desde casa con la TELE-ASD-PEDS. Es un ensayo con 182 niñas y niños de 18 a 42 meses; la evaluación en casa y la presencial coincidieron en el 94% de los casos, y los cuidadores informaron muy pocos problemas con la tecnología. Sin embargo, el estudio no indica que sirva para cada familia o niño, y el diagnóstico siempre depende del criterio del equipo clínico.",
+    "en": "If your toddler is waiting for an autism evaluation and getting to an in-person clinic is hard, ask whether a home telehealth assessment with the TELE-ASD-PEDS is offered. This was a trial with 182 children aged 18 to 42 months; home and in-person evaluations agreed on the diagnostic outcome for 94% of cases, and caregivers reported very few problems with technology. It does not show that telehealth suits every family or child, and the diagnosis always rests on the judgement of the clinical team.",
+    "sv": "Om ditt lilla barn väntar på en autismutredning och det är svårt att ta sig till en mottagning kan du fråga om utredning via video hemifrån med TELE-ASD-PEDS erbjuds. Det var en studie med 182 barn i åldern 18 till 42 månader. Utredningen hemma och på plats gav samma resultat i 94% av fallen, och vårdnadshavare rapporterade mycket få tekniska problem. Studien visar dock inte att det passar alla familjer eller barn, och diagnosen beror alltid på det kliniska teamets bedömning."
+   }
+  },
+  {
+   "id": "PMC12255847",
+   "doi": "10.1177/13623613251333175",
+   "url": "https://europepmc.org/article/PMC/PMC12255847",
+   "title": "Understanding Repetitive Behaviours: A clinical and cost-effectiveness, multi-site randomised controlled trial of a group for parents and carers of young autistic children.",
+   "year": 2025,
+   "kind": "trial",
+   "topics": [
+    "family_caregivers"
+   ],
+   "issues": [
+    "code: es: number 227 is not in the source as written",
+    "code: en: number 227 is not in the source as written",
+    "code: sv: number 227 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Antes de intentar cambiar una conducta repetitiva, observe qué función cumple para su criatura: puede dar placer o ayudar a aprender, y solo algunas veces resulta perjudicial. Un programa grupal para familias ayudó a reconocerlas y entenderlas. Es un ensayo aleatorizado con 227 familias de niños autistas de 3 a 9 años y 11 meses, en tres centros de Inglaterra y Escocia. No hubo diferencias entre programas en el resultado principal; en una conducta elegida, el programa mejoró a las 24 semanas, pero no a las 52. Ambos programas mejoraron la confianza y el bienestar de las familias. No sirve como regla para todas las personas.",
+    "en": "Before trying to change a repetitive behaviour, notice what it does for your child: it can bring pleasure or help learning, and only sometimes causes harm. A group programme helped families recognise and understand these behaviours. This was a randomised trial with 227 families of autistic children aged 3 to 9 years and 11 months, at three sites in England and Scotland. There were no differences between programmes on the main outcome; for one chosen behaviour the programme showed improvement at 24 weeks, but not at 52. Both programmes improved family confidence and wellbeing. It is not a rule for every person.",
+    "sv": "Innan du försöker förändra ett repetitivt beteende, lägg märke till vad det ger ditt barn: det kan ge glädje eller hjälpa lärandet och bara ibland vara skadligt. Ett gruppprogram hjälpte familjer att känna igen och förstå beteendena. Det var en randomiserad studie med 227 familjer med autistiska barn i åldern 3 till 9 år och 11 månader, på tre platser i England och Skottland. Inga skillnader sågs mellan programmen i huvudresultatet; för ett valt beteende syntes förbättring efter 24 veckor, men inte efter 52. Båda programmen förbättrade familjens trygghet och välmående. Det är ingen regel för alla."
+   }
+  },
+  {
+   "id": "PMC12398076",
+   "doi": "10.1186/s13063-025-09017-z",
+   "url": "https://europepmc.org/article/PMC/PMC12398076",
+   "title": "Paediatric Autism Communication Therapy (PACT) versus management as usual in autistic children: a protocol for a Danish pragmatic, national, randomised clinical trial: DAN-PACT.",
+   "year": 2025,
+   "kind": "trial",
+   "topics": [
+    "adult_life",
+    "family_caregivers"
+   ],
+   "issues": [
+    "code: es: number 6 is not in the source as written",
+    "code: es: number 280 is not in the source as written",
+    "code: en: number 6 is not in the source as written",
+    "code: en: number 280 is not in the source as written",
+    "code: sv: number 6 is not in the source as written",
+    "code: sv: number 280 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si su hijo o hija tiene entre 2 y 6 años y un diagnóstico reciente, puede preguntar al equipo de salud si hay programas en los que usted participa jugando y comunicándose con su criatura en la vida diaria. Este estudio es el protocolo de un ensayo aleatorizado en Dinamarca que comparará la terapia PACT, dirigida a madres y padres, más la atención habitual, con la atención habitual sola. Participarán 280 niños autistas. Aún no hay resultados: solo describe cómo se medirán beneficios y posibles daños. Las familias no podrán desconocer a qué grupo pertenecen, y pueden faltar datos.",
+    "en": "If your child is aged 2 to 6 and recently diagnosed, you could ask your care team whether any programmes involve you in play and everyday communication with your child. This paper is the protocol of a randomised trial in Denmark that will compare PACT, a parent-mediated therapy, plus usual care against usual care alone. It will include 280 autistic children. There are no results yet: it only describes how benefits and possible harms will be measured. Parents cannot be blind to their group, and some data may be missing.",
+    "sv": "Om ditt barn är 2–6 år och nyligen diagnostiserat kan du fråga vårdteamet om det finns program där du deltar i lek och vardaglig kommunikation med ditt barn. Den här artikeln är protokollet för en randomiserad studie i Danmark som ska jämföra PACT, en förälderledd terapi, plus vanlig vård med enbart vanlig vård. Den ska omfatta 280 autistiska barn. Några resultat finns ännu inte: texten beskriver bara hur nytta och möjliga skador ska mätas. Föräldrar kan inte vara blinda för sin grupp, och viss data kan saknas."
+   }
+  },
+  {
+   "id": "PMC12413181",
+   "doi": "10.2196/69791",
+   "url": "https://europepmc.org/article/PMC/PMC12413181",
+   "title": "Evaluating Telepsychiatric Assessment Satisfaction in Children and Adolescents With Autism Spectrum Disorder and Attention-Deficit/Hyperactivity Disorder and Their Caregivers: Randomized Controlled Trial.",
+   "year": 2025,
+   "kind": "trial",
+   "topics": [
+    "family_caregivers",
+    "pain_health"
+   ],
+   "issues": [
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Si le ofrecen una evaluación psiquiátrica por vídeo, puede ser una opción razonable. Antes de la cita, compruebe que la imagen y el sonido funcionen bien y que su hijo o hija pueda hablar con naturalidad, quizá en un lugar conocido. Evidencia: ensayo aleatorizado en Japón con 68 jóvenes de 6-17 años con TDAH o autismo y sus cuidadores; cada uno hizo una evaluación presencial y otra remota. 70% (47/67) de los jóvenes y 88% (60/68) de los cuidadores quedaron satisfechos con la evaluación remota. Límites: mide satisfacción, no la calidad del diagnóstico, y no sirve para todas las personas ni familias.",
+    "en": "If you are offered a psychiatric assessment by video, it can be a reasonable option. Before the appointment, check that picture and sound work well and that your child can speak naturally, perhaps from a familiar place. Evidence: a randomized trial in Japan with 68 young people aged 6-17 with ADHD or autism and their caregivers; each had one face-to-face and one remote assessment. 70% (47/67) of the young people and 88% (60/68) of caregivers were satisfied with the remote assessment. Limits: it measures satisfaction, not the quality of the assessment, and it will not suit every person or family.",
+    "sv": "Om ni erbjuds en psykiatrisk bedömning via video kan det vara ett rimligt alternativ. Kontrollera före mötet att bild och ljud fungerar och att ert barn kan prata naturligt, kanske från en välbekant plats. Evidens: en randomiserad studie i Japan med 68 unga i åldern 6-17 med ADHD eller autism och deras vårdnadshavare; alla gjorde en bedömning på plats och en på distans. 70% (47/67) av de unga och 88% (60/68) av vårdnadshavarna var nöjda med distansbedömningen. Begränsningar: studien mäter nöjdhet, inte bedömningens kvalitet, och passar inte alla personer eller familjer."
+   }
+  },
+  {
+   "id": "PMC12447693",
+   "doi": "10.1111/jcpp.70003",
+   "url": "https://europepmc.org/article/PMC/PMC12447693",
+   "title": "Emotional burden in school as a source of mental health problems associated with ADHD and/or autism: Development and validation of a new co-produced self-report measure.",
+   "year": 2025,
+   "kind": "study",
+   "topics": [
+    "anxiety",
+    "crisis_regulation",
+    "school"
+   ],
+   "issues": [
+    "unsupported: Swedish version says 'gymnasie- och högstadieelever' (upper and lower secondary), which the abstract does not specify, and it differs from the Spanish and English 'secondary students'",
+    "unsupported: Says the higher exposure and intensity 'was linked to' depression or anxiety; the abstract reports that EB and ERD predicted depression or anxiety, not that the group differences themselves were linked to it",
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Si cuidas a un adolescente autista o con TDAH, puede ayudar preguntarle qué situaciones concretas del colegio le resultan más dolorosas y con qué frecuencia ocurren, en lugar de suponer que el problema es solo cómo regula sus emociones. Este estudio, con adolescentes de secundaria (104 con autismo, 100 con TDAH, 79 con ambos y 452 neurotípicos), usó un cuestionario creado junto con jóvenes neurodivergentes. Los grupos neurodivergentes vivieron más situaciones de malestar y reaccionaron con más intensidad, y esto se relacionó con más depresión o ansiedad. Es un estudio puntual con cuestionarios, no sigue a los jóvenes en el tiempo y no muestra causas ni sirve para todas las personas.",
+    "en": "If you support an autistic teenager or one with ADHD, it may help to ask which specific school situations hurt most and how often they happen, rather than assuming the issue is only how they regulate emotions. This study of secondary students (104 autistic, 100 ADHD, 79 both, 452 neurotypical) used a questionnaire co-produced with neurodivergent young people. The neurodivergent groups met upsetting events more often and reacted more intensely, and this was linked to higher depression or anxiety. It is a single study using questionnaires, it did not follow young people over time, and it cannot show cause or apply to every person.",
+    "sv": "Om du stöttar en autistisk tonåring eller en tonåring med ADHD kan det hjälpa att fråga vilka specifika situationer i skolan som känns värst och hur ofta de inträffar, i stället för att anta att det bara handlar om känsloreglering. Studien omfattade gymnasie- och högstadieelever (104 autistiska, 100 med ADHD, 79 med båda och 452 neurotypiska) och använde ett frågeformulär som utformats tillsammans med neurodivergenta ungdomar. De neurodivergenta grupperna mötte upprörande händelser oftare och reagerade starkare, vilket hängde ihop med mer depression eller ångest. Det är en enskild studie med enkäter, den följde inte ungdomarna över tid och kan inte visa orsak eller gälla alla."
+   }
+  },
+  {
+   "id": "PMC12564765",
+   "doi": "10.3390/brainsci15101113",
+   "url": "https://europepmc.org/article/PMC/PMC12564765",
+   "title": "A Systematic Review of Inter-Brain Synchrony and Psychological Conditions: Stress, Anxiety, Depression, Autism and Other Disorders.",
+   "year": 2025,
+   "kind": "systematic_review",
+   "topics": [
+    "anxiety",
+    "family_caregivers"
+   ],
+   "issues": [
+    "unsupported: A calm setting and a trusting bond may matter: the abstract mentions context, emotional proximity and cooperative strategies in relation to stress, not calm environments or trust, and not for autism specifically"
+   ],
+   "rejectedSheet": {
+    "es": "Si convives con una persona autista, esta revisión no cambia lo que haces mañana: no ofrece una pauta práctica, pero recuerda que la conexión depende del contexto y de la relación. Un entorno tranquilo y un vínculo de confianza pueden importar. La evidencia es una revisión sistemática de 30 estudios que midieron la actividad cerebral de dos personas a la vez durante la interacción. Sus límites: agrupa estudios muy distintos, habla de sincronía \"reducida\" desde una mirada clínica, no prueba causas y no describe a cada persona autista. No sirve para diagnosticar ni para juzgar un vínculo.",
+    "en": "If you live with or support an autistic person, this review doesn't change what you do tomorrow: it offers no practical routine, but it reminds us that connection depends on context and on the relationship. A calm setting and a trusting bond may matter. The evidence is a systematic review of 30 studies that measured the brain activity of two people at once during interaction. Its limits: it combines very different studies, describes \"reduced\" synchrony from a clinical viewpoint, does not prove causes, and does not describe every autistic person. It cannot be used to diagnose or to judge a relationship.",
+    "sv": "Om du lever med eller stöttar en autistisk person ändrar den här översikten inte vad du gör i morgon: den ger ingen praktisk rutin, men påminner om att samspel beror på sammanhang och relation. En lugn miljö och en trygg relation kan spela roll. Underlaget är en systematisk översikt av 30 studier som mätte hjärnaktivitet hos två personer samtidigt under samspel. Begränsningar: den slår ihop mycket olika studier, beskriver \"minskad\" synkroni ur ett kliniskt perspektiv, visar inga orsaker och beskriver inte varje autistisk person. Den kan inte användas för diagnos eller för att bedöma en relation."
+   }
+  },
+  {
+   "id": "PMC12648868",
+   "doi": "10.1186/s13229-025-00693-x",
+   "url": "https://europepmc.org/article/PMC/PMC12648868",
+   "title": "Self-harm and suicidality experiences of autistic and non-autistic adults in midlife and old age.",
+   "year": 2025,
+   "kind": "study",
+   "topics": [
+    "adult_life",
+    "challenging_behavior",
+    "women_girls"
+   ],
+   "issues": [
+    "unsupported: States that asking about self-harm thoughts does not cause them (\"hablar de ello no lo provoca\" / \"asking does not cause these thoughts\" / \"att fråga väcker inte sådana tankar\"); the abstract does not address this.",
+    "unsupported: Says autistic people reported more suicidal thoughts and self-harm \"especially women and older people\"; the abstract supports higher rates for women only for suicidal ideation and suicidal self-harm, and for older people only for self-harming thoughts, deliberate self-harm and suicidal self-harm, not for all outcomes."
+   ],
+   "rejectedSheet": {
+    "es": "Pregunta con calma y sin juzgar a las personas autistas de mediana edad o mayores sobre cómo se sienten, incluidos pensamientos de hacerse daño; hablar de ello no lo provoca. Es un estudio con 388 personas de 40-93 años, 222 de ellas autistas, que respondieron cuestionarios. Las personas autistas refirieron más pensamientos suicidas y más autolesiones que las no autistas, sobre todo las mujeres y las de más edad. Los datos son autoinformados, de un único momento y de una muestra por conveniencia, y no describen a todas las personas. Si tú o alguien cercano estáis pensando en haceros daño, buscad ayuda profesional en un servicio de salud o de crisis; si hay peligro inmediato, llamad al número de emergencias de vuestro país. Si hay riesgo, busca ayuda profesional o llama al número de emergencias de tu país.",
+    "en": "Ask autistic adults in midlife or older age, calmly and without judgement, how they are doing, including any thoughts of harming themselves; asking does not cause these thoughts. This study had 388 people aged 40-93 years, 222 of them autistic, who completed questionnaires. Autistic people reported more suicidal thoughts and self-harm than non-autistic people, especially women and older people. The data are self-reported, from one point in time and a convenience sample, so they do not describe everyone. If you or someone close is thinking of self-harm, contact a clinician, health service or crisis service; in immediate danger, call the emergency number of your country. If there is risk, seek professional help or call your country's emergency number.",
+    "sv": "Fråga lugnt och utan att döma autistiska vuxna i medelåldern eller högre ålder hur de mår, även om tankar på att skada sig själva; att fråga väcker inte sådana tankar. Studien omfattade 388 personer i åldern 40-93 år, varav 222 autistiska, som besvarade enkäter. De autistiska personerna rapporterade fler självmordstankar och mer självskadande än icke-autistiska, särskilt kvinnor och äldre. Uppgifterna är självrapporterade, från en enda tidpunkt och ett bekvämlighetsurval, så de beskriver inte alla. Om du eller någon nära dig tänker på att skada sig själv, kontakta en läkare, vården eller en krisjour; vid akut fara, ring det nationella nödnumret i ditt land. Om det finns en risk, sök professionell hjälp eller ring ditt lands nödnummer."
+   }
+  },
+  {
+   "id": "PMC12979319",
+   "doi": "10.1007/s10567-026-00562-w",
+   "url": "https://europepmc.org/article/PMC/PMC12979319",
+   "title": "Procedural Support for Neurodivergent Children During Medical Procedures: A Scoping Review.",
+   "year": 2026,
+   "kind": "systematic_review",
+   "topics": [
+    "pain_health",
+    "sensory"
+   ],
+   "issues": [
+    "unsupported: Spanish version says 'casi todos' (almost all) studies measured distress by observation; the abstract says only that distress outcomes, reported by 74.3% of studies, were primarily observational, and the English and Swedish versions say 'most'",
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Antes de una cita médica o dental, pida con antelación apoyos concretos: una visita de preparación, explicar qué va a pasar y un plan de cuidados acordado con el equipo. Estos fueron los apoyos más estudiados, aunque la revisión no dice cuál funciona mejor. Es una revisión de alcance de 144 estudios sobre niñas, niños y jóvenes neurodivergentes (0-21 años) en procedimientos médicos; la mayoría, 121, se centró en el autismo. Sus límites: pocos estudios preguntaron a la propia persona cuánto dolor sentía, y casi todos midieron el malestar por observación. Sirve como punto de partida, no como regla para todas las personas. Las decisiones sobre medicación corresponden siempre a un profesional clínico.",
+    "en": "Before a medical or dental appointment, ask ahead for concrete supports: a preparation visit, a clear explanation of what will happen, and a care plan agreed with the team. These were the most studied supports, though the review does not say which works best. It is a scoping review of 144 studies on neurodivergent children and young people (0-21 years) undergoing medical procedures; 121 focused on autism. Its limits: few studies asked the person themselves how much pain they felt, and most measured distress by observation. Treat it as a starting point, not a rule for every person. Decisions about medication belong to a clinician.",
+    "sv": "Be i förväg om konkreta stöd inför ett läkar- eller tandvårdsbesök: ett förberedande besök, en tydlig förklaring av vad som ska hända och en vårdplan som överenskommits med teamet. Det här var de mest studerade stöden, men översikten säger inte vilket som fungerar bäst. Det är en kartläggande översikt av 144 studier om neurodivergenta barn och unga (0-21 år) under medicinska ingrepp; 121 handlade om autism. Begränsningar: få studier frågade personen själv om smärtan, och de flesta mätte obehag genom observation. Se den som en startpunkt, inte som en regel för alla. Beslut om läkemedel hör till en kliniker."
+   }
+  },
+  {
+   "id": "PMC13040833",
+   "doi": "10.1186/s40337-026-01551-8",
+   "url": "https://europepmc.org/article/PMC/PMC13040833",
+   "title": "Investigation of associations between self-reported sensory processing, eating disorder symptoms, neurodivergence, and gender congruence from a lived experience lens.",
+   "year": 2026,
+   "kind": "study",
+   "topics": [
+    "feeding",
+    "pain_health",
+    "sensory"
+   ],
+   "issues": [
+    "unsupported: Textures are listed as a sense to ask about, but the abstract mentions only visual and auditory sensitivity and body trust (interoception), not texture",
+    "unsupported: The sheet states the sample was small, but the abstract does not describe the sample size as a limitation"
+   ],
+   "rejectedSheet": {
+    "es": "Si una persona autista, con TDAH o trans/de género diverso tiene dificultades con la comida, conviene preguntar también por los sentidos: sonidos, luz, texturas y cuánto confía en las señales de su cuerpo. Puede ayudar a entender qué le pasa, sin culparla. El estudio fue una encuesta en línea con 195 adultos de la comunidad, con medidas de autoinforme, y encontró asociaciones entre rasgos autistas, de TDAH, incongruencia de género, procesamiento sensorial y síntomas de trastornos alimentarios. Sus límites: muestra pequeña, autoinforme y asociaciones que no prueban causa, así que no vale como regla para cada persona.",
+    "en": "If an autistic, ADHD or transgender and gender diverse person struggles with eating, it may help to also ask about the senses: sounds, light, textures, and how much they trust their body's signals. This can make things easier to understand without blaming them. The study was an online survey of 195 community adults using self-report measures, and it found links between autistic traits, ADHD traits, gender incongruence, sensory processing and eating disorder symptoms. Its limits: a small sample, self-report, and associations that do not prove cause, so it is not a rule for every person.",
+    "sv": "Om en autistisk person, en person med ADHD eller en trans- och könsmångfaldig person har svårt med mat kan det hjälpa att också fråga om sinnena: ljud, ljus, texturer och hur mycket personen litar på kroppens signaler. Det kan ge ökad förståelse utan skuldbeläggning. Studien var en webbenkät med 195 vuxna från allmänheten som använde självskattning, och den fann samband mellan autistiska drag, ADHD-drag, könsinkongruens, sensorisk bearbetning och symtom på ätstörning. Begränsningar: litet urval, självskattning och samband som inte visar orsak, så det är ingen regel för alla."
+   }
+  },
+  {
+   "id": "PMC13087839",
+   "doi": "10.1002/aur.70198",
+   "url": "https://europepmc.org/article/PMC/PMC13087839",
+   "title": "Does the Extreme Male Brain Hypothesis of Autism Apply More to Females Than Males? A Systematic and Meta-Analytic Approach.",
+   "year": 2026,
+   "kind": "meta_analysis",
+   "topics": [
+    "women_girls"
+   ],
+   "issues": [
+    "unsupported: States the questionnaires are self-report; the abstract does not say how EQ, SQ and AQ were administered",
+    "unsupported: States the meta-analysis describes group averages and not individuals; the abstract does not say this",
+    "unsupported: States the study cannot prove causes; the abstract does not give this limitation (it even claims insights into causes)"
+   ],
+   "rejectedSheet": {
+    "es": "Para mañana: no uses esta teoría para juzgar a una persona autista. Si una niña o mujer autista parece distinta de lo que se espera, eso no dice nada sobre su autismo. Pregúntale cómo percibe las situaciones sociales y qué intereses la absorben, y adapta el apoyo a lo que ella cuente. Es un metaanálisis de 34 estudios que compararon cuestionarios de empatía, sistematización y rasgos autistas entre personas autistas y neurotípicas. Las diferencias entre ambos grupos fueron proporcionalmente mayores en mujeres que en hombres. Sus límites: se basa en cuestionarios de autoinforme, mide promedios de grupos y no explica a cada persona, y no prueba causas.",
+    "en": "For tomorrow: don't use this theory to judge any one autistic person. If an autistic girl or woman seems different from what people expect, that says nothing about her autism. Ask how she experiences social situations and what interests absorb her, and shape support around what she tells you. This is a meta-analysis of 34 studies that compared questionnaires on empathy, systemizing and autistic traits between autistic and neurotypical people. Differences between the two groups were proportionally larger in females than in males. Limits: it relies on self-report questionnaires, describes group averages rather than individuals, and cannot prove causes.",
+    "sv": "Till i morgon: använd inte den här teorin för att bedöma en enskild autistisk person. Om en autistisk flicka eller kvinna verkar annorlunda än vad man väntar sig, säger det inget om hennes autism. Fråga hur hon upplever sociala situationer och vad som engagerar henne, och utforma stödet efter det hon berättar. Det är en metaanalys av 34 studier som jämförde enkäter om empati, systematisering och autistiska drag mellan autistiska och neurotypiska personer. Skillnaderna mellan grupperna var proportionellt större hos kvinnor än hos män. Begränsningar: den bygger på självskattade enkäter, beskriver gruppmedelvärden snarare än individer och kan inte bevisa orsaker."
+   }
+  },
+  {
+   "id": "PMC13294714",
+   "doi": "10.1089/aut.2024.0148",
+   "url": "https://europepmc.org/article/PMC/PMC13294714",
+   "title": "Reacting, Retreating, Regulating, and Reconnecting: How Autistic Adults in the United Kingdom Use Time Alone for Well-Being.",
+   "year": 2026,
+   "kind": "study",
+   "topics": [
+    "adult_life",
+    "sensory",
+    "women_girls"
+   ],
+   "issues": [
+    "unsupported: Spanish version says 'casi todas las personas participantes eran blancas y mujeres' (almost all), while the abstract says most and the English and Swedish versions say most",
+    "unsupported: Spanish version says they could give consent but omits 'all' in a way that differs from the English and Swedish; the versions are not equivalent on the sample description",
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Tras un día con mucha gente o ruido, ofrece a la persona autista tiempo y un espacio tranquilo a solas, sin tomarlo como rechazo, y protege ese espacio. También puede ayudar dejar que se dedique a sus intereses intensos. Es un estudio cualitativo en el que se entrevistó a 16 adultos autistas del Reino Unido, en línea, por vídeo o por texto. Contaron que el tiempo a solas les ayuda a recuperarse de la sobrecarga social y sensorial y a volver a conectar con otras personas. Sus límites: casi todas las personas participantes eran blancas y mujeres, vivían en el Reino Unido y podían dar su consentimiento, así que puede no valer para todas las personas autistas.",
+    "en": "After a day with many people or lots of noise, offer the autistic person time and a quiet space alone, without taking it as rejection, and protect that space. Making room for intense interests may also help. This was a qualitative study: 16 autistic adults in the United Kingdom were interviewed online, by video or by text. They described time alone as a way to recover from social and sensory overwhelm and to be ready to reconnect with others. Limits: all participants lived in the United Kingdom, most were White and female, and all could give informed consent, so the findings may not apply to every autistic person.",
+    "sv": "Efter en dag med många människor eller mycket ljud kan du erbjuda den autistiska personen tid och en lugn plats ensam, utan att ta det som avvisande, och skydda den platsen. Att ge utrymme för intensiva intressen kan också hjälpa. Detta var en kvalitativ studie där 16 autistiska vuxna i Storbritannien intervjuades online, via video eller text. De beskrev tid ensam som ett sätt att återhämta sig från social och sensorisk överbelastning och bli redo att knyta kontakt med andra igen. Begränsningar: deltagarna bodde i Storbritannien, de flesta var vita kvinnor och alla kunde ge samtycke, så resultaten gäller kanske inte alla autistiska personer."
+   }
+  },
+  {
+   "id": "PMC13346256",
+   "doi": "10.1007/s10803-025-06744-9",
+   "url": "https://europepmc.org/article/PMC/PMC13346256",
+   "title": "Can a Short-Term Intervention Promote Growth Among Parents of Children with ASD?",
+   "year": 2026,
+   "kind": "trial",
+   "topics": [
+    "family_caregivers"
+   ],
+   "issues": [
+    "code: es: number 107 is not in the source as written",
+    "code: es: number 72 is not in the source as written",
+    "code: en: number 107 is not in the source as written",
+    "code: en: number 72 is not in the source as written",
+    "code: sv: number 107 is not in the source as written",
+    "code: sv: number 72 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si cuida a un hijo autista y siente mucho estrés, puede ser útil probar ejercicios breves que refuercen la idea de que las capacidades pueden crecer y que el estrés también puede aportar algo. Aun así, el cuidado propio y el apoyo de otras personas siguen siendo importantes. Este ensayo asignó al azar a 107 progenitores árabes de niños autistas varones: 72 recibieron una breve intervención y 35 formaron el grupo de comparación. Seis meses después, el grupo de intervención informó más mentalidad de crecimiento y crecimiento relacionado con el estrés, y menos estrés parental. Los límites: todos los hijos eran varones, el estudio es de un solo contexto cultural y los resultados se basan en cuestionarios, por lo que no sirven como regla para todas las familias.",
+    "en": "If you care for an autistic child and feel a lot of stress, short exercises that build the idea that abilities can grow, and that stress can bring something useful, may be worth trying. Looking after yourself and getting support from others still matter. In this trial, 107 Arab parents of autistic boys were randomly assigned: 72 received a brief intervention and 35 formed a comparison group. Six months later, the intervention group reported more growth mindset and stress-related growth, and less parental stress. Limits: all the children were boys, it was one cultural context, and results came from questionnaires, so it is not a rule for every family.",
+    "sv": "Om du har en autistisk son eller dotter och känner mycket stress kan korta övningar som stärker tanken att förmågor kan växa, och att stress också kan ge något värdefullt, vara värda att prova. Egenvård och stöd från andra är fortsatt viktigt. I den här studien lottades 107 arabiska föräldrar till autistiska pojkar slumpmässigt: 72 fick en kort intervention och 35 var jämförelsegrupp. Sex månader senare rapporterade interventionsgruppen mer tillväxttänkande och stressrelaterad växt samt mindre föräldrastress. Begränsningar: alla barnen var pojkar, studien gjordes i ett kulturellt sammanhang och resultaten bygger på enkäter, så den är ingen regel för alla familjer."
+   }
+  },
+  {
+   "id": "PMC13365672",
+   "doi": "10.1177/00469580261467452",
+   "url": "https://europepmc.org/article/PMC/PMC13365672",
+   "title": "Enactivism in Autism Healthcare Practices: A Scoping Review.",
+   "year": 2026,
+   "kind": "systematic_review",
+   "topics": [
+    "pain_health"
+   ],
+   "issues": [
+    "code: es: number 49 is not in the source as written",
+    "code: en: number 49 is not in the source as written",
+    "code: sv: number 49 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Al pensar en el apoyo a una persona autista, conviene mirar su entorno completo: el espacio físico, los objetos, las relaciones y la cultura que la rodea, y no solo a la persona. Esta revisión exploratoria reunió 49 publicaciones sobre prácticas de salud que se basan en el enfoque enactivo o se parecen a él, y las organizó en cuatro dimensiones de la vida. Sus límites: el panorama es amplio pero poco integrado, el enfoque aún no está bien definido y no ofrece pautas claras para aplicar mañana. Puede servir para hacer preguntas a los profesionales, no como regla para todas las personas.",
+    "en": "When thinking about support for an autistic person, it can help to look at their whole context: the physical setting, everyday objects, relationships and culture around them, not only the person. This scoping review gathered 49 publications on healthcare practices that are based on an enactive approach or resemble it, and sorted them into four dimensions of life. Its limits: the picture is rich but loosely integrated, the approach is still not well defined, and it gives no clear step-by-step guidance. It can help you ask professionals questions, not serve as a rule for every person.",
+    "sv": "När du tänker på stöd till en autistisk person kan det hjälpa att se hela sammanhanget: den fysiska miljön, föremål, relationer och kultur runt personen, inte bara personen själv. Denna kartläggande översikt samlade 49 publikationer om vårdpraktiker som bygger på ett enaktivt förhållningssätt eller liknar det, och ordnade dem i fyra delar av livet. Begränsningar: bilden är rik men löst sammanhållen, ansatsen är ännu inte väldefinierad och ger ingen tydlig steg-för-steg-vägledning. Den kan hjälpa dig att ställa frågor till yrkespersoner, men är ingen regel för alla."
+   }
+  },
+  {
+   "id": "PMC3187762",
+   "doi": "10.1371/journal.pone.0025322",
+   "url": "https://europepmc.org/article/PMC/PMC3187762",
+   "title": "Autism spectrum disorders and schizophrenia: meta-analysis of the neural correlates of social cognition.",
+   "year": 2011,
+   "kind": "meta_analysis",
+   "topics": [
+    "family_caregivers",
+    "sensory",
+    "sleep",
+    "women_girls"
+   ],
+   "issues": [
+    "unsupported: States that social processing differences are 'not a lack of effort' - the abstract says nothing about effort",
+    "unsupported: Says the study 'uses deficit-based language' - this is a characterization of the abstract not supported as a study finding, though arguably accurate",
+    "unsupported: Calls the results 'group averages' - the abstract reports meta-analytic activation likelihood estimates, not averages"
+   ],
+   "rejectedSheet": {
+    "es": "Qué significa mañana: este estudio no ofrece pautas para la vida diaria, pero recuerda que las diferencias en cómo se procesa lo social tienen una base cerebral y no son falta de esfuerzo. Es un metaanálisis de 33 estudios de resonancia magnética funcional, con 146 personas autistas, 336 con esquizofrenia y 492 controles. Encontró patrones de activación cerebral parcialmente compartidos y otros distintos durante tareas de reconocer emociones faciales y comprender la mente de otros. Límites: son promedios de grupo, con tareas de laboratorio, y no dicen nada sobre una persona concreta ni sobre su vida real. Usa un lenguaje de déficit que conviene leer con cautela.",
+    "en": "What this means tomorrow: this study offers no day-to-day guidance, but it is a reminder that differences in processing social information have a brain basis and are not a lack of effort. It is a meta-analysis of 33 functional MRI studies, including 146 autistic people, 336 people with schizophrenia and 492 controls. It found some shared and some different patterns of brain activation during tasks on recognising facial emotions and understanding other people's minds. Limits: these are group averages from laboratory tasks, and they say nothing about any one person or their real life. The study uses deficit-based language, so read it with care.",
+    "sv": "Vad det betyder i morgon: studien ger inga råd för vardagen, men påminner om att skillnader i hur social information bearbetas har en hjärnbas och inte handlar om bristande ansträngning. Det är en metaanalys av 33 studier med funktionell magnetkamera, med 146 autistiska personer, 336 personer med schizofreni och 492 kontroller. Den fann delvis gemensamma och delvis olika mönster av hjärnaktivering vid uppgifter om att känna igen ansiktsuttryck och förstå andras tankar. Begränsningar: det är gruppmedelvärden från laboratorieuppgifter, som inte säger något om en enskild person eller dennes vardag. Studien använder bristspråk, så läs den med försiktighet."
+   }
+  },
+  {
+   "id": "PMC3499780",
+   "doi": "10.3389/fnint.2012.00107",
+   "url": "https://europepmc.org/article/PMC/PMC3499780",
+   "title": "An exploration of sensory and movement differences from the perspective of individuals with autism.",
+   "year": 2012,
+   "kind": "study",
+   "topics": [
+    "family_caregivers",
+    "sensory"
+   ],
+   "issues": [
+    "unsupported: Claims that 'many autistic people would not share' the authors' disorder language (EN/SV) is not in the abstract; the ES says 'not all', which is a different strength, so the three versions also differ",
+    "unsupported: Specific examples of sounds and textures are not mentioned in the abstract, which refers only to sensory and movement differences in general",
+    "unsupported: Describing the study as following participants and as 'interviews' (ES) is not stated; the abstract says 'in-depth inquiry', and the ES version 'entrevistas en profundidad' is a different method claim",
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Si cuidas a una persona autista, vale la pena preguntarle cómo vive sus sensaciones y su movimiento, y creerle: puede que ciertos ruidos, texturas o gestos de coordinación le resulten más intensos o más difíciles de organizar de lo que parece desde fuera. Este estudio cualitativo siguió a cinco personas autistas con más de 40 horas de entrevistas en profundidad y ordenó lo que contaron en seis categorías, como percepción, acción y comunicación. Sus límites: son solo cinco personas, así que no sirve como regla para todas, y los autores usan un lenguaje de trastorno que no todas las personas autistas compartirían.",
+    "en": "If you support an autistic person, it is worth asking how they experience their senses and movement, and believing the answer: certain sounds, textures or coordination demands may feel more intense or harder to organise than they look from outside. This qualitative study followed five autistic people through more than 40 hours of in-depth inquiry and sorted what they shared into six categories, such as perception, action and communication. Its limits: only five people took part, so it is not a rule for everyone, and the authors use disorder language that many autistic people would not share.",
+    "sv": "Om du stöttar en autistisk person är det värt att fråga hur hen upplever sina sinnen och sin rörelse, och att tro på svaret: vissa ljud, texturer eller koordinationskrav kan kännas intensivare eller svårare att organisera än det ser ut utifrån. Den här kvalitativa studien följde fem autistiska personer genom mer än 40 timmars djupgående samtal och sorterade berättelserna i sex kategorier, bland annat perception, handling och kommunikation. Begränsningar: bara fem personer deltog, så den är ingen regel för alla, och forskarna använder ett sjukdomsspråk som många autistiska personer inte delar."
+   }
+  },
+  {
+   "id": "PMC3551840",
+   "doi": "10.1186/1745-6215-13-206",
+   "url": "https://europepmc.org/article/PMC/PMC3551840",
+   "title": "Individual differences in the efficacy of a short theory of mind intervention for children with autism spectrum disorder: a randomized controlled trial.",
+   "year": 2012,
+   "kind": "trial",
+   "topics": [
+    "family_caregivers",
+    "school"
+   ],
+   "issues": [
+    "code: es: number 100 is not in the source as written",
+    "code: en: number 100 is not in the source as written",
+    "code: sv: number 100 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si piensa en un programa breve para trabajar la comprensión de pensamientos y emociones ajenos, trátelo como una opción que aún se está evaluando, no como una garantía. Observe qué le sirve a su hijo o hija y respete su ritmo. La evidencia es el protocolo de un ensayo aleatorizado: describe un plan para 100 niños y niñas autistas de 7 a 12 años, repartidos entre la intervención y una lista de espera. Aún no ofrece resultados, así que no sabemos si funciona ni para quién. Tampoco demuestra que sirva a todas las personas autistas.",
+    "en": "If you are considering a short programme that works on understanding other people's thoughts and feelings, treat it as an option still being tested, not a guarantee. Watch what helps your child and respect their pace. The evidence is a randomized controlled trial protocol: it describes a plan for 100 autistic children aged 7 to 12, assigned to the intervention or a waiting list. It reports no results yet, so we do not know whether it works or for whom. It also cannot show that it suits every autistic person.",
+    "sv": "Om du funderar på ett kort program som tränar förståelse för andras tankar och känslor, se det som ett alternativ som fortfarande prövas, inte som en garanti. Notera vad som hjälpar ditt barn och respektera barnets tempo. Underlaget är ett protokoll för en randomiserad kontrollerad studie: det beskriver en plan för 100 autistiska barn i åldern 7 till 12 år, fördelade på interventionen eller en väntelista. Inga resultat redovisas ännu, så vi vet inte om det fungerar eller för vem. Det visar heller inte att det passar alla autistiska personer."
+   }
+  },
+  {
+   "id": "PMC4192569",
+   "doi": "10.4317/medoral.19566",
+   "url": "https://europepmc.org/article/PMC/PMC4192569",
+   "title": "Behavioural aspects of patients with Autism Spectrum Disorders (ASD) that affect their dental management.",
+   "year": 2014,
+   "kind": "study",
+   "topics": [
+    "family_caregivers",
+    "pain_health"
+   ],
+   "issues": [
+    "unsupported: States the article is a review of the scientific literature; the abstract does not say what type of study it is.",
+    "unsupported: Says some people tolerate long procedures well; the abstract says they cooperate even during bloody procedures, not long ones."
+   ],
+   "rejectedSheet": {
+    "es": "Antes de la cita dental, comparta con el equipo odontológico lo que conoce de la persona autista: cómo reacciona a nuevos lugares, sonidos o contactos, y si tiene otras condiciones. Esa información ayuda a diseñar un plan individual. El artículo es una revisión de la literatura científica; el resumen no indica quiénes participaron. Señala que no existe un perfil ni una técnica de manejo que sirva para todas las personas autistas: algunas toleran bien procedimientos largos y otras no permiten una exploración sencilla. Por eso conviene tratarlo como orientación general, no como regla para cada persona.",
+    "en": "Before a dental appointment, share with the dental team what you know about the autistic person: how they react to new places, sounds or touch, and whether they have other conditions. This helps the team design an individual plan. The paper is a review of the scientific literature; the abstract does not say who took part. It notes that no single profile or management technique fits all autistic people: some cope well with long procedures, others cannot allow a simple examination. So treat it as general guidance, not a rule for every person.",
+    "sv": "Inför ett tandläkarbesök: berätta för tandvårdsteamet vad du vet om den autistiska personen, till exempel hur hen reagerar på nya platser, ljud eller beröring, och om hen har andra tillstånd. Det hjälper teamet att göra en individuell plan. Artikeln är en översikt av vetenskaplig litteratur; sammanfattningen anger inte vilka som deltog. Den påpekar att ingen enskild profil eller teknik passar alla autistiska personer: vissa klarar långa ingrepp väl, andra kan inte ens genomgå en enkel undersökning. Se det därför som allmän vägledning, inte som regel för varje person."
+   }
+  },
+  {
+   "id": "PMC4284309",
+   "doi": "10.1016/j.jaac.2014.10.003",
+   "url": "https://europepmc.org/article/PMC/PMC4284309",
+   "title": "Sex/gender differences and autism: setting the scene for future research.",
+   "year": 2015,
+   "kind": "review",
+   "topics": [
+    "anxiety",
+    "communication_aac",
+    "family_caregivers",
+    "feeding",
+    "pain_health",
+    "school",
+    "transitions",
+    "women_girls"
+   ],
+   "issues": [
+    "unsupported: States that autistic girls and women may be easier to overlook; the abstract mentions a male bias in prevalence and diagnostic challenges but does not say females are overlooked",
+    "unsupported: States that autism can look different depending on sex or gender as a finding; the abstract only poses similarities and differences as a question without giving results"
+   ],
+   "rejectedSheet": {
+    "es": "Si cuidas a una persona autista, recuerda que el autismo puede verse distinto según el sexo o el género, y que las niñas y mujeres autistas pueden pasar más desapercibidas. Si algo no encaja con lo que has leído, tu observación sigue siendo válida; coméntala con el profesional que acompaña. Esta revisión buscó en una base de datos y examinó 329 artículos para proponer un marco de 4 niveles que ordena las preguntas sobre diagnóstico, similitudes y diferencias, y posibles causas. Sus límites: no probó ninguna estrategia concreta, no ofrece pautas para el día a día y no describe a cada persona.",
+    "en": "If you support an autistic person, keep in mind that autism can look different depending on sex or gender, and autistic girls and women may be easier to overlook. If something does not match what you have read, your observation is still valid; share it with the professional who supports you. This review searched a database and examined 329 articles to propose a 4-level framework that organises questions about diagnosis, similarities and differences, and possible causes. Its limits: it tested no specific strategy, gives no day-to-day guidance, and cannot describe any one individual.",
+    "sv": "Om du stöttar en autistisk person, tänk på att autism kan se olika ut beroende på kön eller genus, och att autistiska flickor och kvinnor kan vara lättare att förbise. Om något inte stämmer med det du har läst är din observation ändå giltig; ta upp den med den yrkesperson som följer er. Denna översikt sökte i en databas och granskade 329 artiklar för att föreslå ett ramverk i 4 nivåer som ordnar frågor om diagnos, likheter och skillnader samt möjliga orsaker. Begränsningar: den prövade ingen konkret strategi, ger inga vardagsråd och kan inte beskriva en enskild person."
+   }
+  },
+  {
+   "id": "PMC4551667",
+   "doi": "10.1186/s12888-015-0586-7",
+   "url": "https://europepmc.org/article/PMC/PMC4551667",
+   "title": "Study protocol: a randomized controlled trial investigating the effects of a psychosexual training program for adolescents with autism spectrum disorder.",
+   "year": 2015,
+   "kind": "trial",
+   "topics": [
+    "family_caregivers"
+   ],
+   "issues": [
+    "code: es: number 200 is not in the source as written",
+    "code: en: number 200 is not in the source as written",
+    "code: sv: number 200 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si cuidas a un o una adolescente autista, puede ayudar ofrecerle información fiable y clara sobre la pubertad y la sexualidad, y hablar de ello con calma. Este documento es el protocolo de un ensayo aleatorizado en los Países Bajos: describe cómo se evaluará el programa Tackling Teenage Training con 200 adolescentes autistas y sus familias, frente a un grupo en lista de espera. Aún no ofrece resultados, así que no sabemos si el programa funciona. Tampoco compara dos tratamientos ni usa observación ciega. No es una regla para todas las personas.",
+    "en": "If you support an autistic teenager, it can help to offer clear, reliable information about puberty and sexuality, and to talk about it calmly. This is the protocol of a randomized controlled trial in the Netherlands. It describes how the Tackling Teenage Training program will be tested with 200 autistic adolescents and their parents, compared with a waiting-list group. It reports no results yet, so we do not know whether the program works. It also does not compare two treatments or use blinded observation. It is not a rule for every person.",
+    "sv": "Om du stöttar en autistisk tonåring kan det hjälpa att ge tydlig, pålitlig information om pubertet och sexualitet och att prata om det lugnt. Detta är protokollet för en randomiserad studie i Nederländerna. Det beskriver hur programmet Tackling Teenage Training ska prövas med 200 autistiska tonåringar och deras föräldrar, jämfört med en väntelistegrupp. Inga resultat redovisas ännu, så vi vet inte om programmet fungerar. Studien jämför inte heller två behandlingar och använder ingen blindad observation. Den är ingen regel för alla människor."
+   }
+  },
+  {
+   "id": "PMC4939998",
+   "doi": "10.2147/ndt.s108912",
+   "url": "https://europepmc.org/article/PMC/PMC4939998",
+   "title": "Historical evolution of the concept of anorexia nervosa and relationships with orthorexia nervosa, autism, and obsessive-compulsive spectrum.",
+   "year": 2016,
+   "kind": "review",
+   "topics": [
+    "feeding"
+   ],
+   "issues": [
+    "code: es: number 5 is not in the source as written",
+    "code: en: number 5 is not in the source as written",
+    "code: sv: number 5 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si una persona autista tiene una relación rígida o angustiante con la comida, conviene prestar atención a cómo come, no solo a cuánto, y consultar con un profesional sanitario con experiencia en autismo y alimentación. Esta es una revisión de la literatura: repasa cómo ha cambiado el concepto de trastorno alimentario hasta el DSM-5 y su relación con la anorexia, el autismo y el espectro obsesivo-compulsivo, y describe la ortorexia nervosa como posible síndrome nuevo. Sus límites: el resumen no ofrece cifras ni indica quién participó, la ortorexia aún no es un diagnóstico reconocido y no sirve como regla para cada persona.",
+    "en": "If an autistic person has a rigid or distressing relationship with food, it helps to notice how they eat, not only how much, and to talk with a health professional who knows autism and eating. This is a literature review: it traces how the concept of eating disorders changed up to the DSM-5, and how it relates to anorexia, autism and the obsessive-compulsive spectrum, describing orthorexia nervosa as a possible new syndrome. Its limits: the abstract gives no figures or participant details, orthorexia is not yet an established diagnosis, and the findings are not a rule for every person.",
+    "sv": "Om en autistisk person har en stel eller ångestfylld relation till mat kan det hjälpa att se hur hen äter, inte bara hur mycket, och att prata med vårdpersonal som kan autism och ätande. Detta är en litteraturöversikt: den beskriver hur begreppet ätstörning förändrats fram till DSM-5 och hur det hänger ihop med anorexi, autism och det tvångsmässiga spektrumet, och beskriver ortorexi som ett möjligt nytt syndrom. Begränsningar: sammanfattningen anger inga siffror eller deltagare, ortorexi är ännu ingen etablerad diagnos, och resultaten är ingen regel för varje person."
+   }
+  },
+  {
+   "id": "PMC4996332",
+   "doi": "10.1111/jcpp.12499",
+   "url": "https://europepmc.org/article/PMC/PMC4996332",
+   "title": "Heritability of autism spectrum disorders: a meta-analysis of twin studies.",
+   "year": 2016,
+   "kind": "meta_analysis",
+   "topics": [
+    "communication_aac",
+    "family_caregivers",
+    "pain_health",
+    "transitions"
+   ],
+   "issues": [
+    "unsupported: States that parenting or a family's choices do not cause autism; the abstract only reports shared environmental effects becoming significant at lower prevalence rates (7-35%) and does not address parenting or family choices",
+    "unsupported: Presents the genetic finding as relieving guilt, which goes beyond what the abstract supports given that shared environmental effects were significant at a 1% prevalence rate"
+   ],
+   "rejectedSheet": {
+    "es": "Esta investigación sugiere que, en conjunto, los factores genéticos pesan mucho en que una persona sea autista; no es algo que la crianza o una decisión de la familia provoque. Si alguien se siente culpable, este dato puede aliviar. Sobre la evidencia: es un metaanálisis de estudios con gemelos; incluyó siete estudios y un análisis aparte con 6,413 parejas de gemelos. Estimó una heredabilidad de 64-91%. Sus límites: son cifras de grupo, no dicen nada seguro sobre una persona o familia concreta, y los resultados dependen de supuestos estadísticos, como la prevalencia usada.",
+    "en": "This research suggests that, overall, genetic factors play a large part in a person being autistic; parenting or a family's choices do not cause it. If someone feels guilty, this may offer relief. On the evidence: it is a meta-analysis of twin studies, including seven studies and a separate analysis of 6,413 twin pairs. It estimated heritability at 64-91%. Its limits: these are group figures, so they say nothing certain about one person or family, and results depend on statistical assumptions, such as the prevalence rate used.",
+    "sv": "Den här forskningen tyder på att genetiska faktorer sammantaget väger tungt för att en person är autistisk; uppfostran eller familjens val orsakar det inte. Om någon känner skuld kan detta vara en lättnad. Om evidensen: det är en metaanalys av tvillingstudier med sju studier och en separat analys av 6,413 tvillingpar. Den uppskattade ärftligheten till 64-91%. Begränsningar: siffrorna gäller grupper och säger inget säkert om en enskild person eller familj, och resultaten beror på statistiska antaganden, till exempel vilken prevalens som användes."
+   }
+  },
+  {
+   "id": "PMC5220395",
+   "doi": "10.1155/2016/4624829",
+   "url": "https://europepmc.org/article/PMC/PMC5220395",
+   "title": "Autism Spectrum Disorder Screening Instruments for Very Young Children: A Systematic Review.",
+   "year": 2016,
+   "kind": "systematic_review",
+   "topics": [
+    "family_caregivers"
+   ],
+   "issues": [
+    "unsupported: States that five screening instruments were reviewed. The abstract gives two Level 1 and three Level 2 instruments, so five is a summed figure that the abstract does not give as written."
+   ],
+   "rejectedSheet": {
+    "es": "Si le preocupa el desarrollo de su criatura pequeña, hable con su pediatra o equipo de salud y pida un seguimiento atento desde el primer año; no espere a que una herramienta de cribado dé una respuesta definitiva. Esta revisión sistemática evaluó en detalle cinco instrumentos de cribado del autismo para niñas y niños de hasta 18 meses. Concluyó que su desarrollo aún es incipiente y poco sólido, y sugiere usarlos solo con niñez de alto riesgo, no para todas las familias. Pida que le expliquen las fortalezas y debilidades de la herramienta. Limitación: los resultados no sirven como regla para cada niña o niño, y la investigación sigue avanzando.",
+    "en": "If you are concerned about your young child's development, talk with your paediatrician or health team and ask for attentive follow-up from the first year on; don't wait for a screening tool to give a final answer. This systematic review examined five autism screening instruments in detail for children up to 18 months. It concluded that their development is still at an early stage and not yet strong, and suggested using them only with high-risk children, not for every family. Ask the clinician to explain the tool's strengths and weaknesses. Limit: the findings are not a rule for every child, and research is still moving on.",
+    "sv": "Om du oroar dig för ditt lilla barns utveckling, prata med barnläkaren eller vårdteamet och be om noggrann uppföljning från första levnadsåret; vänta inte på att ett screeningverktyg ger ett slutgiltigt svar. Denna systematiska översikt granskade fem screeninginstrument för autism i detalj för barn upp till 18 månader. Slutsatsen var att utvecklingen av dem fortfarande är i ett tidigt skede och inte stark, och att de bör användas bara för barn med hög risk, inte för alla familjer. Be vårdpersonalen förklara verktygets styrkor och svagheter. Begränsning: resultaten är ingen regel för varje barn, och forskningen pågår."
+   }
+  },
+  {
+   "id": "PMC5360854",
+   "doi": "10.1007/s12264-017-0103-8",
+   "url": "https://europepmc.org/article/PMC/PMC5360854",
+   "title": "The Immune System, Cytokines, and Biomarkers in Autism Spectrum Disorder.",
+   "year": 2017,
+   "kind": "review",
+   "topics": [
+    "anxiety",
+    "family_caregivers",
+    "pain_health",
+    "school",
+    "sensory"
+   ],
+   "issues": [
+    "unsupported: States that there is no immune test that can guide how to support an autistic person; the abstract only aims to establish whether cytokines could be biomarkers and does not conclude that no such test exists",
+    "unsupported: Says the review does not change what a caregiver does tomorrow, which is a conclusion the abstract does not give",
+    "unsupported: Says cytokines are treated only as possible biomarkers, but the abstract also covers the immune system's role and its relationship to the brain and behavior"
+   ],
+   "rejectedSheet": {
+    "es": "Si cuidas a una persona autista, esta revisión no cambia lo que haces mañana: no hay una prueba inmunitaria que sirva para decidir cómo apoyarla. Lo práctico es seguir observando sus necesidades y compartir con su equipo sanitario cualquier duda sobre su salud física. La evidencia es una revisión que resume estudios sobre el sistema inmunitario, las citocinas y los biomarcadores en el autismo. Sus límites: el resumen no indica quiénes participaron, trata las citocinas solo como posibles biomarcadores y subraya que el autismo es muy heterogéneo, así que nada de esto vale como regla para todas las personas.",
+    "en": "If you support an autistic person, this review does not change what you do tomorrow: there is no immune test that can guide how to support them. What helps is to keep observing their needs and to raise any worries about their physical health with their health care team. The evidence is a review summarising research on the immune system, cytokines and biomarkers in autism. Its limits: the abstract does not say who took part, it treats cytokines only as possible biomarkers, and it stresses that autism is very heterogeneous, so none of this applies as a rule to every person.",
+    "sv": "Om du stöttar en autistisk person ändrar den här översikten inte vad du gör i morgon: det finns inget immunologiskt test som kan styra hur du stöttar. Det som hjälper är att fortsätta uppmärksamma personens behov och ta upp oro kring den fysiska hälsan med vårdteamet. Underlaget är en översikt som sammanfattar forskning om immunsystemet, cytokiner och biomarkörer vid autism. Begränsningar: sammanfattningen anger inte vilka som deltog, cytokiner behandlas bara som möjliga biomarkörer, och autism beskrivs som mycket heterogent, så inget av detta gäller som regel för alla."
+   }
+  },
+  {
+   "id": "PMC5419910",
+   "doi": "10.1097/md.0000000000006696",
+   "url": "https://europepmc.org/article/PMC/PMC5419910",
+   "title": "Prenatal, perinatal, and postnatal factors associated with autism: A meta-analysis.",
+   "year": 2017,
+   "kind": "meta_analysis",
+   "topics": [
+    "family_caregivers",
+    "pain_health",
+    "sensory",
+    "transitions",
+    "women_girls"
+   ],
+   "issues": [
+    "unsupported: States the pregnancy and birth factors are 'nobody's fault' and 'not something a family could have prevented'; the abstract says causality is unclear and does not address blame or preventability, so this is an unsupported claim (and contradicts the stated uncertainty).",
+    "unsupported: States the review 'gives nothing to act on tomorrow', a blanket claim the abstract does not establish."
+   ],
+   "rejectedSheet": {
+    "es": "Esta revisión no ofrece nada que haya que hacer mañana: los factores del embarazo y del nacimiento que describe no son culpa de nadie ni algo que una familia pudiera haber evitado. Es un metaanálisis que reunió 17 estudios, con 37.634 niños autistas y 12.081.416 niños no autistas, y encontró asociaciones con algunos factores prenatales, perinatales y posnatales. Sus límites: cada factor se examinó por separado, así que no se sabe si causan algo o tienen un papel secundario, y no describe a ninguna persona concreta. Si tiene dudas sobre su caso, puede hablarlas con un profesional sanitario.",
+    "en": "This review gives nothing to act on tomorrow: the pregnancy and birth factors it describes are nobody's fault, and not something a family could have prevented. It is a meta-analysis that pooled 17 studies, with 37,634 autistic children and 12,081,416 nonautistic children, and found associations with some prenatal, perinatal and postnatal factors. Its limits: each factor was examined individually, so it is unclear whether they cause anything or play a secondary role, and it does not describe any one person. If you have questions about your own situation, you can raise them with a health professional.",
+    "sv": "Den här översikten ger inget att göra i morgon: de faktorer kring graviditet och förlossning som beskrivs är ingens fel och inget en familj hade kunnat undvika. Det är en metaanalys som slog ihop 17 studier med 37 634 autistiska barn och 12 081 416 icke-autistiska barn, och den fann samband med vissa faktorer före, under och efter födseln. Begränsningar: varje faktor undersöktes för sig, så det är oklart om de orsakar något eller spelar en sekundär roll, och resultaten beskriver ingen enskild person. Har du frågor om din egen situation kan du ta upp dem med vårdpersonal."
+   }
+  },
+  {
+   "id": "PMC5441062",
+   "doi": "10.1186/s13229-017-0137-9",
+   "url": "https://europepmc.org/article/PMC/PMC5441062",
+   "title": "Meta-analysis of GWAS of over 16,000 individuals with autism spectrum disorder highlights a novel locus at 10q24.32 and a significant overlap with schizophrenia.",
+   "year": 2017,
+   "kind": "meta_analysis",
+   "topics": [
+    "family_caregivers",
+    "pain_health",
+    "school",
+    "sensory",
+    "transitions",
+    "women_girls"
+   ],
+   "issues": [
+    "unsupported: Spanish version says genetic factors influence 'autonomy and development', while English and Swedish say they influence autism, so the versions differ",
+    "unsupported: Claim that many small genetic influences are involved is an inference; the abstract only discusses common variant signal and does not state that nobody is to blame",
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Este estudio genético no ofrece nada que cambie la rutina de mañana. Sirve para entender que en la autonomía y el desarrollo influyen muchos factores genéticos pequeños y que nadie tiene la culpa. Es un metaanálisis de estudios de asociación del genoma completo, con una muestra de descubrimiento de 7387 personas autistas y 8567 controles, más dos grupos de replicación. Encontró una región en el cromosoma 10 y cierto solapamiento genético con la esquizofrenia. Sus límites: describe grupos, no predice a ninguna persona y no sirve para diagnosticar ni para decidir apoyos concretos.",
+    "en": "This genetic study offers nothing that changes tomorrow's routine. What it can help you hold onto is that many small genetic influences are involved in autism, and that nobody is to blame. It is a meta-analysis of genome-wide association studies, with a discovery sample of 7387 autistic people and 8567 controls, plus two replication groups. It found a region on chromosome 10 and some genetic overlap with schizophrenia. Its limits: it describes groups, cannot predict anything about one person, and cannot guide diagnosis or decisions about specific supports.",
+    "sv": "Den här genetiska studien ger inget som ändrar rutinerna i morgon. Den kan hjälpa dig att komma ihåg att många små genetiska faktorer påverkar autism och att ingen bär skuld. Det är en metaanalys av genomomfattande associationsstudier, med ett upptäcktsmaterial på 7387 autistiska personer och 8567 kontroller, plus två replikationsgrupper. Den fann en region på kromosom 10 och en viss genetisk överlappning med schizofreni. Begränsningar: den beskriver grupper, kan inte förutsäga något om en enskild person och kan inte styra diagnos eller val av stöd."
+   }
+  },
+  {
+   "id": "PMC5633644",
+   "doi": "10.1007/s10803-017-3269-z",
+   "url": "https://europepmc.org/article/PMC/PMC5633644",
+   "title": "Mental Wellbeing of Family Members of Autistic Adults.",
+   "year": 2017,
+   "kind": "study",
+   "topics": [
+    "adult_life",
+    "anxiety",
+    "family_caregivers"
+   ],
+   "issues": [
+    "unsupported: The Spanish version says the survey was done at a single point in time, which the abstract does not state",
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Si cuidas a un familiar autista adulto y notas preocupación, cansancio o tristeza, no es un fallo tuyo: merece apoyo propio. Puedes pedir ayuda para tu bienestar o buscar servicios que apoyen a tu familiar. Es una encuesta en línea a 109 familiares de adultos autistas. Quienes apoyaban a alguien con dificultades de salud mental y que veían poco preparado para el futuro refirieron más preocupación, depresión, ansiedad y estrés, y peor calidad de vida. Es una encuesta en un solo momento, con respuestas de los propios familiares, así que no demuestra causas ni describe a todas las familias.",
+    "en": "If you support an autistic adult relative and feel worried, worn out or low, that is not your failing: you deserve support of your own. You could look for help with your own wellbeing, or for services that support your relative. This was an online survey of 109 family members of autistic adults. Those supporting a relative with co-occurring mental health difficulties, and who felt the relative was unprepared for the future, reported more worry, depression, anxiety and stress, and poorer quality of life. It was a survey based on the family members' own reports, so it cannot show causes or describe every family.",
+    "sv": "Om du stöttar en autistisk vuxen anhörig och känner oro, utmattning eller nedstämdhet är det inte ditt fel: du förtjänar eget stöd. Du kan söka hjälp för ditt eget mående eller tjänster som stöttar din anhörige. Det var en webbenkät till 109 anhöriga till autistiska vuxna. De som stöttade någon med psykisk ohälsa och som upplevde att personen var oförberedd inför framtiden rapporterade mer oro, depression, ångest och stress samt sämre livskvalitet. Enkäten bygger på de anhörigas egna svar, så den kan inte visa orsaker eller beskriva alla familjer."
+   }
+  },
+  {
+   "id": "PMC5683266",
+   "doi": "10.2147/phmt.s85717",
+   "url": "https://europepmc.org/article/PMC/PMC5683266",
+   "title": "Gastrointestinal symptoms and autism spectrum disorder: links and risks - a possible new overlap syndrome.",
+   "year": 2015,
+   "kind": "review",
+   "topics": [
+    "anxiety",
+    "communication_aac",
+    "crisis_regulation",
+    "feeding",
+    "pain_health",
+    "sensory",
+    "sleep"
+   ],
+   "issues": [
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Si una persona autista muestra un empeoramiento inexplicable de su comportamiento no verbal (agitación, ansiedad, agresión, autolesión, falta de sueño), conviene pensar en posible dolor o malestar digestivo y consultarlo con su equipo médico. Anote cuándo ocurre y cómo son sus deposiciones y comidas. Esta es una revisión de la literatura sobre niños autistas; señala mayor riesgo de estreñimiento, diarrea y dolor abdominal. Sus límites: propone un posible \"síndrome de superposición\" y pide más investigación, así que no vale para todas las personas. Evite restringir la dieta sin indicación médica. Si hay autolesión o pensamientos de hacerse daño, busque ayuda profesional: un médico, un servicio de salud o un servicio de crisis. Ante peligro inmediato, llame al número de emergencias de su país. Si hay riesgo, busca ayuda profesional o llama al número de emergencias de tu país.",
+    "en": "If an autistic person shows an unexplained worsening of nonverbal behaviors (agitation, anxiety, aggression, self-injury, sleep deprivation), consider that digestive pain or discomfort may be involved, and raise it with their medical team. Note when it happens, plus bowel habits and meals. This is a review of the literature on autistic children; it points to a greater risk of constipation, diarrhea and abdominal pain. Its limits: it proposes a possible \"overlap syndrome\" and calls for more research, so it does not apply to every person. Avoid diet restrictions without a medical reason. If there is self-injury or thoughts of self-harm, seek professional help: a clinician, a health service or a crisis service. In immediate danger, call the emergency number of your country. If there is risk, seek professional help or call your country's emergency number.",
+    "sv": "Om en autistisk person plötsligt får oförklarligt förändrade icke-verbala beteenden (oro, ångest, aggression, självskada, sömnbrist) kan magont eller obehag spela roll, och det är bra att ta upp med vårdteamet. Anteckna när det sker samt avföring och måltider. Detta är en översikt om autistiska barn; den pekar på högre risk för förstoppning, diarré och buksmärta. Begränsningar: den föreslår ett möjligt \"överlappningssyndrom\" och efterlyser mer forskning, så den gäller inte alla. Undvik kostrestriktioner utan medicinsk orsak. Vid självskada eller tankar på att skada sig själv, sök professionell hjälp: en läkare, en vårdinrättning eller en krisjour. Vid akut fara, ring nödnumret i ditt land. Om det finns en risk, sök professionell hjälp eller ring ditt lands nödnummer."
+   }
+  },
+  {
+   "id": "PMC6069847",
+   "doi": "10.1186/s13229-018-0226-4",
+   "url": "https://europepmc.org/article/PMC/PMC6069847",
+   "title": "Risk markers for suicidality in autistic adults.",
+   "year": 2018,
+   "kind": "study",
+   "topics": [
+    "adult_life",
+    "anxiety",
+    "challenging_behavior",
+    "family_caregivers",
+    "pain_health",
+    "school",
+    "women_girls"
+   ],
+   "issues": [
+    "code: es: number 164 is not in the source as written",
+    "code: en: number 164 is not in the source as written",
+    "code: sv: number 164 is not in the source as written",
+    "code: sv: no emergency number of the country"
+   ],
+   "rejectedSheet": {
+    "es": "Si cuidas a una persona autista adulta, pregúntale con calma y sin juicio cómo se siente, y revisa si sus necesidades de apoyo están cubiertas. Tener que ocultar rasgos autistas (camuflaje) y las necesidades sin cubrir pueden pesar mucho. Es un estudio con encuesta en línea: 164 personas autistas adultas y 169 adultas de la población general. El 72% de las autistas superó el punto de corte de riesgo, frente al 33%. Pero es una encuesta puntual: no demuestra causas y no describe a cada persona. Si te preocupa la seguridad de alguien, busca ayuda profesional (un clínico, un servicio de salud o una línea de crisis). Si hay peligro inmediato, llama al número de emergencias de tu país.",
+    "en": "If you support an autistic adult, ask calmly and without judgement how they are feeling, and check whether their support needs are being met. Having to hide autistic traits (camouflaging) and unmet support needs can weigh heavily. This was an online survey of 164 autistic adults and 169 general population adults. 72% of the autistic adults scored above the risk cut-off, compared with 33%. It is a single survey, so it cannot prove causes and does not describe every person. If you are worried about someone's safety, seek professional help (a clinician, a health service or a crisis service). In immediate danger, call your country's emergency number.",
+    "sv": "Om du stöttar en autistisk vuxen, fråga lugnt och utan att döma hur hen mår, och se efter om stödbehoven är tillgodosedda. Att behöva dölja autistiska drag (maskering) och obemötta stödbehov kan väga tungt. Studien var en webbenkät med 164 autistiska vuxna och 169 vuxna i allmänbefolkningen. 72% av de autistiska vuxna översteg gränsvärdet för risk, jämfört med 33%. Det är en enda enkät, så den kan inte visa orsaker och beskriver inte varje person. Om du är orolig för någons säkerhet, sök professionell hjälp (en läkare, hälso- och sjukvården eller en krisjour). Vid akut fara, ring det nationella nödnumret i ditt land."
+   }
+  },
+  {
+   "id": "PMC6275492",
+   "doi": "10.1073/pnas.1811032115",
+   "url": "https://europepmc.org/article/PMC/PMC6275492",
+   "title": "Testing the Empathizing-Systemizing theory of sex differences and the Extreme Male Brain theory of autism in half a million people.",
+   "year": 2018,
+   "kind": "study",
+   "topics": [
+    "communication_aac",
+    "school",
+    "sensory",
+    "women_girls"
+   ],
+   "issues": [
+    "unsupported: States that the theories tested are debated; the abstract does not say this and instead reports robust support for both theories",
+    "unsupported: Describes the questionnaires as self-report; the abstract does not state the questionnaires were self-report",
+    "unsupported: Claims the questionnaires measure traits, not daily life, which the abstract does not say"
+   ],
+   "rejectedSheet": {
+    "es": "Tome este estudio como una idea general, no como una regla para una persona concreta: las puntuaciones de un cuestionario no dicen cómo es la empatía o el interés por los sistemas de una persona autista. Conviene preguntarle cómo se vive a sí misma. El estudio comparó cuestionarios de autoinforme de 671,606 personas en un conjunto de datos, incluidas 36,648 personas autistas, y de 14,354 en otro, con 226 autistas. Sus límites: los cuestionarios miden rasgos, no la vida diaria, y los promedios no describen a cada persona. Las teorías que evalúa son debatidas.",
+    "en": "Treat this study as a broad pattern, not a rule for any one person: questionnaire scores cannot tell you how an autistic person experiences empathy or interest in systems. It is better to ask them how they see themselves. The study compared self-report questionnaires from 671,606 people in one dataset, including 36,648 autistic people, and 14,354 in another, including 226 autistic people. Its limits: questionnaires measure traits, not daily life, and group averages do not describe each individual. The theories it tests are also debated.",
+    "sv": "Se den här studien som ett allmänt mönster, inte som en regel för en enskild person: svar på frågeformulär kan inte visa hur en autistisk person upplever empati eller intresse för system. Fråga hellre personen hur hen ser på sig själv. Studien jämförde självskattade frågeformulär från 671 606 personer i ett datamaterial, varav 36 648 autistiska, och 14 354 i ett annat, varav 226 autistiska. Begränsningar: formulären mäter drag, inte vardagen, och gruppmedelvärden beskriver inte varje individ. Teorierna som prövas är också omdiskuterade."
+   }
+  },
+  {
+   "id": "PMC6458651",
+   "doi": "10.1186/s13229-019-0267-3",
+   "url": "https://europepmc.org/article/PMC/PMC6458651",
+   "title": "A 'choice', an 'addiction', a way 'out of the lost': exploring self-injury in autistic people without intellectual disability.",
+   "year": 2019,
+   "kind": "study",
+   "topics": [
+    "adult_life",
+    "anxiety",
+    "challenging_behavior",
+    "feeding",
+    "pain_health",
+    "school",
+    "sensory",
+    "transitions",
+    "women_girls"
+   ],
+   "issues": [
+    "code: es: number 103 is not in the source as written",
+    "code: en: number 103 is not in the source as written",
+    "code: sv: number 103 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si una persona autista se autolesiona, conviene acercarse con compasión, paciencia y sin juzgar, y preguntarle qué función cumple para ella. Puede ayudar a regular emociones, y también pueden influir las diferencias sensoriales y la dificultad para identificar o expresar lo que se siente. Es un estudio con 103 personas autistas adultas sin discapacidad intelectual, que respondieron a un anuncio en línea y cuestionarios, además de un análisis de sus opiniones. Sus límites: es una muestra concreta y no demuestra causas ni vale para todas las personas. Si te preocupa alguien, busca ayuda profesional (un clínico, un servicio de salud o de crisis); si hay peligro inmediato, llama al número de emergencias de tu país.",
+    "en": "If an autistic person self-injures, it helps to approach them with compassion, patience and without judgement, and to ask what the self-injury does for them. It may help regulate emotions, and sensory differences or difficulty identifying and expressing feelings may also play a part. This was a study of 103 autistic adults without intellectual disability, who answered an online advertisement and completed questionnaires, plus an analysis of their views. Its limits: it is one particular sample, it cannot show causes, and it does not apply to everyone. If you are worried about someone, seek professional help (a clinician, a health service or a crisis service); in immediate danger, call your country's emergency number.",
+    "sv": "Om en autistisk person skadar sig själv är det bra att möta hen med medkänsla, tålamod och utan att döma, och att fråga vad det fyller för funktion för just hen. Det kan hjälpa till att reglera känslor, och sensoriska skillnader och svårigheter att identifiera eller uttrycka känslor kan också spela in. Det var en studie med 103 autistiska vuxna utan intellektuell funktionsnedsättning, som svarade på en annons på nätet och på frågeformulär, plus en analys av deras synpunkter. Begränsningar: det är ett särskilt urval, studien kan inte visa orsaker och gäller inte alla. Om du är orolig för någon, sök professionell hjälp (en läkare, vården eller en krisjour); vid akut fara, ring ditt lands nödnummer."
+   }
+  },
+  {
+   "id": "PMC6555998",
+   "doi": "10.1186/s13229-019-0274-4",
+   "url": "https://europepmc.org/article/PMC/PMC6555998",
+   "title": "Autistic traits in adults who have attempted suicide.",
+   "year": 2019,
+   "kind": "study",
+   "topics": [
+    "adult_life",
+    "anxiety",
+    "challenging_behavior",
+    "family_caregivers",
+    "pain_health",
+    "school",
+    "sensory",
+    "transitions",
+    "women_girls"
+   ],
+   "issues": [
+    "unsupported: Says asking about suicidal thoughts does not cause them; the abstract does not state this",
+    "unsupported: Describes the sample as small; the abstract does not characterize its size"
+   ],
+   "rejectedSheet": {
+    "es": "Si cuidas a una persona autista, puedes preguntarle con calma y de forma directa cómo está y si ha tenido pensamientos suicidas; hablar de ello no los provoca. Es un estudio con adultos que respondieron una encuesta en línea: 132 habían intentado suicidarse y completaron el cuestionario AQ. Quienes lo habían intentado más de una vez puntuaron más alto en rasgos autistas que quienes lo habían intentado una vez. Tiene límites: la muestra es pequeña, en su mayoría mujeres, se reclutó en línea y no demuestra causas ni sirve para todas las personas. Si tú o alguien cercano necesitáis ayuda, contactad con un profesional sanitario o un servicio de crisis; en peligro inmediato, llamad al número de emergencias de vuestro país.",
+    "en": "If you support an autistic person, you can calmly and directly ask how they are and whether they have had suicidal thoughts; asking does not cause them. This was a study of adults who answered an online survey: 132 had attempted suicide and completed the AQ questionnaire. Those who had attempted more than once scored higher on autistic traits than those who had attempted once. It has limits: the sample is small, mostly female and recruited online, and it cannot show causes or apply to every person. If you or someone close needs help, contact a clinician, a health service or a crisis service; in immediate danger, call the emergency number of your country.",
+    "sv": "Om du stöttar en autistisk person kan du lugnt och direkt fråga hur hen mår och om hen har haft självmordstankar; frågan orsakar dem inte. Det här var en studie med vuxna som svarade på en enkät på nätet: 132 hade försökt ta sitt liv och fyllde i frågeformuläret AQ. De som försökt mer än en gång fick högre poäng för autistiska drag än de som försökt en gång. Studien har begränsningar: urvalet är litet, mest kvinnor och rekryterat på nätet, och den visar inte orsaker eller gäller alla. Om du eller någon i din närhet behöver hjälp, kontakta en läkare, vården eller en krisjour; vid akut fara, ring nödnumret i ditt land."
+   }
+  },
+  {
+   "id": "PMC6779014",
+   "doi": "10.1177/1362361319831487",
+   "url": "https://europepmc.org/article/PMC/PMC6779014",
+   "title": "Assuming ability of youth with autism: Synthesis of methods capturing the first-person perspectives of children and youth with disabilities.",
+   "year": 2019,
+   "kind": "review",
+   "topics": [
+    "communication_aac"
+   ],
+   "issues": [
+    "code: es: number 284 is not in the source as written",
+    "code: en: number 284 is not in the source as written",
+    "code: sv: number 284 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Pregunta directamente a tu hijo o hija qué piensa y siente, y ofrécele varias formas de responder: hablar, escribir, dibujar, usar gestos o llevar un diario. Presume que tiene algo que decir. La evidencia es una revisión de alcance de 284 artículos sobre jóvenes con distintas discapacidades, más una consulta con un grupo de madres y padres de jóvenes autistas. Sus límites: pocos estudios se centraron en jóvenes autistas, y la consulta con familias fue de un solo grupo, así que no sirve como regla para todas las personas.",
+    "en": "Ask your child directly what they think and feel, and offer several ways to answer: talking, writing, drawing, gestures or keeping a diary. Assume they have something to say. The evidence is a scoping review of 284 articles about youth with various disabilities, plus a consultation with a group of parents of autistic youth. Its limits: few of the studies focused on autistic youth, and the family consultation involved one group, so it is not a rule for every person.",
+    "sv": "Fråga ditt barn direkt vad hen tycker och känner, och erbjud flera sätt att svara: tala, skriva, rita, använda gester eller föra dagbok. Utgå från att hen har något att berätta. Underlaget är en kartläggande översikt av 284 artiklar om unga med olika funktionsnedsättningar, plus en samrådsgrupp med föräldrar till autistiska unga. Begränsningar: få studier handlade om autistiska unga, och samrådet med föräldrar gällde en enda grupp, så resultaten är ingen regel för alla."
+   }
+  },
+  {
+   "id": "PMC6959478",
+   "doi": "10.1037/arc0000067",
+   "url": "https://europepmc.org/article/PMC/PMC6959478",
+   "title": "Empirical Failures of the Claim That Autistic People Lack a Theory of Mind.",
+   "year": 2019,
+   "kind": "study",
+   "topics": [
+    "adult_life",
+    "anxiety",
+    "communication_aac",
+    "family_caregivers",
+    "feeding",
+    "pain_health",
+    "school",
+    "women_girls"
+   ],
+   "issues": [
+    "unsupported: The Spanish version says the review does not resolve questions about how autistic and non-autistic people understand each other, but the English and Swedish versions say it does not settle questions about how people understand each other in general",
+    "unsupported: The Swedish version renders the quoted claim as 'does not understand that others have thoughts and feelings', which differs from the abstract's 'minds' and from the English and Spanish wording",
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Si alguien le dice que una persona autista \"no entiende que los demás tienen mente\", puede dudar de esa afirmación y mirar cómo se comunica y se relaciona esa persona en concreto. Pregúntele cómo ve ella las situaciones, en lugar de suponerlo. Este artículo es una revisión de estudios previos sobre las tareas de teoría de la mente. Concluye que la evidencia no respalda esa afirmación y que además puede resultar dañina para la sociedad. Como es una revisión con una postura crítica, no resuelve todas las preguntas sobre cómo se entienden las personas autistas y no personas no autistas, ni describe a cada persona.",
+    "en": "If someone tells you an autistic person \"doesn't understand that others have minds\", you can question that claim and look at how this particular person communicates and relates. Ask how they see a situation instead of assuming. This article is a review of earlier research on theory-of-mind tasks. It concludes that the evidence does not support the claim and that the claim can be harmful for society. Because it is a review that argues a critical position, it does not settle every question about how people understand each other, and it cannot describe any one person.",
+    "sv": "Om någon säger att en autistisk person \"inte förstår att andra har tankar och känslor\" kan du ifrågasätta påståendet och se hur just den personen kommunicerar och förhåller sig till andra. Fråga hur hen ser på en situation i stället för att anta. Artikeln är en översikt av tidigare forskning om uppgifter som mäter så kallad theory of mind. Slutsatsen är att belägg saknas för påståendet och att det kan vara skadligt för samhället. Eftersom det är en översikt med en kritisk hållning besvarar den inte alla frågor om hur människor förstår varandra och beskriver ingen enskild person."
+   }
+  },
+  {
+   "id": "PMC7008575",
+   "doi": "10.1186/s13229-020-0319-8",
+   "url": "https://europepmc.org/article/PMC/PMC7008575",
+   "title": "Links between self-injury and suicidality in autism.",
+   "year": 2020,
+   "kind": "study",
+   "topics": [
+    "adult_life",
+    "anxiety",
+    "challenging_behavior",
+    "family_caregivers",
+    "feeding",
+    "pain_health",
+    "sensory",
+    "transitions",
+    "women_girls"
+   ],
+   "issues": [
+    "code: es: number 103 is not in the source as written",
+    "code: en: number 103 is not in the source as written",
+    "code: sv: number 103 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si una persona autista se autolesiona, aunque lo viva como algo útil o neutro, conviene preguntarle con calma y sin juicio si tiene pensamientos suicidas, y buscar apoyo profesional. Es un estudio con 103 participantes autistas que respondieron cuestionarios en línea: la autolesión se relacionó con ideación y intentos suicidas, sobre todo con cortarse, con varias formas de autolesión y con ciertos motivos, como regular emociones de baja energía o castigarse. Los datos son preliminares y no valen para todas las personas. Busca ayuda de un profesional sanitario o un servicio de crisis; si hay peligro inmediato, llama al número de emergencias de tu país.",
+    "en": "If an autistic person self-injures, even when they see it as helpful or neutral, it is worth asking them calmly and without judgement whether they have thoughts of suicide, and seeking professional support. This was a study of 103 autistic participants who answered online questionnaires: self-injury was linked to suicide ideation and attempts, especially cutting, several different self-injury methods, and certain reasons, such as regulating low-energy emotions or self-punishment. The data are preliminary and do not apply to every person. Contact a clinician, a health service or a crisis service; in immediate danger, call the emergency number of your country.",
+    "sv": "Om en autistisk person skadar sig själv, även när hen ser det som hjälpsamt eller neutralt, är det värt att fråga lugnt och utan att döma om hen har tankar på självmord, och att söka professionellt stöd. Studien omfattade 103 autistiska deltagare som besvarade frågeformulär på nätet: självskadande hängde ihop med självmordstankar och självmordsförsök, särskilt skärande, flera olika sätt att skada sig och vissa skäl, som att reglera känslor med låg energi eller straffa sig själv. Resultaten är preliminära och gäller inte alla. Kontakta en läkare, en vårdinstans eller en krisjour; vid akut fara, ring ditt lands nödnummer."
+   }
+  },
+  {
+   "id": "PMC7079441",
+   "doi": "10.1186/s12888-020-02531-1",
+   "url": "https://europepmc.org/article/PMC/PMC7079441",
+   "title": "The effect of dialectical behaviour therapy in autism spectrum patients with suicidality and/ or self-destructive behaviour (DIASS): study protocol for a multicentre randomised controlled trial.",
+   "year": 2020,
+   "kind": "trial",
+   "topics": [
+    "adult_life",
+    "anxiety",
+    "challenging_behavior",
+    "crisis_regulation",
+    "pain_health",
+    "transitions"
+   ],
+   "issues": [
+    "code: es: number 128 is not in the source as written",
+    "code: en: number 128 is not in the source as written",
+    "code: sv: number 128 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si una persona autista a tu cargo tiene pensamientos suicidas o se hace daño, busca ayuda profesional y pregunta por las terapias disponibles. Este estudio aún no da resultados: es el protocolo de un ensayo aleatorizado que probará la terapia dialéctico-conductual (DBT) con 128 personas autistas con conducta suicida o autolesiones, durante 6 meses, frente a la atención habitual. Hasta ahora no hay una terapia documentada como eficaz para esto en el autismo. Como aún no hay resultados, no sabemos si funcionará. Si tú o alguien cercano estáis en riesgo, contactad con un profesional clínico, un servicio de salud o un servicio de crisis; ante peligro inmediato, llamad al número de emergencias de vuestro país.",
+    "en": "If an autistic person in your care has suicidal thoughts or hurts themselves, seek professional help and ask what therapies are available. This study has no results yet: it is the protocol of a randomised trial that will test dialectical behaviour therapy (DBT) with 128 autistic people with suicidal or self-harming behaviour, over 6 months, compared with usual care. So far no therapy is documented as effective for this in autism. Because there are no results yet, we do not know whether it will work. If you or someone close to you is at risk, contact a clinician, a health service or a crisis service; in immediate danger, call the emergency number of your country.",
+    "sv": "Om en autistisk person du stödjer har självmordstankar eller skadar sig själv, sök professionell hjälp och fråga vilka terapier som finns. Studien har inga resultat än: det är ett protokoll för en randomiserad studie som ska testa dialektisk beteendeterapi (DBT) med 128 autistiska personer med suicidalt eller självskadande beteende, under 6 månader, jämfört med vanlig vård. Hittills finns ingen dokumenterat effektiv terapi för detta vid autism. Eftersom resultat saknas vet vi inte om den fungerar. Om du eller någon nära dig är i riskzonen, kontakta en läkare eller behandlare, en vårdinstans eller en krisjour; vid akut fara, ring larmnumret i ditt land."
+   }
+  },
+  {
+   "id": "PMC7158144",
+   "doi": "10.1186/s12888-020-02577-1",
+   "url": "https://europepmc.org/article/PMC/PMC7158144",
+   "title": "Clinical and cost effectiveness of staff training in the delivery of Positive Behaviour Support (PBS) for adults with intellectual disabilities, autism spectrum disorder and challenging behaviour - randomised trial.",
+   "year": 2020,
+   "kind": "trial",
+   "topics": [
+    "challenging_behavior"
+   ],
+   "issues": [
+    "code: es: number 113 is not in the source as written",
+    "code: en: number 113 is not in the source as written",
+    "code: sv: number 113 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Esta formación al personal sanitario en Apoyo Conductual Positivo no mostró una mejora clara para adultos autistas con discapacidad intelectual. Si ya recibís este apoyo, seguid observando qué ayuda a cada persona y comentadlo con el equipo. Es un ensayo aleatorizado en 23 servicios comunitarios de Inglaterra; este análisis incluyó a 113 adultos con discapacidad intelectual y autismo. No hubo diferencias estadísticamente significativas en la conducta tras 12 meses. Los límites: el grupo fue pequeño, los autores piden ensayos más grandes y mejores intervenciones, y el resultado no describe a cada persona.",
+    "en": "Training health professionals in Positive Behaviour Support did not show a clear benefit for autistic adults with intellectual disability. If you already receive this support, keep noting what helps each person and talk it through with the team. This was a randomised trial in 23 community services in England; this analysis covered 113 adults with intellectual disability and autism. There were no statistically significant differences in behaviour over 12 months. Limits: the group was small, the authors call for larger trials and better interventions, and the result does not describe every person.",
+    "sv": "Utbildning av vårdpersonal i Positive Behaviour Support visade ingen tydlig nytta för autistiska vuxna med intellektuell funktionsnedsättning. Om ni redan får detta stöd: fortsätt notera vad som hjälper just den personen och diskutera det med teamet. Det var en randomiserad studie i 23 kommunala verksamheter i England; den här analysen omfattade 113 vuxna med intellektuell funktionsnedsättning och autism. Efter 12 månader fanns inga statistiskt säkerställda skillnader i beteende. Begränsningar: gruppen var liten, forskarna efterlyser större studier och bättre insatser, och resultatet beskriver inte varje person."
+   }
+  },
+  {
+   "id": "PMC7230567",
+   "doi": "10.3390/jcm9040966",
+   "url": "https://europepmc.org/article/PMC/PMC7230567",
+   "title": "Genetic and Epigenetic Etiology Underlying Autism Spectrum Disorder.",
+   "year": 2020,
+   "kind": "review",
+   "topics": [
+    "family_caregivers"
+   ],
+   "issues": [
+    "unsupported: States that none of this depends on what the family did; the abstract does not address family behavior, and it lists parental age and viral infection as possible contributors",
+    "unsupported: Claims there is no single cause; the abstract only says several factors are plausible contributors and does not rule out single causes",
+    "unsupported: Swedish version says the review 'shows' (visar) there is no single cause, whereas the English says 'suggests' and the Spanish says 'indica', so the versions differ in strength",
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Si te preguntas por qué una persona es autista, esta revisión indica que no hay una sola causa: se habla de genes, de factores epigenéticos y de factores ambientales. Nada de esto depende de lo que hizo la familia, y no cambia lo que la persona necesita mañana: apoyo, comprensión y adaptaciones. Es una revisión que reúne la investigación publicada hasta entonces; no es un estudio con participantes nuevos. Sus límites: describe riesgos y pistas, no explica a cada persona, y no sirve para decidir nada sobre un caso concreto. Si tienes dudas sobre genética, consulta con un profesional sanitario.",
+    "en": "If you wonder why a person is autistic, this review suggests there is no single cause: it discusses genes, epigenetic factors and environmental factors together. None of this depends on what a family did, and it does not change what the person needs tomorrow: support, understanding and adjustments. It is a review that gathers research published up to that point, not a new study with participants. Its limits: it describes risks and clues, not an explanation for each individual, and it cannot guide decisions about one person. For questions about genetics, speak with a health professional.",
+    "sv": "Om du undrar varför en person är autistisk visar den här översikten att det inte finns en enda orsak: den tar upp gener, epigenetiska faktorer och miljöfaktorer tillsammans. Inget av detta beror på vad familjen gjort, och det ändrar inte vad personen behöver i morgon: stöd, förståelse och anpassningar. Det är en översikt som samlar publicerad forskning fram till dess, inte en ny studie med deltagare. Begränsningar: den beskriver risker och ledtrådar, inte en förklaring för varje individ, och den kan inte styra beslut om en enskild person. Vid frågor om genetik, kontakta vården."
+   }
+  },
+  {
+   "id": "PMC7330632",
+   "doi": "10.3389/fpsyt.2020.00614",
+   "url": "https://europepmc.org/article/PMC/PMC7330632",
+   "title": "A Review of Default Mode Network Connectivity and Its Association With Social Cognition in Adolescents With Autism Spectrum Disorder and Early-Onset Psychosis.",
+   "year": 2020,
+   "kind": "review",
+   "topics": [
+    "adult_life"
+   ],
+   "issues": [
+    "unsupported: States that social differences in autistic teenagers are not a lack of willingness; the abstract makes no claim about willingness or motivation",
+    "unsupported: Says social differences have a basis in how brain networks communicate as an established causal fact, while the abstract only reports an association with disrupted DMN connectivity and says neural mechanisms are not fully examined",
+    "unsupported: Says the review cannot predict anything for an individual person; the abstract does not state this, it only says further studies are needed to facilitate prediction of outcomes"
+   ],
+   "rejectedSheet": {
+    "es": "Este estudio no cambia nada en la rutina de mañana, pero ayuda a entender que las diferencias sociales de los adolescentes autistas tienen una base en cómo se comunican entre sí distintas redes del cerebro, y no son falta de voluntad. Es una revisión narrativa de estudios de imagen cerebral: 29 estudios con adolescentes autistas y 14 con adolescentes con psicosis de inicio temprano. En 15 de los 29 estudios sobre autismo predominó una menor conexión en una red llamada red por defecto. Sus límites: los resultados fueron mixtos, los grupos no siempre eran comparables y no sirve para predecir a una persona concreta.",
+    "en": "This study changes nothing about tomorrow's routine, but it can help you see that social differences in autistic teenagers have a basis in how brain networks communicate, and are not a lack of willingness. It is a narrative review of brain imaging studies: 29 studies of autistic adolescents and 14 of adolescents with early-onset psychosis. In 15 of the 29 autism studies, lower connectivity in a network called the default mode network was the main finding. Limits: results were mixed, groups were not always well matched, and it cannot predict anything for one individual person.",
+    "sv": "Den här studien ändrar inget i morgondagens rutiner, men den kan hjälpa dig att se att sociala skillnader hos autistiska tonåringar har en grund i hur hjärnans nätverk kommunicerar, och inte handlar om bristande vilja. Det är en berättande översikt av hjärnavbildningsstudier: 29 studier med autistiska tonåringar och 14 med tonåringar med tidigt debuterande psykos. I 15 av de 29 autismstudierna dominerade lägre konnektivitet i ett nätverk som kallas default mode-nätverket. Begränsningar: resultaten var blandade, grupperna var inte alltid jämförbara och översikten säger inget säkert om en enskild person."
+   }
+  },
+  {
+   "id": "PMC7374933",
+   "doi": "10.1016/j.neubiorev.2017.06.005",
+   "url": "https://europepmc.org/article/PMC/PMC7374933",
+   "title": "Conceptualising compensation in neurodevelopmental disorders: Reflections from autism spectrum disorder.",
+   "year": 2017,
+   "kind": "review",
+   "topics": [
+    "adult_life",
+    "anxiety",
+    "family_caregivers",
+    "school",
+    "sensory",
+    "transitions",
+    "women_girls"
+   ],
+   "issues": [
+    "unsupported: States that someone who seems to be coping well may be putting in extra effort nobody sees; the abstract only says behaviour may appear improved despite persisting cognitive/neural deficits and does not mention effort or hidden strain",
+    "unsupported: Mentions social or school situations, which the abstract does not mention",
+    "unsupported: Says compensation has not been studied directly; the abstract says its workings in neurodevelopmental disorders have not been studied directly, which is close but the sheet drops that qualifier"
+   ],
+   "rejectedSheet": {
+    "es": "Que alguien parezca desenvolverse bien no siempre significa que le resulte fácil: puede estar haciendo un esfuerzo extra que no se ve. Mañana, pregunta a la persona autista cómo se siente tras una situación social o escolar y ofrece pausas, sin guiarte solo por lo que se observa. Es una revisión de la literatura que usa el autismo como ejemplo para proponer una definición de compensación. Sus límites: es una propuesta teórica, la compensación no se ha estudiado directamente y no demuestra lo que le ocurre a cada persona.",
+    "en": "Someone who seems to be coping well may not find it easy: they may be putting in extra effort that nobody sees. Tomorrow, ask the autistic person how they feel after a social or school situation and offer breaks, rather than relying only on what you can observe. This is a review of existing research that uses autism as an example to propose a definition of compensation. Its limits: it is a theoretical proposal, compensation has not been studied directly, and it cannot tell you what is happening for any one person.",
+    "sv": "Att någon verkar klara sig bra betyder inte alltid att det är lätt: personen kan anstränga sig extra på ett sätt som ingen ser. I morgon kan du fråga den autistiska personen hur hen mår efter en social situation eller skoldag och erbjuda pauser, i stället för att bara gå på det du ser. Detta är en översikt av tidigare forskning som använder autism som exempel för att föreslå en definition av kompensation. Begränsningar: det är ett teoretiskt förslag, kompensation har inte studerats direkt och översikten kan inte säga vad som gäller för en enskild person."
+   }
+  },
+  {
+   "id": "PMC7418273",
+   "doi": "10.1177/1362361320909184",
+   "url": "https://europepmc.org/article/PMC/PMC7418273",
+   "title": "Self-guided mindfulness and cognitive behavioural practices reduce anxiety in autistic adults: A pilot 8-month waitlist-controlled trial of widely available online tools.",
+   "year": 2020,
+   "kind": "trial",
+   "topics": [
+    "adult_life",
+    "anxiety",
+    "family_caregivers",
+    "pain_health",
+    "sensory",
+    "transitions"
+   ],
+   "issues": [
+    "unsupported: Spanish and English versions say 'free or widely available/commonly used' programmes, but the abstract does not say the tools are free (the title says 'widely available'); the Swedish version omits 'free', so the versions also differ",
+    "unsupported: The sheet says the Spanish/English versions mention 'free', which the abstract does not support",
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Si te interesa probar algo para la ansiedad, los programas en línea gratuitos o de uso habitual de terapia cognitivo-conductual o de atención plena pueden ser una opción que la persona autista haga a su ritmo. Conviene dejar que elija y que pueda parar. Es un ensayo piloto: 35 personas autistas adultas probaron uno de los dos programas y 19 formaron un grupo de espera. 23 de las 35 (66%) lo completaron, y la ansiedad bajó a los 3 meses y, en parte, a los 6. Los límites: es un estudio pequeño, los beneficios en bienestar general fueron menos claros y quizá sirva solo a quienes se manejan bien con herramientas en línea.",
+    "en": "If anxiety is a concern, free or widely available online programmes of cognitive behavioural or mindfulness practice may be an option an autistic adult can try at their own pace. Let the person choose, and make it fine to stop. This was a pilot trial: 35 autistic adults tried one of the two programmes and 19 formed a waitlist group. 23 of the 35 (66%) completed them, and anxiety fell over 3 months and, to some extent, 6 months. Limits: it was a small study, benefits for wider well-being were less clear, and it may only suit people who can engage well with online tools.",
+    "sv": "Om ångest är ett problem kan välkända onlineprogram i kognitiv beteendeterapi eller mindfulness vara något en autistisk vuxen kan prova i sin egen takt. Låt personen välja och gör det okej att avbryta. Det var en pilotstudie: 35 autistiska vuxna provade ett av de två programmen och 19 utgjorde en väntelistgrupp. 23 av de 35 (66%) slutförde dem, och ångesten minskade över 3 månader och till viss del 6 månader. Begränsningar: studien var liten, effekterna på det bredare måendet var mindre tydliga, och verktygen passar kanske bara dem som kan använda onlineverktyg väl."
+   }
+  },
+  {
+   "id": "PMC7645034",
+   "doi": "10.3389/fpsyg.2020.586171",
+   "url": "https://europepmc.org/article/PMC/PMC7645034",
+   "title": "Neurotype-Matching, but Not Being Autistic, Influences Self and Observer Ratings of Interpersonal Rapport.",
+   "year": 2020,
+   "kind": "study",
+   "topics": [
+    "adult_life",
+    "anxiety",
+    "family_caregivers",
+    "school",
+    "transitions",
+    "women_girls"
+   ],
+   "issues": [
+    "unsupported: The sheet describes participants as adults, but the abstract does not state their age (EN and SV versions)",
+    "unsupported: The sheet says the conversations were brief, but the abstract does not give their length (all versions)",
+    "unsupported: The sheet says the conversations were between strangers (ES only), but the abstract does not say whether partners knew each other",
+    "unsupported: The ES version says observers rated videos of mixed pairs, which is fine, but the ES and EN/SV versions differ: ES says 'desconocidos' and 'estructuradas', while EN and SV say 'adults' and omit strangers",
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Si puedes, facilita ratos de encuentro entre personas autistas y ten presente que la conexión puede ser más fácil entre personas del mismo neurotipo. Si una interacción mixta parece costar, no lo atribuyas a una falta de habilidades de la persona autista. Sobre la evidencia: son dos estudios con personas autistas y no autistas; en el primero participaron 72 personas en parejas y en el segundo 80 observadoras y observadores valoraron vídeos. Las parejas autistas puntuaron mayor sintonía que las mixtas. Límites: eran conversaciones breves y estructuradas entre desconocidos, y no sirve como regla para cada persona.",
+    "en": "If you can, make room for time with other autistic people, and keep in mind that connection may come more easily between people of the same neurotype. If a mixed conversation feels hard, it need not mean the autistic person lacks social skills. On the evidence: two studies with autistic and non-autistic adults; in the first, 72 people took part in pairs, and in the second 80 observers rated videos. Autistic pairs reported higher rapport than mixed pairs. Limits: these were short, semi-structured conversations, and the findings are not a rule for every person.",
+    "sv": "Om det går, skapa utrymme för möten med andra autistiska personer, och tänk på att kontakt kan komma lättare mellan personer med samma neurotyp. Om ett blandat samtal känns svårt behöver det inte betyda att den autistiska personen saknar sociala färdigheter. Om evidensen: två studier med autistiska och icke-autistiska deltagare; i den första deltog 72 personer i par, i den andra bedömde 80 observatörer videor. Autistiska par rapporterade bättre samspel än blandade par. Begränsningar: samtalen var korta och halvstrukturerade, och resultaten är ingen regel för varje person."
+   }
+  },
+  {
+   "id": "PMC8028579",
+   "doi": "10.1186/s13063-021-05205-9",
+   "url": "https://europepmc.org/article/PMC/PMC8028579",
+   "title": "FASTER and SCOTT&EVA trainings for adults with high-functioning autism spectrum disorder (ASD): study protocol for a randomized controlled trial.",
+   "year": 2021,
+   "kind": "trial",
+   "topics": [
+    "anxiety",
+    "family_caregivers",
+    "transitions"
+   ],
+   "issues": [
+    "code: es: number 360 is not in the source as written",
+    "code: en: number 360 is not in the source as written",
+    "code: sv: number 360 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si acompañas a una persona autista adulta, este estudio aún no ofrece resultados: describe un plan para comprobar dos programas de apoyo en habilidades sociales. Uno es una terapia en grupo y el otro un entrenamiento por ordenador. Puedes comentar con su clínico si le interesaría algo así. La evidencia es un protocolo de ensayo aleatorizado: prevé 360 adultos autistas en varios centros de Alemania, comparados con la atención habitual, y la medida principal la valoran familiares o personas cercanas. Como todavía no hay resultados, no sabemos si funcionan, y no debe tomarse como regla para todas las personas.",
+    "en": "If you support an autistic adult, this study does not yet give results: it describes a plan to test two programs for social skills support. One is a group therapy and the other is a computer-based training. You could ask their clinician whether something like this might interest them. The evidence is a randomized trial protocol: it plans 360 autistic adults across several centers in Germany, compared with usual care, with the main outcome rated by relatives or close people. Since there are no results yet, we do not know if the programs work, and this should not be taken as a rule for everyone.",
+    "sv": "Om du stödjer en autistisk vuxen ger den här studien inga resultat ännu: den beskriver en plan för att testa två program för stöd i sociala färdigheter. Det ena är gruppterapi och det andra är datorbaserad träning. Du kan fråga personens kliniker om något sådant kan vara intressant. Underlaget är ett protokoll för en randomiserad studie: den planerar 360 autistiska vuxna vid flera centra i Tyskland, jämförda med vanlig vård, och huvudmåttet bedöms av anhöriga eller närstående. Eftersom resultat saknas vet vi inte om programmen fungerar, och det bör inte ses som en regel för alla."
+   }
+  },
+  {
+   "id": "PMC8108109",
+   "doi": "10.1177/1362361320981319",
+   "url": "https://europepmc.org/article/PMC/PMC8108109",
+   "title": "Ameliorating the disadvantage for autistic job seekers: An initial evaluation of adapted employment interview questions.",
+   "year": 2021,
+   "kind": "study",
+   "topics": [
+    "adult_life"
+   ],
+   "issues": [
+    "unsupported: Says the adapted questions were 'clearer and more concrete'; the abstract does not say how the questions were adapted",
+    "unsupported: Says clearer, more concrete questions help people show their skills; the abstract does not give this as a finding"
+   ],
+   "rejectedSheet": {
+    "es": "Si trabaja con una persona autista que busca empleo, o si es quien entrevista, conviene adaptar las preguntas: hacerlas más claras y concretas ayuda a que muestre sus capacidades. Es un estudio con 50 adultos (25 autistas y 25 no autistas) que hicieron dos entrevistas de trabajo simuladas, con unos 6 meses de diferencia. Personas expertas en empleo valoraron las respuestas sin conocer el diagnóstico. Con preguntas adaptadas, las diferencias entre ambos grupos se redujeron. Es un estudio inicial, con pocas personas y entrevistas simuladas, así que no garantiza lo mismo en entrevistas reales ni para cada persona.",
+    "en": "If you support an autistic job seeker, or you are the one interviewing, adapting the questions is worth trying: clearer, more concrete questions help people show their skills. This was an initial study of 50 adults (25 autistic, 25 non-autistic) who took part in two mock job interviews about 6 months apart. Employment experts rated the answers without knowing who was autistic. With adapted questions, the differences between the two groups reduced. The study was small and used mock interviews, so it cannot promise the same results in real interviews or for every person.",
+    "sv": "Om du stöttar en autistisk person som söker jobb, eller själv intervjuar, är det värt att anpassa frågorna: tydligare och mer konkreta frågor hjälper personer att visa sin kompetens. Studien var en första undersökning med 50 vuxna (25 autistiska och 25 icke-autistiska) som gjorde två låtsasintervjuer med cirka 6 månaders mellanrum. Experter på arbetsliv bedömde svaren utan att veta vem som var autistisk. Med anpassade frågor minskade skillnaderna mellan grupperna. Studien var liten och använde låtsasintervjuer, så den lovar inte samma resultat i verkliga intervjuer eller för varje person."
+   }
+  },
+  {
+   "id": "PMC8260941",
+   "doi": "10.3389/fpsyt.2021.665326",
+   "url": "https://europepmc.org/article/PMC/PMC8260941",
+   "title": "Effectiveness of Virtual/Augmented Reality-Based Therapeutic Interventions on Individuals With Autism Spectrum Disorder: A Comprehensive Meta-Analysis.",
+   "year": 2021,
+   "kind": "meta_analysis",
+   "topics": [
+    "communication_aac",
+    "crisis_regulation"
+   ],
+   "issues": [
+    "unsupported: States that the programmes are not standardised or customised, while the abstract only says standardization and customization need more research"
+   ],
+   "rejectedSheet": {
+    "es": "Si le interesa probar la realidad virtual (RV) para practicar habilidades, puede hacerlo como una opción más, a un ritmo que la persona autista elija y comprobando si le resulta cómoda y útil. Es un metaanálisis que reunió 33 estudios con personas con diagnóstico de autismo. Encontró mejoras en general (g de Hedges de 0.74), sobre todo en habilidades de la vida diaria (g = 1.15). Sin embargo, los programas no están estandarizados ni personalizados, y los resultados no valen igual para todas las personas. Conviene consultar con profesionales de confianza.",
+    "en": "If you are curious about virtual reality (VR) for practising skills, it can be one option to try, at a pace the autistic person chooses, checking whether it feels comfortable and useful to them. This is a meta-analysis that pooled 33 studies of people diagnosed with autism. It found improvements overall (Hedges g of 0.74), especially in daily living skills (g = 1.15). However, the programmes are not standardised or customised, and results will not apply equally to every person. It helps to talk with professionals you trust.",
+    "sv": "Om du är nyfiken på virtuell verklighet (VR) för att öva färdigheter kan det vara ett alternativ att prova, i den takt den autistiska personen väljer, och se om det känns bekvämt och användbart. Detta är en metaanalys som sammanställde 33 studier av personer med autismdiagnos. Den fann förbättringar överlag (Hedges g på 0.74), särskilt i vardagsfärdigheter (g = 1.15). Programmen är dock inte standardiserade eller anpassade, och resultaten gäller inte lika för alla. Det hjälper att prata med yrkespersoner du litar på."
+   }
+  },
+  {
+   "id": "PMC8360844",
+   "doi": "10.3389/fpsyg.2021.699335",
+   "url": "https://europepmc.org/article/PMC/PMC8360844",
+   "title": "Personal Identity After an Autism Diagnosis: Relationships With Self-Esteem, Mental Wellbeing, and Diagnostic Timing.",
+   "year": 2021,
+   "kind": "study",
+   "topics": [
+    "adult_life",
+    "anxiety",
+    "family_caregivers",
+    "school",
+    "sensory",
+    "transitions",
+    "women_girls"
+   ],
+   "issues": [
+    "code: es: number 151 is not in the source as written",
+    "code: en: number 151 is not in the source as written",
+    "code: sv: number 151 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si una persona autista ha recibido hace poco un diagnóstico en la edad adulta, puede ser útil darle tiempo y espacio para asimilarlo, escuchar sus emociones sin prisa y ofrecerle ocasiones de ver la autismo como parte de quien es, con orgullo si lo desea. El estudio fue una encuesta en línea con 151 adultos autistas; 54 respondieron además a una pregunta abierta. Quienes llevaban más tiempo desde el diagnóstico estaban menos insatisfechos con su identidad autista, y más orgullo se relacionó con mayor autoestima. Sin embargo, solo muestra asociaciones, no causas, y cada persona vive este proceso a su manera.",
+    "en": "If an autistic person was recently diagnosed as an adult, it may help to give them time and space to take it in, listen to their feelings without hurrying, and offer chances to see autism as part of who they are, with pride if they wish. The study was an online survey of 151 autistic adults; 54 also answered an open question. People further out from diagnosis were less dissatisfied with their autistic identity, and more autism pride went with higher self-esteem. However, it shows links, not causes, and each person goes through this process in their own way.",
+    "sv": "Om en autistisk person nyligen har fått diagnos som vuxen kan det hjälpa att ge tid och utrymme att ta in den, lyssna på känslorna utan brådska och erbjuda tillfällen att se autism som en del av vem hen är, med stolthet om hen vill. Studien var en webbenkät med 151 autistiska vuxna; 54 svarade också på en öppen fråga. De som hade haft diagnosen längre var mindre missnöjda med sin autistiska identitet, och mer stolthet hängde ihop med högre självkänsla. Studien visar dock samband, inte orsaker, och alla går igenom processen på sitt eget sätt."
+   }
+  },
+  {
+   "id": "PMC8526555",
+   "doi": "10.3389/fpsyt.2021.730448",
+   "url": "https://europepmc.org/article/PMC/PMC8526555",
+   "title": "A Randomized Controlled Trial of the Korean Version of the Program for the Education and Enrichment of Relational Skills for Young Adults (PEERS®-YA-K) With Autism Spectrum Disorder: A Pilot Study.",
+   "year": 2021,
+   "kind": "trial",
+   "topics": [
+    "adult_life",
+    "anxiety",
+    "transitions"
+   ],
+   "issues": [
+    "code: es: number 37 is not in the source as written",
+    "code: en: number 37 is not in the source as written",
+    "code: sv: number 37 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si una persona autista adulta joven quiere practicar habilidades sociales, como las citas o las actividades con otras personas, un programa estructurado con un acompañante social puede ser una opción que valga la pena explorar. Es un ensayo piloto aleatorizado de una versión coreana de un programa, con 37 jóvenes adultos autistas de 18-35 años, con sus acompañantes. Mejoró el conocimiento de habilidades sociales, y dentro de los grupos se observaron menos síntomas de depresión y ansiedad. Es un estudio pequeño, realizado en Corea, y no demuestra que sirva a todas las personas. Conviene preguntar a cada persona qué desea aprender.",
+    "en": "If an autistic young adult wants to practise social skills, such as dating or social activities, a structured programme with a social coach may be worth exploring. This was a small randomized pilot trial of a Korean version of a programme, with 37 autistic young adults aged 18-35 and their coaches. Knowledge of social skills improved, and within the groups depression and anxiety symptoms were lower. The study was small, done in Korea, and does not show the programme suits everyone. It helps to ask each person what they want to learn.",
+    "sv": "Om en autistisk ung vuxen vill öva sociala färdigheter, till exempel dejting eller sociala aktiviteter, kan ett strukturerat program med en social coach vara värt att undersöka. Detta var en liten randomiserad pilotstudie av en koreansk version av ett program, med 37 autistiska unga vuxna i åldern 18-35 och deras coacher. Kunskapen om sociala färdigheter ökade, och inom grupperna sågs mindre depression och ångest. Studien var liten, gjordes i Korea och visar inte att programmet passar alla. Fråga gärna varje person vad hen vill lära sig."
+   }
+  },
+  {
+   "id": "PMC8553330",
+   "doi": "10.1002/brb3.2341",
+   "url": "https://europepmc.org/article/PMC/PMC8553330",
+   "title": "Biopsychological correlates of repetitive and restricted behaviors in autism spectrum disorders.",
+   "year": 2021,
+   "kind": "systematic_review",
+   "topics": [
+    "family_caregivers",
+    "sensory",
+    "transitions"
+   ],
+   "issues": [
+    "code: es: number 131 is not in the source as written",
+    "code: en: number 131 is not in the source as written",
+    "code: sv: number 131 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Las conductas repetitivas y los intereses intensos tienen muchas formas, y pueden cumplir una función para la persona. Antes de intentar cambiarlas, conviene observar cuándo aparecen y qué aportan, y cuidar que el entorno ofrezca estímulos y actividades que la persona disfrute. Es una revisión sistemática que analizó 131 artículos, incluidos algunos con modelos animales. Señala que estas conductas se relacionan con diferencias cerebrales, con la flexibilidad cognitiva y con entornos poco estimulantes. Sus límites: reúne correlaciones, no demuestra causas, y no sirve como regla para cada persona autista. Comenta los hallazgos con profesionales que conozcan a la persona.",
+    "en": "Repetitive behaviours and intense interests take many forms, and they may serve a purpose for the person. Before trying to change them, it helps to notice when they happen and what they give the person, and to make sure the environment offers stimulating activities they enjoy. This is a systematic review of 131 articles, including some animal models. It links these behaviours to brain differences, cognitive flexibility and non-stimulating environments. Its limits: it gathers correlations, does not prove causes, and is not a rule for every autistic person. Discuss the findings with professionals who know the person.",
+    "sv": "Repetitiva beteenden och starka intressen tar många former och kan fylla en funktion för personen. Innan man försöker förändra dem hjälper det att notera när de uppstår och vad de ger, och att se till att miljön erbjuder stimulerande aktiviteter som personen gillar. Detta är en systematisk översikt av 131 artiklar, bland annat med djurmodeller. Den kopplar beteendena till hjärnskillnader, kognitiv flexibilitet och understimulerande miljöer. Begränsningar: den samlar samband, visar inte orsaker och är ingen regel för varje autistisk person. Diskutera resultaten med yrkespersoner som känner personen."
+   }
+  },
+  {
+   "id": "PMC8750133",
+   "doi": "10.1177/13623613211020183",
+   "url": "https://europepmc.org/article/PMC/PMC8750133",
+   "title": "Self-reported parkinsonism features in older autistic adults: A descriptive study.",
+   "year": 2022,
+   "kind": "study",
+   "topics": [
+    "feeding",
+    "pain_health",
+    "school",
+    "sensory",
+    "sleep"
+   ],
+   "issues": [
+    "unsupported: The Spanish version says 'todas adultas autistas' (all female autistic adults), but the abstract includes both males and females, so the Spanish differs from the English and Swedish versions and misstates the population",
+    "languages differ"
+   ],
+   "rejectedSheet": {
+    "es": "Si una persona autista mayor de 50 años nota temblores o rigidez en las piernas, conviene anotarlo y comentarlo con su médico o médica; no hay que esperar a que moleste más. El estudio fue descriptivo y recogió lo que contaron las propias personas en dos estudios independientes, uno neerlandés (50-81 años) y otro de EE. UU. (50-83 años), todas adultas autistas sin sospecha de discapacidad intelectual. Los síntomas fueron muy frecuentes. Sin embargo, se basa en autoinformes, sin valoración neurológica en persona, así que no demuestra mayor riesgo de enfermedad de Parkinson ni sirve para cada persona.",
+    "en": "If an autistic person over 50 notices tremors or stiffness in the legs, it is worth noting this down and mentioning it to their doctor, rather than waiting until it bothers them more. This was a descriptive study based on what people reported themselves, in two independent studies: a Dutch one (ages 50-81) and a US one (ages 50-83), with autistic adults without a suspected intellectual disability. These motor features were very common. However, it relied on self-report, with no in-person neurological assessment, so it does not show a higher risk of Parkinson's disease and does not apply to every person.",
+    "sv": "Om en autistisk person över 50 år märker darrningar eller stelhet i benen är det värt att anteckna det och ta upp det med sin läkare, i stället för att vänta tills det besvärar mer. Studien var beskrivande och byggde på vad människor själva uppgav, i två oberoende studier: en nederländsk (50-81 år) och en amerikansk (50-83 år), med autistiska vuxna utan misstänkt intellektuell funktionsnedsättning. Dessa motoriska drag var mycket vanliga. Studien bygger dock på självrapportering, utan neurologisk undersökning på plats, så den visar inte ökad risk för Parkinsons sjukdom och gäller inte för alla."
+   }
+  },
+  {
+   "id": "PMC8750139",
+   "doi": "10.1177/13623613211019594",
+   "url": "https://europepmc.org/article/PMC/PMC8750139",
+   "title": "Participatory autism research: Early career and established researchers' views and experiences.",
+   "year": 2022,
+   "kind": "study",
+   "topics": [
+    "family_caregivers",
+    "transitions",
+    "women_girls"
+   ],
+   "issues": [
+    "unsupported: The sheet states the study included only researchers and no autistic people or families; the abstract does not say this, and some researchers may themselves be autistic or family members."
+   ],
+   "rejectedSheet": {
+    "es": "Si te piden participar en una investigación, puedes preguntar cómo se tomarán las decisiones y qué papel tendrán las personas autistas y sus familias: qué se estudia, cómo y cómo se usan los resultados. Es razonable pedir comunicación clara y tiempo para construir confianza. El estudio entrevistó, de forma individual o en grupo, a 25 personas investigadoras: 14 al inicio de su carrera y 11 más senior. Dijeron que la participación es flexible, pero poco clara, y que falta tiempo, financiación y apoyo. Límites: no incluyó a personas autistas ni a familias, solo a investigadores, y sus opiniones no valen para todos los equipos.",
+    "en": "If you are invited to take part in research, you can ask how decisions will be made and what role autistic people and families will have: what is studied, how, and how results are used. It is reasonable to ask for clear communication and time to build trust. The study interviewed 25 researchers, individually or in groups: 14 early in their careers and 11 more senior. They said participatory research is flexible but can be unclear, and that time, funding and support are often lacking. Limits: it heard only from researchers, not autistic people or families, and their views do not apply to every research team.",
+    "sv": "Om du blir tillfrågad att delta i forskning kan du fråga hur beslut fattas och vilken roll autistiska personer och familjer får: vad som studeras, hur, och hur resultaten används. Det är rimligt att be om tydlig kommunikation och tid att bygga förtroende. Studien intervjuade 25 forskare, enskilt eller i grupp: 14 tidigt i karriären och 11 mer erfarna. De sa att deltagarbaserad forskning är flexibel men kan vara otydlig, och att tid, finansiering och stöd ofta saknas. Begränsningar: studien hörde bara forskare, inte autistiska personer eller familjer, och deras åsikter gäller inte alla forskargrupper."
+   }
+  },
+  {
+   "id": "PMC8813820",
+   "doi": "10.1007/s10803-021-04987-w",
+   "url": "https://europepmc.org/article/PMC/PMC8813820",
+   "title": "Understanding Camouflaging as a Response to Autism-Related Stigma: A Social Identity Theory Approach.",
+   "year": 2022,
+   "kind": "study",
+   "topics": [
+    "adult_life",
+    "anxiety",
+    "school",
+    "sensory",
+    "transitions",
+    "women_girls"
+   ],
+   "issues": [
+    "code: es: number 223 is not in the source as written",
+    "code: en: number 223 is not in the source as written",
+    "code: sv: number 223 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si una persona autista oculta sus rasgos en público, puede ayudar preguntarle con calma cuándo se siente obligada a hacerlo y crear espacios donde no tenga que esconderse. El estudio fue una encuesta en línea a 223 adultos autistas. Encontró que quienes percibían más estigma relacionado con el autismo camuflaban más, y que el estigma se asociaba con menor bienestar mental. Sin embargo, el camuflaje no explicaba esa relación. Como es una encuesta puntual, no puede probar causas, y la experiencia de cada persona es distinta, así que no debe leerse como una regla general.",
+    "en": "If an autistic person hides their traits in public, it can help to ask calmly when they feel they have to, and to create spaces where they don't need to hide. The study was an online survey of 223 autistic adults. It found that people who perceived more autism-related stigma camouflaged more, and that stigma was linked to lower mental wellbeing. However, camouflaging did not explain that link. As a one-time survey, it cannot prove cause and effect, and every person's experience differs, so it should not be read as a rule for everyone.",
+    "sv": "Om en autistisk person döljer sina drag offentligt kan det hjälpa att lugnt fråga när hen känner sig tvungen till det och att skapa miljöer där hen inte behöver gömma sig. Studien var en onlineenkät med 223 autistiska vuxna. Den visade att de som upplevde mer autismrelaterat stigma kamouflerade mer, och att stigma hängde ihop med lägre psykiskt välbefinnande. Kamouflering förklarade dock inte det sambandet. Eftersom det var en enkät vid ett tillfälle kan den inte visa orsak och verkan, och varje människas erfarenhet är olika, så den bör inte ses som en regel för alla."
+   }
+  },
+  {
+   "id": "PMC8858939",
+   "doi": "10.3389/fcell.2021.781327",
+   "url": "https://europepmc.org/article/PMC/PMC8858939",
+   "title": "GABAergic System Dysfunction in Autism Spectrum Disorders.",
+   "year": 2021,
+   "kind": "review",
+   "topics": [
+    "anxiety",
+    "pain_health",
+    "sensory",
+    "sleep",
+    "women_girls"
+   ],
+   "issues": [
+    "unsupported: States that autistic people's sensory differences have a biological basis and are nobody's fault; the abstract mentions only social communication deficits and repetitive behaviors, not sensory differences, and says nothing about blame",
+    "unsupported: Claims communication differences are biologically based and nobody's fault, which overstates the abstract's evidence that the mechanism remains unclear"
+   ],
+   "rejectedSheet": {
+    "es": "Este estudio no ofrece nada que cambie la rutina de mañana: es investigación básica sobre el cerebro. Lo más útil es recordar que las diferencias sensoriales y de comunicación de una persona autista tienen una base biológica y no son culpa de nadie. Es una revisión que reúne estudios de neuroimagen, de tejido postmortem, genéticos y farmacológicos, además de modelos en roedores. Sugiere que el sistema GABA, que regula la actividad cerebral, podría influir en el autismo. Sin embargo, el propio texto reconoce que el mecanismo sigue sin estar claro, y no sirve para decidir nada sobre una persona concreta. Cualquier decisión médica corresponde a un profesional clínico.",
+    "en": "This study changes nothing about tomorrow morning's routine: it is basic brain research. What it can offer is a reminder that autistic people's sensory and communication differences have a biological basis and are nobody's fault. It is a review gathering human neuroimaging, postmortem, genetic and pharmacological studies, plus rodent models. It suggests the GABA system, which helps regulate brain activity, may play a part in autism. However, the authors state that the exact mechanism remains unclear, and it cannot guide choices for any individual person. Any medical decision belongs with a clinician.",
+    "sv": "Den här studien ändrar inget i morgondagens rutiner: det är grundforskning om hjärnan. Den kan påminna om att autistiska människors sensoriska och kommunikativa skillnader har en biologisk grund och inte är någons fel. Det är en översikt som samlar studier med hjärnavbildning, postmortem-vävnad, genetik och läkemedel, samt djurmodeller med gnagare. Den antyder att GABA-systemet, som hjälper till att reglera hjärnans aktivitet, kan spela en roll vid autism. Författarna skriver dock att mekanismen fortfarande är oklar, och resultaten säger inget om en enskild person. Medicinska beslut hör hemma hos en läkare."
+   }
+  },
+  {
+   "id": "PMC8992917",
+   "doi": "10.1089/aut.2020.0071",
+   "url": "https://europepmc.org/article/PMC/PMC8992917",
+   "title": "Autistic Adults' Experiences of Camouflaging and Its Perceived Impact on Mental Health.",
+   "year": 2021,
+   "kind": "study",
+   "topics": [
+    "adult_life",
+    "anxiety",
+    "crisis_regulation",
+    "family_caregivers",
+    "feeding",
+    "pain_health",
+    "school",
+    "transitions",
+    "women_girls"
+   ],
+   "issues": [
+    "code: es: number 277 is not in the source as written",
+    "code: en: number 277 is not in the source as written",
+    "code: sv: number 277 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si cuidas a una persona autista adulta, puedes preguntarle con calma cuánto tiempo siente que debe ocultar su forma de ser y qué lugares o personas le permiten no hacerlo. Reducir esa presión puede ayudar. Es un estudio con encuesta en línea, diseñada junto a personas autistas; sus respuestas abiertas de 277 adultos autistas se analizaron por temas. Pasar mucho tiempo camuflándose parecía lo más dañino para la salud mental, aunque el camuflaje también daba acceso a espacios sociales y protección. Refleja experiencias propias y no vale para todas las personas. El estudio también preguntó por autolesiones y pensamientos suicidas. Si hay malestar intenso, busca ayuda profesional: un clínico, un servicio de salud o de crisis. Ante peligro inmediato, llama al número de emergencias de tu país.",
+    "en": "If you support an autistic adult, you can calmly ask how much time they feel they must hide their natural way of being, and which places or people let them stop. Reducing that pressure may help. This was an online survey designed with autistic adults; the open answers of 277 autistic adults were analysed by theme. Spending a lot of time camouflaging seemed most damaging to mental health, though camouflaging also gave access to social spaces and protection from harm. It reflects people's own experiences and does not apply to everyone. The survey also asked about self-injury and suicidal thoughts. If distress is intense, seek professional help from a clinician, a health service or a crisis service. In immediate danger, call your country's emergency number.",
+    "sv": "Om du stöttar en autistisk vuxen kan du lugnt fråga hur mycket tid hen känner att hen måste dölja sitt sätt att vara, och vilka platser eller personer som gör att hen slipper. Att minska det trycket kan hjälpa. Detta var en webbenkät utformad tillsammans med autistiska vuxna; de öppna svaren från 277 autistiska vuxna analyserades tematiskt. Att kamouflera mycket av tiden verkade vara mest skadligt för den psykiska hälsan, men kamouflering gav också tillgång till sociala rum och skydd mot skada. Studien speglar egna erfarenheter och gäller inte alla. Enkäten frågade även om självskada och självmordstankar. Vid stark ångest, sök professionell hjälp hos en kliniker, en vårdinstans eller en krisjour. Vid akut fara, ring ditt lands nödnummer."
+   }
+  },
+  {
+   "id": "PMC9136002",
+   "doi": "10.3389/fpsyt.2022.889636",
+   "url": "https://europepmc.org/article/PMC/PMC9136002",
+   "title": "Sex Differences in Autism Spectrum Disorder: Diagnostic, Neurobiological, and Behavioral Features.",
+   "year": 2022,
+   "kind": "review",
+   "topics": [
+    "anxiety",
+    "family_caregivers",
+    "pain_health",
+    "school",
+    "sensory",
+    "transitions",
+    "women_girls"
+   ],
+   "issues": [
+    "unsupported: States that signs in girls and women may go unnoticed; the abstract does not say that females' signs are overlooked or missed in diagnosis"
+   ],
+   "rejectedSheet": {
+    "es": "Si cuidas a una niña o mujer autista, recuerda que el autismo puede presentarse de formas distintas según el sexo, y que sus señales pueden pasar desapercibidas. Si algo te preocupa, anota ejemplos concretos de su día a día y llévalos a una evaluación. Esta es una revisión de estudios sobre diferencias entre hombres y mujeres autistas en diagnóstico, imágenes cerebrales y conducta, e incluye modelos animales. Menciona que alrededor del 70% de los casos descritos son hombres. Sus límites: es una revisión, no una prueba nueva, y no sirve como regla para cada persona.",
+    "en": "If you support an autistic girl or woman, keep in mind that autism can look different depending on sex, and her signs may go unnoticed. If something worries you, write down concrete examples from daily life and bring them to an assessment. This is a review of studies on differences between autistic males and females in diagnosis, brain imaging and behaviour, and it also covers animal models. It notes that around 70% of described cases were male. Its limits: it is a review, not a new test, and it cannot be treated as a rule for any one person.",
+    "sv": "Om du stöttar en autistisk flicka eller kvinna, kom ihåg att autism kan se olika ut beroende på kön och att hennes tecken kan förbises. Om något oroar dig, skriv ner konkreta exempel från vardagen och ta med dem till en utredning. Detta är en översikt av studier om skillnader mellan autistiska män och kvinnor i diagnos, hjärnavbildning och beteende, och den tar även upp djurmodeller. Den nämner att omkring 70% av de beskrivna fallen var män. Begränsningar: det är en översikt, inte en ny undersökning, och den kan inte ses som en regel för en enskild person."
+   }
+  },
+  {
+   "id": "PMC9216612",
+   "doi": "10.1371/journal.pone.0269800",
+   "url": "https://europepmc.org/article/PMC/PMC9216612",
+   "title": "The use of social robots with children and young people on the autism spectrum: A systematic review and meta-analysis.",
+   "year": 2022,
+   "kind": "meta_analysis",
+   "topics": [
+    "crisis_regulation"
+   ],
+   "issues": [
+    "unsupported: Describes the evidence as a meta-analysis of 40 studies; the abstract says 40 studies met the review inclusion criteria, but the meta-analysis used only 12 RCTs."
+   ],
+   "rejectedSheet": {
+    "es": "Si le interesa un robot social para apoyar las habilidades sociales de una niña o un niño autista, puede probarlo como una opción más, observando si le resulta agradable y útil, y sin sustituir otros apoyos. La evidencia es un metaanálisis de 40 estudios con niños y jóvenes autistas de hasta 18 años. En los ensayos aleatorizados, los robots mejoraron el funcionamiento social (g = 0.35). No mejoraron los resultados emocionales ni motores, pero había muy pocos ensayos. Los beneficios parecían mayores en niños más pequeños. Los resultados son promedios y no garantizan el mismo efecto en cada persona.",
+    "en": "If you are curious about a social robot to support an autistic child's social skills, you can try it as one option among others, watching whether the child enjoys it and finds it useful, without replacing other supports. The evidence is a meta-analysis of 40 studies with autistic children and young people up to 18 years old. In randomized trials, robots improved social functioning (g = 0.35). They did not improve emotional or motor outcomes, but there were very few trials. Benefits seemed greater in younger children. These are averages and do not guarantee the same effect for every person.",
+    "sv": "Om du är nyfiken på en social robot som stöd för en autistisknings sociala färdigheter kan du prova den som ett alternativ bland andra, se om barnet trivs och har nytta av den, och inte ersätta andra stöd. Underlaget är en metaanalys av 40 studier med autistiska barn och unga upp till 18 år. I randomiserade studier förbättrade robotar det sociala fungerandet (g = 0.35). De förbättrade inte emotionella eller motoriska resultat, men det fanns mycket få studier. Nyttan verkade större hos yngre barn. Det är medelvärden och garanterar inte samma effekt för varje person."
+   }
+  },
+  {
+   "id": "PMC9310578",
+   "doi": "10.1002/aur.2696",
+   "url": "https://europepmc.org/article/PMC/PMC9310578",
+   "title": "Global prevalence of autism: A systematic review update.",
+   "year": 2022,
+   "kind": "systematic_review",
+   "topics": [
+    "pain_health",
+    "school",
+    "transitions",
+    "women_girls"
+   ],
+   "issues": [
+    "unsupported: The sheet says the review cannot explain why the numbers vary (ES, EN, SV), but the abstract does offer likely explanations: community awareness, service capacity, help seeking, sociodemographic factors, and changes in case identification and definition.",
+    "unsupported: The sheet says autistic people live in every community, but the abstract does not support this."
+   ],
+   "rejectedSheet": {
+    "es": "Si te preguntas si el autismo es poco frecuente: no lo es. Hay muchas personas autistas en cada comunidad, y conviene pedir apoyos y adaptaciones sin sentir que se pide algo excepcional. Es una revisión sistemática que reunió 99 estimaciones de 71 estudios publicados desde 2012; la prevalencia mediana fue de 100/10,000, con un rango de 1.09/10,000 a 436.0/10,000. Las cifras varían según la conciencia social, los servicios disponibles y los métodos de cada estudio. Como límite, la revisión no pudo valorar la calidad de los estudios. Tampoco dice nada sobre una persona concreta ni explica por qué cambian las cifras.",
+    "en": "If you wonder whether autism is rare: it is not. Autistic people live in every community, so asking for supports and adjustments is nothing out of the ordinary. This systematic review pulled together 99 estimates from 71 studies published since 2012; the median prevalence was 100/10,000, ranging from 1.09/10,000 to 436.0/10,000. Figures differ with community awareness, available services and each study's methods. One limit is that the review could not appraise the quality of the studies. It also says nothing about any one person and cannot explain why the numbers vary.",
+    "sv": "Undrar du om autism är ovanligt? Det är det inte. Autistiska personer finns i alla samhällen, så det är inget udda att be om stöd och anpassningar. Denna systematiska översikt samlade 99 uppskattningar från 71 studier publicerade sedan 2012; mediantalet för förekomst var 100/10,000, med spridning från 1.09/10,000 till 436.0/10,000. Siffrorna varierar med kunskap i samhället, tillgängliga tjänster och studiernas metoder. En begränsning är att översikten inte kunde bedöma studiernas kvalitet. Den säger inget om en enskild person och kan inte förklara varför siffrorna skiljer sig."
+   }
+  },
+  {
+   "id": "PMC9377609",
+   "doi": "10.1371/journal.pone.0270153",
+   "url": "https://europepmc.org/article/PMC/PMC9377609",
+   "title": "Parent-mediated play-based interventions to improve social communication and language skills of preschool autistic children: A systematic review and meta-analysis protocol.",
+   "year": 2022,
+   "kind": "meta_analysis",
+   "topics": [
+    "family_caregivers"
+   ],
+   "issues": [
+    "unsupported: Says play is done 'at home'; the abstract specifies non-educational settings, not the home",
+    "unsupported: Suggests playing with the child may support social communication and language, although the abstract reports no results for this protocol"
+   ],
+   "rejectedSheet": {
+    "es": "Jugar con tu hijo o hija autista en casa puede ser una vía para apoyar la comunicación social y el lenguaje, pero este estudio aún no ofrece resultados. Es un protocolo de revisión sistemática: describe cómo se buscarán y analizarán estudios experimentales sobre intervenciones de juego guiadas por madres o padres con niños autistas de seis años o menos, publicados entre 2000 y 2021. Como solo es un plan, no sabemos todavía si funcionan ni para quién. Puede hablar con el equipo profesional que os acompaña antes de cambiar rutinas, y adaptar el juego a los intereses de vuestro hijo o hija.",
+    "en": "Playing with your autistic child at home may be one way to support social communication and language, but this study does not yet give results. It is a systematic review protocol: it describes how experimental studies of parent-led play-based interventions with autistic children aged six or younger, published between 2000 and 2021, will be searched for and analysed. Because it is only a plan, we do not yet know whether these approaches work or for whom. You can talk with the professionals who support your family before changing routines, and shape play around your child's own interests.",
+    "sv": "Att leka med ditt autistiska barn hemma kan vara ett sätt att stödja social kommunikation och språk, men den här studien ger ännu inga resultat. Det är ett protokoll för en systematisk översikt: det beskriver hur experimentella studier av förälderledda lekbaserade insatser för autistiska barn upp till sex år, publicerade 2000–2021, ska sökas och analyseras. Eftersom det bara är en plan vet vi ännu inte om metoderna fungerar eller för vem. Du kan prata med de yrkespersoner som stöttar er innan ni ändrar rutiner, och utgå från ditt barns egna intressen i leken."
+   }
+  },
+  {
+   "id": "PMC9556420",
+   "doi": "10.1007/s10508-022-02386-5",
+   "url": "https://europepmc.org/article/PMC/PMC9556420",
+   "title": "Implicit and Explicit Gender-Related Cognition, Gender Dysphoria, Autistic-Like Traits, and Mentalizing: Differences Between Autistic and Non-Autistic Cisgender and Transgender Adults.",
+   "year": 2022,
+   "kind": "study",
+   "topics": [
+    "women_girls"
+   ],
+   "issues": [
+    "code: es: number 347 is not in the source as written",
+    "code: en: number 347 is not in the source as written",
+    "code: sv: number 347 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si una persona autista habla de su género, de sentirse incómoda con él o de no encajar en lo típico de su género, conviene escucharla con curiosidad, sin corregirla ni darlo por una fase. Es un estudio con 347 adultos, autistas y no autistas, cisgénero y transgénero, que respondieron cuestionarios y una medida implícita. Entre las personas cisgénero, las autistas refirieron más sentimientos de disforia de género y recordaron menos conducta típica de género en la infancia. Entre las personas transgénero, autistas y no autistas no mostraron diferencias. Límites: solo participaron adultos, los resultados son promedios de grupo y no describen a cada persona.",
+    "en": "If an autistic person talks about their gender, feeling uneasy with it, or not fitting what is typical for their gender, listen with curiosity. Don't correct them or assume it is a phase. This study involved 347 adults, autistic and non-autistic, cisgender and transgender, who completed questionnaires and an implicit measure. Among cisgender people, autistic participants reported more gender dysphoric feelings and recalled less gender-typed behaviour in childhood. Among transgender people, autistic and non-autistic participants did not differ. Limits: only adults took part, and the results are group averages that do not describe every individual.",
+    "sv": "Om en autistisk person pratar om sitt kön, om obehag kring det eller om att inte passa in i det som är typiskt för könet, lyssna nyfiket. Rätta inte och anta inte att det är en fas. Studien omfattade 347 vuxna, autistiska och icke-autistiska, cisgender och transpersoner, som besvarade enkäter och ett implicit test. Bland cisgenderpersoner uppgav autistiska deltagare fler känslor av könsdysfori och mindes mindre könstypiskt beteende från barndomen. Bland transpersoner skilde sig autistiska och icke-autistiska inte åt. Begränsningar: bara vuxna deltog, och resultaten är gruppgenomsnitt som inte beskriver varje individ."
+   }
+  },
+  {
+   "id": "PMC9796320",
+   "doi": "10.1002/aur.2783",
+   "url": "https://europepmc.org/article/PMC/PMC9796320",
+   "title": "Is traditional back translation enough? Comparison of translation methodology for an ASD screening tool.",
+   "year": 2022,
+   "kind": "trial",
+   "topics": [
+    "family_caregivers"
+   ],
+   "issues": [
+    "code: es: number 380 is not in the source as written",
+    "code: en: number 380 is not in the source as written",
+    "code: sv: number 380 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si le entregan un cuestionario de cribado del autismo traducido, recuerde que la redacción importa: una traducción literal puede entenderse de otra manera que una adaptada a la cultura. Si algo no le resulta claro, dígalo al profesional y pida explicarlo con otras palabras. Es un ensayo con 380 cuidadores hispanohablantes en EE. UU. de niños de 8-16 meses, asignados al azar a una de dos versiones en español de un cuestionario de cribado. Las versiones resultaron psicométricamente distintas, y los cuidadores interpretaron y respondieron de forma diferente las mismas preguntas. No indica qué versión es mejor ni sirve para valorar a un niño concreto.",
+    "en": "If you are handed a translated autism screening questionnaire, remember that wording matters: a literal translation can be understood differently from one adapted to the culture. If a question is unclear, say so to the professional and ask for it to be explained in other words. This was a trial with 380 Spanish-speaking caregivers in the US of children aged 8-16 months, randomly assigned to one of two Spanish versions of a screening questionnaire. The versions turned out psychometrically different, and caregivers interpreted and answered the same questions differently. It does not show which version is better, nor does it assess any individual child.",
+    "sv": "Om du får ett översatt screeningformulär för autism, tänk på att formuleringen spelar roll: en ordagrann översättning kan förstås annorlunda än en kulturellt anpassad. Om en fråga är oklar, säg det till professionen och be om en förklaring med andra ord. Det här var en studie med 380 spansktalande vårdnadshavare i USA till barn på 8-16 månader, slumpmässigt fördelade till en av två spanska versioner av ett screeningformulär. Versionerna visade sig psykometriskt olika, och vårdnadshavarna tolkade och besvarade samma frågor olika. Studien visar inte vilken version som är bäst och bedömer inte något enskilt barn."
+   }
+  },
+  {
+   "id": "PMC9817085",
+   "doi": "10.1017/s1463423622000755",
+   "url": "https://europepmc.org/article/PMC/PMC9817085",
+   "title": "Barriers to healthcare and their relationship to well-being and social support for autistic adults during COVID-19.",
+   "year": 2022,
+   "kind": "study",
+   "topics": [
+    "adult_life",
+    "pain_health",
+    "transitions"
+   ],
+   "issues": [
+    "code: es: number 128 is not in the source as written",
+    "code: en: number 128 is not in the source as written",
+    "code: sv: number 128 is not in the source as written"
+   ],
+   "rejectedSheet": {
+    "es": "Si acompañas a una persona autista a una cita médica, conviene preguntar de antemano qué barreras concretas le dificultan la atención, porque pueden cambiar según la forma de la consulta (presencial o remota). Es un estudio con encuesta en línea en el que participaron 128 personas autistas adultas del Reino Unido durante las restricciones por COVID-19. El número medio de barreras no cambió, pero sí su naturaleza, y los cambios continuaron tras relajarse las restricciones. Las barreras se asociaron con bienestar, género, educación y otras discapacidades. Sus límites: las respuestas sobre el pasado eran retrospectivas y solo reflejan a quienes participaron, así que no sirven como regla para cada persona.",
+    "en": "If you support an autistic adult with healthcare, it helps to ask in advance which specific barriers make care difficult, because these can change depending on whether appointments are in person or remote. This was an online survey of 128 autistic adults living in the UK during COVID-19 restrictions. The average number of barriers did not change, but their nature did, and the changes continued after restrictions eased. Barriers were linked to well-being, gender, education and additional disabilities. Limits: answers about earlier periods were given in hindsight and reflect only the people who took part, so this is not a rule for every person.",
+    "sv": "Om du stöttar en autistisk vuxen i vårdkontakter kan det hjälpa att i förväg fråga vilka konkreta hinder som gör vården svår, eftersom de kan skifta beroende på om besöket sker på plats eller på distans. Det var en webbenkät med 128 autistiska vuxna i Storbritannien under covid-19-restriktionerna. Det genomsnittliga antalet hinder förändrades inte, men hindrens karaktär gjorde det, och förändringarna höll i sig när restriktionerna lättade. Hindren hängde samman med välbefinnande, kön, utbildning och andra funktionsnedsättningar. Begränsningar: svaren om tidigare perioder gavs i efterhand och speglar bara deltagarna, så resultatet är ingen regel för alla."
+   }
+  },
+  {
+   "id": "PMC9826183",
+   "doi": "10.1002/aur.2817",
+   "url": "https://europepmc.org/article/PMC/PMC9826183",
+   "title": "Coping-resilience profiles and experiences of stress in autistic adults.",
+   "year": 2022,
+   "kind": "study",
+   "topics": [
+    "adult_life"
+   ],
+   "issues": [
+    "unsupported: States the study measures a single point in time (cross-sectional design), which the abstract does not report",
+    "unsupported: States the sample is small as a limitation, which the abstract does not say"
+   ],
+   "rejectedSheet": {
+    "es": "Si cuidas o acompañas a una persona autista adulta, puede ayudar fijarse no solo en cómo afronta el estrés, sino también en cuánta resiliencia siente tener, y apoyar ambas cosas a la vez. Es un estudio con 86 personas autistas adultas de 19-74 años, que se agruparon en cuatro perfiles de afrontamiento y resiliencia. Quienes tenían baja resiliencia, con mucho afrontamiento o con afrontamiento de evitación, refirieron más estrés percibido. No hubo diferencias en las molestias diarias. Sus límites: es una muestra pequeña, mide un solo momento y no demuestra causas. Cada persona es distinta, así que conviene preguntarle qué le ayuda.",
+    "en": "If you support an autistic adult, it may help to look not only at how they cope with stress but also at how resilient they feel, and to support both together. This was a study of 86 autistic adults aged 19-74, grouped into four coping-resilience profiles. Those with low resilience, whether they used a lot of coping or disengaging coping, reported higher perceived stress. There were no group differences in daily hassles. Limits: the sample is small, it looks at one point in time and it cannot show cause. Every person is different, so ask what helps them.",
+    "sv": "Om du stöttar en autistisk vuxen kan det hjälpa att se inte bara hur personen hanterar stress, utan också hur motståndskraftig hen upplever sig vara, och att stötta båda delarna samtidigt. Studien omfattade 86 autistiska vuxna i åldern 19-74 år, som delades in i fyra profiler för coping och resiliens. De med låg resiliens, antingen med mycket coping eller med undvikande coping, uppgav mer upplevd stress. Det fanns inga gruppskillnader i vardagliga besvär. Begränsningar: urvalet är litet, det mäter en tidpunkt och kan inte visa orsak. Alla är olika, så fråga vad som hjälper just personen."
+   }
+  }
+ ],
+ "publishedWithoutPass": []
+}

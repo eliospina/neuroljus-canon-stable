@@ -1,0 +1,166 @@
+[
+ {
+  "id": "PMC12864344",
+  "doi": "10.1007/s10803-024-06567-0",
+  "title": "Parent Training for Disruptive Behaviors in Referred Children with Autism Spectrum Disorder: A Randomized Controlled Trial.",
+  "year": 2026,
+  "kind": "trial",
+  "sheet": {
+   "es": "Si le preocupa que su hijo o hija autista se resista a las peticiones o se irrite con frecuencia, pregunte en su servicio de salud mental por programas presenciales de formación para madres y padres. Es un ensayo aleatorizado con 97 niños y niñas autistas, de 4 a 13 años, atendidos en salud mental habitual. Según el estudio, quienes recibieron formación presencial mejoraron en el cumplimiento de peticiones y en la irritabilidad, según informaron sus familias, y la mejora continuó a los 6 meses. El formato mixto con apoyo en línea no mejoró más que la lista de espera y hubo muchos abandonos. Los resultados son de grupo, no valen para todas las personas, y el formato mixto necesita más investigación.",
+   "en": "If you are worried that your autistic child often resists requests or gets irritable, ask your mental health service about face-to-face parent training programmes. This was a randomized trial with 97 autistic children aged 4 to 13 in routine mental health care. Children whose parents had face-to-face training improved on following requests and on irritability, as reported by parents, and the gains lasted to 6 months. The blended format with online support did not improve more than the waitlist, and many families dropped out. Results are group averages, not a rule for every child, and blended training needs more research.",
+   "sv": "Om du oroar dig för att ditt autistiska barn ofta säger nej till uppmaningar eller blir lättirriterat kan du fråga din barn- och ungdomspsykiatri eller annan vård om föräldrastöd på plats. Det var en randomiserad studie med 97 autistiska barn mellan 4 och 13 år i ordinarie psykiatrisk vård. Barn vars föräldrar fick utbildning på plats förbättrades enligt föräldrarna i att följa uppmaningar och i irritabilitet, och förbättringen höll i sig efter 6 månader. Den blandade formen med stöd online förbättrades inte mer än väntelistan, och många hoppade av. Resultaten gäller grupper, inte alla barn, och den blandade formen behöver mer forskning."
+  },
+  "screen": {
+   "reject": [],
+   "review": [
+    "es: number 97 is not found in the source as written",
+    "en: number 97 is not found in the source as written",
+    "sv: number 97 is not found in the source as written"
+   ]
+  },
+  "usage": {
+   "input_tokens": 1067,
+   "cache_creation_input_tokens": 0,
+   "cache_read_input_tokens": 0,
+   "cache_creation": {
+    "ephemeral_5m_input_tokens": 0,
+    "ephemeral_1h_input_tokens": 0
+   },
+   "output_tokens": 727,
+   "output_tokens_details": {
+    "thinking_tokens": 0
+   },
+   "service_tier": "standard",
+   "inference_geo": "global",
+   "speed": "standard"
+  }
+ },
+ {
+  "id": "PMC12878328",
+  "doi": "10.1136/bmjopen-2025-099614",
+  "title": "Suicide prevention interventions and supports for the Autistic community: a scoping review protocol.",
+  "year": 2026,
+  "kind": "systematic_review",
+  "sheet": {
+   "es": "Si cuidas a una persona autista, tómate en serio cualquier mención de pensamientos suicidas: pregunta con calma y sin juzgar, escucha y busca ayuda profesional o un servicio de crisis de tu zona. Este documento es el plan de una revisión de la literatura, no ofrece resultados todavía. Parte de que el suicidio es una de las principales causas de muerte entre adultos autistas y de que falta apoyo adecuado. Sus límites: aún no dice qué apoyos funcionan y solo incluirá textos en inglés, así que no sirve como regla para cada persona.",
+   "en": "If you support an autistic person, take any mention of suicidal thoughts seriously: ask calmly and without judgement, listen, and reach out to a professional or a local crisis service. This paper is the plan for a review of the literature, so it offers no results yet. It starts from the fact that suicide is a leading cause of death among autistic adults and that appropriate support is lacking. Its limits: it does not yet say which supports work, and it will include only English-language texts, so it is not a rule for every person.",
+   "sv": "Om du stöttar en autistisk person: ta alla uttalanden om självmordstankar på allvar. Fråga lugnt och utan att döma, lyssna och kontakta professionell hjälp eller en krisjour i närheten. Texten är planen för en litteraturöversikt och har därför inga resultat ännu. Utgångspunkten är att självmord är en av de vanligaste dödsorsakerna bland autistiska vuxna och att passande stöd saknas. Begränsningar: den visar ännu inte vilket stöd som fungerar och inkluderar bara texter på engelska, så den är ingen regel för varje person."
+  },
+  "screen": {
+   "reject": [],
+   "review": []
+  },
+  "usage": {
+   "input_tokens": 1231,
+   "cache_creation_input_tokens": 0,
+   "cache_read_input_tokens": 0,
+   "cache_creation": {
+    "ephemeral_5m_input_tokens": 0,
+    "ephemeral_1h_input_tokens": 0
+   },
+   "output_tokens": 588,
+   "output_tokens_details": {
+    "thinking_tokens": 0
+   },
+   "service_tier": "standard",
+   "inference_geo": "global",
+   "speed": "standard"
+  }
+ },
+ {
+  "id": "PMC12898455",
+  "doi": "10.3390/jcm15031254",
+  "title": "Non-Suicidal Self-Injury in Autism Spectrum Disorder: A Systematic Review of Associated Factors and Management Difficulties.",
+  "year": 2026,
+  "kind": "systematic_review",
+  "sheet": {
+   "es": "Si una persona autista se hace daño a propósito, conviene preguntarse qué función cumple: ¿alivia una emoción intensa, un malestar sensorial, un dolor físico, una dificultad para comunicarse? Anote cuándo ocurre y consulte con profesionales para descartar causas médicas, como problemas digestivos o de sueño. Esta revisión sistemática reunió dieciséis estudios con personas autistas diagnosticadas; vinculó estas conductas a la regulación emocional, lo sensorial, la comunicación y lo médico, y señaló que la intervención temprana y la implicación de la familia protegen. Sus límites: son asociaciones, no causas, los estudios son variados y no sirve como regla para cada persona.",
+   "en": "If an autistic person hurts themselves on purpose, it helps to ask what the behaviour does for them: easing an intense emotion, sensory distress, physical pain, or a difficulty communicating? Note when it happens and ask professionals to check for medical causes, such as digestive or sleep problems. This systematic review pooled sixteen studies of people with a formal autism diagnosis. It linked self-injury to emotion regulation, sensory processing, communication and medical factors, and found that early support and family involvement were protective. Limits: these are associations, not causes, the studies differ, and the findings are not a rule for every person.",
+   "sv": "Om en autistisk person skadar sig själv med avsikt kan det hjälpa att fråga sig vad det fyller för funktion: lindrar det en stark känsla, sensoriskt obehag, fysisk smärta eller svårigheter att kommunicera? Notera när det sker och be vården utesluta medicinska orsaker, som mag- eller sömnproblem. Den här systematiska översikten sammanställde sexton studier med personer med autismdiagnos. Den kopplade självskadande till känsloreglering, sensorisk bearbetning, kommunikation och medicinska faktorer, och såg tidigt stöd och föräldrars delaktighet som skyddande. Begränsningar: det rör sig om samband, inte orsaker, studierna skiljer sig åt och resultaten gäller inte som regel för varje person."
+  },
+  "screen": {
+   "reject": [],
+   "review": []
+  },
+  "usage": {
+   "input_tokens": 1366,
+   "cache_creation_input_tokens": 0,
+   "cache_read_input_tokens": 0,
+   "cache_creation": {
+    "ephemeral_5m_input_tokens": 0,
+    "ephemeral_1h_input_tokens": 0
+   },
+   "output_tokens": 747,
+   "output_tokens_details": {
+    "thinking_tokens": 0
+   },
+   "service_tier": "standard",
+   "inference_geo": "global",
+   "speed": "standard"
+  }
+ },
+ {
+  "id": "PMC12923620",
+  "doi": "10.1177/13623613251376208",
+  "title": "The effectiveness, cost-effectiveness and experiences of interventions to reduce suicidality for autistic people: A scoping review.",
+  "year": 2026,
+  "kind": "systematic_review",
+  "sheet": {
+   "es": "Si cuidas a una persona autista, pregúntale con calma y sin juicio cómo se siente, y busca profesionales que conozcan el autismo. Si hay peligro inmediato, llama a emergencias. Esta revisión de alcance reunió 27 estudios sobre intervenciones y herramientas de detección; algunos adaptaron, junto con personas autistas, planes de seguridad. Sus límites: hay pocos ensayos sólidos, aún falta mejorar la formación profesional y las herramientas para que hablar de pensamientos suicidas resulte más fácil, y los resultados no sirven como regla para cada persona.",
+   "en": "If you support an autistic person, ask calmly and without judgement how they are feeling, and look for professionals who understand autism. If there is immediate danger, call emergency services. This scoping review brought together 27 studies on interventions and screening tools; some adapted safety planning in partnership with autistic people. Its limits: few robust trials exist, professional training and tools that make it easier to talk about suicidal thoughts still need work, and the findings are not a rule for every person.",
+   "sv": "Om du stöttar en autistisk person: fråga lugnt och utan att döma hur hen mår, och sök yrkespersoner som förstår autism. Vid akut fara, ring larmnumret. Den här kartläggande översikten samlade 27 studier om insatser och screeningverktyg; några anpassade säkerhetsplanering tillsammans med autistiska personer. Begränsningar: det finns få robusta studier, utbildning av yrkespersoner och verktyg som gör det lättare att tala om självmordstankar behöver utvecklas, och resultaten är ingen regel för varje person."
+  },
+  "screen": {
+   "reject": [],
+   "review": []
+  },
+  "usage": {
+   "input_tokens": 1396,
+   "cache_creation_input_tokens": 0,
+   "cache_read_input_tokens": 0,
+   "cache_creation": {
+    "ephemeral_5m_input_tokens": 0,
+    "ephemeral_1h_input_tokens": 0
+   },
+   "output_tokens": 580,
+   "output_tokens_details": {
+    "thinking_tokens": 0
+   },
+   "service_tier": "standard",
+   "inference_geo": "global",
+   "speed": "standard"
+  }
+ },
+ {
+  "id": "PMC12935799",
+  "doi": "10.1007/s10803-024-06599-6",
+  "title": "Cultural Adaptation of RUBI Intervention with Korean Families (K-RUBI): A Mixed Method Study.",
+  "year": 2026,
+  "kind": "trial",
+  "sheet": {
+   "es": "Si buscas apoyo para entender y responder a conductas difíciles de tu hijo o hija autista pequeño, un programa de formación para familias adaptado a vuestra cultura e idioma puede resultar más útil y cercano. Pregunta en servicios locales si existe alguno. Este estudio fue un ensayo piloto aleatorizado con lista de espera y grupos de discusión con 31 familias coreanas de niños pequeños autistas o con sospecha de autismo; las familias refirieron más confianza y conocimientos, y menos intensidad de esas conductas. Es una muestra pequeña, de una sola comunidad, y no garantiza el mismo resultado en todas las familias ni en todos los niños.",
+   "en": "If you are looking for support to understand and respond to the stress-related behaviours of a young autistic child, a parent training programme adapted to your culture and language may feel more relevant and welcoming. It is worth asking local services whether one exists. This was a pilot randomised trial with a waitlist group, plus focus groups, with 31 Korean families of young children who are autistic or suspected to be. Families reported more confidence and knowledge, and less severe behaviours. The sample was small and from one community, so results may not apply to every family or child.",
+   "sv": "Om du söker stöd för att förstå och bemöta beteenden som är svåra för ditt lilla autistiska barn kan ett föräldrautbildningsprogram anpassat till er kultur och ert språk kännas mer relevant och välkomnande. Fråga lokala verksamheter om något finns. Studien var en randomiserad pilotstudie med väntelista samt fokusgrupper med 31 koreanska familjer med små barn som är autistiska eller misstänks vara det. Föräldrarna rapporterade ökad trygghet och kunskap samt mindre svåra beteenden. Urvalet var litet och från en enda grupp, så resultaten gäller inte säkert alla familjer eller barn."
+  },
+  "screen": {
+   "reject": [],
+   "review": []
+  },
+  "usage": {
+   "input_tokens": 1133,
+   "cache_creation_input_tokens": 0,
+   "cache_read_input_tokens": 0,
+   "cache_creation": {
+    "ephemeral_5m_input_tokens": 0,
+    "ephemeral_1h_input_tokens": 0
+   },
+   "output_tokens": 666,
+   "output_tokens_details": {
+    "thinking_tokens": 0
+   },
+   "service_tier": "standard",
+   "inference_geo": "global",
+   "speed": "standard"
+  }
+ }
+]

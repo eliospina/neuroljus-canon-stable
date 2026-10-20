@@ -10,10 +10,11 @@
     "lint": "next lint",
     "smoke": "tsc -p . --noEmit",
     "test": "tsx --test tests/*.test.ts",
-    "library": "tsx scripts/library/ingest.ts && tsx scripts/library/seeds.ts && tsx scripts/library/build.ts",
+    "library": "tsx scripts/library/ingest.ts && tsx scripts/library/seeds.ts && tsx scripts/library/expert.ts && tsx scripts/library/build.ts",
     "library:sheets": "tsx scripts/library/sheets.ts",
     "library:build": "tsx scripts/library/build.ts",
-    "eval:ask": "tsx scripts/ask/eval.ts"
+    "eval:ask": "tsx scripts/ask/eval.ts",
+    "library:expert": "tsx scripts/library/expert.ts && tsx scripts/library/build.ts"
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "^1.0.0",
@@ -23,6 +24,7 @@
     "react-dom": "^19.2.7"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^0.135.0",
     "@types/node": "20.11.30",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",

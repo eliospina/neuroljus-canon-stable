@@ -31,12 +31,13 @@ function main() {
 
   const byLicense = new Map<string, number>();
   for (const d of docs) byLicense.set(d.license, (byLicense.get(d.license) ?? 0) + 1);
-  const kinds = { systematic_review: 0, meta_analysis: 0, review: 0, study: 0 };
+  const kinds: Record<LibraryDoc["kind"], number> = { systematic_review: 0, meta_analysis: 0, review: 0, trial: 0, study: 0, guideline: 0, expert_practice: 0 };
   for (const d of docs) kinds[d.kind] += 1;
   const participatory = docs.filter((d) => d.participatory).length;
   const withText = docs.filter((d) => d.openText).length;
   const withSheet = docs.filter((d) => d.sheet).length;
-  const seeds = docs.filter((d) => d.seed).length;
+  const seeds = docs.filter((d) => d.seed && d.kind !== "expert_practice").length;
+  const crossrefOnly = docs.filter((d) => d.verified.source === "crossref_only").length;
 
   const lines: string[] = [
     "# Library sources and licences",
@@ -48,8 +49,10 @@ function main() {
     "- **Europe PMC** REST API (search, metadata, abstracts, licence, open-access and retraction flags). PubMed records are included through Europe PMC (`SRC:MED`).",
     "- **Crossref** REST API: every DOI must resolve, and any work with a retraction notice (`updated-by: retraction`) is excluded.",
     "- Inclusion, by code: autism in title or abstract · open access · abstract present · English · 2010 or later · not retracted · DOI verified.",
-    "- Ranking: systematic reviews and meta-analyses first, then reviews; research done with autistic people (participatory, lived experience) gets priority; citations and recency as tie-breakers. Each topic fills with its own documents.",
-    "- Twenty-odd **seed findings** are hand-picked, resolved by title in Europe PMC and verified in Crossref; the claim and its limits are written by the project, not by the model.",
+    "- Ranking: systematic reviews and meta-analyses first, then controlled trials and reviews; research done with autistic people (participatory, lived experience) gets priority; citations and recency as tie-breakers. Each topic fills with its own documents, and focused query packs (functional assessment, functional communication training, positive behaviour support, parent-mediated support, aggression and self-injury, meltdowns, collaborative and low-arousal approaches, medical causes, restraint reduction, caregiver stress, visual supports and transitions) add to them.",
+    "- **Seed findings** are hand-picked. They are resolved in Europe PMC and verified in Crossref; a key study that Europe PMC lacks enters **Crossref-only** (DOI resolves, not retracted, title and year match) with metadata and the project's own claim, never its abstract. The claim and its limits are written by the project, not by the model.",
+    "- **Guidelines** without a DOI (e.g. NICE) enter only when their official page answers; they carry the project's summary, not the guideline text.",
+    "- **Expert practice** notes are written by the project from published books, in its own words, with author, book, year and chapter or page. They are labelled as practice, never as science, and no book text is stored.",
     "",
     "## What is stored",
     "",
@@ -60,8 +63,8 @@ function main() {
     "",
     "## Counts",
     "",
-    `- Documents: **${docs.length}** (${withText} with open-licence abstract text, ${withSheet} with practical sheets, ${seeds} seed findings)`,
-    `- Systematic reviews: ${kinds.systematic_review} · meta-analyses: ${kinds.meta_analysis} · reviews: ${kinds.review} · studies: ${kinds.study}`,
+    `- Documents: **${docs.length}** (${withText} with open-licence abstract text, ${withSheet} with practical sheets, ${seeds} seed findings, ${crossrefOnly} of them Crossref-only)`,
+    `- Systematic reviews: ${kinds.systematic_review} · meta-analyses: ${kinds.meta_analysis} · controlled trials: ${kinds.trial} · reviews: ${kinds.review} · studies: ${kinds.study} · guidelines: ${kinds.guideline} · expert practice: ${kinds.expert_practice}`,
     `- Participatory / lived-experience signals: ${participatory}`,
     "",
     "### By topic",
@@ -84,11 +87,16 @@ function main() {
     "",
     "## Full list",
     "",
-    "| Year | Kind | Licence | Title | DOI |",
+    "| Year | Kind | Licence | Title | DOI or source |",
     "| --- | --- | --- | --- | --- |",
     ...[...docs]
       .sort((a, b) => b.year - a.year || a.title.localeCompare(b.title))
-      .map((d) => `| ${d.year} | ${d.kind.replace("_", " ")}${d.seed ? " · seed" : ""} | ${d.license} | ${d.title.replace(/\|/g, "/")} | [${d.doi}](https://doi.org/${d.doi}) |`),
+      .map(
+        (d) =>
+          `| ${d.year} | ${d.kind.replace("_", " ")}${d.seed && d.kind !== "expert_practice" ? " · seed" : ""} | ${d.license} | ${d.title.replace(/\|/g, "/")} | ${
+            d.doi ? `[${d.doi}](https://doi.org/${d.doi})` : d.citation ? `${d.citation.book}, ${d.citation.locator}` : `[official page](${d.url})`
+          } |`
+      ),
     "",
   ];
   mkdirSync(path.dirname(SOURCES_PATH), { recursive: true });

@@ -8,10 +8,13 @@
  *
  * Reads ANTHROPIC_API_KEY from the environment or from .env.local (never
  * committed). Uses ANTHROPIC_MODEL when set, otherwise claude-opus-5-5.
+ * For the whole library, sheetsBatch.ts does the same through the Message
+ * Batches API at half the price, and verifies every sheet.
  */
 
 import { existsSync, readFileSync } from "node:fs";
 import { readDocs, sleep, writeDocs, type LibraryDoc } from "./lib";
+import { SHEET_SCHEMA, SHEET_SYSTEM as SYSTEM, sheetUserMessage } from "./sheetPrompt";
 
 const args = process.argv.slice(2);
 const LIMIT = Number(args[args.indexOf("--limit") + 1]) || Infinity;
@@ -25,30 +28,10 @@ function loadEnvLocal(): void {
   }
 }
 
-const SHEET_SCHEMA = {
-  type: "object",
-  properties: {
-    es: { type: "string" },
-    en: { type: "string" },
-    sv: { type: "string" },
-  },
-  required: ["es", "en", "sv"],
-  additionalProperties: false,
-} as const;
-
-const SYSTEM =
-  "You write practical sheets for a library of autism research used by caregivers and autistic people (Neuroljus). " +
-  "Given one study's title, type and abstract, write what it means for a caregiver tomorrow morning: concrete, calm, respectful, neurodiversity-affirming (identity-first language, no 'suffers from', no 'low functioning', no 'challenging behaviour'). " +
-  "Rules: 60-110 words per language. Start with the practical takeaway, then one sentence on the evidence (type of study, who took part) and one on its limits. " +
-  "Never diagnose, never recommend medication or doses, never present the study as a rule for every person. Write the same content in Spanish (es), English (en) and Swedish (sv). " +
-  "Respond only with the JSON object.";
-
 type Payload = { error?: { message?: string; type?: string }; stop_reason?: string; content?: Array<{ type?: string; text?: string }> };
 
 async function makeSheet(doc: LibraryDoc, apiKey: string, model: string): Promise<LibraryDoc["sheet"]> {
-  const user =
-    `Title: ${doc.title}\nYear: ${doc.year}\nType: ${doc.kind.replace("_", " ")}${doc.participatory ? " (research with autistic people)" : ""}\n` +
-    `Journal: ${doc.journal}\n\nAbstract:\n${doc.abstract}`;
+  const user = sheetUserMessage(doc);
   for (let attempt = 1; attempt <= 3; attempt += 1) {
     const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
