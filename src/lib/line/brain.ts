@@ -18,7 +18,7 @@
  */
 
 import Anthropic from "@anthropic-ai/sdk";
-import { dangerSentence, type EmergencyLang } from "../emergency";
+import { emergencyNumber, type EmergencyLang } from "../emergency";
 import { PHASE_IDS, PROTOCOLS, getProtocol, renderProtocol } from "../protocols";
 import { SpeechGuard } from "./guard";
 import { docForPrompt, retrieveWithBudget, type Retrieved } from "./retrieval";
@@ -54,10 +54,11 @@ HOW YOU SPEAK
 - Neurodiversity-respecting language: describe what happens and what helps. Never "suffers from", never "low functioning".
 - Phrases marked sayToPerson in the protocols are for the caregiver to say to the autistic person. Offer them as "you can say to them: …". Never say them to the caller as if they were yours.
 
-TRIAGE (the state tells you what applies)
+TRIAGE AND EMERGENCIES (information for your judgement, not orders; the caller decides)
 - In self-injury or aggression, if the triage question has not been asked yet, ask it once, exactly as given in the state, and nothing else in that turn except one immediate safety step.
-- Only with a severe signal may you mention the emergency number: say the exact emergency sentence from the state, then keep giving steps while they call. Without a severe signal NEVER mention emergencies, ambulances or emergency numbers: give home first aid (the state gives the lines) and the protocol steps.
-- Suicidal intent is always severe: stay on the line, ask directly and calmly whether they are thinking of killing themself now and whether they have means at hand, have someone stay with the person, have the means removed, and give the emergency sentence. Asking does not increase risk.
+- The state gives this country's emergency number. The severe signals that usually justify calling it are: loss of consciousness, bleeding that does not stop with pressure, vomiting or confusion after a blow to the head, trouble breathing, an eye injury, something swallowed, a seizure, a weapon in hand, suicidal intent, and a person out of reach in traffic, water or at a height. Without such a signal, home first aid (the state gives the lines) and the protocol steps are the help; many autistic people self-injure daily and an ambulance costs money.
+- Never say "call" or "do not call" as an order. If the number is worth having, give it as information: "the emergency number here is 123, you decide". The one exception: if the caller asks whom to call or what number, the answer is the number, in the first sentence, before anything else.
+- Suicidal intent: stay on the line, ask directly and calmly whether they are thinking of killing themself now and whether they have means at hand, have someone stay with the person, have the means removed, and give the emergency number as information. Asking does not increase risk.
 
 WHO IS CALLING
 - Caregiver: follow the protocol phase and steps.
@@ -143,11 +144,9 @@ export function dynamicBlock(state: CallState, docs: Retrieved, web: PendingWeb 
   const lines: string[] = ["CALL STATE (derived from the transcript by code; follow it):"];
   lines.push(`- caller: ${state.caller}`);
   lines.push(`- country: ${state.country ?? "unknown"}`);
-  if (state.severe) {
-    lines.push(`- SEVERE SIGNAL present (${state.signals.join(", ")}). You may say, once, this exact emergency sentence: "${dangerSentence(state.country, state.lang)}" Keep giving steps while they call.`);
-  } else {
-    lines.push("- no severe signal: NEVER mention emergencies, ambulances or emergency numbers this turn.");
-  }
+  lines.push(`- emergency number for this country, as information for the caller: ${emergencyNumberSentence(state.country, state.lang)}`);
+  if (state.severe) lines.push(`- severe signal present (${state.signals.join(", ")}): the emergency number is worth giving now, as information; keep giving steps.`);
+  if (state.asksWhomToCall) lines.push("- the caller just asked WHOM TO CALL: the number is already said first by code; follow with one concrete step, do not repeat the number.");
   const needsTriage = !state.calm && (state.protocol === "self_injury" || state.protocol === "aggression_people" || state.protocol === "aggression_objects" || state.protocol === "physical_danger");
   if (needsTriage && !state.triageAsked && !state.severe) lines.push(`- triage: NOT asked yet. Ask it now, exactly: "${TRIAGE_QUESTION[state.lang]}" plus one immediate safety step.`);
   else if (state.triageAsked && state.triageClear) lines.push("- triage: asked and answered, no severe signs. Home care only.");
@@ -207,9 +206,20 @@ const PERSON_FALLBACK: Record<EmergencyLang, string[]> = {
   sv: ["Du behöver inte göra något just nu.", "Skulle det hjälpa om jag var tyst en stund?"],
 };
 
+/** "The emergency number here is 123." as information, never as an order. */
+export function emergencyNumberSentence(country: string | null, lang: EmergencyLang): string {
+  const n = emergencyNumber(country);
+  const t = {
+    es: n ? `El número de emergencias es el ${n}.` : "El número de emergencias es el de tu país; no lo tengo para tu zona.",
+    en: n ? `The emergency number is ${n}.` : "The emergency number is your country's; I do not have it for your area.",
+    sv: n ? `Nödnumret är ${n}.` : "Nödnumret är ditt lands; jag har det inte för ditt område.",
+  };
+  return t[lang];
+}
+
 export function fallbackSpeech(state: CallState): string {
   const out: string[] = [];
-  if (state.severe) out.push(dangerSentence(state.country, state.lang));
+  if (state.severe || state.asksWhomToCall) out.push(emergencyNumberSentence(state.country, state.lang));
   if (state.caller === "person") {
     for (const s of PERSON_FALLBACK[state.lang]) if (!state.assistantText.some((a) => a.includes(s))) out.push(s);
     return out.slice(0, 2).join(" ");
@@ -351,6 +361,13 @@ export async function* brainTurn(input: BrainInput, result: Partial<BrainTurn> =
     sentences.push(s);
     return s;
   };
+
+  // "Whom do I call?" is answered by code, first, before the model says anything.
+  if (state.asksWhomToCall) {
+    const first = emergencyNumberSentence(state.country, state.lang);
+    yield emit(first);
+    guard.markSaid(first);
+  }
 
   const canModel = Boolean(input.modelStream || input.apiKey);
   if (canModel) {

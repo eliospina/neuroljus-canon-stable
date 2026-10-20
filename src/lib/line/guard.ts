@@ -3,7 +3,9 @@
  * sentence by sentence, while it streams. The model is asked to follow the
  * same rules; the guard makes sure.
  *
- * - emergency wording only when triage found a severe signal
+ * - emergency wording is never a reason to drop a sentence: the model decides
+ *   what to say about emergencies (the prompt carries the clinical rule); the
+ *   cap and the repeat rule spare a sentence that gives the emergency number
  * - never medication, never a diagnosis verdict
  * - no emotional filler aimed at the caller
  * - never a sentence already said in this call
@@ -48,7 +50,7 @@ export function normalizeSentence(s: string): string {
 
 export type GuardRules = {
   lang: EmergencyLang;
-  /** Emergency wording allowed (triage found a severe signal). */
+  /** Triage found a severe signal (kept for callers' information; no longer gates any rule). */
   severe: boolean;
   /** Suicidal intent in the call: removing means (pills, blades) is a safety step, not medication advice. */
   suicidal?: boolean;
@@ -67,21 +69,20 @@ function previousSentences(rules: GuardRules): Set<string> {
   return set;
 }
 
-export type GuardDecision = { keep: boolean; reason?: "emergency" | "medication" | "diagnosis" | "filler" | "repeat" | "limit" | "empty" };
+export type GuardDecision = { keep: boolean; reason?: "medication" | "diagnosis" | "filler" | "repeat" | "limit" | "empty" };
 
 export function judgeSentence(sentence: string, rules: GuardRules, emittedSoFar: number, saidInThisTurn: Set<string>): GuardDecision {
   const s = plainSpeech(sentence.replace(TAGS, "").replace(THINKING, "")).trim();
   if (!s) return { keep: false, reason: "empty" };
-  // With a severe signal the emergency sentence is never cut by the cap.
-  const emergencyKept = rules.severe && EMERGENCY_WORDS.test(s);
+  // A sentence that gives the emergency number is never cut by the cap.
+  const emergencyKept = EMERGENCY_WORDS.test(s);
   if (emittedSoFar >= rules.maxSentences && !emergencyKept) return { keep: false, reason: "limit" };
-  if (!rules.severe && EMERGENCY_WORDS.test(s)) return { keep: false, reason: "emergency" };
   if (MEDICATION_ASK.test(s) && !(rules.suicidal && MEANS_REMOVAL.test(s))) return { keep: false, reason: "medication" };
   if (claimsDiagnosis(s)) return { keep: false, reason: "diagnosis" };
   if (FILLER.test(s)) return { keep: false, reason: "filler" };
   const n = normalizeSentence(s);
-  // The emergency sentence may be said again on a later turn while the signal is severe.
-  const emergencyAgain = rules.severe && EMERGENCY_WORDS.test(s) && !saidInThisTurn.has(n);
+  // The emergency number may be said again on a later turn (the caller may ask for it again).
+  const emergencyAgain = EMERGENCY_WORDS.test(s) && !saidInThisTurn.has(n);
   if (!emergencyAgain && n.length >= 12 && (saidInThisTurn.has(n) || previousSentences(rules).has(n))) return { keep: false, reason: "repeat" };
   return { keep: true };
 }
@@ -127,6 +128,12 @@ export class SpeechGuard {
 
   get count(): number {
     return this.emitted;
+  }
+
+  /** A sentence already spoken by code this turn: counts toward the cap and is not repeated. */
+  markSaid(sentence: string): void {
+    this.emitted += 1;
+    this.said.add(normalizeSentence(sentence));
   }
 
   private judge(sentence: string): string | null {

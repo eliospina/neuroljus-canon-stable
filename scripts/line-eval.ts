@@ -81,6 +81,7 @@ export async function runScenario(s: Scenario, turnFn: (m: ChatMessage[]) => Pro
       previousAssistant: previous,
       severeAllowed: s.expect.severeFrom !== undefined && i >= s.expect.severeFrom,
       suicidal: s.expect.suicidal,
+      asksWhomToCall: s.expect.whomTurns?.includes(i) ?? false,
       maxSentences: s.expect.person ? 2 : 4,
       sourceAllowed: LIVE || out.docs > 0 || out.protocol !== null,
       firstSentenceMs: out.firstMs,
