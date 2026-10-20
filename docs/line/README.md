@@ -1,34 +1,38 @@
 # La línea de voz
 
-La voz vive en ElevenLabs Agents (agente `agent_8701m5aah553evdr2vkbaqp4rctq`). Desde la fase 4, **el razonamiento vive aquí**: ElevenLabs hace voz a texto y texto a voz, y en cada turno llama a nuestro **cerebro** (`/api/line/brain`) como Custom LLM. Las tres herramientas webhook de la fase 3 (`protocol`, `ask`, `search`) siguen expuestas para depurar y son las funciones internas que el cerebro usa. No hay voz en este repo.
+La voz vive en ElevenLabs Agents (agente `agent_8701m5aah553evdr2vkbaqp4rctq`). Desde la fase 4, **el razonamiento vive aquí**: ElevenLabs hace voz a texto y texto a voz, y en cada turno llama a nuestro **cerebro** (`/api/line/brain`) como Custom LLM. Las tres herramientas webhook de la fase 3 (`protocol`, `ask`, `search`) siguen expuestas para depurar. No hay voz en este repo.
 
-## El cerebro (Custom LLM) — fase 4
+## El cerebro (Custom LLM)
 
 | Qué | Dónde |
 | --- | --- |
 | Endpoint | `POST /api/line/brain/chat/completions` (también `/api/line/brain` y `/api/line/brain/v1/chat/completions`). Formato OpenAI Chat Completions, respuesta SSE `chat.completion.chunk` terminada en `data: [DONE]`. |
 | Keep-warm | `GET /api/line/brain` con el secreto (o `Authorization: Bearer $CRON_SECRET`) responde `{ok, warm}` y mantiene el índice en memoria. |
-| Código | `src/lib/line/brain.ts` (prompt, Claude, fallback), `state.ts` (estado derivado del historial), `triage.ts` (señales graves en código), `guard.ts` (reglas de salida frase a frase), `retrieval.ts` (BM25 precargado, presupuesto 800 ms), `resources.ts` (líneas por país), `brainHttp.ts` (auth, SSE). |
+| Código | `src/lib/line/brain.ts` (prompt, Claude, respaldo), `state.ts` (hechos derivados del historial), `triage.ts` (señales graves, solo informan), `guard.ts` (frases para la voz), `retrieval.ts` (BM25 precargado, presupuesto 800 ms), `resources.ts` (líneas por país), `brainHttp.ts` (auth, SSE). |
+
+### El principio: el modelo decide, el código garantiza
+
+La primera llamada real lo dejó claro: una persona describió a su hijo tirándose a un lago y la línea respondió «apaga la música y las luces». No fue el modelo: fue la caja que lo rodeaba. Una lista de palabras había elegido el protocolo de sobrecarga en el turno anterior, un cronómetro apagó al modelo, y un texto de respaldo recitó el siguiente paso del protocolo sin leer el turno. Parchar palabra por palabra no termina nunca, porque la vida está llena de improvisaciones: un niño echándose gasolina junto a una estufa necesita «agárralo y sácalo de ahí», aunque el protocolo diga «no sujetar».
+
+Por eso el cerebro ya no obedece protocolos. Los **lee como conocimiento**: los 10 protocolos completos van en el prompt como el mejor punto de partida para las crisis comunes, piso y no techo, con permiso explícito para romper cualquiera de sus «nunca» cuando un riesgo mayor lo exige. El principio por encima de todo, en el prompt: *la seguridad física inmediata de la persona gana a cualquier regla*. Medicamentos, salud y diagnóstico: preferible que lo decida su médico, y el modelo lo dice una vez; pero nunca prohibido, porque no todo el mundo puede ir al médico y una respuesta clara puede ser lo que mantiene a alguien a salvo. El modelo responde con lo que sabe, dice lo que no sabe, y usa la biblioteca y la web.
 
 ### Qué recibe el modelo en cada turno
 
-1. **Bloque estático, cacheado por Anthropic** (unos 23 000 tokens, idéntico para cada idioma): las reglas clínicas y **los 10 protocolos completos** (todas las fases, pasos, `never`, escalada y evidencia). Sin `STEP_LIMIT` ni `SAY_LIMIT`.
-2. **Bloque dinámico, derivado del transcript por código** (`state.ts`): quién llama (cuidador o persona autista), país, idioma, protocolo y fase, **pasos ya dados** (por solapamiento de palabras con los turnos anteriores), si el triaje se hizo y qué respondió, señales graves, primeros auxilios en casa que aplican, **documentos de la biblioteca** recuperados para este turno (BM25 sobre el turno actual más contexto, en cada turno, también en crisis), fuente web pendiente del turno anterior, y recursos del país.
+1. **Bloque estático, cacheado por Anthropic** (unos 23 000 tokens, idéntico para cada idioma): el principio, cómo hablar por teléfono, y **los 10 protocolos completos** como conocimiento.
+2. **Hechos derivados del transcript por código** (`state.ts`): idioma, país y **su número de emergencias**, quién parece llamar (cuidador o persona autista), si acaba de preguntar a quién llamar, señales graves que el código encontró (como información, para pesar), **documentos de la biblioteca** para este turno (BM25, en cada turno), fuente web del turno anterior, recursos del país al cierre. Nada de protocolo elegido, fase ni «pasos ya dados»: eso lo decide el modelo leyendo la conversación.
 3. El historial de la llamada, tal como lo manda ElevenLabs.
 
-No hay estado en el servidor: el mismo historial produce siempre el mismo estado. ElevenLabs reenvía la conversación completa en cada turno, así que una instancia perdida no pierde nada (salvo una fuente web pendiente, que se busca de nuevo).
+No hay estado en el servidor: el mismo historial produce siempre los mismos hechos.
 
-### Reglas clínicas en código, no solo en el prompt
+### Qué garantiza el código (lo que no admite criterio)
 
-- **Triaje** (`triage.ts`): `severeSignals` reconoce señales graves reales: pérdida de conciencia, sangre que no para, vómitos o confusión tras un golpe en la cabeza, dificultad para respirar, lesión en un ojo, algo tragado, convulsión, un arma en la mano, ideación suicida. Hoy solo informa al modelo (y decide si el fallback abre con el número); ya no bloquea nada. «Se sigue golpeando» o «hay sangre» a secas **no** son graves: se dan primeros auxilios en casa. Las tres funciones de la fase 3 usan este triaje; `localRiskScreen` (más sensible) queda para Ask y el Care Agent.
-- **Emergencias**: el código **no censura** frases por nombrar emergencias o un número (en la primera llamada real, el filtro borró «llama al 123» en una fuga a la calle con carros porque «carros» no estaba en la lista de señales graves, y la persona preguntó «¿a quién?» cuatro veces). La regla clínica va en el prompt como información, no como orden: el estado da el número del país y las señales graves que suelen justificar llamar, y la decisión es de quien llama; nunca «llama» ni «no llames» en imperativo. La única garantía en código: si la persona pregunta **a quién llamar o qué número**, el número del país sale en la primera frase, antes que el modelo (`asksWhomToCall` en `state.ts`). Una frase con el número nunca la corta el tope de frases y puede repetirse si la vuelven a pedir.
-- **Nunca** medicación ni veredictos de diagnóstico (con intención suicida, «retira las pastillas de su alcance» sí se permite: es seguridad). Nunca relleno emocional («lo siento», «te entiendo», «estoy contigo»…), nunca etiquetas `[slow]`, nunca markdown.
-- **Sin repetir**: una frase ya dicha en la llamada se descarta; la de emergencias puede repetirse mientras la señal grave siga.
-- **2 a 4 frases** por turno (2 si llama la persona autista). Lo que sobra se corta antes de hablar.
-- **Fuentes** solo de la biblioteca o de la evidencia del protocolo; el eval falla si se nombra un estudio sin nada que citar.
-- **Protocolo pegajoso**: se elige en el primer turno que coincide y no cambia a mitad de la crisis salvo que un turno apunte con fuerza a otro. La ideación suicida va siempre al protocolo 4. En empate gana la urgencia clínica (peligro físico, autolesión, agresión a personas, a objetos…). Las frases `sayToPerson` de los protocolos son para decirle a la persona autista, nunca del agente a quien llama.
-- **Casos fuera de los 10**: no se fuerza un protocolo; se responde con biblioteca, escalera general de desescalada y, si la biblioteca no tiene nada, búsqueda web en segundo plano (la fuente llega en el turno siguiente). Cada caso se registra anonimizado (`event: line_uncovered`, sin nombres, cifras ni correos) en los logs de Vercel; `LINE_LOG_UNCOVERED=0` lo apaga.
-- **Fallback**: si Claude tarda más de 4 s en empezar, falla o rechaza, habla el protocolo: siguiente paso no dado, o la escalera general.
+- **«¿A quién llamo?»**: si la persona pregunta a quién llamar o qué número, la primera frase es el número del país, antes de que el modelo hable (`asksWhomToCall`, `codeFirstSentence`). El número sigue al **último** país nombrado (Colombia → «no, estoy en el Perú» → 106). Si el país no se sabe, la primera frase es «¿En qué país estás? Así te doy el número exacto».
+- **Respaldo honesto**: si Claude tarda más de 6 s en empezar, falla o rechaza, la línea dice una sola frase: «Te escucho. Dime dónde está ahora y qué está pasando». Nunca un paso de protocolo elegido a ciegas. Cada respaldo se registra (`event: line_fallback`, con motivo y tiempo, situación anonimizada) para saber cuántas veces el modelo no llega.
+- **Voz limpia**: markdown, corchetes de cita, etiquetas `[slow]` y razonamiento filtrado se quitan antes de hablar. No se borra ninguna frase.
+- **Búsqueda web** en segundo plano cuando la biblioteca no tiene nada **o la pregunta es de medicamentos o salud**, sin bloqueo por riesgo (modo `open` de `search.ts`); la fuente llega en el turno siguiente.
+- **Casos fuera de los 10** (por palabras clave, solo para el registro): `event: line_uncovered` anonimizado, para que biblioteca y protocolos crezcan donde la gente llama. `LINE_LOG_UNCOVERED=0` lo apaga.
+
+Lo que ya no existe en código: protocolo pegajoso, fase, pasos ya dados, pregunta de triaje obligatoria, tope de frases, filtro de relleno, de repetición, de medicación, de diagnóstico, de palabras de emergencia. Todo eso es criterio del modelo, y se evalúa con llamadas reales y con el juez.
 
 ### Latencia (medida)
 
@@ -38,25 +42,24 @@ No hay estado en el servidor: el mismo historial produce siempre el mismo estado
 | Construir el índice BM25 | 213 ms, una vez por instancia (en el arranque del módulo, no en la petición) |
 | Consulta BM25 en caliente | 3–6 ms (presupuesto 800 ms; si vence, se responde sin biblioteca) |
 | Claude Sonnet 5.5, primer token, prompt cacheado, sin razonamiento | 0,97–1,17 s (1,75 s cuando escribe la caché) |
-| **Primera frase hablada, en caliente, en proceso** | **1,2–2,2 s** (la frase debe terminar para pasar el filtro; por eso el prompt pide frases de 12 palabras) |
-| Turno completo | ~2 s |
+| **Primera frase hablada, en caliente, en proceso** | **1,2–2,2 s** (la frase debe terminar para pasar a la voz; por eso el prompt pide frases cortas) |
 
-Desde ElevenLabs hay que sumar su salto de red a Vercel y la propia síntesis de voz. **Condiciones para acercarse a 1,5 s:** Fluid Compute activado en el proyecto de Vercel (instancias calientes y reutilizadas), región cercana a ElevenLabs y a Anthropic (`iad1`), y un keep-warm cada 5 minutos a `GET /api/line/brain`. El proyecto está en el plan Hobby de Vercel, que solo admite crons diarios (un cron de 5 minutos en `vercel.json` hace fallar el despliegue), así que el keep-warm va fuera: un pinger externo (por ejemplo cron-job.org) cada 5 minutos con la cabecera `x-line-secret`. Con plan Pro, añade a `vercel.json` `{"crons":[{"path":"/api/line/brain","schedule":"*/5 * * * *"}]}` y crea `CRON_SECRET`. En frío, la primera llamada tarda unos 3 s más. Si en la prueba real no se alcanza, la alternativa es un servicio siempre encendido (Fly.io o Railway) con el mismo código: el cerebro no depende de Next más que por la ruta.
+Desde ElevenLabs hay que sumar su salto de red a Vercel y la propia síntesis de voz. **Condiciones para acercarse a 1,5 s:** Fluid Compute activado en el proyecto de Vercel, región cercana a ElevenLabs y a Anthropic (`iad1`), y un keep-warm cada 5 minutos a `GET /api/line/brain`. El plan Hobby de Vercel solo admite crons diarios, así que el keep-warm va fuera: un pinger externo (por ejemplo cron-job.org) cada 5 minutos con la cabecera `x-line-secret`. Con plan Pro, añade a `vercel.json` `{"crons":[{"path":"/api/line/brain","schedule":"*/5 * * * *"}]}` y crea `CRON_SECRET`. En frío, la primera llamada tarda unos 3 s más. El registro `line_fallback` dice cuántas veces el modelo no llegó a tiempo; si pasa a menudo, la alternativa es un servicio siempre encendido (Fly.io o Railway) con el mismo código.
 
 ### Conectar ElevenLabs al cerebro
 
 1. En el agente, **LLM → Custom LLM**. Server URL: `https://neuroljus.com/api/line/brain` (ElevenLabs añade `/chat/completions`; si tu versión pide la base con `/v1`, usa `https://neuroljus.com/api/line/brain/v1`). Model ID: cualquiera, por ejemplo `neuroljus-line`.
 2. Clave: el valor de `LINE_API_SECRET`. El cerebro la acepta como `Authorization: Bearer` (lo que ElevenLabs manda como API key) y como cabecera `x-line-secret`.
-3. Prompt del sistema del agente: corto, solo voz y turno (`agent-prompt.md`, versión fase 4). Las reglas viven en el cerebro; el cerebro ignora el `system` que manda ElevenLabs.
+3. Prompt del sistema del agente: corto, solo voz y turno (`agent-prompt.md`). El cerebro ignora el `system` que manda ElevenLabs.
 4. Quita las herramientas webhook del agente (el cerebro ya tiene protocolos, biblioteca y web). Déjalas si quieres depurar.
-5. Variables en Vercel: `LINE_API_SECRET` y `ANTHROPIC_API_KEY` (ya existen); opcionales `CRON_SECRET` (solo si el keep-warm es un cron de Vercel en plan Pro), `LINE_BRAIN_RATE_LIMIT_PER_MIN` (240), `LINE_BRAIN_THINKING=adaptive` (razonamiento previo; más lento), `LINE_LOG_UNCOVERED=0`.
-6. Retención de audio y transcripciones del agente: desactivada, como en la fase 3.
+5. Variables en Vercel: `LINE_API_SECRET` y `ANTHROPIC_API_KEY`; opcionales `CRON_SECRET`, `LINE_BRAIN_RATE_LIMIT_PER_MIN` (240), `LINE_BRAIN_THINKING=adaptive` (razonamiento previo; más lento), `LINE_LOG_UNCOVERED=0`.
+6. Retención de audio y transcripciones del agente: desactivada.
 
 ### Probar sin voz
 
-`npm run line:eval` corre `scripts/line-eval/scenarios.ts` (tres niños en crisis, autolesión diaria, cuidador que no puede acercarse, fuga a la calle con carros y «¿a quién llamo?», golpe en la cabeza con vómito, ideación suicida, persona autista en bloqueo, caso fuera de los 10, pregunta tranquila, sueño; es/en/sv) contra el cerebro **con un modelo guionizado** que rompe reglas a propósito, y verifica: número de frases, sin palabras prohibidas, el número de emergencias primero cuando preguntan a quién llamar, sin pasos repetidos, sin fuentes inventadas, fuente nombrada cuando hubo biblioteca, y latencia de la primera frase. Corre en CI (`.github/workflows/test.yml`) y falla el PR si algo se rompe.
+`npm run line:eval` corre `scripts/line-eval/scenarios.ts` contra el cerebro **con un modelo guionizado** (no razona; prueba la plomería) y verifica solo lo que el código garantiza: respuesta no vacía, voz limpia, el número o la pregunta del país primero cuando preguntan a quién llamar, sin fuentes inventadas, latencia de la primera frase, y que el respaldo nunca recite pasos. Corre en CI.
 
-`npm run line:eval -- --live` con `LINE_BRAIN_URL=https://neuroljus.com/api/line/brain` y `LINE_API_SECRET` corre las mismas conversaciones contra el cerebro desplegado con Claude, mide la primera frase de verdad y aplica las mismas reglas (presupuesto 1,5 s; `LINE_EVAL_FIRST_MS` lo cambia).
+`npm run line:eval -- --live` con `LINE_BRAIN_URL` y `LINE_API_SECRET` corre las mismas conversaciones contra el cerebro desplegado con Claude. **`--live --judge`** (con `ANTHROPIC_API_KEY`) añade lo que importa: un segundo modelo lee cada llamada completa y la juzga como juzgaría a un colega, contra el `must` de cada escenario: ¿respondió a la escena real, con la seguridad por delante, rompiendo la regla cuando la vida lo pedía, dando el número cuando importaba? Los escenarios incluyen situaciones improvisadas donde regla y vida chocan: gasolina junto a la estufa, el lago con corriente, «¿a quién llamo?» sin país, una sobredosis de risperidona a tres horas del pueblo.
 
 ---
 

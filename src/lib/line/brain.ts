@@ -1,76 +1,86 @@
 /**
  * The brain of the voice line. ElevenLabs does speech-to-text and text-to-speech
  * and calls this on every turn as a Custom LLM (OpenAI Chat Completions
- * format, see brainHttp.ts). Everything the model needs is in the prompt on
- * every turn, so nothing depends on the model deciding to call a tool:
+ * format, see brainHttp.ts).
  *
- * - the ten protocols in full (static block, cached by Anthropic per language)
- * - call state derived from the transcript (state.ts): caller, country,
- *   protocol and phase, steps already given, triage
- * - the clinical rules in code (triage.ts, guard.ts): the emergency number is
- *   only offered on a severe signal, no medication, no diagnosis, no filler,
- *   no repeated step
+ * The model decides; the code guarantees. Claude gets everything on every turn:
+ *
+ * - the ten protocols in full (static block, cached by Anthropic per language),
+ *   as knowledge and a starting point, never as a script
+ * - facts derived from the transcript (state.ts): language, country and its
+ *   emergency number, who seems to be calling, severe signals found by code
  * - library retrieval on every turn with an 800 ms budget (retrieval.ts)
- * - web search in the background when the library has nothing; its source is
- *   offered on the next turn, never blocking this one
+ * - web search in the background when the library has nothing or the question
+ *   is about medication or health; its source is offered on the next turn
  *
- * If Claude is slow, errors or refuses, the protocol itself speaks (fallback).
+ * What the code guarantees, because it does not admit judgement:
+ * - when the caller asks whom to call, the country's emergency number is the
+ *   first sentence; when the country is unknown, the first sentence asks it
+ * - if Claude is slow, errors or refuses, the line says one honest sentence
+ *   and asks what is happening now. It never recites protocol steps blind.
  */
 
 import Anthropic from "@anthropic-ai/sdk";
 import { emergencyNumber, type EmergencyLang } from "../emergency";
-import { PHASE_IDS, PROTOCOLS, getProtocol, renderProtocol } from "../protocols";
+import { PROTOCOLS, renderProtocol } from "../protocols";
 import { SpeechGuard } from "./guard";
 import { docForPrompt, retrieveWithBudget, type Retrieved } from "./retrieval";
 import { resourcesFor } from "./resources";
 import { buildLineSearch, type SearchSource } from "./search";
-import { deriveCallState, type CallState, type ChatMessage } from "./state";
-import { FIRST_AID_TEXT, TRIAGE_QUESTION, firstAidFor } from "./triage";
+import { MEDICATION_ASK } from "./spoken";
+import { COUNTRY_QUESTION, deriveCallState, type CallState, type ChatMessage } from "./state";
 
 /** Output cap. Thinking is off (between_tools), so this is all speech. */
 export const BRAIN_MAX_TOKENS = 600;
-/** If the first token has not arrived by then, the protocol speaks instead. */
-export const BRAIN_FIRST_TOKEN_MS = 4_000;
-export const BRAIN_TOTAL_MS = 12_000;
+/** If the first token has not arrived by then, the honest fallback speaks instead. */
+export const BRAIN_FIRST_TOKEN_MS = 6_000;
+export const BRAIN_TOTAL_MS = 14_000;
 
 const LANG_NAME: Record<EmergencyLang, string> = { es: "Spanish (neutral Latin American: tú/ustedes, never vosotros)", en: "English", sv: "Swedish" };
 
 // ---------------------------------------------------------------------------
-// Static block: rules + the ten protocols, per language. Identical bytes on
-// every call in that language, so Anthropic serves it from cache (~23k tokens).
+// Static block: principles + the ten protocols, per language. Identical bytes
+// on every call in that language, so Anthropic serves it from cache.
 // ---------------------------------------------------------------------------
 
-const RULES = `You are the brain of NeuroLjus, a phone support line for autistic people and the people who care for them. ElevenLabs turns your text into speech. You speak like an experienced crisis clinician: direct, precise, calm. You give concrete instructions grounded in the protocols and documents below. You never diagnose. The caller decides.
+const RULES = `You are the brain of NeuroLjus, a phone support line for autistic people and the people who care for them. ElevenLabs turns your text into speech. You think and speak like an experienced crisis clinician who is on the phone with someone right now: direct, precise, calm, and fully present in THIS situation.
+
+THE ONE PRINCIPLE ABOVE EVERYTHING
+The immediate physical safety of the person wins over every other rule, protocol, or habit. Life improvises: most real crises do not match a protocol, and the caller needs someone who reasons about what is actually in front of them. If a child is pouring petrol next to a lit stove, the answer is "grab him and get him away from the stove, now", even though the protocols say not to restrain. If someone is in a river, nothing about lights or noise matters. Read the whole conversation, picture the scene, and answer the scene.
+
+WHAT THE PROTOCOLS ARE
+The ten NeuroLjus protocols below are knowledge: the best starting point for the common autism crises, written with caregivers and the research library. Use them as a clinician uses training: as a floor, never a ceiling. Their "never" lists are defaults that protect in an ordinary meltdown; break any of them when a greater risk demands it, and say so plainly. When the situation changes, change with it: do not stay on the first protocol because the call started there.
 
 YOUR ROLE
-You are the help that exists right now. In most autism crises no medical team arrives, and many families have no professional to call. Never say "I can't help you" and never send the caller elsewhere instead of helping. Walk the crisis with them, step by step, until it eases. Mention professionals or health services at most once, near the end, as a complement.
+You are the help that exists right now. In most autism crises no medical team arrives, and many families have no professional to call and no money for an ambulance. Never say "I can't help you" and never send the caller elsewhere instead of helping. Walk the crisis with them, step by step, until it eases. Health services and professionals are a complement you can mention, not a place to send people instead of helping.
 
-HOW YOU SPEAK
-- 2 to 4 short sentences per turn, each at most 12 words: the voice starts speaking at the first full stop, so a long first sentence is silence for the caller. Imperative: "Do this. Then this." One step at a time, then stop and listen. Anything beyond 4 sentences is cut before it is spoken.
-- No emotional filler: never "I'm sorry", "that must be exhausting", "I understand", "I'm with you", "you're not alone", "you did well". No stage tags like [slow] or [warm]. If the caller shows distress, at most one short acknowledging sentence, then back to the concrete step.
-- Never repeat a step already given in this call (the state below lists them). If something did not work, give the next different step.
-- Sources: name a source only when it comes from the LIBRARY DOCUMENTS or PENDING WEB SOURCE listed for this turn, or from a protocol's evidence. Say it in words ("a 2019 study found…", "according to the NHS…"). Otherwise say "according to the NeuroLjus protocol" and nothing more. Never name guidelines, studies or institutions from memory.
-- Plain speech: no lists, no markdown, no brackets, no URLs, no numbers in brackets.
+HOW YOU SPEAK (it is a voice call)
+- Short sentences, usually 2 to 4 per turn, each one a complete thought: the voice starts speaking at the first full stop, so a long first sentence is silence for the caller. One or two actions at a time, then stop and listen.
+- Concrete: what to do with the hands, the body, the space, the voice. Not "try to calm him down" but "put the cushion between his head and the wall".
+- Little emotional filler: the caller is busy. One short acknowledgement at most, then the next concrete thing.
+- Do not repeat yourself. If something did not work, say something different.
+- Plain speech: no lists, no markdown, no brackets, no URLs.
 - Neurodiversity-respecting language: describe what happens and what helps. Never "suffers from", never "low functioning".
-- Phrases marked sayToPerson in the protocols are for the caregiver to say to the autistic person. Offer them as "you can say to them: …". Never say them to the caller as if they were yours.
+- Phrases marked sayToPerson in the protocols are for the caregiver to say to the autistic person. Offer them as "you can say to them: …".
 
-TRIAGE AND EMERGENCIES (information for your judgement, not orders; the caller decides)
-- In self-injury or aggression, if the triage question has not been asked yet, ask it once, exactly as given in the state, and nothing else in that turn except one immediate safety step.
-- The state gives this country's emergency number. The severe signals that usually justify calling it are: loss of consciousness, bleeding that does not stop with pressure, vomiting or confusion after a blow to the head, trouble breathing, an eye injury, something swallowed, a seizure, a weapon in hand, suicidal intent, and a person out of reach in traffic, water or at a height. Without such a signal, home first aid (the state gives the lines) and the protocol steps are the help; many autistic people self-injure daily and an ambulance costs money.
-- Never say "call" or "do not call" as an order. If the number is worth having, give it as information: "the emergency number here is 123, you decide". The one exception: if the caller asks whom to call or what number, the answer is the number, in the first sentence, before anything else.
-- Suicidal intent: stay on the line, ask directly and calmly whether they are thinking of killing themself now and whether they have means at hand, have someone stay with the person, have the means removed, and give the emergency number as information. Asking does not increase risk.
+EMERGENCY NUMBER (the state gives this country's number)
+Give it when the situation calls for it, as information the caller decides on, and early when a life may be at risk: "the emergency number here is 123". Severe signals that usually justify it: loss of consciousness, bleeding that does not stop with pressure, vomiting or confusion after a blow to the head, trouble breathing, an eye injury, something swallowed, a seizure, a weapon in hand, suicidal intent, a person out of reach in traffic, water, fire or at a height. Without such a signal, home care and your steps are the help; do not push an ambulance on a family that self-injures daily. If the country is unknown and the number matters, ask which country first.
+Suicidal intent: stay on the line, ask directly and calmly whether they are thinking of killing themself now and whether they have means at hand, have someone stay with the person, have the means put out of reach, and give the number. Asking does not increase risk.
+
+MEDICATION, HEALTH, DIAGNOSIS
+Preferably these are for the person's own clinician, and you say so once. But you never know who is calling: some people cannot reach a doctor for many reasons, and a clear answer from you may be what keeps someone safe. So when the question matters now, answer it with what you know: what a medication is for, what an overdose looks like, what to do while help comes, what a sign usually means. Say clearly what you do not know and what is uncertain. Use the LIBRARY DOCUMENTS and the WEB SOURCE when they are given. Never invent a dose, a study, or a certainty you do not have.
+
+SOURCES
+Name a study, guideline or institution only when it comes from the LIBRARY DOCUMENTS or the WEB SOURCE listed for this turn, or from a protocol's evidence, and say it in words ("a 2019 review found…"). Otherwise speak from the NeuroLjus protocols and your own clinical reasoning, and say so if asked. Never invent a source.
 
 WHO IS CALLING
-- Caregiver: follow the protocol phase and steps.
-- The autistic person themself: one short sentence, one idea, one yes/no question per turn. No orders: offer ("would it help to turn off the light?"). If they do not answer, say it is fine to stay silent and that you will speak again in a moment. In shutdown, do not insist.
+The state says who seems to be calling. If it is the autistic person themself: one short sentence, one idea, one yes/no question per turn. No orders: offer ("would it help to turn off the light?"). If they do not answer, say it is fine to stay silent and that you will speak again in a moment. In shutdown, do not insist.
 
-WHAT YOU NEVER DO
-Never diagnose. Never talk about medication or doses ("that is for their doctor"). Never invent sources or figures. Never ask for names or personal data; if given, do not repeat them.
+PRIVACY
+Never ask for names or personal data; if given, do not repeat them.
 
-UNCOVERED CASES
-If the state says no protocol matched, do not force one. Use the library documents and the general de-escalation ladder (remove the demand, clear the space of people, reduce stimuli, offer a safe sensory alternative, check for pain, wait at a safe distance) with the same rules.
-
-After the crisis, if it is frequent: ask one question at a time (what happened just before, what the person did, what happened after, at what time it usually happens) and propose two or three concrete prevention measures.`;
+AFTER THE CRISIS
+If it is frequent: ask one question at a time (what happened just before, what the person did, what happened after, at what time it usually happens) and propose two or three concrete prevention measures from the protocols and the library.`;
 
 const staticCache = new Map<EmergencyLang, string>();
 
@@ -92,7 +102,7 @@ export function staticBlock(lang: EmergencyLang): string {
       evidenceNote: r.evidenceNote,
     };
   });
-  const text = `${RULES}\n\nAnswer in ${LANG_NAME[lang]}.\n\nTHE TEN PROTOCOLS (complete):\n${JSON.stringify(protocols)}`;
+  const text = `${RULES}\n\nAnswer in ${LANG_NAME[lang]}.\n\nTHE TEN PROTOCOLS (complete, as knowledge):\n${JSON.stringify(protocols)}`;
   staticCache.set(lang, text);
   return text;
 }
@@ -128,7 +138,7 @@ function startWebSearch(key: string, state: CallState, apiKey: string, model: st
   if (pendingWeb.size >= PENDING_MAX) pendingWeb.clear();
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 9_000);
-  buildLineSearch({ query: state.current, lang: state.lang, country: state.country, apiKey, model, signal: controller.signal, fetchImpl })
+  buildLineSearch({ query: state.current, lang: state.lang, country: state.country, apiKey, model, signal: controller.signal, fetchImpl, open: true })
     .then((r) => {
       if (r.mode === "web" && r.speech) pendingWeb.set(key, { speech: r.speech, sources: r.sources, at: Date.now() });
     })
@@ -136,75 +146,15 @@ function startWebSearch(key: string, state: CallState, apiKey: string, model: st
     .finally(() => clearTimeout(timer));
 }
 
-// ---------------------------------------------------------------------------
-// Dynamic block: this turn's state. Never cached.
-// ---------------------------------------------------------------------------
-
-export function dynamicBlock(state: CallState, docs: Retrieved, web: PendingWeb | null): string {
-  const lines: string[] = ["CALL STATE (derived from the transcript by code; follow it):"];
-  lines.push(`- caller: ${state.caller}`);
-  lines.push(`- country: ${state.country ?? "unknown"}`);
-  lines.push(`- emergency number for this country, as information for the caller: ${emergencyNumberSentence(state.country, state.lang)}`);
-  if (state.severe) lines.push(`- severe signal present (${state.signals.join(", ")}): the emergency number is worth giving now, as information; keep giving steps.`);
-  if (state.asksWhomToCall) lines.push("- the caller just asked WHOM TO CALL: the number is already said first by code; follow with one concrete step, do not repeat the number.");
-  const needsTriage = !state.calm && (state.protocol === "self_injury" || state.protocol === "aggression_people" || state.protocol === "aggression_objects" || state.protocol === "physical_danger");
-  if (needsTriage && !state.triageAsked && !state.severe) lines.push(`- triage: NOT asked yet. Ask it now, exactly: "${TRIAGE_QUESTION[state.lang]}" plus one immediate safety step.`);
-  else if (state.triageAsked && state.triageClear) lines.push("- triage: asked and answered, no severe signs. Home care only.");
-  else if (state.triageAsked) lines.push("- triage: already asked. Do not ask it again.");
-  const aid = firstAidFor(state.current);
-  if (aid.length > 0 && !state.severe) lines.push(`- home first aid that fits: ${aid.map((a) => FIRST_AID_TEXT[state.lang][a]).join(" ")}`);
-
-  if (state.calm) {
-    lines.push("- CALM QUESTION, nothing is happening right now: answer from the library documents below in 2 to 4 sentences and name the source in words. Do not give crisis steps and do not ask the triage question. If the library has nothing, say what the NeuroLjus protocols suggest and that you can look further.");
-  } else if (state.protocol) {
-    const p = getProtocol(state.protocol)!;
-    const r = renderProtocol(p, state.lang, state.country);
-    const phase = r.phases.find((x) => x.id === state.phase)!;
-    lines.push(`- protocol: ${r.number} ${r.title} (${state.protocol}), phase: ${state.phase} (${phase.goal})`);
-    const notGiven = phase.steps.map((s, i) => ({ key: `${state.phase}.${i}`, text: s })).filter((s) => !state.stepsGiven.includes(s.key));
-    const given = state.stepsGiven.map((k) => {
-      const [ph, i] = k.split(".");
-      return r.phases.find((x) => x.id === ph)?.steps[Number(i)] ?? "";
-    }).filter(Boolean);
-    if (given.length > 0) lines.push(`- steps ALREADY GIVEN in this call (do not repeat): ${given.map((g) => `"${g}"`).join(" | ")}`);
-    if (notGiven.length > 0) lines.push(`- next steps of this phase not yet given, in order: ${notGiven.map((s) => `"${s.text}"`).join(" | ")}`);
-    else {
-      const idx = PHASE_IDS.indexOf(state.phase);
-      const next = idx < PHASE_IDS.length - 1 ? r.phases[idx + 1] : null;
-      lines.push(next ? `- all steps of this phase were given. Move to phase ${next.id}: ${next.steps.map((s) => `"${s}"`).join(" | ")}` : "- all phases given. Close: ask if they need anything else.");
-    }
-    lines.push(`- protocol evidence you may cite in words: ${r.evidence.map((e) => `${e.id} (${e.level})`).join(", ")}`);
-  } else {
-    lines.push("- protocol: NONE matched (uncovered case). Use the library documents below and the general ladder. Do not force a protocol.");
-  }
-
-  if (docs.docs.length > 0) {
-    lines.push(`- LIBRARY DOCUMENTS for this turn (cite only these, in words, only if they fit; ${docs.ms} ms): ${docs.docs.map((d) => docForPrompt(d, state.lang)).join(" || ")}`);
-  } else lines.push(`- library: nothing relevant${docs.timedOut ? " (retrieval timed out)" : ""}. Say "according to the NeuroLjus protocol" if you need to name a source.`);
-
-  if (web) lines.push(`- PENDING WEB SOURCE from the previous turn (offer it in one sentence if still relevant, naming the site in words): "${web.speech}" sources: ${web.sources.map((s) => `${s.title} (${s.site})`).join("; ")}`);
-
-  if (state.phase === "recovery" || state.turn >= 6) lines.push(`- non-urgent resources for the country, only if the caller asks or at the close: ${resourcesFor(state.country, state.lang).join(" ")}`);
-
-  if (state.caller === "person") lines.push("- the AUTISTIC PERSON is calling: one short sentence, one idea, one yes/no question. No orders. Max 2 sentences.");
-  return lines.join("\n");
+/** The web is worth a background search when the library has nothing, or when the question is about medication or health. */
+export function wantsWeb(state: CallState, docs: Retrieved): boolean {
+  if (state.current.length < 15) return false;
+  return docs.docs.length === 0 || MEDICATION_ASK.test(state.current);
 }
 
 // ---------------------------------------------------------------------------
-// Fallback: the protocol speaks when the model cannot.
+// Dynamic block: this turn's facts. Never cached.
 // ---------------------------------------------------------------------------
-
-const LADDER: Record<EmergencyLang, string[]> = {
-  es: ["Retira la demanda o la tarea en curso.", "Saca del espacio a las demás personas.", "Apaga pantallas, música y luces fuertes.", "Ofrece algo seguro para morder o presión con un cojín, sin sujetar.", "Revisa señales de dolor: oídos, dientes, estómago.", "Espera en silencio a distancia segura.", "Cuéntame qué pasa ahora."],
-  en: ["Remove the demand or the task in progress.", "Move the other people out of the space.", "Turn off screens, music and bright lights.", "Offer something safe to bite or pressure with a cushion, without holding.", "Check for signs of pain: ears, teeth, stomach.", "Wait in silence at a safe distance.", "Tell me what is happening now."],
-  sv: ["Ta bort kravet eller uppgiften.", "För ut de andra personerna ur rummet.", "Stäng av skärmar, musik och starkt ljus.", "Erbjud något säkert att bita på eller tryck med en kudde, utan att hålla fast.", "Kolla tecken på smärta: öron, tänder, mage.", "Vänta tyst på säkert avstånd.", "Berätta vad som händer nu."],
-};
-
-const PERSON_FALLBACK: Record<EmergencyLang, string[]> = {
-  es: ["No tienes que hacer nada ahora.", "¿Te ayudaría que me quede callada un rato?"],
-  en: ["You do not have to do anything right now.", "Would it help if I stayed quiet for a bit?"],
-  sv: ["Du behöver inte göra något just nu.", "Skulle det hjälpa om jag var tyst en stund?"],
-};
 
 /** "The emergency number here is 123." as information, never as an order. */
 export function emergencyNumberSentence(country: string | null, lang: EmergencyLang): string {
@@ -217,32 +167,53 @@ export function emergencyNumberSentence(country: string | null, lang: EmergencyL
   return t[lang];
 }
 
-export function fallbackSpeech(state: CallState): string {
-  const out: string[] = [];
-  if (state.severe || state.asksWhomToCall) out.push(emergencyNumberSentence(state.country, state.lang));
-  if (state.caller === "person") {
-    for (const s of PERSON_FALLBACK[state.lang]) if (!state.assistantText.some((a) => a.includes(s))) out.push(s);
-    return out.slice(0, 2).join(" ");
-  }
-  if (state.protocol) {
-    const r = renderProtocol(getProtocol(state.protocol)!, state.lang, state.country);
-    const phase = r.phases.find((x) => x.id === state.phase)!;
-    const next = phase.steps.map((s, i) => ({ key: `${state.phase}.${i}`, text: s })).filter((s) => !state.stepsGiven.includes(s.key)).slice(0, 2);
-    for (const s of next) out.push(s.text);
-  }
-  if (out.length < 2) {
-    const ladder = LADDER[state.lang].filter((s) => !state.assistantText.some((a) => a.includes(s)));
-    for (const s of ladder) {
-      if (out.length >= 3) break;
-      out.push(s);
-    }
-  }
-  return out.slice(0, 4).join(" ");
+export function dynamicBlock(state: CallState, docs: Retrieved, web: PendingWeb | null): string {
+  const lines: string[] = ["FACTS FOR THIS TURN (derived from the transcript by code):"];
+  lines.push(`- who seems to be calling: ${state.caller}`);
+  lines.push(`- country: ${state.country ?? "unknown"}`);
+  if (state.country) lines.push(`- emergency number for this country: ${emergencyNumberSentence(state.country, state.lang)}`);
+  else lines.push("- the country is unknown, so you have no emergency number to give. If the number matters, ask which country they are in before anything else.");
+  if (state.severe) lines.push(`- code found a severe signal in what the caller said (${state.signals.join(", ")}): weigh it.`);
+  if (state.asksWhomToCall) lines.push(state.country ? "- the caller just asked WHOM TO CALL: the number was already said first by code; follow with what to tell them and one concrete step. Do not repeat the number." : "- the caller just asked WHOM TO CALL and the country is unknown: code already asked which country. Follow with one concrete step while they answer.");
+
+  if (docs.docs.length > 0) {
+    lines.push(`- LIBRARY DOCUMENTS for this turn (cite only these, in words, only if they fit; ${docs.ms} ms): ${docs.docs.map((d) => docForPrompt(d, state.lang)).join(" || ")}`);
+  } else lines.push(`- library: nothing relevant${docs.timedOut ? " (retrieval timed out)" : ""}.`);
+
+  if (web) lines.push(`- WEB SOURCE found for the previous turn (use it if still relevant, naming the site in words): "${web.speech}" sources: ${web.sources.map((s) => `${s.title} (${s.site})`).join("; ")}`);
+
+  if (state.turn >= 6) lines.push(`- non-urgent resources for the country, only if the caller asks or at the close: ${resourcesFor(state.country, state.lang).join(" ")}`);
+
+  if (state.caller === "person") lines.push("- the AUTISTIC PERSON seems to be calling: one short sentence, one idea, one yes/no question.");
+  return lines.join("\n");
 }
 
 // ---------------------------------------------------------------------------
-// Uncovered cases: anonymised log line so the library and protocols can grow
-// where people actually call. Vercel keeps it with the function logs.
+// Fallback: one honest sentence when the model cannot speak. Never a protocol
+// step: a step chosen blind can be the wrong one for the scene.
+// ---------------------------------------------------------------------------
+
+const HONEST: Record<EmergencyLang, string> = {
+  es: "Te escucho. Dime dónde está ahora y qué está pasando.",
+  en: "I am listening. Tell me where they are now and what is happening.",
+  sv: "Jag lyssnar. Berätta var hen är nu och vad som händer.",
+};
+
+/** The first sentence code owes this turn, or null: the number when asked (or the country question), the honest line as fallback. */
+export function codeFirstSentence(state: CallState): string | null {
+  if (!state.asksWhomToCall) return null;
+  if (state.country) return emergencyNumberSentence(state.country, state.lang);
+  return state.countryAsked ? emergencyNumberSentence(null, state.lang) : COUNTRY_QUESTION[state.lang];
+}
+
+export function fallbackSpeech(state: CallState): string {
+  return HONEST[state.lang];
+}
+
+// ---------------------------------------------------------------------------
+// Logs: anonymised lines so the library and protocols can grow where people
+// actually call, and so fallbacks are counted. Vercel keeps them with the
+// function logs. No names, no digits, no emails.
 // ---------------------------------------------------------------------------
 
 export function anonymize(text: string): string {
@@ -260,6 +231,10 @@ export function logUncovered(state: CallState, docs: Retrieved, webTried: boolea
   if (process.env.LINE_LOG_UNCOVERED === "0") return;
   if (state.current.length < 15) return;
   log(JSON.stringify({ event: "line_uncovered", lang: state.lang, turn: state.turn, severe: state.severe, situation: anonymize(state.current), libraryDocs: docs.docs.map((d) => d.id), webTried }));
+}
+
+export function logFallback(state: CallState, reason: string, ms: number, log: (line: string) => void = (l) => console.warn(l)): void {
+  log(JSON.stringify({ event: "line_fallback", reason, ms, lang: state.lang, turn: state.turn, severe: state.severe, situation: anonymize(state.current) }));
 }
 
 // ---------------------------------------------------------------------------
@@ -287,7 +262,6 @@ export type BrainTurn = {
   sentences: string[];
   /** Where the words came from. */
   source: "model" | "fallback" | "fallback_after_model";
-  dropped: SpeechGuard["dropped"];
   retrieval: { ms: number; docs: string[]; timedOut: boolean };
   /** Milliseconds to the first spoken sentence. */
   firstSentenceMs: number;
@@ -344,12 +318,12 @@ export async function* brainTurn(input: BrainInput, result: Partial<BrainTurn> =
   const web = takePendingWeb(key);
   const docs = await retrieveWithBudget(state.current, state.userText.slice(0, -1));
 
-  const uncovered = state.protocol === null && state.turn >= 1;
-  const webTried = Boolean(uncovered && input.apiKey && !input.noWeb && docs.docs.length === 0);
+  const uncovered = state.likelyProtocol === null && state.turn >= 1;
+  const webTried = Boolean(input.apiKey && !input.noWeb && wantsWeb(state, docs));
   if (webTried) startWebSearch(key, state, input.apiKey!, input.model, input.fetchImpl);
   if (uncovered) logUncovered(state, docs, webTried, input.log);
 
-  const guard = new SpeechGuard({ lang: state.lang, severe: state.severe, suicidal: state.signals.includes("suicidal"), previous: state.assistantText, maxSentences: state.caller === "person" ? 2 : 4 });
+  const guard = new SpeechGuard({ lang: state.lang });
   const system = [staticBlock(state.lang), dynamicBlock(state, docs, web)];
   const messages = toClaudeMessages(input.messages);
 
@@ -363,13 +337,14 @@ export async function* brainTurn(input: BrainInput, result: Partial<BrainTurn> =
   };
 
   // "Whom do I call?" is answered by code, first, before the model says anything.
-  if (state.asksWhomToCall) {
-    const first = emergencyNumberSentence(state.country, state.lang);
+  const first = codeFirstSentence(state);
+  if (first) {
     yield emit(first);
-    guard.markSaid(first);
+    guard.markSaid();
   }
 
   const canModel = Boolean(input.modelStream || input.apiKey);
+  let failure: string | null = null;
   if (canModel) {
     try {
       const streamer = input.modelStream ? input.modelStream(system, messages) : claudeStream(input, system, messages);
@@ -385,26 +360,21 @@ export async function* brainTurn(input: BrainInput, result: Partial<BrainTurn> =
       }
       clearTimeout(firstTimer);
       for (const s of guard.flush()) yield emit(s);
-    } catch {
-      source = sentences.length > 0 ? "model" : "fallback_after_model";
+    } catch (e) {
+      failure = e instanceof Error ? e.message : String(e);
     }
-  } else source = "fallback";
+  } else failure = "no_model";
 
-  if (sentences.length === 0) {
-    source = source === "model" ? "fallback_after_model" : source;
-    for (const s of guard.flush()) yield emit(s);
-    if (sentences.length === 0) {
-      const fb = new SpeechGuard({ lang: state.lang, severe: state.severe, previous: state.assistantText, maxSentences: 4 });
-      for (const s of [...fb.push(fallbackSpeech(state)), ...fb.flush()]) yield emit(s);
-      if (sentences.length === 0) yield emit(fallbackSpeech(state));
-    }
+  if (failure !== null && guard.count === (first ? 1 : 0)) {
+    source = canModel ? "fallback_after_model" : "fallback";
+    logFallback(state, failure, Math.round(performance.now() - t0), input.log);
+    yield emit(fallbackSpeech(state));
   }
 
   Object.assign(result, {
     state,
     sentences,
     source,
-    dropped: guard.dropped,
     retrieval: { ms: docs.ms, docs: docs.docs.map((d) => d.id), timedOut: docs.timedOut },
     firstSentenceMs,
     totalMs: Math.round(performance.now() - t0),

@@ -1,15 +1,15 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { deriveCallState, detectCaller, detectCountry, detectLang, stepWasGiven } from "../src/lib/line/state";
+import { asksWhomToCall, deriveCallState, detectCaller, detectCountry, detectLang } from "../src/lib/line/state";
 import { answersNoSevere, firstAidFor, severeSignals } from "../src/lib/line/triage";
-import { SpeechGuard, judgeSentence } from "../src/lib/line/guard";
-import { anonymize, brainTurnText, conversationKey, dynamicBlock, fallbackSpeech, staticBlock, toClaudeMessages } from "../src/lib/line/brain";
+import { SpeechGuard } from "../src/lib/line/guard";
+import { anonymize, brainTurnText, codeFirstSentence, conversationKey, dynamicBlock, fallbackSpeech, staticBlock, toClaudeMessages, wantsWeb } from "../src/lib/line/brain";
 import { retrieveWithBudget } from "../src/lib/line/retrieval";
 import { resourcesFor, RESOURCES } from "../src/lib/line/resources";
 import { brainHandler, parseChatRequest } from "../src/lib/line/brainHttp";
 import { mockModelStream } from "../scripts/line-eval/mockModel";
 import { SCENARIOS } from "../scripts/line-eval/scenarios";
-import { checkTurn, SOURCE_WORDS } from "../scripts/line-eval/checks";
+import { checkTurn } from "../scripts/line-eval/checks";
 import { mockReq, SECRET } from "./helpers/lineHttp";
 import type { ChatMessage } from "../src/lib/line/state";
 
@@ -51,87 +51,88 @@ test("triage: only real severe signals count", () => {
 
 // ---------------------------------------------------------------- state
 
-test("state: language, country, caller, phase and steps given are derived from the transcript", () => {
+test("state: language, country, caller and the whom-to-call question are derived from the transcript; nothing else is decided by code", () => {
   assert.equal(detectLang("Mi hijo se golpea y no sé qué hacer"), "es");
   assert.equal(detectLang("My son is hitting himself and I don't know what to do"), "en");
   assert.equal(detectLang("Min son slår sig själv och jag vet inte vad jag ska göra"), "sv");
   assert.equal(detectCountry(["Estamos en Colombia", "ahora en Bogotá"]), "CO");
+  assert.equal(detectCountry(["Estoy en Colombia", "no, me equivoqué, estoy es en el Perú"]), "PE", "the last country named wins");
   assert.equal(detectCountry(["We live in the UK"]), "GB");
   assert.equal(detectCountry(["Vi bor i Sverige"]), "SE");
   assert.equal(detectCountry(["nada de país"]), null);
   assert.equal(detectCaller(["Mi hijo se golpea la cabeza"]), "caregiver");
   assert.equal(detectCaller(["Soy autista y no puedo hablar ahora"]), "person");
   assert.equal(detectCaller(["hola"]), "unknown");
-
-  const steps = ["Pon algo blando entre la cabeza y la superficie: un cojín, tu mano abierta, una manta doblada."];
-  assert.equal(stepWasGiven(steps[0], ["Pon algo blando entre su cabeza y la superficie, como un cojín o una manta doblada."]), true);
-  assert.equal(stepWasGiven(steps[0], ["Retira la demanda y baja el ruido."]), false);
+  for (const t of ["¿A quién llamo?", "No me lo sé. Estoy en Colombia. ¿Cuál es el número de emergencia?", "Who do I call?", "Vem ringer jag?"]) assert.equal(asksWhomToCall(t), true, t);
+  assert.equal(asksWhomToCall("Se tiró al lago, ¿qué hago?"), false);
 
   const msgs: ChatMessage[] = [
     { role: "system", content: "ignored agent prompt" },
     { role: "user", content: "Mi hijo se golpea la cabeza con la mano y no para. Estamos en México." },
-    { role: "assistant", content: "¿Hay alguna señal grave: pérdida de conciencia, sangre que no para con presión, vómitos o confusión tras un golpe en la cabeza, dificultad para respirar, lesión en un ojo, algo tragado, o ha dicho que se quiere morir? Pon algo blando entre la cabeza y la superficie, un cojín o una manta doblada." },
-    { role: "user", content: "No, nada de eso. Ya paró de golpearse, está más tranquilo." },
+    { role: "assistant", content: "Pon algo blando entre la cabeza y la superficie, un cojín o una manta doblada." },
+    { role: "user", content: "Salió corriendo y se tiró al lago, ¿a quién llamo?" },
   ];
   const s = deriveCallState(msgs);
   assert.equal(s.lang, "es");
   assert.equal(s.country, "MX");
+  assert.equal(s.countryAsked, false);
   assert.equal(s.caller, "caregiver");
-  assert.equal(s.protocol, "self_injury");
+  assert.equal(s.asksWhomToCall, true);
   assert.equal(s.severe, false);
-  assert.equal(s.triageAsked, true);
-  assert.equal(s.triageClear, true);
-  assert.equal(s.phase, "descent");
-  assert.ok(s.stepsGiven.includes("peak.0"), `peak.0 given: ${s.stepsGiven.join(",")}`);
   assert.equal(s.turn, 2);
+  assert.equal("protocol" in s, false, "code no longer chooses a protocol for the model");
+  assert.equal("phase" in s, false);
   // The same transcript always gives the same state.
   assert.deepEqual(deriveCallState(msgs), s);
 });
 
-// ---------------------------------------------------------------- guard
+// ---------------------------------------------------------------- streamer
 
-test("guard: emergency words never drop a sentence; no filler, no repeat, no medication, sentence cap, tags stripped", () => {
-  const base = { lang: "es" as const, severe: false, previous: ["Retira la demanda y baja el ruido."], maxSentences: 4 };
-  const said = new Set<string>();
-  assert.equal(judgeSentence("El número de emergencias es el 123.", base, 0, said).keep, true, "no severe signal, still spoken");
-  assert.equal(judgeSentence("El número de emergencias es el 123.", base, 4, said).keep, true, "the number is never cut by the cap");
-  assert.equal(judgeSentence("Lo siento mucho, debe ser agotador.", base, 0, said).reason, "filler");
-  assert.equal(judgeSentence("Retira la demanda y baja el ruido.", base, 0, said).reason, "repeat");
-  assert.equal(judgeSentence("Dale melatonina para dormir.", base, 0, said).reason, "medication");
-  assert.equal(judgeSentence("Tu hijo es autista.", base, 0, said).reason, "diagnosis");
-  assert.equal(judgeSentence("Pon un cojín entre su cabeza y la pared.", base, 4, said).reason, "limit");
-
-  const g = new SpeechGuard(base);
-  const out = [...g.push("[slow] Pon algo blando bajo su cabeza. Lo siento mucho. El número de emerg"), ...g.push("encias es el 123. Espera en silencio a distancia. Dime qué pasa ahora."), ...g.flush()];
-  assert.deepEqual(out, ["Pon algo blando bajo su cabeza.", "El número de emergencias es el 123.", "Espera en silencio a distancia.", "Dime qué pasa ahora."]);
-  assert.deepEqual(g.dropped.map((d) => d.reason), ["filler"]);
-  // Sentences stream as soon as they are complete: the first one came out of the first push.
-  const g2 = new SpeechGuard(base);
+test("streamer: drops nothing the model says; strips tags and markdown; streams each sentence as soon as it is complete", () => {
+  const g = new SpeechGuard({ lang: "es" });
+  const out = [...g.push("[slow] Agárralo y sácalo de la cocina ya. Dale media pastilla si la tiene recetada. El número de emerg"), ...g.push("encias es el 123. **Tu hijo es autista**, y eso no cambia nada ahora. Lo siento mucho."), ...g.flush()];
+  assert.deepEqual(out, [
+    "Agárralo y sácalo de la cocina ya.",
+    "Dale media pastilla si la tiene recetada.",
+    "El número de emergencias es el 123.",
+    "Tu hijo es autista, y eso no cambia nada ahora.",
+    "Lo siento mucho.",
+  ]);
+  assert.equal(g.count, 5);
+  const g2 = new SpeechGuard({ lang: "es" });
   assert.deepEqual(g2.push("Primera frase completa. Segunda a medi"), ["Primera frase completa."]);
+  assert.deepEqual(g2.flush(), ["Segunda a medi"]);
 });
 
 // ---------------------------------------------------------------- brain pieces
 
-test("brain: static block is per language and stable; dynamic block carries triage and steps; fallback speaks the protocol", () => {
+test("brain: the prompt carries the principle and the protocols as knowledge; the facts block carries the number; the fallback is one honest line", () => {
   assert.equal(staticBlock("es"), staticBlock("es"));
   assert.notEqual(staticBlock("es"), staticBlock("sv"));
+  assert.match(staticBlock("en"), /THE ONE PRINCIPLE ABOVE EVERYTHING/);
+  assert.match(staticBlock("en"), /as knowledge/);
+  assert.doesNotMatch(staticBlock("en"), /Never talk about medication|Never diagnose/);
   assert.ok(staticBlock("en").includes('"id":"self_injury"'));
   assert.ok(staticBlock("en").length > 20_000, "the ten protocols are in the prompt");
 
   const s = deriveCallState([{ role: "user", content: "Mi hijo se golpea la cabeza y le sale sangre que no para. Estamos en España." }]);
   const dyn = dynamicBlock(s, { docs: [], ms: 3, timedOut: false }, null);
-  assert.match(dyn, /severe signal present \(bleeding_not_stopping\)/);
+  assert.match(dyn, /severe signal in what the caller said \(bleeding_not_stopping\)/);
   assert.match(dyn, /El número de emergencias es el 112\./);
-  assert.match(dyn, /protocol: 4 Autolesión/);
-  const fb = fallbackSpeech(s);
-  assert.match(fb, /^El número de emergencias es el 112\./);
+  assert.doesNotMatch(dyn, /protocol:|phase:|steps/i, "no protocol, phase or steps are imposed");
+  assert.equal(fallbackSpeech(s), "Te escucho. Dime dónde está ahora y qué está pasando.");
 
-  const calm = deriveCallState([{ role: "user", content: "Mi hijo se golpea la cabeza con la mano" }]);
-  const dynCalm = dynamicBlock(calm, { docs: [], ms: 3, timedOut: false }, null);
-  assert.match(dynCalm, /emergency number for this country, as information/);
-  assert.doesNotMatch(dynCalm, /NEVER mention/);
-  assert.match(dynCalm, /triage: NOT asked yet/);
-  assert.doesNotMatch(fallbackSpeech(calm), /112|emergencias/, "without a severe signal the fallback gives steps, not the number");
+  const unknown = deriveCallState([{ role: "user", content: "Mi hija se cayó y no se despierta" }, { role: "assistant", content: "Mírale la respiración." }, { role: "user", content: "¿A quién llamo?" }]);
+  assert.match(dynamicBlock(unknown, { docs: [], ms: 3, timedOut: false }, null), /country is unknown/);
+  assert.equal(codeFirstSentence(unknown), "¿En qué país estás? Así te doy el número exacto.");
+  const known = deriveCallState([{ role: "user", content: "Mi hijo no se despierta y estoy en Perú. ¿A quién llamo?" }]);
+  assert.equal(codeFirstSentence(known), "El número de emergencias es el 106.");
+  assert.equal(codeFirstSentence(s), null, "without the question, code says nothing first");
+
+  const docs = { docs: [], ms: 1, timedOut: false };
+  assert.equal(wantsWeb(deriveCallState([{ role: "user", content: "Se tomó seis pastillas de risperidona y no hay médico cerca" }]), { ...docs, docs: [{} as never] }), true, "medication: the web is searched even with library documents");
+  assert.equal(wantsWeb(deriveCallState([{ role: "user", content: "Mi hijo se come tierra y papel todos los días" }]), docs), true, "nothing in the library: the web is searched");
+  assert.equal(wantsWeb(deriveCallState([{ role: "user", content: "ya" }]), docs), false);
 
   assert.deepEqual(toClaudeMessages([{ role: "system", content: "x" }, { role: "assistant", content: "hola" }, { role: "user", content: "a" }, { role: "user", content: "b" }]), [{ role: "user", content: "a\nb" }]);
   assert.equal(conversationKey([{ role: "user", content: "hola" }], undefined), conversationKey([{ role: "user", content: "hola" }, { role: "assistant", content: "x" }], undefined));
@@ -158,61 +159,64 @@ test("resources: nine countries, honest fallback elsewhere, every entry has a pa
 
 // ---------------------------------------------------------------- scenarios with the scripted model (same as npm run line:eval)
 
-test("scenarios: every turn passes the rules with the scripted model", async () => {
+test("scenarios: every turn keeps the invariants with the scripted model", async () => {
   const failures: string[] = [];
   for (const s of SCENARIOS) {
     const messages: ChatMessage[] = [];
     let last: Awaited<ReturnType<typeof brainTurnText>> | null = null;
-    let hadDocs = false;
-    let cited = false;
     for (let i = 0; i < s.turns.length; i++) {
       messages.push({ role: "user", content: s.turns[i] });
       const r = await brainTurnText({ messages, apiKey: null, model: "x", modelStream: mockModelStream, noWeb: true, log: () => undefined });
       last = r;
       const text = r.sentences.join(" ");
-      const previous = messages.filter((m) => m.role === "assistant").map((m) => String(m.content));
-      const severeAllowed = s.expect.severeFrom !== undefined && i >= s.expect.severeFrom;
-      for (const p of checkTurn({ text, previousAssistant: previous, severeAllowed, suicidal: s.expect.suicidal, asksWhomToCall: s.expect.whomTurns?.includes(i) ?? false, maxSentences: s.expect.person ? 2 : 4, sourceAllowed: r.retrieval.docs.length > 0 || r.state.protocol !== null, firstSentenceMs: r.firstSentenceMs, firstSentenceBudgetMs: 900 })) failures.push(`${s.id} t${i + 1}: ${p}`);
-      if (severeAllowed !== r.state.severe) failures.push(`${s.id} t${i + 1}: severe=${r.state.severe}, expected ${severeAllowed}`);
-      // The guard caught the scripted model's deliberate violations.
-      assert.ok(r.dropped.some((d) => d.reason === "filler"), `${s.id} t${i + 1}: filler dropped`);
-      if (s.expect.whomTurns?.includes(i)) assert.match(r.sentences[0], /123/, `${s.id} t${i + 1}: the number comes first`);
-      if (r.retrieval.docs.length > 0) hadDocs = true;
-      if (SOURCE_WORDS.test(text)) cited = true;
+      for (const p of checkTurn({ text, asksWhomToCall: s.expect.whomTurns?.includes(i) ?? false, sourceAllowed: r.retrieval.docs.length > 0, firstSentenceMs: r.firstSentenceMs, firstSentenceBudgetMs: 900 })) failures.push(`${s.id} t${i + 1}: ${p}`);
+      const severeExpected = s.expect.severeFrom !== undefined && i >= s.expect.severeFrom;
+      if (severeExpected !== r.state.severe) failures.push(`${s.id} t${i + 1}: severe=${r.state.severe}, expected ${severeExpected}`);
+      assert.equal(r.source, "model", `${s.id} t${i + 1}: the model spoke`);
+      assert.doesNotMatch(text, /\[slow\]|\*\*/, `${s.id} t${i + 1}: tags and markdown stripped`);
+      if (s.expect.whomTurns?.includes(i)) assert.match(r.sentences[0], /\d{3}|En qué país/, `${s.id} t${i + 1}: the number or the country question comes first`);
       messages.push({ role: "assistant", content: text });
     }
-    if (hadDocs && !cited && !s.expect.person) failures.push(`${s.id}: library documents available but no source named in the call`);
-    if (s.expect.protocol !== undefined) assert.equal(last!.state.protocol, s.expect.protocol, `${s.id}: protocol`);
     if (s.expect.country) assert.equal(last!.state.country, s.expect.country, `${s.id}: country`);
     if (s.expect.person) assert.equal(last!.state.caller, "person", `${s.id}: caller`);
+    if (s.expect.uncovered) assert.equal(last!.state.likelyProtocol, null, `${s.id}: uncovered`);
   }
   assert.deepEqual(failures, []);
 });
 
-test("brain: with no model the protocol speaks, with a refusing model the protocol speaks, uncovered cases are logged anonymised", async () => {
+test("brain: with no model or a failing model the line says one honest sentence, never a protocol step; the number first when asked; logs are anonymised", async () => {
   const msgs: ChatMessage[] = [{ role: "user", content: "Mi hijo se golpea la cabeza con la mano y no para" }];
-  const r = await brainTurnText({ messages: msgs, apiKey: null, model: "x", noWeb: true });
-  assert.equal(r.source, "fallback");
-  assert.ok(r.sentences.length >= 1 && r.sentences.length <= 4);
-  assert.doesNotMatch(r.sentences.join(" "), /112|emergencias/);
-
-  // "¿A quién llamo?" is answered first, by code, whatever the model says.
-  const whom = await brainTurnText({ messages: [{ role: "user", content: "Se me soltó y corrió a la calle, hay carros, no lo alcanzo. Estamos en Colombia." }, { role: "assistant", content: "Ponte entre él y la calle." }, { role: "user", content: "¿A quién llamo?" }], apiKey: null, model: "x", modelStream: mockModelStream, noWeb: true, log: () => undefined });
-  assert.equal(whom.state.protocol, "physical_danger");
-  assert.equal(whom.state.asksWhomToCall, true);
-  assert.equal(whom.sentences[0], "El número de emergencias es el 123.");
-
-  const refusing = async function* (): AsyncIterable<string> { throw new Error("refusal"); };
-  const r2 = await brainTurnText({ messages: msgs, apiKey: null, model: "x", modelStream: () => refusing(), noWeb: true });
-  assert.equal(r2.source, "fallback_after_model");
-  assert.ok(r2.sentences.length >= 1);
-
   const lines: string[] = [];
-  const r3 = await brainTurnText({ messages: [{ role: "user", content: "Mi hijo Mateo se come tierra y papel todos los días desde hace 3 semanas" }], apiKey: null, model: "x", noWeb: true, log: (l) => lines.push(l) });
-  assert.equal(r3.state.protocol, null);
-  assert.equal(lines.length, 1);
-  const entry = JSON.parse(lines[0]);
-  assert.equal(entry.event, "line_uncovered");
+  const r = await brainTurnText({ messages: msgs, apiKey: null, model: "x", noWeb: true, log: (l) => lines.push(l) });
+  assert.equal(r.source, "fallback");
+  assert.deepEqual(r.sentences, ["Te escucho. Dime dónde está ahora y qué está pasando."]);
+  assert.ok(lines.some((l) => JSON.parse(l).event === "line_fallback"), "the fallback is logged");
+
+  // The lake: the model fails, the fallback must not recite the overload steps the call started with.
+  const lake: ChatMessage[] = [
+    { role: "user", content: "Mi hijo se está golpeando la cabeza y gritando, hay mucho ruido." },
+    { role: "assistant", content: "Pon un cojín entre su cabeza y la pared." },
+    { role: "user", content: "Se tiró al lago, se lo está llevando la corriente, ¿qué hago?" },
+  ];
+  const refusing = async function* (): AsyncIterable<string> { throw new Error("refusal"); };
+  const r2 = await brainTurnText({ messages: lake, apiKey: null, model: "x", modelStream: () => refusing(), noWeb: true, log: () => undefined });
+  assert.equal(r2.source, "fallback_after_model");
+  assert.doesNotMatch(r2.sentences.join(" "), /música|luces|pantallas|cojín/);
+
+  // "¿A quién llamo?" is answered first, by code, whatever the model says; and the number follows the last country named.
+  const whom = await brainTurnText({ messages: [{ role: "user", content: "Estoy en Colombia." }, { role: "assistant", content: "Dime qué pasa." }, { role: "user", content: "No, estoy es en el Perú. ¿A quién llamo?" }], apiKey: null, model: "x", modelStream: mockModelStream, noWeb: true, log: () => undefined });
+  assert.equal(whom.state.asksWhomToCall, true);
+  assert.equal(whom.sentences[0], "El número de emergencias es el 106.");
+
+  // Unknown country: code asks it first, and the model still speaks after.
+  const noCountry = await brainTurnText({ messages: [{ role: "user", content: "Mi hija no se despierta. ¿A quién llamo?" }], apiKey: null, model: "x", modelStream: mockModelStream, noWeb: true, log: () => undefined });
+  assert.equal(noCountry.sentences[0], "¿En qué país estás? Así te doy el número exacto.");
+  assert.ok(noCountry.sentences.length > 1);
+
+  const lines3: string[] = [];
+  const r3 = await brainTurnText({ messages: [{ role: "user", content: "Mi hijo Mateo se come tierra y papel todos los días desde hace 3 semanas" }], apiKey: null, model: "x", modelStream: mockModelStream, noWeb: true, log: (l) => lines3.push(l) });
+  assert.equal(r3.state.likelyProtocol, null);
+  const entry = JSON.parse(lines3.find((l) => l.includes("line_uncovered"))!);
   assert.doesNotMatch(entry.situation, /Mateo|3 semanas/);
 });
 

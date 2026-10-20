@@ -106,12 +106,14 @@ export async function buildLineSearch(input: {
   signal?: AbortSignal;
   fetchImpl?: typeof fetch;
   onError?: (stage: string) => void;
+  /** The brain's mode: no risk or medication gate, the model decides what to do with the source. */
+  open?: boolean;
 }): Promise<LineSearchResult> {
   const { query, lang, country } = input;
-  if (severeSignals(query).severe) {
+  if (!input.open && severeSignals(query).severe) {
     return { ok: true, mode: "risk", risk: true, use_tool: "protocol", speech: dangerSentence(country, lang), sources: [] };
   }
-  if (MEDICATION_ASK.test(query)) {
+  if (!input.open && MEDICATION_ASK.test(query)) {
     return { ok: true, mode: "medication", risk: false, use_tool: null, speech: clinicianSentence(lang), sources: [] };
   }
   if (!input.apiKey) {
@@ -141,7 +143,7 @@ export async function buildLineSearch(input: {
     }
     const { text, sources } = parseSearch(payload.content ?? []);
     const speech = firstSentences(text, MAX_SENTENCES);
-    if (!speech || MEDICATION_ASK.test(speech) || claimsDiagnosis(speech)) return { ok: true, mode: "none", risk: false, use_tool: null, speech: "", sources: [] };
+    if (!speech || (!input.open && (MEDICATION_ASK.test(speech) || claimsDiagnosis(speech)))) return { ok: true, mode: "none", risk: false, use_tool: null, speech: "", sources: [] };
     return { ok: true, mode: "web", risk: false, use_tool: null, speech, sources };
   } catch (e) {
     input.onError?.(e instanceof Error && e.name === "AbortError" ? "timeout" : "upstream");

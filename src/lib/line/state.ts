@@ -3,12 +3,19 @@
  * on every turn. Nothing is stored server-side: the same messages always give
  * the same state, so instances need no shared memory and a lost instance loses
  * nothing. Deterministic and tested.
+ *
+ * The state carries facts the model cannot be trusted to get right on its own
+ * (language, country and its emergency number, whether the caller just asked
+ * whom to call) and hints it may weigh (who seems to be calling, severe
+ * signals found by code). It no longer chooses a protocol, a phase or the next
+ * step: the model reads the conversation and decides. The keyword match is
+ * kept only to log uncovered cases.
  */
 
 import type { EmergencyLang } from "../emergency";
-import { PHASE_IDS, PROTOCOLS, getProtocol, type PhaseId, type ProtocolId } from "../protocols";
-import { chooseProtocol, protocolScores, urgencyRank } from "./protocol";
-import { TRIAGE_QUESTION, answersNoSevere, severeSignals, type SevereSignal } from "./triage";
+import { PROTOCOLS, type ProtocolId } from "../protocols";
+import { protocolScores, urgencyRank } from "./protocol";
+import { severeSignals, type SevereSignal } from "./triage";
 
 export type ChatMessage = { role: "system" | "user" | "assistant" | string; content: unknown };
 
@@ -17,32 +24,23 @@ export type CallerRole = "caregiver" | "person" | "unknown";
 export type CallState = {
   lang: EmergencyLang;
   country: string | null;
+  /** Code already asked the caller which country they are in. */
+  countryAsked: boolean;
   caller: CallerRole;
-  /** A calm question (nothing happening now): answer from the library, no protocol steps. */
-  calm: boolean;
-  /** This turn asks whom to call: the emergency number goes first, by code. */
+  /** This turn asks whom to call: the emergency number (or the country question) goes first, by code. */
   asksWhomToCall: boolean;
-  /** Chosen protocol, or null when nothing matched (an uncovered case: library and web instead). */
-  protocol: ProtocolId | null;
-  /** True when a keyword matched; false when the fallback protocol would have been used. */
-  matched: boolean;
-  phase: PhaseId;
-  /** Severe signals found anywhere in what the caller said. */
+  /** Protocol the keywords point at, for the uncovered-case log only. Not given to the model. */
+  likelyProtocol: ProtocolId | null;
+  /** Severe signals found anywhere in what the caller said, as information for the model. */
   severe: boolean;
   signals: SevereSignal[];
-  /** The triage question was already asked by the assistant. */
-  triageAsked: boolean;
-  /** The caller answered the triage question with "no severe signs". */
-  triageClear: boolean;
-  /** Protocol steps already given, as "phase.index" keys. */
-  stepsGiven: string[];
   /** Number of user turns so far (this one included). */
   turn: number;
   /** Text of the current user turn. */
   current: string;
   /** All user text, oldest first, for retrieval context. */
   userText: string[];
-  /** Previous assistant texts, for the repeat guard. */
+  /** Previous assistant texts. */
   assistantText: string[];
 };
 
@@ -105,6 +103,15 @@ export function detectCountry(userTexts: string[]): string | null {
   return null;
 }
 
+/** The question code asks when the country is unknown and the number is needed. */
+export const COUNTRY_QUESTION: Record<EmergencyLang, string> = {
+  es: "¿En qué país estás? Así te doy el número exacto.",
+  en: "Which country are you in? Then I can give you the exact number.",
+  sv: "Vilket land är du i? Då kan jag ge dig rätt nummer.",
+};
+
+const COUNTRY_ASKED = /en qué país estás|which country are you in|vilket land är du i/i;
+
 // --- caller ---------------------------------------------------------------
 
 const PERSON = w("soy autista|yo soy|me quiero morir|no puedo hablar|no puedo moverme|estoy en bloqueo|estoy bloquead\\p{L}*|me estoy|me siento|i'?m autistic|i am autistic|i can'?t (speak|talk|move)|i'?m (shutting down|frozen|overwhelmed)|i want to die|i feel|jag [äa]r autistisk|jag kan inte (prata|r[öo]ra mig)|jag vill d[öo]|jag k[äa]nner|jag m[åa]r");
@@ -118,68 +125,21 @@ export function detectCaller(userTexts: string[]): CallerRole {
   return p > c ? "person" : "caregiver";
 }
 
-// --- phase ----------------------------------------------------------------
-
-const PHASE_SIGNAL: Array<[PhaseId, RegExp]> = [
-  ["recovery", w("ya (est[áa]|se) (tranquil\\p{L}*|calm\\p{L}*|dormid\\p{L}*)|ya pas[oó]|se durmi[oó]|est[áa] bien ya|calm now|it'?s over|asleep now|settled|lugn nu|det [äa]r [öo]ver|sover nu|har lugnat sig")],
-  ["descent", w("se est[áa] calmando|est[áa] bajando|va bajando|m[áa]s tranquil\\p{L}*|menos|ya no (grita|pega|se golpea)|par[oó] de|dej[oó] de|calming down|easing|less|stopped (hitting|screaming|crying)|quieter|lugnar sig|b[öo]rjar lugna|mindre|slutade")],
-  ["peak", w("ahora (me pega|est[áa] pegando|se golpea|est[áa] en el suelo|est[áa] peor)|peor|no para|m[áa]s fuerte|sangre|est[áa] en el suelo|worse|won'?t stop|harder|on the floor|right now|blood|v[äa]rre|slutar inte|h[åa]rdare|p[åa] golvet|blod")],
-];
-
-export function detectPhaseSignal(text: string): PhaseId | null {
-  const t = text.normalize("NFC");
-  for (const [phase, re] of PHASE_SIGNAL) if (re.test(t)) return phase;
-  return null;
-}
-
-// --- steps already given --------------------------------------------------
-
-function contentWords(text: string): string[] {
-  return (text.normalize("NFC").toLowerCase().match(/[\p{L}]{4,}/gu) ?? []).filter((x, i, a) => a.indexOf(x) === i);
-}
-
-/** A step counts as given when most of its content words appear in one previous assistant turn. */
-export function stepWasGiven(step: string, assistantTexts: string[]): boolean {
-  const words = contentWords(step);
-  if (words.length === 0) return false;
-  for (const a of assistantTexts) {
-    const bag = new Set(contentWords(a));
-    const hit = words.filter((x) => bag.has(x)).length;
-    if (hit / words.length >= 0.6) return true;
-  }
-  return false;
-}
-
 // --- "whom do I call?" -----------------------------------------------------
 
-const WHOM = w("a qui[ée]n (llamo|llamamos|le marco|marco|debo llamar|puedo llamar)|qu[ée] n[úu]mero|a d[oó]nde llamo|a qui[ée]n\\??$|who (do|should|can) (i|we) call|whom (do|should) (i|we) call|what number|who do i ring|vem (ska|kan) (jag|vi) ringa|vilket nummer|vem ringer jag");
+const WHOM = w("a qui[ée]n (llamo|llamamos|le marco|marco|debo llamar|puedo llamar)|qu[ée] n[úu]mero|cu[áa]l es el n[úu]mero|a d[oó]nde llamo|a qui[ée]n\\??$|who (do|should|can) (i|we) call|whom (do|should) (i|we) call|what number|what'?s the number|who do i ring|vem (ska|kan) (jag|vi) ringa|vilket nummer|vem ringer jag");
 
 /** The caller asks whom to call or what number: the answer is the country's emergency number, first. */
 export function asksWhomToCall(text: string): boolean {
   return WHOM.test(text.normalize("NFC").trim());
 }
 
-// --- calm question ---------------------------------------------------------
+// --- likely protocol (keywords, for the uncovered-case log only) -----------
 
-const CALM = w("nada urgente|no es urgente|sin urgencia|una pregunta|quer[ií]a preguntar|c[oó]mo (preparo|preparar|puedo preparar|le explico|hago para que)|la (pr[oó]xima|semana que viene)|nothing urgent|not urgent|no rush|a question|how (do|can|should) i (prepare|explain|get him|get her|help him|help her)|next (week|month)|inget akut|inte br[åa]ttom|en fr[åa]ga|hur (f[öo]rbereder|kan jag f[öo]rbereda|f[öo]rklarar) jag|n[äa]sta (vecka|m[åa]nad)");
-
-export function isCalmQuestion(text: string): boolean {
-  return CALM.test(text.normalize("NFC"));
-}
-
-// --- protocol, sticky across turns -----------------------------------------
-
-export function stickyProtocol(userTexts: string[], severe: boolean): { id: ProtocolId; matched: boolean } {
-  let chosen: ProtocolId | null = null;
-  for (const text of userTexts) {
-    const scores = protocolScores(text);
-    const best = (Object.entries(scores) as Array<[ProtocolId, number]>).sort((a, b) => b[1] - a[1] || urgencyRank(a[0]) - urgencyRank(b[0]))[0];
-    if (!chosen) {
-      if (best[1] > 0) chosen = best[0];
-    } else if (best[0] !== chosen && best[1] >= 2 && best[1] > scores[chosen]) chosen = best[0];
-  }
-  if (chosen) return { id: chosen, matched: true };
-  return chooseProtocol(userTexts.join(" "), severe);
+export function likelyProtocol(userTexts: string[]): ProtocolId | null {
+  const scores = protocolScores(userTexts.join(" "));
+  const best = (Object.entries(scores) as Array<[ProtocolId, number]>).sort((a, b) => b[1] - a[1] || urgencyRank(a[0]) - urgencyRank(b[0]))[0];
+  return best && best[1] > 0 ? best[0] : null;
 }
 
 // --- derive ---------------------------------------------------------------
@@ -192,43 +152,25 @@ export function deriveCallState(messages: ChatMessage[], hints: { lang?: Emergen
 
   const lang = hints.lang ?? detectLang(all || current, "es");
   const country = hints.country ?? detectCountry(user);
+  const countryAsked = assistant.some((a) => COUNTRY_ASKED.test(a));
   const caller = detectCaller(user);
-
   const triage = severeSignals(all);
-  const triageAsked = assistant.some((a) => /señal grave|severe sign|allvarligt tecken/i.test(a));
-  // The answer to the triage question is the user turn right after it was asked.
-  let triageClear = false;
-  if (triageAsked) {
-    const idx = messages.findIndex((m) => m.role === "assistant" && /señal grave|severe sign|allvarligt tecken/i.test(textOf(m.content)));
-    const answer = messages.slice(idx + 1).find((m) => m.role === "user");
-    if (answer && answersNoSevere(textOf(answer.content))) triageClear = true;
-  }
 
-  // Protocol: chosen on the first turn that matches and kept for the rest of the
-  // call (no protocol change mid-crisis), unless the current turn on its own
-  // points clearly (two or more keywords) at a different one.
-  // Suicidal intent always runs on protocol 4 (self-injury): its escalation and evidence cover it.
-  const choice = triage.signals.includes("suicidal") ? { id: "self_injury" as ProtocolId, matched: true } : stickyProtocol(user, triage.severe);
-  const protocol = choice.matched ? choice.id : null;
-  const calm = !triage.severe && isCalmQuestion(current);
-  const whom = asksWhomToCall(current);
-
-  // Phase advances monotonically with the caller's signals.
-  let phase: PhaseId = "agitation";
-  for (const u of user) {
-    const s = detectPhaseSignal(u);
-    if (s && PHASE_IDS.indexOf(s) > PHASE_IDS.indexOf(phase)) phase = s;
-  }
-
-  const stepsGiven: string[] = [];
-  if (protocol) {
-    const p = getProtocol(protocol)!;
-    for (const ph of PHASE_IDS) p.phases[ph].steps.forEach((s, i) => { if (stepWasGiven(s[lang], assistant)) stepsGiven.push(`${ph}.${i}`); });
-  }
-
-  return { lang, country, caller, calm, asksWhomToCall: whom, protocol, matched: choice.matched, phase, severe: triage.severe, signals: triage.signals, triageAsked, triageClear, stepsGiven, turn: user.length, current, userText: user, assistantText: assistant };
+  return {
+    lang,
+    country,
+    countryAsked,
+    caller,
+    asksWhomToCall: asksWhomToCall(current),
+    likelyProtocol: likelyProtocol(user),
+    severe: triage.severe,
+    signals: triage.signals,
+    turn: user.length,
+    current,
+    userText: user,
+    assistantText: assistant,
+  };
 }
 
 /** Protocols that exist, for the uncovered-case log. */
 export const PROTOCOL_COUNT = PROTOCOLS.length;
-export { TRIAGE_QUESTION };
