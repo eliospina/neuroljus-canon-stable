@@ -79,6 +79,22 @@ export function emergencyInfo(country: string | null | undefined, lang: Emergenc
   };
 }
 
+const DANGER_ONLY: Record<EmergencyLang, { known: string; unknown: string }> = {
+  es: { known: "Si hay peligro, llama al {n}.", unknown: "Si hay peligro, llama al número de emergencias de tu país." },
+  en: { known: "If there is danger, call {n}.", unknown: "If there is danger, call your country's emergency number." },
+  sv: { known: "Vid fara, ring {n}.", unknown: "Vid fara, ring ditt lands nödnummer." },
+};
+
+/**
+ * Only the danger sentence, without "This needs a person": for the crisis
+ * protocols, where the reader is already in the crisis and that preface confuses.
+ */
+export function dangerSentence(country: string | null | undefined, lang: EmergencyLang): string {
+  const number = emergencyNumber(country);
+  const d = DANGER_ONLY[lang];
+  return number ? d.known.replace("{n}", number) : d.unknown;
+}
+
 /** Country from a request's headers (Vercel sets x-vercel-ip-country). */
 export function countryFromHeaders(headers: Record<string, string | string[] | undefined>): string | null {
   const raw = headers["x-vercel-ip-country"];

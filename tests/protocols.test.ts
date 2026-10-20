@@ -156,7 +156,11 @@ test("protocols 1 and 4 start with safety and the emergency line; the others do 
     if (p.id === "physical_danger" || p.id === "self_injury") {
       assert.equal(p.safetyFirst, true);
       assert.ok(p.opening, `${p.id} has an opening`);
-      for (const l of LANGS) assert.match(renderProtocol(p, l, "SE").emergencyFirst ?? "", /112/, `${p.id} [${l}] opens with the number`);
+      for (const l of LANGS) {
+        const first = renderProtocol(p, l, "SE").emergencyFirst ?? "";
+        assert.match(first, /112/, `${p.id} [${l}] opens with the number`);
+        assert.doesNotMatch(first, /necesita a una persona|needs a person|behöver en människa/, `${p.id} [${l}] opens without the Ask preface`);
+      }
     } else {
       assert.equal(p.safetyFirst, false);
       assert.equal(first.emergencyFirst, null);
@@ -174,6 +178,8 @@ test("the emergency number comes from emergency.ts, for any country", () => {
   const unknown = renderProtocol(p, "es", null);
   assert.equal(unknown.escalate.number, null);
   assert.match(unknown.escalate.callLine, /número de emergencias de tu país/);
+  assert.doesNotMatch(unknown.escalate.callLine, /necesita a una persona/);
+  assert.equal(renderProtocol(p, "sv", "SE").escalate.callLine, "Vid fara, ring 112.");
   // No number is ever written into the protocol itself.
   for (const { where, value } of texts(p)) for (const l of LANGS) assert.ok(!/\b(112|911|123|999|192|131|106)\b/.test(value[l]), where);
 });

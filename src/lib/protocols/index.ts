@@ -4,7 +4,7 @@
  * the same text. The emergency number comes from emergency.ts.
  */
 
-import { emergencyInfo } from "../emergency";
+import { dangerSentence, emergencyInfo } from "../emergency";
 import { FUNCTION_LABELS } from "./functions";
 import { physicalDanger } from "./physicalDanger";
 import { aggressionObjects } from "./aggressionObjects";
@@ -73,11 +73,13 @@ export type RenderedProtocol = {
 
 export function renderProtocol(p: CrisisProtocol, lang: ProtocolLang, country?: string | null): RenderedProtocol {
   const emergency = emergencyInfo(country, lang);
+  // Protocols use the danger sentence alone: "This needs a person" confuses a caller mid-crisis.
+  const danger = dangerSentence(country, lang);
   return {
     id: p.id,
     number: p.number,
     title: p.title[lang],
-    emergencyFirst: p.safetyFirst && p.opening ? `${p.opening[lang]} ${emergency.text}` : null,
+    emergencyFirst: p.safetyFirst && p.opening ? `${p.opening[lang]} ${danger}` : null,
     recognize: p.recognize.map((q) => q[lang]),
     phases: PHASE_IDS.map((id) => ({
       id,
@@ -88,7 +90,7 @@ export function renderProtocol(p: CrisisProtocol, lang: ProtocolLang, country?: 
     never: p.never.map((n) => n[lang]),
     escalate: {
       callWhen: p.escalate.callWhen.map((c) => c[lang]),
-      callLine: emergency.text,
+      callLine: danger,
       number: emergency.number,
       contactWhen: p.escalate.contactWhen.map((c) => c[lang]),
     },
