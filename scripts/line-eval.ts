@@ -1,31 +1,41 @@
 /**
  * Voice-line brain evaluation without voice.
  *
- *   npm run line:eval                  # scripted model, in process (same as CI)
- *   npm run line:eval -- --live        # the deployed brain with Claude:
- *                                      #   LINE_BRAIN_URL=https://neuroljus.com/api/line/brain
- *                                      #   LINE_API_SECRET=...
+ *   npm run line:eval                    # scripted model, in process (same as CI): the invariants
+ *   npm run line:eval -- --live          # the deployed brain with Claude:
+ *                                        #   LINE_BRAIN_URL=https://neuroljus.com/api/line/brain
+ *                                        #   LINE_API_SECRET=...
+ *   npm run line:eval -- --live --judge  # plus a second model judging every call against
+ *                                        # scenarios.ts `must` (ANTHROPIC_API_KEY)
+ *   npm run line:eval -- --claude --judge  # the same brain in process with the real Claude,
+ *                                        # no deployment or secret needed (ANTHROPIC_API_KEY)
  *
- * Runs scripts/line-eval/scenarios.ts turn by turn and checks each answer:
- * sentence count, no filler / medication / diagnosis / markdown, no emergency
- * wording without a severe signal, no repeated sentence, a source named when
- * the library had documents (scripted mode), and time to the first sentence.
- * Exits 1 when anything fails.
+ * The invariants are the few things code guarantees: an answer, plain speech,
+ * the number first when the caller asks whom to call, no source named with
+ * nothing to cite, time to the first sentence, and a fallback that never
+ * recites protocol steps. Whether the line answered the scene with clinical
+ * sense is what the judge measures. Exits 1 when anything fails.
  */
 
-import { brainTurnText } from "../src/lib/line/brain";
+import { brainTurnText, fallbackSpeech } from "../src/lib/line/brain";
 import { getAnthropicModel } from "../src/lib/careReflection/provider";
 import type { ChatMessage } from "../src/lib/line/state";
-import { checkTurn, SOURCE_WORDS } from "./line-eval/checks";
+import { checkTurn } from "./line-eval/checks";
+import { judgeCall } from "./line-eval/judge";
 import { mockModelStream } from "./line-eval/mockModel";
 import { SCENARIOS, type Scenario } from "./line-eval/scenarios";
 
 const LIVE = process.argv.includes("--live");
+/** In-process brain with the real Claude (ANTHROPIC_API_KEY): the same code as production, without the deployment. */
+const CLAUDE = process.argv.includes("--claude");
+const JUDGE = process.argv.includes("--judge");
 const BASE = (process.env.LINE_BRAIN_URL || "").replace(/\/$/, "");
 const SECRET = process.env.LINE_API_SECRET || "";
-const FIRST_BUDGET_MS = LIVE ? Number(process.env.LINE_EVAL_FIRST_MS || 1500) : 900;
+const REAL = LIVE || CLAUDE;
+/** Live: the deployed brain should start speaking within 1.5 s. In process with the real Claude there is no warm instance, so 3 s. */
+const FIRST_BUDGET_MS = Number(process.env.LINE_EVAL_FIRST_MS || (LIVE ? 1500 : CLAUDE ? 3000 : 900));
 
-type TurnOut = { text: string; firstMs: number; totalMs: number; docs: number; protocol: string | null; source?: string };
+type TurnOut = { text: string; firstMs: number; totalMs: number; docs: number; source?: string; fallbackText?: string };
 
 async function liveTurn(messages: ChatMessage[]): Promise<TurnOut> {
   const t0 = performance.now();
@@ -58,43 +68,41 @@ async function liveTurn(messages: ChatMessage[]): Promise<TurnOut> {
       }
     }
   }
-  return { text: text.trim(), firstMs, totalMs: Math.round(performance.now() - t0), docs: -1, protocol: null };
+  return { text: text.trim(), firstMs, totalMs: Math.round(performance.now() - t0), docs: -1 };
 }
 
 async function mockTurn(messages: ChatMessage[]): Promise<TurnOut> {
   const r = await brainTurnText({ messages, apiKey: null, model: getAnthropicModel(), modelStream: mockModelStream, noWeb: true, log: () => undefined });
-  return { text: r.sentences.join(" "), firstMs: r.firstSentenceMs, totalMs: r.totalMs, docs: r.retrieval.docs.length, protocol: r.state.protocol, source: r.source };
+  return { text: r.sentences.join(" "), firstMs: r.firstSentenceMs, totalMs: r.totalMs, docs: r.retrieval.docs.length, source: r.source, fallbackText: fallbackSpeech(r.state) };
 }
 
-export async function runScenario(s: Scenario, turnFn: (m: ChatMessage[]) => Promise<TurnOut>): Promise<{ failures: string[]; lines: string[] }> {
+async function claudeTurn(messages: ChatMessage[]): Promise<TurnOut> {
+  const r = await brainTurnText({ messages, apiKey: process.env.ANTHROPIC_API_KEY || null, model: getAnthropicModel(), log: () => undefined });
+  return { text: r.sentences.join(" "), firstMs: r.firstSentenceMs, totalMs: r.totalMs, docs: r.retrieval.docs.length, source: r.source, fallbackText: fallbackSpeech(r.state) };
+}
+
+export async function runScenario(s: Scenario, turnFn: (m: ChatMessage[]) => Promise<TurnOut>): Promise<{ failures: string[]; lines: string[]; assistant: string[] }> {
   const messages: ChatMessage[] = [];
   const failures: string[] = [];
   const lines: string[] = [];
-  let hadDocs = false;
-  let cited = false;
+  const assistant: string[] = [];
   for (let i = 0; i < s.turns.length; i++) {
     messages.push({ role: "user", content: s.turns[i] });
     const out = await turnFn(messages);
-    const previous = messages.filter((m) => m.role === "assistant").map((m) => String(m.content));
     const problems = checkTurn({
       text: out.text,
-      previousAssistant: previous,
-      severeAllowed: s.expect.severeFrom !== undefined && i >= s.expect.severeFrom,
-      suicidal: s.expect.suicidal,
       asksWhomToCall: s.expect.whomTurns?.includes(i) ?? false,
-      maxSentences: s.expect.person ? 2 : 4,
-      sourceAllowed: LIVE || out.docs > 0 || out.protocol !== null,
+      sourceAllowed: REAL || out.docs > 0,
       firstSentenceMs: out.firstMs,
       firstSentenceBudgetMs: FIRST_BUDGET_MS,
     });
+    if (out.source?.startsWith("fallback") && out.fallbackText && !out.text.endsWith(out.fallbackText)) problems.push("fallback spoke something other than the honest line");
     lines.push(`  t${i + 1} ${out.firstMs}ms/${out.totalMs}ms${out.source ? ` ${out.source}` : ""} | ${out.text}`);
     for (const p of problems) failures.push(`${s.id} t${i + 1}: ${p}`);
-    if (out.docs > 0) hadDocs = true;
-    if (SOURCE_WORDS.test(out.text)) cited = true;
     messages.push({ role: "assistant", content: out.text });
+    assistant.push(out.text);
   }
-  if (!LIVE && hadDocs && !cited && !s.expect.person) failures.push(`${s.id}: the library had documents in this call but no source was ever named`);
-  return { failures, lines };
+  return { failures, lines, assistant };
 }
 
 async function main() {
@@ -102,16 +110,37 @@ async function main() {
     console.error("--live needs LINE_BRAIN_URL and LINE_API_SECRET");
     process.exit(2);
   }
-  const turnFn = LIVE ? liveTurn : mockTurn;
+  const judgeKey = process.env.ANTHROPIC_API_KEY || "";
+  if (CLAUDE && !judgeKey) {
+    console.error("--claude needs ANTHROPIC_API_KEY");
+    process.exit(2);
+  }
+  if (JUDGE && (!REAL || !judgeKey)) {
+    console.error("--judge needs --live or --claude, and ANTHROPIC_API_KEY");
+    process.exit(2);
+  }
+  const turnFn = LIVE ? liveTurn : CLAUDE ? claudeTurn : mockTurn;
   let failed = 0;
+  let judged = 0;
+  let passed = 0;
   for (const s of SCENARIOS) {
-    const { failures, lines } = await runScenario(s, turnFn);
+    const { failures, lines, assistant } = await runScenario(s, turnFn);
+    let verdictLine = "";
+    if (JUDGE) {
+      const v = await judgeCall(s, assistant, judgeKey, getAnthropicModel());
+      judged += 1;
+      if (v.pass) passed += 1;
+      else failures.push(`${s.id}: judge ${v.score}/10: ${v.reasons[0] ?? ""}`);
+      verdictLine = `  judge ${v.pass ? "pass" : "FAIL"} ${v.score}/10\n${v.reasons.map((r) => `    · ${r}`).join("\n")}`;
+    }
     console.log(`\n${failures.length ? "FAIL" : "ok  "} ${s.id} (${s.lang})`);
     for (const l of lines) console.log(l);
+    if (verdictLine) console.log(verdictLine);
     for (const f of failures) console.log(`  ✗ ${f}`);
     failed += failures.length;
   }
-  console.log(`\n${failed === 0 ? "All scenarios pass" : `${failed} problem(s)`} · mode: ${LIVE ? "live" : "scripted model"} · first-sentence budget ${FIRST_BUDGET_MS} ms`);
+  const judgeNote = JUDGE ? ` · judge ${passed}/${judged} calls pass` : "";
+  console.log(`\n${failed === 0 ? "All scenarios pass" : `${failed} problem(s)`} · mode: ${LIVE ? "live" : CLAUDE ? "Claude in process" : "scripted model"}${judgeNote} · first-sentence budget ${FIRST_BUDGET_MS} ms`);
   process.exit(failed === 0 ? 0 : 1);
 }
 
