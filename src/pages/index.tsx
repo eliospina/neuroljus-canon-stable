@@ -662,7 +662,8 @@ export default function Home() {
         }
         .navLinks {
           display: flex;
-          gap: 20px;
+          flex-wrap: wrap;
+          gap: 8px 20px;
           font-size: 13px;
         }
         .navLinks :global(a) {
@@ -1039,6 +1040,13 @@ export default function Home() {
         @media (max-width: 900px) {
           .shell {
             width: min(100% - 28px, 1100px);
+          }
+          .page {
+            overflow-x: clip;
+          }
+          .navLinks {
+            width: 100%;
+            gap: 8px 14px;
           }
           .navRight {
             width: 100%;
