@@ -106,6 +106,9 @@ export default function Home() {
         modCompanionTitle: "Companion",
         modCompanionBody: "Omsorgsroboten som börjar i telefonen. Beskriv, tryck Starta: skärmen dämpas, mjukt brus, bildkort.",
         heroCompanion: "Prova Companion i mobilen →",
+        heroLine: "Prata med Linjen nu",
+        heroLineNote: "Kris just nu? Stödlinjen svarar dygnet runt, på svenska, engelska och spanska.",
+        navLine: "Linjen",
         navCompanion: "Companion",
         navAsk: "Fråga",
         navLibrary: "Bibliotek",
@@ -210,6 +213,9 @@ export default function Home() {
         modCompanionTitle: "Companion",
         modCompanionBody: "The care robot that starts on your phone. Describe, press Start: the screen dims, soft noise, visual card.",
         heroCompanion: "Try Companion on your phone →",
+        heroLine: "Talk to the Line now",
+        heroLineNote: "Crisis right now? The support line answers around the clock, in Spanish, English and Swedish.",
+        navLine: "The Line",
         navCompanion: "Companion",
         navAsk: "Ask",
         navLibrary: "Library",
@@ -314,6 +320,9 @@ export default function Home() {
         modCompanionTitle: "Companion",
         modCompanionBody: "El robot de cuidado que empieza en el teléfono. Describe, pulsa Empezar: la pantalla se atenúa, ruido suave, tarjeta visual.",
         heroCompanion: "Prueba Companion en tu móvil →",
+        heroLine: "Hablar con la Línea ahora",
+        heroLineNote: "¿Crisis ahora mismo? La línea de apoyo responde las 24 horas, en español, inglés y sueco.",
+        navLine: "La Línea",
         navCompanion: "Companion",
         navAsk: "Pregunta",
         navLibrary: "Biblioteca",
@@ -420,6 +429,7 @@ export default function Home() {
             <Link href="/labs/future-care-room">{copy.navLabs}</Link>
             <Link href="/labs/nl-vision">{copy.navVision}</Link>
             <Link href="/labs/robot-interface">{copy.navProtocol}</Link>
+            <Link href="/linea">{copy.navLine}</Link>
             <Link href="/companion">{copy.navCompanion}</Link>
             <Link href="/ask">{copy.navAsk}</Link>
             <Link href="/library">{copy.navLibrary}</Link>
@@ -458,6 +468,12 @@ export default function Home() {
               <span>{copy.heroDim}</span>
             </h1>
             <p className="heroSub">{copy.heroSub}</p>
+            <div className="heroLine">
+              <Link href="/linea" className="heroLineBtn">
+                {copy.heroLine}
+              </Link>
+              <span className="heroLineNote">{copy.heroLineNote}</span>
+            </div>
             <p className="heroCompanion">
               <Link href="/companion">{copy.heroCompanion}</Link>
             </p>
@@ -742,6 +758,33 @@ export default function Home() {
           max-width: 560px;
           font-size: 16px;
           line-height: 1.6;
+          color: #a1a1aa;
+        }
+        .heroLine {
+          margin-top: 24px;
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 14px;
+        }
+        .heroLine :global(.heroLineBtn) {
+          display: inline-block;
+          padding: 16px 26px;
+          border-radius: 12px;
+          background: #ffffff;
+          color: #09090b;
+          font-size: 18px;
+          font-weight: 700;
+          text-decoration: none;
+          box-shadow: 0 0 0 2px #3ecf9a inset;
+        }
+        .heroLine :global(.heroLineBtn):hover {
+          background: #3ecf9a;
+        }
+        .heroLineNote {
+          max-width: 360px;
+          font-size: 14px;
+          line-height: 1.5;
           color: #a1a1aa;
         }
         .heroCompanion {
