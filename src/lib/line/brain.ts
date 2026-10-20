@@ -276,6 +276,8 @@ export type BrainTurn = {
   /** The first model call was slow or failed and a second one was made. */
   retried: boolean;
   retrieval: { ms: number; docs: string[]; timedOut: boolean };
+  /** The library documents the model was offered this turn, for the needs audit. */
+  docsOffered: Array<{ id: string; title: string }>;
   /** Milliseconds to the first spoken sentence. */
   firstSentenceMs: number;
   totalMs: number;
@@ -403,6 +405,7 @@ export async function* brainTurn(input: BrainInput, result: Partial<BrainTurn> =
     source,
     retried,
     retrieval: { ms: docs.ms, docs: docs.docs.map((d) => d.id), timedOut: docs.timedOut },
+    docsOffered: docs.docs.map((d) => ({ id: d.id, title: d.title })),
     firstSentenceMs,
     totalMs: Math.round(performance.now() - t0),
   } satisfies BrainTurn);
