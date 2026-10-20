@@ -55,7 +55,8 @@ YOUR ROLE
 You are the help that exists right now. In most autism crises no medical team arrives, and many families have no professional to call and no money for an ambulance. Never say "I can't help you" and never send the caller elsewhere instead of helping. Walk the crisis with them, step by step, until it eases. Health services and professionals are a complement you can mention, not a place to send people instead of helping.
 
 HOW YOU SPEAK (it is a voice call)
-- Short sentences, usually 2 to 4 per turn, each one a complete thought: the voice starts speaking at the first full stop, so a long first sentence is silence for the caller. One or two actions at a time, then stop and listen.
+- Two to four short sentences per turn, then stop and listen. The caller is stressed and holding a phone: one or two actions at a time, never a plan. The most common way this line fails a caller is by saying too much at once. Each sentence a complete thought: the voice starts speaking at the first full stop, so a long first sentence is silence for the caller.
+- When you offered something and the caller said yes, do it: continue with what you offered, do not ask a new question.
 - Concrete: what to do with the hands, the body, the space, the voice. Not "try to calm him down" but "put the cushion between his head and the wall".
 - Little emotional filler: the caller is busy. One short acknowledgement at most, then the next concrete thing.
 - Do not repeat yourself. If something did not work, say something different.
@@ -199,11 +200,10 @@ const HONEST: Record<EmergencyLang, string> = {
   sv: "Jag lyssnar. Berätta var hen är nu och vad som händer.",
 };
 
-/** The first sentence code owes this turn, or null: the number when asked (or the country question), the honest line as fallback. */
+/** The first sentence code owes this turn, or null: the number when asked, or the country question while the country is unknown. */
 export function codeFirstSentence(state: CallState): string | null {
   if (!state.asksWhomToCall) return null;
-  if (state.country) return emergencyNumberSentence(state.country, state.lang);
-  return state.countryAsked ? emergencyNumberSentence(null, state.lang) : COUNTRY_QUESTION[state.lang];
+  return state.country ? emergencyNumberSentence(state.country, state.lang) : COUNTRY_QUESTION[state.lang];
 }
 
 export function fallbackSpeech(state: CallState): string {

@@ -7,6 +7,8 @@
  *                                        #   LINE_API_SECRET=...
  *   npm run line:eval -- --live --judge  # plus a second model judging every call against
  *                                        # scenarios.ts `must` (ANTHROPIC_API_KEY)
+ *   npm run line:eval -- --claude --judge  # the same brain in process with the real Claude,
+ *                                        # no deployment or secret needed (ANTHROPIC_API_KEY)
  *
  * The invariants are the few things code guarantees: an answer, plain speech,
  * the number first when the caller asks whom to call, no source named with
@@ -24,10 +26,14 @@ import { mockModelStream } from "./line-eval/mockModel";
 import { SCENARIOS, type Scenario } from "./line-eval/scenarios";
 
 const LIVE = process.argv.includes("--live");
+/** In-process brain with the real Claude (ANTHROPIC_API_KEY): the same code as production, without the deployment. */
+const CLAUDE = process.argv.includes("--claude");
 const JUDGE = process.argv.includes("--judge");
 const BASE = (process.env.LINE_BRAIN_URL || "").replace(/\/$/, "");
 const SECRET = process.env.LINE_API_SECRET || "";
-const FIRST_BUDGET_MS = LIVE ? Number(process.env.LINE_EVAL_FIRST_MS || 1500) : 900;
+const REAL = LIVE || CLAUDE;
+/** Live: the deployed brain should start speaking within 1.5 s. In process with the real Claude there is no warm instance, so 3 s. */
+const FIRST_BUDGET_MS = Number(process.env.LINE_EVAL_FIRST_MS || (LIVE ? 1500 : CLAUDE ? 3000 : 900));
 
 type TurnOut = { text: string; firstMs: number; totalMs: number; docs: number; source?: string; fallbackText?: string };
 
@@ -70,6 +76,11 @@ async function mockTurn(messages: ChatMessage[]): Promise<TurnOut> {
   return { text: r.sentences.join(" "), firstMs: r.firstSentenceMs, totalMs: r.totalMs, docs: r.retrieval.docs.length, source: r.source, fallbackText: fallbackSpeech(r.state) };
 }
 
+async function claudeTurn(messages: ChatMessage[]): Promise<TurnOut> {
+  const r = await brainTurnText({ messages, apiKey: process.env.ANTHROPIC_API_KEY || null, model: getAnthropicModel(), log: () => undefined });
+  return { text: r.sentences.join(" "), firstMs: r.firstSentenceMs, totalMs: r.totalMs, docs: r.retrieval.docs.length, source: r.source, fallbackText: fallbackSpeech(r.state) };
+}
+
 export async function runScenario(s: Scenario, turnFn: (m: ChatMessage[]) => Promise<TurnOut>): Promise<{ failures: string[]; lines: string[]; assistant: string[] }> {
   const messages: ChatMessage[] = [];
   const failures: string[] = [];
@@ -81,7 +92,7 @@ export async function runScenario(s: Scenario, turnFn: (m: ChatMessage[]) => Pro
     const problems = checkTurn({
       text: out.text,
       asksWhomToCall: s.expect.whomTurns?.includes(i) ?? false,
-      sourceAllowed: LIVE || out.docs > 0,
+      sourceAllowed: REAL || out.docs > 0,
       firstSentenceMs: out.firstMs,
       firstSentenceBudgetMs: FIRST_BUDGET_MS,
     });
@@ -100,11 +111,15 @@ async function main() {
     process.exit(2);
   }
   const judgeKey = process.env.ANTHROPIC_API_KEY || "";
-  if (JUDGE && (!LIVE || !judgeKey)) {
-    console.error("--judge needs --live and ANTHROPIC_API_KEY");
+  if (CLAUDE && !judgeKey) {
+    console.error("--claude needs ANTHROPIC_API_KEY");
     process.exit(2);
   }
-  const turnFn = LIVE ? liveTurn : mockTurn;
+  if (JUDGE && (!REAL || !judgeKey)) {
+    console.error("--judge needs --live or --claude, and ANTHROPIC_API_KEY");
+    process.exit(2);
+  }
+  const turnFn = LIVE ? liveTurn : CLAUDE ? claudeTurn : mockTurn;
   let failed = 0;
   let judged = 0;
   let passed = 0;
@@ -125,7 +140,7 @@ async function main() {
     failed += failures.length;
   }
   const judgeNote = JUDGE ? ` · judge ${passed}/${judged} calls pass` : "";
-  console.log(`\n${failed === 0 ? "All scenarios pass" : `${failed} problem(s)`} · mode: ${LIVE ? "live" : "scripted model"}${judgeNote} · first-sentence budget ${FIRST_BUDGET_MS} ms`);
+  console.log(`\n${failed === 0 ? "All scenarios pass" : `${failed} problem(s)`} · mode: ${LIVE ? "live" : CLAUDE ? "Claude in process" : "scripted model"}${judgeNote} · first-sentence budget ${FIRST_BUDGET_MS} ms`);
   process.exit(failed === 0 ? 0 : 1);
 }
 
