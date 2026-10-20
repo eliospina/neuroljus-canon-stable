@@ -41,7 +41,7 @@ No hay estado en el servidor: el mismo historial produce siempre el mismo estado
 | **Primera frase hablada, en caliente, en proceso** | **1,2–2,2 s** (la frase debe terminar para pasar el filtro; por eso el prompt pide frases de 12 palabras) |
 | Turno completo | ~2 s |
 
-Desde ElevenLabs hay que sumar su salto de red a Vercel y la propia síntesis de voz. **Condiciones para acercarse a 1,5 s:** Fluid Compute activado en el proyecto de Vercel (instancias calientes y reutilizadas), región cercana a ElevenLabs y a Anthropic (`iad1`), y un keep-warm cada 5 minutos (`vercel.json` → cron a `GET /api/line/brain`; crea `CRON_SECRET`; en el plan Hobby de Vercel los crons son como mucho diarios, así que allí usa un pinger externo como cron-job.org con la cabecera `x-line-secret`). En frío, la primera llamada tarda unos 3 s más. Si en la prueba real no se alcanza, la alternativa es un servicio siempre encendido (Fly.io o Railway) con el mismo código: el cerebro no depende de Next más que por la ruta.
+Desde ElevenLabs hay que sumar su salto de red a Vercel y la propia síntesis de voz. **Condiciones para acercarse a 1,5 s:** Fluid Compute activado en el proyecto de Vercel (instancias calientes y reutilizadas), región cercana a ElevenLabs y a Anthropic (`iad1`), y un keep-warm cada 5 minutos a `GET /api/line/brain`. El proyecto está en el plan Hobby de Vercel, que solo admite crons diarios (un cron de 5 minutos en `vercel.json` hace fallar el despliegue), así que el keep-warm va fuera: un pinger externo (por ejemplo cron-job.org) cada 5 minutos con la cabecera `x-line-secret`. Con plan Pro, añade a `vercel.json` `{"crons":[{"path":"/api/line/brain","schedule":"*/5 * * * *"}]}` y crea `CRON_SECRET`. En frío, la primera llamada tarda unos 3 s más. Si en la prueba real no se alcanza, la alternativa es un servicio siempre encendido (Fly.io o Railway) con el mismo código: el cerebro no depende de Next más que por la ruta.
 
 ### Conectar ElevenLabs al cerebro
 
@@ -49,7 +49,7 @@ Desde ElevenLabs hay que sumar su salto de red a Vercel y la propia síntesis de
 2. Clave: el valor de `LINE_API_SECRET`. El cerebro la acepta como `Authorization: Bearer` (lo que ElevenLabs manda como API key) y como cabecera `x-line-secret`.
 3. Prompt del sistema del agente: corto, solo voz y turno (`agent-prompt.md`, versión fase 4). Las reglas viven en el cerebro; el cerebro ignora el `system` que manda ElevenLabs.
 4. Quita las herramientas webhook del agente (el cerebro ya tiene protocolos, biblioteca y web). Déjalas si quieres depurar.
-5. Variables en Vercel: `LINE_API_SECRET` y `ANTHROPIC_API_KEY` (ya existen); opcionales `CRON_SECRET` (keep-warm), `LINE_BRAIN_RATE_LIMIT_PER_MIN` (240), `LINE_BRAIN_THINKING=adaptive` (razonamiento previo; más lento), `LINE_LOG_UNCOVERED=0`.
+5. Variables en Vercel: `LINE_API_SECRET` y `ANTHROPIC_API_KEY` (ya existen); opcionales `CRON_SECRET` (solo si el keep-warm es un cron de Vercel en plan Pro), `LINE_BRAIN_RATE_LIMIT_PER_MIN` (240), `LINE_BRAIN_THINKING=adaptive` (razonamiento previo; más lento), `LINE_LOG_UNCOVERED=0`.
 6. Retención de audio y transcripciones del agente: desactivada, como en la fase 3.
 
 ### Probar sin voz
