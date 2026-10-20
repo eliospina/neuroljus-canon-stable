@@ -130,5 +130,5 @@ export async function brainHandler(req: NextApiRequest, res: NextApiResponse): P
   res.write("data: [DONE]\n\n");
   res.end();
   // Operational line, no text: how long the first sentence took and where the words came from.
-  if (result.firstSentenceMs !== undefined) console.info(JSON.stringify({ event: "line_brain_turn", source: result.source, firstSentenceMs: result.firstSentenceMs, totalMs: result.totalMs, retrievalMs: result.retrieval?.ms, likelyProtocol: result.state?.likelyProtocol, severe: result.state?.severe }));
+  if (result.firstSentenceMs !== undefined) console.info(JSON.stringify({ event: "line_brain_turn", source: result.source, retried: result.retried, firstSentenceMs: result.firstSentenceMs, totalMs: result.totalMs, retrievalMs: result.retrieval?.ms, likelyProtocol: result.state?.likelyProtocol, severe: result.state?.severe }));
 }
