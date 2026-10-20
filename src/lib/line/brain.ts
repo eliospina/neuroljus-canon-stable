@@ -32,8 +32,10 @@ import { COUNTRY_QUESTION, deriveCallState, type CallState, type ChatMessage } f
 
 /** Output cap. Thinking is off (between_tools), so this is all speech. */
 export const BRAIN_MAX_TOKENS = 600;
-/** If the first token has not arrived by then, the honest fallback speaks instead. */
+/** If the first token has not arrived by then, the call is retried once. */
 export const BRAIN_FIRST_TOKEN_MS = 6_000;
+/** First-token budget of the retry; after it, the honest fallback speaks. */
+export const BRAIN_RETRY_FIRST_TOKEN_MS = 5_000;
 export const BRAIN_TOTAL_MS = 14_000;
 
 const LANG_NAME: Record<EmergencyLang, string> = { es: "Spanish (neutral Latin American: tú/ustedes, never vosotros)", en: "English", sv: "Swedish" };
@@ -271,7 +273,11 @@ export type BrainTurn = {
   sentences: string[];
   /** Where the words came from. */
   source: "model" | "fallback" | "fallback_after_model";
+  /** The first model call was slow or failed and a second one was made. */
+  retried: boolean;
   retrieval: { ms: number; docs: string[]; timedOut: boolean };
+  /** The library documents the model was offered this turn, for the needs audit. */
+  docsOffered: Array<{ id: string; title: string }>;
   /** Milliseconds to the first spoken sentence. */
   firstSentenceMs: number;
   totalMs: number;
@@ -293,7 +299,7 @@ export function toClaudeMessages(messages: ChatMessage[]): Array<{ role: "user" 
   return out;
 }
 
-async function* claudeStream(input: BrainInput, system: string[], messages: Array<{ role: "user" | "assistant"; content: string }>): AsyncIterable<string> {
+async function* claudeStream(input: BrainInput, system: string[], messages: Array<{ role: "user" | "assistant"; content: string }>, signal?: AbortSignal): AsyncIterable<string> {
   const client = new Anthropic({ apiKey: input.apiKey!, maxRetries: 0, timeout: BRAIN_TOTAL_MS, fetch: input.fetchImpl as never });
   // No thinking before speaking: measured ~1 s to the first token with the cached prompt, and
   // thinking tokens would otherwise eat the output cap. LINE_BRAIN_THINKING=adaptive turns it back on.
@@ -310,7 +316,7 @@ async function* claudeStream(input: BrainInput, system: string[], messages: Arra
       output_config: { effort: "low" },
       ...(thinking ? { thinking } : {}),
     },
-    { signal: input.signal }
+    { signal: signal ?? input.signal }
   );
   for await (const event of stream) {
     if (event.type === "content_block_delta" && event.delta.type === "text_delta") yield event.delta.text;
@@ -353,30 +359,43 @@ export async function* brainTurn(input: BrainInput, result: Partial<BrainTurn> =
   }
 
   const canModel = Boolean(input.modelStream || input.apiKey);
-  let failure: string | null = null;
-  if (canModel) {
+  let failure: string | null = canModel ? null : "no_model";
+  let retried = false;
+  // Two attempts before the honest fallback: a slow or failed first call is retried once with a
+  // shorter first-token budget. No retry after a refusal, or once something was already spoken.
+  const budgets = canModel ? [BRAIN_FIRST_TOKEN_MS, BRAIN_RETRY_FIRST_TOKEN_MS] : [];
+  for (let attempt = 0; attempt < budgets.length; attempt++) {
+    const controller = new AbortController();
+    const onAbort = () => controller.abort();
+    input.signal?.addEventListener("abort", onAbort);
+    let gotFirst = false;
+    const firstTimer = setTimeout(() => {
+      if (!gotFirst) controller.abort();
+    }, budgets[attempt]);
     try {
-      const streamer = input.modelStream ? input.modelStream(system, messages) : claudeStream(input, system, messages);
-      let gotFirst = false;
-      const firstTimer = setTimeout(() => {
-        if (!gotFirst) input.signal?.dispatchEvent?.(new Event("abort"));
-      }, BRAIN_FIRST_TOKEN_MS);
-      const deadline = Date.now() + BRAIN_FIRST_TOKEN_MS;
+      const streamer = input.modelStream ? input.modelStream(system, messages) : claudeStream(input, system, messages, controller.signal);
+      const deadline = Date.now() + budgets[attempt];
       for await (const delta of streamer) {
         if (!gotFirst && Date.now() > deadline) throw new Error("first_token_timeout");
         gotFirst = true;
         for (const s of guard.push(delta)) yield emit(s);
       }
-      clearTimeout(firstTimer);
       for (const s of guard.flush()) yield emit(s);
+      failure = null;
+      break;
     } catch (e) {
       failure = e instanceof Error ? e.message : String(e);
+      if (gotFirst || failure === "refusal") break;
+      if (attempt + 1 < budgets.length) retried = true;
+    } finally {
+      clearTimeout(firstTimer);
+      input.signal?.removeEventListener("abort", onAbort);
     }
-  } else failure = "no_model";
+  }
 
   if (failure !== null && guard.count === (first ? 1 : 0)) {
     source = canModel ? "fallback_after_model" : "fallback";
-    logFallback(state, failure, Math.round(performance.now() - t0), input.log);
+    logFallback(state, `${failure}${retried ? " (after retry)" : ""}`, Math.round(performance.now() - t0), input.log);
     yield emit(fallbackSpeech(state));
   }
 
@@ -384,7 +403,9 @@ export async function* brainTurn(input: BrainInput, result: Partial<BrainTurn> =
     state,
     sentences,
     source,
+    retried,
     retrieval: { ms: docs.ms, docs: docs.docs.map((d) => d.id), timedOut: docs.timedOut },
+    docsOffered: docs.docs.map((d) => ({ id: d.id, title: d.title })),
     firstSentenceMs,
     totalMs: Math.round(performance.now() - t0),
   } satisfies BrainTurn);

@@ -15,7 +15,8 @@
     "library:build": "tsx scripts/library/build.ts",
     "eval:ask": "tsx scripts/ask/eval.ts",
     "library:expert": "tsx scripts/library/expert.ts && tsx scripts/library/build.ts",
-    "line:eval": "tsx scripts/line-eval.ts"
+    "line:eval": "tsx scripts/line-eval.ts",
+    "line:needs": "tsx scripts/line-needs.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.135.0",

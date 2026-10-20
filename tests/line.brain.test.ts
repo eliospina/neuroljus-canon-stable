@@ -205,6 +205,30 @@ test("brain: with no model or a failing model the line says one honest sentence,
   assert.equal(r2.source, "fallback_after_model");
   assert.doesNotMatch(r2.sentences.join(" "), /música|luces|pantallas|cojín/);
 
+  // A slow or failed first call is retried once before the fallback; a refusal is not retried.
+  let calls = 0;
+  const slowThenFine = () => {
+    calls += 1;
+    if (calls === 1) return (async function* (): AsyncIterable<string> { throw new Error("first_token_timeout"); })();
+    return mockModelStream([staticBlock("es"), ""], []);
+  };
+  const r4 = await brainTurnText({ messages: lake, apiKey: null, model: "x", modelStream: slowThenFine, noWeb: true, log: () => undefined });
+  assert.equal(r4.source, "model");
+  assert.equal(r4.retried, true);
+  assert.equal(calls, 2);
+  assert.doesNotMatch(r4.sentences.join(" "), /Te escucho/);
+  let refusals = 0;
+  const alwaysRefuses = () => { refusals += 1; return refusing(); };
+  const r5 = await brainTurnText({ messages: lake, apiKey: null, model: "x", modelStream: alwaysRefuses, noWeb: true, log: () => undefined });
+  assert.equal(r5.source, "fallback_after_model");
+  assert.equal(refusals, 1, "a refusal is not retried");
+  let slow = 0;
+  const alwaysSlow = () => { slow += 1; return (async function* (): AsyncIterable<string> { throw new Error("first_token_timeout"); })(); };
+  const r6 = await brainTurnText({ messages: lake, apiKey: null, model: "x", modelStream: alwaysSlow, noWeb: true, log: () => undefined });
+  assert.equal(r6.source, "fallback_after_model");
+  assert.equal(r6.retried, true);
+  assert.equal(slow, 2, "a timeout is retried exactly once");
+
   // "¿A quién llamo?" is answered first, by code, whatever the model says; and the number follows the last country named.
   const whom = await brainTurnText({ messages: [{ role: "user", content: "Estoy en Colombia." }, { role: "assistant", content: "Dime qué pasa." }, { role: "user", content: "No, estoy es en el Perú. ¿A quién llamo?" }], apiKey: null, model: "x", modelStream: mockModelStream, noWeb: true, log: () => undefined });
   assert.equal(whom.state.asksWhomToCall, true);
