@@ -39,7 +39,8 @@ Además, la búsqueda web debe estar activada para la organización en la consol
 
 ## Privacidad y límites
 
-- Nada de la llamada se guarda ni se escribe en logs: los errores registran solo una etiqueta (`timeout`, `upstream`, código HTTP), nunca el texto. Respuestas con `Cache-Control: no-store`.
+- **ElevenLabs sí guarda por defecto.** Nuestros endpoints no guardan nada, pero ElevenLabs conserva por defecto el audio y la transcripción de cada llamada. Antes de que llame una familia real, desactiva esa retención en la configuración de privacidad del agente (retención de audio y de transcripciones). Comprueba después, con una llamada de prueba, que la conversación no queda en el historial del agente.
+- Nada de la llamada se guarda ni se escribe en logs en neuroljus.com: los errores registran solo una etiqueta (`timeout`, `upstream`, código HTTP), nunca el texto. Respuestas con `Cache-Control: no-store`.
 - El límite de peticiones es en memoria, por instancia serverless: frena abusos accidentales, no ataques. Para algo más fuerte, añade una regla en Vercel Firewall sobre `/api/line/*`.
 - Tiempos: `protocol` es local (milisegundos). `ask` corta a 2,8 s y responde con la biblioteca. `search` corta a 9 s: la búsqueda web no cabe en 3 s, así que el agente debe avisar antes («déjame buscarlo»). `tools.json` ajusta el tiempo de espera por herramienta.
 
@@ -48,4 +49,5 @@ Además, la búsqueda web debe estar activada para la organización en la consol
 1. Crea el secreto del workspace con el valor de `LINE_API_SECRET`.
 2. Añade las tres herramientas webhook de `tools.json` al agente (sustituye `secret_id`).
 3. Pega `agent-prompt.md` en el prompt del sistema.
-4. Prueba con una llamada de test: una crisis (solo `protocol`), una pregunta tranquila (`ask`) y una pregunta fuera de biblioteca (`search`).
+4. Desactiva la retención de audio y transcripciones del agente (ver «Privacidad y límites»). Sin este paso no llama ninguna familia real.
+5. Prueba con una llamada de test: una crisis (solo `protocol`), una pregunta tranquila (`ask`) y una pregunta fuera de biblioteca (`search`).
