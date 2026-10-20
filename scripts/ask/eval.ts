@@ -1,5 +1,5 @@
 /**
- * Ask NeuroLjus — evaluation over 30 real everyday questions (es/en/sv).
+ * Ask NeuroLjus — evaluation over 48 real everyday and crisis questions (es/en/sv).
  *
  *   npm run eval:ask                       # against https://www.neuroljus.com
  *   ASK_BASE_URL=http://localhost:3000 npm run eval:ask
