@@ -152,15 +152,19 @@ const fallbackInterpretations: Record<IntentLang, Record<ScenarioId, string>> = 
 /**
  * Local, deterministic screen for descriptions that must never plan automatic
  * actions. Runs before any network call, in the three site languages.
+ *
+ * Word edges are Unicode lookarounds, not \b: in JavaScript \b and \w only know
+ * ASCII letters, so "se cayó" never matched and "sangró" only matched by luck.
+ * "fell asleep" / "föll i sömn" are not falls.
  */
 const RISK_PATTERNS: RegExp[] = [
   // es
-  /\b(sangr\w*|se golpea|golpe[aá]ndose|se muerde|se hace da[ñn]o|autolesi\w*|no respira|convulsi\w*|inconsciente|se ahog\w*|atragant\w*|se cay[oó]|ca[ií]da|quemad\w*|cuchillo|pastillas|medicament\w*|desmay\w*|emergencia|urgencias)\b/i,
+  /(?<![\p{L}\p{N}])(sangr\p{L}*|se golpea|golpe[aá]ndose|se muerde|se hace da[ñn]o|autolesi\p{L}*|no respira|convulsi\p{L}*|inconsciente|se ahog\p{L}*|atragant\p{L}*|se cay[oó]|ca[ií]da|quemad\p{L}*|cuchillo|pastillas|medicament\p{L}*|desmay\p{L}*|emergencia|urgencias)(?![\p{L}\p{N}])/iu,
   // en
-  /\b(blood|bleed\w*|hits? (him|her|them)self|hitting (him|her|them)self|self[- ]?harm\w*|not breathing|seizure\w*|unconscious|chok\w*|fell|fall\w* down|burn\w*|knife|overdose|pills|faint\w*|emergency|911)\b/i,
+  /(?<![\p{L}\p{N}])(blood|bleed\p{L}*|hits? (him|her|them)self|hitting (him|her|them)self|self[- ]?harm\p{L}*|not breathing|seizure\p{L}*|unconscious|chok\p{L}*|fell(?!\s+asleep)|fall\p{L}* down|burn\p{L}*|knife|overdose|pills|faint\p{L}*|emergency|911)(?![\p{L}\p{N}])/iu,
   // sv
-  /\b(blod\w*|bl[öo]der|sl[åa]r sig|sl[åa]r huvudet|skadar sig|andas inte|kramp\w*|medvetsl[öo]s|kv[äa]v\w*|s[äa]tter i halsen|ramla\w*|f[öo]ll|br[äa]nnskad\w*|kniv|tabletter|svimma\w*|n[öo]dl[äa]ge)\b/i,
-  /\b112\b/,
+  /(?<![\p{L}\p{N}])(blod\p{L}*|bl[öo]der|sl[åa]r sig|sl[åa]r huvudet|skadar sig|andas inte|kramp\p{L}*|medvetsl[öo]s|kv[äa]v\p{L}*|s[äa]tter i halsen|ramla\p{L}*|f[öo]ll(?!\s+i\s+s[öo]mn)|br[äa]nnskad\p{L}*|kniv|tabletter|svimma\p{L}*|n[öo]dl[äa]ge)(?![\p{L}\p{N}])/iu,
+  /(?<![\p{L}\p{N}])112(?![\p{L}\p{N}])/u,
 ];
 
 export function localRiskScreen(text: string): boolean {

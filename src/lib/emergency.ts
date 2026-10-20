@@ -34,7 +34,12 @@ export function emergencyNumber(country: string | null | undefined): string | nu
   if (c === "GB") return "999";
   if (c === "AU") return "000";
   if (c === "NZ") return "111";
-  if (c === "AR" || c === "CL" || c === "PE" || c === "UY" || c === "EC" || c === "BR") return "911";
+  // AR: 911 is the national line for ambulance and police (107 SAME only covers Buenos Aires).
+  if (c === "AR" || c === "UY" || c === "EC") return "911";
+  // No national 911 here: the ambulance line, since escalations are falls, seizures, self-injury.
+  if (c === "BR") return "192"; // SAMU (police 190, fire 193)
+  if (c === "CL") return "131"; // SAMU (Carabineros 133, Bomberos 132)
+  if (c === "PE") return "106"; // SAMU (police 105, Bomberos 116; 911 only piloted in Lima)
   return null;
 }
 
