@@ -1,0 +1,157 @@
+{
+  "_note": "Herramientas webhook para ElevenLabs Agents. Agente agent_8701m5aah553evdr2vkbaqp4rctq. El secreto x-line-secret se guarda como secreto del workspace en ElevenLabs; aquí solo va su id. Revisa los nombres de campo contra el formulario de 'Add webhook tool' al importar.",
+  "tools": [
+    {
+      "type": "webhook",
+      "name": "protocol",
+      "description": "Protocolo de crisis. Úsalo SIEMPRE y SOLO esta herramienta cuando la persona describe una crisis ahora mismo: peligro, golpes, autolesión, gritos sin parar, escape, bloqueo. Devuelve el texto exacto para leer en voz alta, fase por fase. Si 'risk' es true, la primera frase es la línea de emergencias del país: léela primero, tal cual.",
+      "response_timeout_secs": 5,
+      "api_schema": {
+        "url": "https://neuroljus.com/api/line/protocol",
+        "method": "POST",
+        "request_headers": {
+          "Content-Type": "application/json",
+          "x-line-secret": {
+            "secret_id": "<ID del secreto LINE_API_SECRET en ElevenLabs>"
+          }
+        },
+        "request_body_schema": {
+          "type": "object",
+          "required": [
+            "situation",
+            "lang"
+          ],
+          "properties": {
+            "situation": {
+              "type": "string",
+              "description": "Lo que la persona cuenta, en sus palabras, en una o dos frases. No añadas nombres ni datos personales."
+            },
+            "phase": {
+              "type": "string",
+              "enum": [
+                "agitation",
+                "peak",
+                "descent",
+                "recovery"
+              ],
+              "description": "Fase pedida. Empieza en agitation. Pasa a peak, descent y recovery cuando la persona diga que la situación cambia. Usa next_phase de la respuesta anterior."
+            },
+            "protocol": {
+              "type": "string",
+              "enum": [
+                "physical_danger",
+                "aggression_objects",
+                "aggression_people",
+                "self_injury",
+                "overload_meltdown",
+                "shutdown",
+                "transitions_refusal",
+                "sleep",
+                "possible_pain",
+                "caregiver_exhausted"
+              ],
+              "description": "Solo desde la segunda llamada: el 'protocol' que devolvió la primera, para no cambiar de protocolo a mitad de la crisis."
+            },
+            "lang": {
+              "type": "string",
+              "enum": [
+                "es",
+                "en",
+                "sv"
+              ],
+              "description": "Idioma en el que habla la persona que llama: es, en o sv."
+            },
+            "country": {
+              "type": "string",
+              "description": "País de la persona que llama, código de dos letras (por ejemplo SE, ES, CO, MX). Si no lo sabes, no lo envíes."
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "webhook",
+      "name": "ask",
+      "description": "Pregunta a la biblioteca verificada de investigación sobre autismo de NeuroLjus. Úsalo cuando la persona está en calma y pregunta algo: rutinas, sueño, comida, comunicación, escuela, familia. Devuelve como máximo tres frases para decir en voz alta y una o dos fuentes (título y año). Si 'library_empty' es true, la biblioteca no respaldó la respuesta: puedes probar 'search'. Si 'use_tool' es 'protocol', cambia a esa herramienta. No lo uses en una crisis.",
+      "response_timeout_secs": 6,
+      "api_schema": {
+        "url": "https://neuroljus.com/api/line/ask",
+        "method": "POST",
+        "request_headers": {
+          "Content-Type": "application/json",
+          "x-line-secret": {
+            "secret_id": "<ID del secreto LINE_API_SECRET en ElevenLabs>"
+          }
+        },
+        "request_body_schema": {
+          "type": "object",
+          "required": [
+            "question",
+            "lang"
+          ],
+          "properties": {
+            "question": {
+              "type": "string",
+              "description": "La pregunta de la persona, completa y en sus palabras. Sin nombres ni datos personales."
+            },
+            "lang": {
+              "type": "string",
+              "enum": [
+                "es",
+                "en",
+                "sv"
+              ],
+              "description": "Idioma en el que habla la persona que llama: es, en o sv."
+            },
+            "country": {
+              "type": "string",
+              "description": "País de la persona que llama, código de dos letras (por ejemplo SE, ES, CO, MX). Si no lo sabes, no lo envíes."
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "webhook",
+      "name": "search",
+      "description": "Búsqueda web solo sobre autismo, en fuentes internacionales de confianza (OMS, NICE, CDC, NHS, Autistica, PubMed y similares). Úsalo SOLO cuando 'ask' no tenga respuesta (library_empty es true) y la pregunta es sobre autismo. Nunca en una crisis. Tarda unos segundos: avisa a la persona antes de llamar. Devuelve como máximo tres frases y una o dos fuentes.",
+      "response_timeout_secs": 12,
+      "api_schema": {
+        "url": "https://neuroljus.com/api/line/search",
+        "method": "POST",
+        "request_headers": {
+          "Content-Type": "application/json",
+          "x-line-secret": {
+            "secret_id": "<ID del secreto LINE_API_SECRET en ElevenLabs>"
+          }
+        },
+        "request_body_schema": {
+          "type": "object",
+          "required": [
+            "query",
+            "lang"
+          ],
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "La pregunta sobre autismo, completa. Sin nombres ni datos personales."
+            },
+            "lang": {
+              "type": "string",
+              "enum": [
+                "es",
+                "en",
+                "sv"
+              ],
+              "description": "Idioma en el que habla la persona que llama: es, en o sv."
+            },
+            "country": {
+              "type": "string",
+              "description": "País de la persona que llama, código de dos letras (por ejemplo SE, ES, CO, MX). Si no lo sabes, no lo envíes."
+            }
+          }
+        }
+      }
+    }
+  ]
+}
