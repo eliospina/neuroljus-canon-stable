@@ -77,7 +77,8 @@ export const sleep: CrisisProtocol = {
       tri("Tú llevas semanas sin dormir: dilo a tu médico y a tu red; es parte del cuidado.", "You have gone weeks without sleep: tell your doctor and your network; it is part of the care.", "Du har inte sovit på veckor: säg det till din läkare och ditt nätverk; det är en del av omsorgen."),
     ],
   },
-  abc: {
+  log: {
+    kind: "abc",
     antecedent: tri("¿Cómo fue el día: siesta, pantallas, actividad, comida tarde, cambios, enfermedad?", "What was the day like: nap, screens, activity, late food, changes, illness?", "Hur var dagen: tupplur, skärmar, aktivitet, sen mat, förändringar, sjukdom?"),
     behavior: tri("¿Qué pasó de noche: no dormirse, despertares, levantarse, llorar? ¿A qué horas?", "What happened at night: not falling asleep, wakings, getting up, crying? At what times?", "Vad hände på natten: inte somna, uppvaknanden, gå upp, gråta? Vid vilka tider?"),
     consequence: tri("¿Qué pasó después? ¿Hubo juego, comida, pantalla, compañía en otra cama?", "What happened next? Was there play, food, a screen, company in another bed?", "Vad hände sedan? Blev det lek, mat, skärm, sällskap i en annan säng?"),

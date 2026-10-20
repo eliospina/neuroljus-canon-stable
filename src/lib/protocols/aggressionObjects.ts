@@ -74,7 +74,8 @@ export const aggressionObjects: CrisisProtocol = {
       tri("Se repite varias veces por semana: pide una evaluación funcional a un profesional de apoyo conductual.", "It happens several times a week: ask a behaviour support professional for a functional assessment.", "Det händer flera gånger i veckan: be en yrkesperson inom beteendestöd om en funktionell bedömning."),
     ],
   },
-  abc: {
+  log: {
+    kind: "abc",
     antecedent: tri("¿Qué pasó justo antes? (una petición, un no, un cambio, ruido, una espera)", "What happened right before? (a request, a no, a change, noise, waiting)", "Vad hände precis innan? (ett krav, ett nej, en förändring, ljud, väntan)"),
     behavior: tri("¿Qué tiró o rompió, hacia dónde y cuánto duró?", "What did they throw or break, in which direction, and how long did it last?", "Vad kastade eller hade personen sönder, i vilken riktning, och hur länge?"),
     consequence: tri("¿Qué pasó después? ¿Se retiró la petición? ¿Hubo atención, ayuda, silencio?", "What happened next? Was the request dropped? Was there attention, help, silence?", "Vad hände sedan? Drogs kravet tillbaka? Blev det uppmärksamhet, hjälp, tystnad?"),

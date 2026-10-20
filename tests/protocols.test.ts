@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import test from "node:test";
-import { PROTOCOLS, PROTOCOL_IDS, PHASE_IDS, FUNCTIONS, getProtocol, newAbcRecord, renderProtocol, type CrisisProtocol, type Tri } from "../src/lib/protocols";
+import { PROTOCOLS, PROTOCOL_IDS, PHASE_IDS, FUNCTIONS, getProtocol, newAbcRecord, newCaregiverLogRecord, renderProtocol, type CrisisProtocol, type Tri } from "../src/lib/protocols";
 import { emergencyNumber } from "../src/lib/emergency";
 
 const LANGS = ["es", "en", "sv"] as const;
@@ -23,11 +23,17 @@ function texts(p: CrisisProtocol): Array<{ where: string; value: Tri; kind: "ste
   p.never.forEach((n, i) => add(`never[${i}]`, n, "never"));
   p.escalate.callWhen.forEach((c, i) => add(`callWhen[${i}]`, c));
   p.escalate.contactWhen.forEach((c, i) => add(`contactWhen[${i}]`, c));
-  add("abc.antecedent", p.abc.antecedent);
-  add("abc.behavior", p.abc.behavior);
-  add("abc.consequence", p.abc.consequence);
-  p.abc.hypotheses.forEach((h, i) => add(`abc.hypotheses[${i}]`, h.check));
-  add("abc.note", p.abc.note);
+  if (p.log.kind === "abc") {
+    add("log.antecedent", p.log.antecedent);
+    add("log.behavior", p.log.behavior);
+    add("log.consequence", p.log.consequence);
+    p.log.hypotheses.forEach((h, i) => add(`log.hypotheses[${i}]`, h.check));
+  } else {
+    add("log.exhausted", p.log.exhausted);
+    add("log.signs", p.log.signs);
+    add("log.helped", p.log.helped);
+  }
+  add("log.note", p.log.note);
   p.evidence.forEach((e, i) => add(`evidence[${i}]`, e.supports));
   add("evidenceNote", p.evidenceNote);
   return out;
@@ -115,14 +121,20 @@ test("never lists cover punishment, locking in and restraint", () => {
   }
 });
 
-test("function hypotheses are only the four allowed ones and always framed as hypotheses", () => {
+test("ABC logs use only the four allowed functions, framed as hypotheses; the caregiver's log has neither", () => {
   for (const p of PROTOCOLS) {
-    assert.ok(p.abc.hypotheses.length >= 2, `${p.id} offers at least two functions to check`);
-    for (const h of p.abc.hypotheses) assert.ok(FUNCTIONS.includes(h.fn), `${p.id} ${h.fn}`);
-    assert.equal(new Set(p.abc.hypotheses.map((h) => h.fn)).size, p.abc.hypotheses.length, `${p.id} repeats a function`);
-    assert.match(p.abc.note.es, /hip[oó]tesis/i);
-    assert.match(p.abc.note.en, /hypothes/i);
-    assert.match(p.abc.note.sv, /hypotes/i);
+    if (p.id === "caregiver_exhausted") {
+      assert.equal(p.log.kind, "caregiver", "the caregiver protocol keeps a simple log");
+      for (const l of LANGS) assert.ok(!/hip[oó]tesis|hypothes|hypotes|funci[oó]n|function|funktion/i.test(Object.values(p.log).filter((v): v is Tri => typeof v === "object").map((v) => v[l]).join(" ")), `${l}: no functions or hypotheses in the caregiver log`);
+      continue;
+    }
+    assert.equal(p.log.kind, "abc", `${p.id} keeps an ABC log`);
+    assert.ok(p.log.hypotheses.length >= 2, `${p.id} offers at least two functions to check`);
+    for (const h of p.log.hypotheses) assert.ok(FUNCTIONS.includes(h.fn), `${p.id} ${h.fn}`);
+    assert.equal(new Set(p.log.hypotheses.map((h) => h.fn)).size, p.log.hypotheses.length, `${p.id} repeats a function`);
+    assert.match(p.log.note.es, /hip[oó]tesis/i);
+    assert.match(p.log.note.en, /hypothes/i);
+    assert.match(p.log.note.sv, /hypotes/i);
   }
 });
 
@@ -172,10 +184,14 @@ test("rendering is deterministic and covers the four phases in order", () => {
   assert.deepEqual(renderProtocol(p, "en", "US").phases.map((x) => x.id), ["agitation", "peak", "descent", "recovery"]);
   const r = renderProtocol(p, "es", "BR");
   assert.equal(r.title, "Agresión contra personas");
-  assert.equal(r.abc.hypotheses.map((h) => h.fn).join(), "escape,request,sensory,pain");
+  assert.equal(r.log.kind === "abc" ? r.log.hypotheses.map((h) => h.fn).join() : "", "escape,request,sensory,pain");
+  const c = renderProtocol(getProtocol("caregiver_exhausted")!, "es", "CO");
+  assert.equal(c.log.kind, "caregiver");
+  assert.match(c.log.kind === "caregiver" ? c.log.exhausted : "", /agotó/);
 });
 
 test("a blank ABC record holds no case data", () => {
   const rec = newAbcRecord("aggression_people", "2026-01-01T00:00:00.000Z");
   assert.deepEqual(rec, { protocolId: "aggression_people", recordedAt: "2026-01-01T00:00:00.000Z", antecedent: "", behavior: "", consequence: "", hypotheses: [] });
+  assert.deepEqual(newCaregiverLogRecord("caregiver_exhausted", "2026-01-01T00:00:00.000Z"), { protocolId: "caregiver_exhausted", recordedAt: "2026-01-01T00:00:00.000Z", exhausted: "", signs: "", helped: "" });
 });

@@ -143,7 +143,8 @@ export const physicalDanger: CrisisProtocol = {
       tri("Necesitas adaptar la casa y no sabes cómo: pregunta a terapia ocupacional o a tu servicio social.", "You need to adapt the home and do not know how: ask occupational therapy or your social service.", "Du behöver anpassa hemmet och vet inte hur: fråga arbetsterapeut eller socialtjänsten."),
     ],
   },
-  abc: {
+  log: {
+    kind: "abc",
     antecedent: tri(
       "¿Qué pasó justo antes? (una puerta abierta, algo que vio, un ruido, una espera, que se le negó algo)",
       "What happened right before? (an open door, something they saw, a noise, waiting, being told no)",

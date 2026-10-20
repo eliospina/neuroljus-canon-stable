@@ -60,6 +60,32 @@ export type ProtocolEvidence = {
   supports: Tri;
 };
 
+/** ABC log after a crisis: before, behaviour, after, and the functions worth checking as hypotheses. */
+export type AbcLog = {
+  kind: "abc";
+  antecedent: Tri;
+  behavior: Tri;
+  consequence: Tri;
+  /** Functions worth checking for this situation, each with the question that tests it. */
+  hypotheses: Array<{ fn: FunctionHypothesis; check: Tri }>;
+  /** Says these are hypotheses, not an explanation or a diagnosis. */
+  note: Tri;
+};
+
+/** The caregiver's own log (protocol 10): no functions, no hypotheses. */
+export type CaregiverLog = {
+  kind: "caregiver";
+  /** What wore me down. */
+  exhausted: Tri;
+  /** What signs I had before. */
+  signs: Tri;
+  /** What helped me. */
+  helped: Tri;
+  note: Tri;
+};
+
+export type ProtocolLog = AbcLog | CaregiverLog;
+
 export type CrisisProtocol = {
   id: ProtocolId;
   /** 1 to 10, as in the line. */
@@ -80,15 +106,7 @@ export type CrisisProtocol = {
     /** Situations that need a professional soon (same day or a planned visit). */
     contactWhen: Tri[];
   };
-  abc: {
-    antecedent: Tri;
-    behavior: Tri;
-    consequence: Tri;
-    /** Functions worth checking for this situation, each with the question that tests it. */
-    hypotheses: Array<{ fn: FunctionHypothesis; check: Tri }>;
-    /** Says these are hypotheses, not an explanation or a diagnosis. */
-    note: Tri;
-  };
+  log: ProtocolLog;
   /** 3 to 6 library documents that back the approach. */
   evidence: ProtocolEvidence[];
   /** Says what the evidence covers and what is practice. */
@@ -109,6 +127,13 @@ export type AbcRecord = {
 
 export function newAbcRecord(protocolId: ProtocolId, recordedAt: string): AbcRecord {
   return { protocolId, recordedAt, antecedent: "", behavior: "", consequence: "", hypotheses: [] };
+}
+
+/** A blank caregiver log to fill in after reaching the limit. Nothing is stored here. */
+export type CaregiverLogRecord = { protocolId: ProtocolId; recordedAt: string; exhausted: string; signs: string; helped: string };
+
+export function newCaregiverLogRecord(protocolId: ProtocolId, recordedAt: string): CaregiverLogRecord {
+  return { protocolId, recordedAt, exhausted: "", signs: "", helped: "" };
 }
 
 /** Shorthand for writing a Tri. */

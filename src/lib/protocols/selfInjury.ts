@@ -83,7 +83,8 @@ export const selfInjury: CrisisProtocol = {
       tri("Habla de hacerse daño a propósito o de no querer vivir: busca ayuda en salud mental o un servicio de crisis hoy.", "They talk about hurting themself on purpose or not wanting to live: seek mental health help or a crisis service today.", "Personen talar om att skada sig med avsikt eller att inte vilja leva: sök hjälp hos psykiatrin eller en krisjour i dag."),
     ],
   },
-  abc: {
+  log: {
+    kind: "abc",
     antecedent: tri("¿Qué pasó justo antes? (una petición, ruido, espera, un cambio, una comida, la hora de dormir)", "What happened right before? (a request, noise, waiting, a change, a meal, bedtime)", "Vad hände precis innan? (ett krav, ljud, väntan, en förändring, en måltid, läggdags)"),
     behavior: tri("¿Cómo se hizo daño, en qué parte del cuerpo y durante cuánto tiempo?", "How did they hurt themself, on which part of the body, and for how long?", "Hur skadade personen sig, på vilken kroppsdel, och hur länge?"),
     consequence: tri("¿Qué pasó después? ¿Se retiró la petición? ¿Recibió atención o un objeto? ¿Bajó solo?", "What happened next? Was the request dropped? Did they get attention or an object? Did it ease on its own?", "Vad hände sedan? Drogs kravet tillbaka? Fick personen uppmärksamhet eller ett föremål? Släppte det av sig självt?"),

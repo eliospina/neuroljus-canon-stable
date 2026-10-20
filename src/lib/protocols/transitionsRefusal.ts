@@ -76,7 +76,8 @@ export const transitionsRefusal: CrisisProtocol = {
       tri("Las transiciones bloquean la escuela o la salida de casa casi a diario: pide apoyo para un plan de transiciones a terapia ocupacional o a un profesional de apoyo conductual.", "Transitions block school or leaving the house almost daily: ask occupational therapy or a behaviour support professional for help with a transition plan.", "Övergångarna blockerar skolan eller att komma ut nästan dagligen: be arbetsterapeut eller en yrkesperson inom beteendestöd om hjälp med en övergångsplan."),
     ],
   },
-  abc: {
+  log: {
+    kind: "abc",
     antecedent: tri("¿Qué cambio se pedía, con cuánto aviso y de qué actividad venía?", "What change was asked, with how much warning, and from what activity?", "Vilken förändring begärdes, med hur mycket förvarning, och från vilken aktivitet?"),
     behavior: tri("¿Cómo fue la negativa: palabras, suelo, aferrarse, correr? ¿Cuánto duró?", "What did the refusal look like: words, floor, clinging, running? How long did it last?", "Hur såg vägran ut: ord, golv, klamra sig fast, springa? Hur länge?"),
     consequence: tri("¿Qué pasó después? ¿Se pospuso el cambio? ¿Se hizo igual? ¿Qué llegó al otro lado?", "What happened next? Was the change postponed? Done anyway? What came on the other side?", "Vad hände sedan? Sköts förändringen upp? Gjordes den ändå? Vad kom på andra sidan?"),

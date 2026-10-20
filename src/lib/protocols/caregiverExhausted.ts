@@ -1,6 +1,7 @@
 /**
  * Protocol 10 — The caregiver is exhausted. The person in crisis here is the
- * one who cares; the phases follow their own limit.
+ * one who cares; the phases follow their own limit. The log is a simple one,
+ * with no functions or hypotheses: those would read as a judgement here.
  */
 
 import { tri, type CrisisProtocol } from "./types";
@@ -54,7 +55,7 @@ export const caregiverExhausted: CrisisProtocol = {
         tri("Pide ayuda formal: descanso o relevo (respiro familiar), apoyo psicológico, grupos de familias. Es parte del cuidado, no un lujo.", "Ask for formal help: respite or relief care, psychological support, family groups. It is part of the care, not a luxury.", "Be om formell hjälp: avlösning eller korttidsvistelse, psykologiskt stöd, föräldragrupper. Det är en del av omsorgen, inte en lyx."),
         tri("Reparte tareas y escríbelo: quién hace qué y cuándo descansas tú. Una pausa fija a la semana, aunque sea corta.", "Share out tasks and write it down: who does what and when you rest. One fixed break a week, even a short one.", "Dela upp uppgifter och skriv ner det: vem gör vad och när du vilar. En fast paus i veckan, om än kort."),
         tri("Cuida tu sueño como cuidas el de la persona.", "Look after your sleep as you look after the person's.", "Ta hand om din sömn som du tar hand om personens."),
-        tri("Rellena el registro ABC de tus propios límites: qué los dispara y qué los alivia.", "Fill in the ABC log of your own limits: what triggers them and what eases them.", "Fyll i ABC-loggen över dina egna gränser: vad som utlöser dem och vad som lindrar."),
+        tri("Rellena tu registro: qué me agotó, qué señales tuve, qué me ayudó.", "Fill in your log: what wore me down, what signs I had, what helped.", "Fyll i din logg: vad som tog slut på mig, vilka tecken jag hade, vad som hjälpte."),
       ],
       say: [tri("Pido ayuda.", "I'm asking for help.", "Jag ber om hjälp."), tri("Esta semana descanso.", "This week I rest.", "Den här veckan vilar jag."), tri("No estoy sola en esto.", "I'm not alone in this.", "Jag är inte ensam.")],
     },
@@ -75,20 +76,27 @@ export const caregiverExhausted: CrisisProtocol = {
       tri("No tienes ningún relevo: pide a servicios sociales o a tu asociación información sobre respiro y apoyo a familias.", "You have no relief at all: ask social services or your association about respite and family support.", "Du har ingen avlösning alls: fråga socialtjänsten eller din förening om avlösning och familjestöd."),
     ],
   },
-  abc: {
-    antecedent: tri("¿Qué pasó antes de llegar al límite: noches sin dormir, varias crisis seguidas, soledad, una mala noticia?", "What happened before you reached the limit: sleepless nights, several crises in a row, loneliness, bad news?", "Vad hände innan du nådde gränsen: sömnlösa nätter, flera kriser i rad, ensamhet, dåliga nyheter?"),
-    behavior: tri("¿Qué hiciste o sentiste: gritar, llorar, quedarte en blanco, querer irte?", "What did you do or feel: raise your voice, cry, go blank, want to leave?", "Vad gjorde eller kände du: höja rösten, gråta, bli tom, vilja gå?"),
-    consequence: tri("¿Qué pasó después? ¿Alguien te relevó? ¿Dormiste? ¿Qué ayudó de verdad?", "What happened next? Did someone relieve you? Did you sleep? What really helped?", "Vad hände sedan? Avlöste någon dig? Sov du? Vad hjälpte på riktigt?"),
-    hypotheses: [
-      { fn: "escape", check: tri("¿Necesitabas salir de la situación y no había forma? ¿Qué relevo faltó?", "Did you need to get out of the situation and there was no way? What relief was missing?", "Behövde du komma ur situationen och det fanns ingen väg? Vilken avlösning saknades?") },
-      { fn: "request", check: tri("¿Necesitabas ayuda y no sabías a quién o cómo pedirla?", "Did you need help and not know whom or how to ask?", "Behövde du hjälp och visste inte vem eller hur du skulle fråga?") },
-      { fn: "sensory", check: tri("¿Llevabas horas de ruido, gritos o contacto sin pausa?", "Had you had hours of noise, screaming or contact without a break?", "Hade du haft timmar av ljud, skrik eller kontakt utan paus?") },
-      { fn: "pain", check: tri("¿Tu cuerpo pedía algo: dormir, comer, moverte, un dolor tuyo sin atender?", "Was your body asking for something: sleep, food, movement, a pain of your own left unattended?", "Bad din kropp om något: sömn, mat, rörelse, en egen smärta som inte tagits om hand?") },
-    ],
+  log: {
+    kind: "caregiver",
+    exhausted: tri(
+      "¿Qué me agotó? (noches sin dormir, varias crisis seguidas, soledad, una mala noticia, no tener relevo)",
+      "What wore me down? (sleepless nights, several crises in a row, loneliness, bad news, no one to take over)",
+      "Vad tog slut på mig? (sömnlösa nätter, flera kriser i rad, ensamhet, dåliga nyheter, ingen avlösning)"
+    ),
+    signs: tri(
+      "¿Qué señales tuve antes de llegar al límite? (irritación, llanto, quedarme en blanco, ganas de irme, dolor de cabeza)",
+      "What signs did I have before reaching the limit? (irritation, crying, going blank, wanting to leave, headache)",
+      "Vilka tecken hade jag innan jag nådde gränsen? (irritation, gråt, att bli tom, vilja gå, huvudvärk)"
+    ),
+    helped: tri(
+      "¿Qué me ayudó de verdad? (alguien que vino, dormir, salir un rato, hablar con alguien, comer)",
+      "What really helped me? (someone who came, sleep, getting out for a while, talking to someone, eating)",
+      "Vad hjälpte mig på riktigt? (någon som kom, sömn, att komma ut en stund, att prata med någon, att äta)"
+    ),
     note: tri(
-      "Son hipótesis para mirar tu patrón, no un diagnóstico ni un juicio. El agotamiento de quien cuida es frecuente y tiene remedio con apoyo.",
-      "These are hypotheses for looking at your pattern, not a diagnosis or a judgement. Caregiver exhaustion is common and has a remedy with support.",
-      "Det här är hypoteser för att se ditt mönster, inte en diagnos eller en dom. Utmattning hos den som vårdar är vanlig och går att avhjälpa med stöd."
+      "Es un registro para ti, no una evaluación. Sirve para ver qué se repite y qué pedir la próxima vez.",
+      "This is a log for you, not an assessment. It helps you see what repeats and what to ask for next time.",
+      "Det här är en logg för dig, inte en bedömning. Den hjälper dig se vad som återkommer och vad du ska be om nästa gång."
     ),
   },
   evidence: [

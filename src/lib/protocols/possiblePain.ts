@@ -76,7 +76,8 @@ export const possiblePain: CrisisProtocol = {
       tri("Se golpea siempre la misma zona o no ha ido al dentista en mucho tiempo: cita de revisión.", "They always hit the same area or have not seen a dentist in a long time: a check-up appointment.", "Personen slår alltid mot samma ställe eller har inte varit hos tandläkaren på länge: boka en kontroll."),
     ],
   },
-  abc: {
+  log: {
+    kind: "abc",
     antecedent: tri("¿Desde cuándo cambió? ¿Qué más cambió esos días: comida, caca, sueño, ropa, clima, regla?", "Since when did it change? What else changed those days: food, poo, sleep, clothing, weather, period?", "Sedan när förändrades det? Vad mer ändrades de dagarna: mat, bajs, sömn, kläder, väder, mens?"),
     behavior: tri("¿Qué hace el cuerpo: tocarse, golpearse, encogerse, cojear, rechazar comida? ¿A qué horas?", "What does the body do: touching, hitting, curling up, limping, refusing food? At what times?", "Vad gör kroppen: tar sig, slår sig, kryper ihop, haltar, vägrar mat? Vid vilka tider?"),
     consequence: tri("¿Qué alivió: baño, agua, calor, acostarse, quitar una prenda? ¿Qué no cambió nada?", "What eased it: toilet, water, warmth, lying down, removing a garment? What changed nothing?", "Vad lindrade: toalett, vatten, värme, att ligga ner, att ta av ett plagg? Vad ändrade inget?"),

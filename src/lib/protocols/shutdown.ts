@@ -74,7 +74,8 @@ export const shutdown: CrisisProtocol = {
       tri("Sospechas agotamiento prolongado: habla con un profesional que conozca el autismo.", "You suspect prolonged exhaustion: talk to a professional who understands autism.", "Du misstänker långvarig utmattning: prata med en yrkesperson som förstår autism."),
     ],
   },
-  abc: {
+  log: {
+    kind: "abc",
     antecedent: tri("¿Qué se acumuló los días u horas antes? (gente, ruido, exigencias, cambios, poco sueño, enmascarar)", "What piled up in the days or hours before? (people, noise, demands, changes, little sleep, masking)", "Vad staplades upp dagarna eller timmarna innan? (folk, ljud, krav, förändringar, lite sömn, maskering)"),
     behavior: tri("¿Cómo fue el apagado: quieta, escondida, sin voz? ¿Cuánto duró?", "What was the shutdown like: still, hidden, voiceless? How long did it last?", "Hur var avstängningen: stilla, gömd, utan röst? Hur länge?"),
     consequence: tri("¿Qué pasó después? ¿Bajaron las exigencias? ¿Cuánto tardó en volver la voz y la energía?", "What happened next? Did demands go down? How long until voice and energy came back?", "Vad hände sedan? Sjönk kraven? Hur lång tid tills rösten och energin kom tillbaka?"),

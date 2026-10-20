@@ -76,7 +76,8 @@ export const overloadMeltdown: CrisisProtocol = {
       tri("Quieres un plan sensorial para casa y escuela: pregunta a terapia ocupacional.", "You want a sensory plan for home and school: ask occupational therapy.", "Du vill ha en sensorisk plan för hem och skola: fråga en arbetsterapeut."),
     ],
   },
-  abc: {
+  log: {
+    kind: "abc",
     antecedent: tri("¿Qué se acumuló antes? (ruido, luz, gente, cambio de plan, horas sin pausa, hambre, poco sueño)", "What piled up before? (noise, light, people, a change of plan, hours without a break, hunger, little sleep)", "Vad staplades upp innan? (ljud, ljus, folk, ändrad plan, timmar utan paus, hunger, lite sömn)"),
     behavior: tri("¿Qué hizo el cuerpo: taparse, llorar, correr, caer, golpear? ¿Cuánto duró?", "What did the body do: cover up, cry, run, drop, hit? How long did it last?", "Vad gjorde kroppen: täcka sig, gråta, springa, falla, slå? Hur länge?"),
     consequence: tri("¿Qué pasó después? ¿Salieron del lugar? ¿Bajó la carga? ¿Cuánto tardó en recuperarse?", "What happened next? Did you leave the place? Did the load go down? How long did recovery take?", "Vad hände sedan? Lämnade ni platsen? Sjönk belastningen? Hur lång tid tog återhämtningen?"),

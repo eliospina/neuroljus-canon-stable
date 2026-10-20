@@ -219,7 +219,8 @@ export const aggressionPeople: CrisisProtocol = {
       ),
     ],
   },
-  abc: {
+  log: {
+    kind: "abc",
     antecedent: tri(
       "¿Qué pasó justo antes? (una petición, un cambio, ruido, una espera, algo que se quitó)",
       "What happened right before? (a request, a change, noise, waiting, something taken away)",

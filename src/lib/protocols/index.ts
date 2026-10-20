@@ -64,13 +64,9 @@ export type RenderedProtocol = {
     number: string | null;
     contactWhen: string[];
   };
-  abc: {
-    antecedent: string;
-    behavior: string;
-    consequence: string;
-    hypotheses: Array<{ fn: FunctionHypothesis; label: string; check: string }>;
-    note: string;
-  };
+  log:
+    | { kind: "abc"; antecedent: string; behavior: string; consequence: string; hypotheses: Array<{ fn: FunctionHypothesis; label: string; check: string }>; note: string }
+    | { kind: "caregiver"; exhausted: string; signs: string; helped: string; note: string };
   evidence: Array<{ id: string; level: EvidenceLevel; supports: string }>;
   evidenceNote: string;
 };
@@ -96,13 +92,17 @@ export function renderProtocol(p: CrisisProtocol, lang: ProtocolLang, country?: 
       number: emergency.number,
       contactWhen: p.escalate.contactWhen.map((c) => c[lang]),
     },
-    abc: {
-      antecedent: p.abc.antecedent[lang],
-      behavior: p.abc.behavior[lang],
-      consequence: p.abc.consequence[lang],
-      hypotheses: p.abc.hypotheses.map((h) => ({ fn: h.fn, label: FUNCTION_LABELS[h.fn][lang], check: h.check[lang] })),
-      note: p.abc.note[lang],
-    },
+    log:
+      p.log.kind === "abc"
+        ? {
+            kind: "abc",
+            antecedent: p.log.antecedent[lang],
+            behavior: p.log.behavior[lang],
+            consequence: p.log.consequence[lang],
+            hypotheses: p.log.hypotheses.map((h) => ({ fn: h.fn, label: FUNCTION_LABELS[h.fn][lang], check: h.check[lang] })),
+            note: p.log.note[lang],
+          }
+        : { kind: "caregiver", exhausted: p.log.exhausted[lang], signs: p.log.signs[lang], helped: p.log.helped[lang], note: p.log.note[lang] },
     evidence: p.evidence.map((e) => ({ id: e.id, level: e.level, supports: e.supports[lang] })),
     evidenceNote: p.evidenceNote[lang],
   };
