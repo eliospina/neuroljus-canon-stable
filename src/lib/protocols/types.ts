@@ -40,8 +40,12 @@ export type ProtocolPhase = {
   goal: Tri;
   /** What to do, in order. Nothing here may be a prohibition: those go in `never`. */
   steps: Tri[];
-  /** Short phrases to say aloud (a few words each). */
-  say: Tri[];
+  /**
+   * Short phrases for the caregiver to say TO THE AUTISTIC PERSON (a few words
+   * each). Never lines for the line's agent to say to the caller. In protocol 10
+   * the caller is the caregiver and these are lines to say to themself.
+   */
+  sayToPerson: Tri[];
 };
 
 /** Possible functions of a behaviour. Always hypotheses, never an explanation. */

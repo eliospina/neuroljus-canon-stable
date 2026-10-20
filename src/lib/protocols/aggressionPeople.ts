@@ -43,7 +43,7 @@ export const aggressionPeople: CrisisProtocol = {
         ),
         tri("Mira lo básico: dolor, hambre, sed, baño, sueño.", "Check the basics: pain, hunger, thirst, toilet, sleep.", "Kolla grunderna: smärta, hunger, törst, toalett, sömn."),
       ],
-      say: [
+      sayToPerson: [
         tri("Estoy aquí.", "I'm here.", "Jag är här."),
         tri("Vamos a parar.", "Let's stop.", "Vi tar en paus."),
         tri("Te doy espacio.", "I'm giving you space.", "Du får utrymme."),
@@ -83,7 +83,7 @@ export const aggressionPeople: CrisisProtocol = {
           "Ta bort föremål som kan skada. Jaga inte och driv inte in personen i ett hörn."
         ),
       ],
-      say: [
+      sayToPerson: [
         tri("Estás a salvo.", "You're safe.", "Du är trygg."),
         tri("Me aparto.", "I'm stepping back.", "Jag backar."),
         tri("No hay prisa.", "No rush.", "Ingen brådska."),
@@ -113,7 +113,7 @@ export const aggressionPeople: CrisisProtocol = {
           "Kom närmare först när kroppen har lugnat sig: axlarna nere, andningen långsammare."
         ),
       ],
-      say: [
+      sayToPerson: [
         tri("Respira a tu ritmo.", "Breathe at your pace.", "Andas i din takt."),
         tri("Aquí estoy.", "I'm here.", "Jag är här."),
         tri("Sin prisa.", "No hurry.", "Ingen brådska."),
@@ -144,7 +144,7 @@ export const aggressionPeople: CrisisProtocol = {
         tri("Más tarde, con calma, rellena el registro ABC.", "Later, when calm, fill in the ABC log.", "Fyll i ABC-loggen senare, när det är lugnt."),
         tri("Cuida también de quien recibió el golpe y de ti.", "Look after whoever was hit, and yourself.", "Ta hand om den som blev slagen, och om dig själv."),
       ],
-      say: [
+      sayToPerson: [
         tri("Ya pasó.", "It's over.", "Det är över."),
         tri("Estás bien.", "You're okay.", "Du är okej."),
         tri("Descansamos.", "We rest.", "Vi vilar."),

@@ -5,7 +5,7 @@
  * Blocked whenever the local risk screen detects a crisis.
  */
 
-import { localRiskScreen } from "../careProtocol/intentParser";
+import { severeSignals } from "./triage";
 import { dangerSentence, type EmergencyLang } from "../emergency";
 import { clinicianSentence, firstSentences, MEDICATION_ASK, claimsDiagnosis } from "./spoken";
 
@@ -108,7 +108,7 @@ export async function buildLineSearch(input: {
   onError?: (stage: string) => void;
 }): Promise<LineSearchResult> {
   const { query, lang, country } = input;
-  if (localRiskScreen(query)) {
+  if (severeSignals(query).severe) {
     return { ok: true, mode: "risk", risk: true, use_tool: "protocol", speech: dangerSentence(country, lang), sources: [] };
   }
   if (MEDICATION_ASK.test(query)) {

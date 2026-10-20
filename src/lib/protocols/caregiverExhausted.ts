@@ -28,7 +28,7 @@ export const caregiverExhausted: CrisisProtocol = {
         tri("Avisa a alguien: un mensaje a una persona de confianza diciendo cómo estás.", "Tell someone: a message to a trusted person saying how you are.", "Säg till någon: ett meddelande till en person du litar på om hur du mår."),
         tri("Haz la pausa más pequeña posible ahora: agua, cinco respiraciones lentas, salir a la puerta.", "Take the smallest possible break now: water, a few slow breaths, stepping to the door.", "Ta minsta möjliga paus nu: vatten, några långsamma andetag, gå till dörren."),
       ],
-      say: [tri("Estoy al límite.", "I'm at my limit.", "Jag är vid min gräns."), tri("Hoy hago lo mínimo.", "Today I do the minimum.", "I dag gör jag det minsta."), tri("Necesito una pausa.", "I need a break.", "Jag behöver en paus.")],
+      sayToPerson: [tri("Estoy al límite.", "I'm at my limit.", "Jag är vid min gräns."), tri("Hoy hago lo mínimo.", "Today I do the minimum.", "I dag gör jag det minsta."), tri("Necesito una pausa.", "I need a break.", "Jag behöver en paus.")],
     },
     peak: {
       goal: tri("Que nadie salga herido, tampoco tú.", "No one gets hurt, you included.", "Ingen skadas, inte du heller."),
@@ -38,7 +38,7 @@ export const caregiverExhausted: CrisisProtocol = {
         tri("Haz solo lo que mantenga a la persona segura; todo lo demás puede esperar.", "Do only what keeps the person safe; everything else can wait.", "Gör bara det som håller personen säker; allt annat kan vänta."),
         tri("Si has pensado en hacer daño o en no seguir, busca ayuda profesional hoy o llama al número de emergencias de tu país.", "If you have thought about doing harm or not going on, seek professional help today or call your country's emergency number.", "Om du har tänkt på att göra skada eller att inte orka vidare: sök professionell hjälp i dag eller ring ditt lands nödnummer."),
       ],
-      say: [tri("Me aparto un momento.", "I'm stepping away a moment.", "Jag går undan en stund."), tri("Necesito ayuda ahora.", "I need help now.", "Jag behöver hjälp nu."), tri("Esto es demasiado.", "This is too much.", "Det här är för mycket.")],
+      sayToPerson: [tri("Me aparto un momento.", "I'm stepping away a moment.", "Jag går undan en stund."), tri("Necesito ayuda ahora.", "I need help now.", "Jag behöver hjälp nu."), tri("Esto es demasiado.", "This is too much.", "Det här är för mycket.")],
     },
     descent: {
       goal: tri("Recuperar el aliento sin culpa.", "Catch your breath without guilt.", "Hämta andan utan skuld."),
@@ -47,7 +47,7 @@ export const caregiverExhausted: CrisisProtocol = {
         tri("No te juzgues por lo que sentiste: el agotamiento no es falta de amor.", "Do not judge yourself for what you felt: exhaustion is not a lack of love.", "Döm inte dig själv för det du kände: utmattning är inte brist på kärlek."),
         tri("Si alguien vino, deja que haga algo concreto: la cena, un paseo, una hora de relevo.", "If someone came, let them do something concrete: dinner, a walk, an hour of relief.", "Om någon kom, låt den göra något konkret: maten, en promenad, en timmes avlösning."),
       ],
-      say: [tri("Ya pasó lo peor.", "The worst is over.", "Det värsta är över."), tri("Hice lo que pude.", "I did what I could.", "Jag gjorde vad jag kunde."), tri("Ahora descanso.", "Now I rest.", "Nu vilar jag.")],
+      sayToPerson: [tri("Ya pasó lo peor.", "The worst is over.", "Det värsta är över."), tri("Hice lo que pude.", "I did what I could.", "Jag gjorde vad jag kunde."), tri("Ahora descanso.", "Now I rest.", "Nu vilar jag.")],
     },
     recovery: {
       goal: tri("Construir relevo y apoyo que duren.", "Build relief and support that last.", "Bygg avlösning och stöd som håller."),
@@ -57,7 +57,7 @@ export const caregiverExhausted: CrisisProtocol = {
         tri("Cuida tu sueño como cuidas el de la persona.", "Look after your sleep as you look after the person's.", "Ta hand om din sömn som du tar hand om personens."),
         tri("Rellena tu registro: qué me agotó, qué señales tuve, qué me ayudó.", "Fill in your log: what wore me down, what signs I had, what helped.", "Fyll i din logg: vad som tog slut på mig, vilka tecken jag hade, vad som hjälpte."),
       ],
-      say: [tri("Pido ayuda.", "I'm asking for help.", "Jag ber om hjälp."), tri("Esta semana descanso.", "This week I rest.", "Den här veckan vilar jag."), tri("No estoy sola en esto.", "I'm not alone in this.", "Jag är inte ensam.")],
+      sayToPerson: [tri("Pido ayuda.", "I'm asking for help.", "Jag ber om hjälp."), tri("Esta semana descanso.", "This week I rest.", "Den här veckan vilar jag."), tri("No estoy sola en esto.", "I'm not alone in this.", "Jag är inte ensam.")],
     },
   },
   never: [

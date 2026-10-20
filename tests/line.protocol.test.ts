@@ -57,14 +57,14 @@ test("the same input always gives the same output", () => {
 });
 
 test("risk puts the country's emergency line first, before anything else", () => {
-  const es = buildLineProtocol({ situation: "se golpea y sangra", lang: "es", country: "CO" });
+  const es = buildLineProtocol({ situation: "se golpea y sangra y no para", lang: "es", country: "CO" });
   assert.equal(es.risk, true);
   assert.ok(es.speech.startsWith("Si hay peligro, llama al 123."), es.speech);
-  const en = buildLineProtocol({ situation: "he is bleeding from hitting himself", lang: "en", country: "GB" });
+  const en = buildLineProtocol({ situation: "he is bleeding and it won't stop", lang: "en", country: "GB" });
   assert.ok(en.speech.startsWith("If there is danger, call 999."), en.speech);
-  const sv = buildLineProtocol({ situation: "hon blöder", lang: "sv", country: "SE" });
+  const sv = buildLineProtocol({ situation: "hon blöder och det slutar inte", lang: "sv", country: "SE" });
   assert.ok(sv.speech.startsWith("Vid fara, ring 112."), sv.speech);
-  const unknown = buildLineProtocol({ situation: "se golpea y sangra", lang: "es", country: null });
+  const unknown = buildLineProtocol({ situation: "se golpea y sangra y no para", lang: "es", country: null });
   assert.ok(unknown.speech.startsWith("Si hay peligro, llama al número de emergencias de tu país."));
 });
 
@@ -72,7 +72,7 @@ test("protocols 1 and 4 without a risk word still open with their safety sentenc
   const calm = buildLineProtocol({ situation: "se escapa a la calle", lang: "es", country: "ES" });
   assert.equal(calm.risk, false);
   assert.match(calm.speech, /llama al 112/);
-  const risky = buildLineProtocol({ situation: "se escapa a la calle y sangra", lang: "es", country: "ES" });
+  const risky = buildLineProtocol({ situation: "se escapa a la calle y sangra sin parar", lang: "es", country: "ES" });
   assert.equal(risky.speech.split("llama al 112").length - 1, 1, risky.speech);
 });
 

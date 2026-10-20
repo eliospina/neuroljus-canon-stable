@@ -18,7 +18,7 @@ function texts(p: CrisisProtocol): Array<{ where: string; value: Tri; kind: "ste
   for (const ph of PHASE_IDS) {
     add(`${ph}.goal`, p.phases[ph].goal);
     p.phases[ph].steps.forEach((s, i) => add(`${ph}.steps[${i}]`, s, "step"));
-    p.phases[ph].say.forEach((s, i) => add(`${ph}.say[${i}]`, s, "say"));
+    p.phases[ph].sayToPerson.forEach((s, i) => add(`${ph}.sayToPerson[${i}]`, s, "say"));
   }
   p.never.forEach((n, i) => add(`never[${i}]`, n, "never"));
   p.escalate.callWhen.forEach((c, i) => add(`callWhen[${i}]`, c));
@@ -56,7 +56,7 @@ test("every protocol is complete in es, en and sv", () => {
     assert.ok(p.recognize.length >= 1 && p.recognize.length <= 2, `${p.id} has one or two recognition questions`);
     for (const ph of PHASE_IDS) {
       assert.ok(p.phases[ph].steps.length >= 1, `${p.id}.${ph} has steps`);
-      assert.ok(p.phases[ph].say.length >= 1, `${p.id}.${ph} has phrases to say`);
+      assert.ok(p.phases[ph].sayToPerson.length >= 1, `${p.id}.${ph} has phrases to say to the person`);
     }
     assert.ok(p.never.length >= 3, `${p.id} lists what never to do`);
     assert.ok(p.escalate.callWhen.length >= 1 && p.escalate.contactWhen.length >= 1, `${p.id} says when to escalate`);

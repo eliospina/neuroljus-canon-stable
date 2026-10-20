@@ -50,7 +50,7 @@ test("the allowlist holds the international sources and nothing commercial", () 
 
 test("crisis blocks the search: emergency line, no network, protocol tool", async () => {
   const fetchImpl = (async () => assert.fail("must not call the network")) as unknown as typeof fetch;
-  const r = await buildLineSearch({ ...base, query: "he is bleeding and hitting himself", fetchImpl });
+  const r = await buildLineSearch({ ...base, query: "he is bleeding and it won't stop", fetchImpl });
   assert.equal(r.mode, "risk");
   assert.equal(r.use_tool, "protocol");
   assert.equal(r.speech, "If there is danger, call 999.");

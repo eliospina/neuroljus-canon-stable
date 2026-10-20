@@ -1,5 +1,5 @@
 {
-  "_note": "Herramientas webhook para ElevenLabs Agents. Agente agent_8701m5aah553evdr2vkbaqp4rctq. El secreto x-line-secret se guarda como secreto del workspace en ElevenLabs; aquí solo va su id. Revisa los nombres de campo contra el formulario de 'Add webhook tool' al importar.",
+  "_note": "Fase 3. Con el cerebro de la fase 4 (Custom LLM) estas herramientas no hacen falta en el agente; quedan para depurar. Herramientas webhook para ElevenLabs Agents. Agente agent_8701m5aah553evdr2vkbaqp4rctq. El secreto x-line-secret se guarda como secreto del workspace en ElevenLabs; aquí solo va su id. Revisa los nombres de campo contra el formulario de 'Add webhook tool' al importar.",
   "tools": [
     {
       "type": "webhook",
