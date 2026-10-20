@@ -1,99 +1,6 @@
 {
- "generatedAt": "2026-10-19T20:52:12.419Z",
+ "generatedAt": "2026-10-20T11:59:25.319Z",
  "failed": [
-  {
-   "id": "PMC10018918",
-   "doi": "10.1186/s13229-023-00544-7",
-   "url": "https://europepmc.org/article/PMC/PMC10018918",
-   "title": "A systematic review and meta-analysis of suicidality in autistic and possibly autistic people without co-occurring intellectual disability.",
-   "year": 2023,
-   "kind": "meta_analysis",
-   "topics": [
-    "adult_life",
-    "anxiety",
-    "challenging_behavior",
-    "family_caregivers",
-    "feeding",
-    "pain_health",
-    "school",
-    "sensory",
-    "transitions",
-    "women_girls"
-   ],
-   "issues": [
-    "code: sv: no emergency number of the country"
-   ],
-   "rejectedSheet": {
-    "es": "Hablar abiertamente y con calma sobre el bienestar emocional de una persona autista, y preguntarle directamente por pensamientos suicidas si te preocupa, es un paso práctico. Es un metaanálisis que reunió datos de 48.186 participantes autistas y posiblemente autistas, sin discapacidad intelectual, en 36 estudios. Encontró que los pensamientos suicidas (34.2%), los planes (21.9%) y los intentos (24.3%) son frecuentes. Pero los resultados variaron mucho entre estudios y no predicen lo que vive una persona concreta. Si te preocupa alguien, busca ayuda profesional: un clínico, un servicio de salud o un servicio de crisis. Ante un peligro inmediato, llama al número de emergencias de tu país.",
-    "en": "A practical step is to talk openly and calmly with an autistic person about their emotional wellbeing, and to ask directly about suicidal thoughts if you are worried. This meta-analysis pooled data from 48,186 autistic and possibly autistic participants without intellectual disability, across 36 studies. It found suicidal ideation (34.2%), plans (21.9%) and attempts (24.3%) to be common. However, results varied a lot between studies and cannot predict what any one person lives with. If you are worried about someone, seek professional help: a clinician, a health service or a crisis service. In immediate danger, call your country's emergency number.",
-    "sv": "Ett praktiskt steg är att prata öppet och lugnt med en autistisk person om det psykiska måendet, och fråga direkt om självmordstankar om du är orolig. Denna metaanalys sammanställde data från 48 186 autistiska och möjligen autistiska deltagare utan intellektuell funktionsnedsättning i 36 studier. Självmordstankar (34.2%), planer (21.9%) och försök (24.3%) var vanliga. Resultaten varierade dock mycket mellan studierna och säger inte vad en enskild person upplever. Om du är orolig för någon, sök professionell hjälp: en läkare, vården eller en krisjour. Vid akut fara, ring det nationella nödnumret i ditt land."
-   }
-  },
-  {
-   "id": "PMC10037072",
-   "doi": "10.1016/j.jtcme.2022.03.001",
-   "url": "https://europepmc.org/article/PMC/PMC10037072",
-   "title": "Gut microbiota and Autism Spectrum Disorder: From pathogenesis to potential therapeutic perspectives.",
-   "year": 2023,
-   "kind": "review",
-   "topics": [
-    "feeding",
-    "pain_health"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"probióticos\")",
-    "code: en: names a dose or medicine (\"probiotics\")",
-    "code: sv: names a dose or medicine (\"probiotika\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si una persona autista tiene molestias digestivas, vale la pena anotarlas y comentarlas con su médico o su dietista; el intestino puede ser una parte del bienestar general. Esta es una revisión que reúne estudios sobre la microbiota intestinal, sus metabolitos y el autismo, incluidos prebióticos, probióticos y remedios herbales. Sugiere un vínculo, pero no demuestra que la microbiota cause el autismo ni que cambiarla alivie a todas las personas. Cualquier decisión médica o de suplementos corresponde a un profesional sanitario.",
-    "en": "If an autistic person has digestive discomfort, it is worth noting it down and raising it with their doctor or dietitian; the gut may be one part of overall wellbeing. This is a review that gathers studies on gut microbiota, their metabolites and autism, including prebiotics, probiotics and herbal remedies. It suggests a link, but it does not show that gut microbes cause autism or that changing them helps every person. Any medical or supplement decision belongs with a healthcare professional.",
-    "sv": "Om en autistisk person har magbesvär är det värt att anteckna dem och ta upp dem med läkare eller dietist; tarmen kan vara en del av det allmänna måendet. Det här är en översikt som samlar studier om tarmfloran, dess metaboliter och autism, inklusive prebiotika, probiotika och växtbaserade medel. Den antyder ett samband, men visar inte att tarmbakterier orsakar autism eller att en förändring hjälper alla. Medicinska beslut och beslut om tillskott hör hemma hos sjukvårdspersonal."
-   }
-  },
-  {
-   "id": "PMC10096948",
-   "doi": "10.3390/nu15071620",
-   "url": "https://europepmc.org/article/PMC/PMC10096948",
-   "title": "Intestinal Barrier Dysfunction and Microbiota-Gut-Brain Axis: Possible Implications in the Pathogenesis and Treatment of Autism Spectrum Disorder.",
-   "year": 2023,
-   "kind": "review",
-   "topics": [
-    "adult_life",
-    "communication_aac"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"probióticos\")",
-    "code: en: names a dose or medicine (\"probiotics\")",
-    "code: sv: names a dose or medicine (\"probiotika\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si una persona autista tiene molestias digestivas frecuentes, vale la pena anotarlas (qué come, cuándo, cómo se siente) y comentarlas con su profesional sanitario, sin dar por hecho que son \"parte del autismo\". Esta es una revisión de la literatura: reúne estudios previos sobre el intestino, la microbiota y el autismo, y también los probióticos. Los resultados son prometedores, pero los estudios son muy distintos entre sí y no permiten sacar conclusiones firmes. No sirve como regla para todas las personas. Las decisiones sobre suplementos o tratamientos corresponden a un clínico.",
-    "en": "If an autistic person has frequent digestive discomfort, it is worth noting it down (what they eat, when, how they feel) and discussing it with a health professional, rather than assuming it is \"just part of autism\". This is a review: it gathers earlier studies on the gut, the microbiota and autism, including probiotics. The results look promising, but the studies differ so much from one another that firm conclusions are not possible. It is not a rule for every person. Decisions about supplements or treatments belong to a clinician.",
-    "sv": "Om en autistisk person ofta har magbesvär kan det vara bra att anteckna det (vad hen äter, när och hur hen mår) och ta upp det med vårdpersonal, i stället för att anta att det \"bara hör till autismen\". Detta är en översikt: den samlar tidigare studier om tarmen, mikrobiotan och autism, även probiotika. Resultaten verkar lovande, men studierna skiljer sig så mycket åt att säkra slutsatser inte kan dras. Det är ingen regel för alla. Beslut om kosttillskott eller behandling hör till en kliniker."
-   }
-  },
-  {
-   "id": "PMC10214106",
-   "doi": "10.1177/17455057231174763",
-   "url": "https://europepmc.org/article/PMC/PMC10214106",
-   "title": "Emotion dysregulation is heightened in autistic females: A comparison with autistic males and borderline personality disorder.",
-   "year": 2023,
-   "kind": "trial",
-   "topics": [
-    "adult_life",
-    "crisis_regulation",
-    "women_girls"
-   ],
-   "issues": [
-    "code: sv: no emergency number of the country"
-   ],
-   "rejectedSheet": {
-    "es": "Si cuidas a una persona autista adulta, ten en cuenta que las emociones intensas y difíciles de regular pueden ser muy pesadas, y que quizá ayude poner nombre a lo que siente. En este estudio transversal participaron 28 mujeres autistas, 22 hombres autistas y 24 mujeres con trastorno límite de la personalidad, todas en lista de espera de un programa de terapia dialéctico-conductual. Las mujeres autistas informaron más dificultades de regulación emocional y más alexitimia que los otros grupos. Es un grupo pequeño, sin discapacidad intelectual, y los resultados no valen para todas las personas. El estudio también midió la suicidalidad. Si te preocupa la seguridad de alguien, busca ayuda profesional: un clínico, un servicio de salud o un servicio de crisis. Ante un peligro inmediato, llama al número de emergencias de tu país.",
-    "en": "If you support an autistic adult, keep in mind that intense emotions that are hard to regulate can be very heavy, and that finding words for what they feel may help. This cross-sectional study included 28 autistic females, 22 autistic males and 24 females with borderline personality disorder, all on a waiting list for a dialectical behavior therapy program. Autistic females reported more emotion dysregulation and more alexithymia than the other groups. The groups were small, did not include people with intellectual disability, and the results do not apply to everyone. The study also measured suicidality. If you are worried about someone's safety, seek professional help: a clinician, a health service or a crisis service. In immediate danger, call your country's emergency number.",
-    "sv": "Om du stöttar en autistisk vuxen kan det vara bra att veta att starka känslor som är svåra att reglera kan vara mycket tunga, och att det kanske hjälper att hitta ord för det man känner. Denna tvärsnittsstudie omfattade 28 autistiska kvinnor, 22 autistiska män och 24 kvinnor med emotionellt instabil personlighetsstörning, alla på väntelista till ett program för dialektisk beteendeterapi. De autistiska kvinnorna rapporterade mer svårigheter med känsloreglering och mer alexitymi än de andra grupperna. Grupperna var små, omfattade inte personer med intellektuell funktionsnedsättning, och resultaten gäller inte alla. Studien mätte också suicidalitet. Om du är orolig för någons säkerhet, sök professionell hjälp: en läkare, vården eller en krisjour. Vid akut fara, ring det nationella nödnumret i ditt land."
-   }
-  },
   {
    "id": "PMC10359727",
    "doi": "10.1016/j.eclinm.2023.102072",
@@ -136,33 +43,12 @@
     "women_girls"
    ],
    "issues": [
-    "code: sv: no emergency number of the country"
+    "unsupported: 'Seeing autism as a difference was linked to better wellbeing' is not stated in the abstract; it reports that viewing autism as a disorder was associated with prior suicide attempts, and only suggests that a neurodiversity-affirmative approach 'may lead to' better mental health"
    ],
    "rejectedSheet": {
-    "es": "Si eres una persona autista que trabaja en medicina, o cuidas a alguien que lo hace, vale la pena hablar de los apoyos en el trabajo y buscar colegas o redes de personas autistas. Un estudio transversal con 225 médicos autistas encontró que el 29% no había contado a nadie en el trabajo que era autista, y que el 46% había pedido adaptaciones pero solo la mitad las recibió. El 77% había pensado en el suicidio, el 24% lo había intentado y el 49% se había autolesionado. Ver el autismo como una diferencia se asoció con mejor bienestar. Es un estudio de asociaciones con una encuesta, por lo que no prueba causas y no describe a todas las personas. Si tú o alguien cercano pensáis en suicidio o autolesión, buscad ayuda profesional en un servicio de salud o de crisis; si hay peligro inmediato, llamad al número de emergencias de vuestro país.",
-    "en": "If you are an autistic person working in medicine, or support someone who is, it is worth talking about workplace supports and finding colleagues or networks of autistic people. A cross-sectional study of 225 autistic doctors found that 29% had not told anyone at work they were autistic, and 46% had asked for adjustments but only half received them. 77% had considered suicide, 24% had attempted it and 49% had self-harmed. Seeing autism as a difference was linked to better wellbeing. This was a survey showing associations, so it cannot prove causes and does not describe every person. If you or someone close is thinking about suicide or self-harm, please contact a clinician, a health service or a crisis service; in immediate danger, call the emergency number of your country.",
-    "sv": "Om du är autistisk och arbetar inom sjukvården, eller stödjer någon som gör det, är det värt att prata om stöd på arbetsplatsen och söka kollegor eller nätverk med andra autistiska personer. En tvärsnittsstudie med 225 autistiska läkare fann att 29% inte hade berättat för någon på jobbet att de är autistiska, och att 46% hade bett om anpassningar men bara hälften fick dem. 77% hade övervägt självmord, 24% hade försökt och 49% hade skadat sig själva. Att se autism som en skillnad hängde ihop med bättre mående. Det var en enkätstudie om samband, så den kan inte visa orsaker och beskriver inte alla personer. Om du eller någon nära dig tänker på självmord eller självskada, kontakta en läkare, vården eller en krisjour; vid akut fara, ring det nationella nödnumret i ditt land."
-   }
-  },
-  {
-   "id": "PMC10466790",
-   "doi": "10.3389/fpsyt.2023.1238973",
-   "url": "https://europepmc.org/article/PMC/PMC10466790",
-   "title": "Omega-3 polyunsaturated fatty acids and/or vitamin D in autism spectrum disorders: a systematic review.",
-   "year": 2023,
-   "kind": "systematic_review",
-   "topics": [
-    "crisis_regulation"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"omega-3\")",
-    "code: en: names a dose or medicine (\"omega-3\")",
-    "code: sv: names a dose or medicine (\"omega-3\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si piensa en probar suplementos de omega-3 o vitamina D, hable antes con el pediatra o el médico: las decisiones sobre suplementos o tratamientos las toma un profesional sanitario. Esta revisión sistemática reunió 20 estudios clínicos controlados. Concluyó que los efectos del omega-3 fueron demasiado débiles para afirmar que alivie rasgos nucleares, y que la vitamina D parecía tener un efecto positivo en la conducta, aunque con resultados algo mixtos. Limitaciones: los estudios eran heterogéneos, no se puede aplicar a cada persona autista y no prueba que un suplemento sea necesario o adecuado.",
-    "en": "If you are thinking about trying omega-3 or vitamin D supplements, talk with a doctor first: decisions about supplements or treatment belong to a clinician. This systematic review brought together 20 clinical controlled studies. It found omega-3 effects were too weak to conclude that core traits improve, while vitamin D seemed to have a positive effect on behavioural functioning, though results were somewhat mixed. Limits: the studies differed from one another, the findings cannot be applied to every autistic person, and they do not show that any supplement is needed or right for your child.",
-    "sv": "Om du funderar på att prova omega-3 eller D-vitamin, prata först med en läkare: beslut om tillskott eller behandling hör till sjukvården. Den här systematiska översikten sammanställde 20 kliniska kontrollerade studier. Den fann att effekterna av omega-3 var för svaga för att slå fast att kärndrag förbättras, medan D-vitamin verkade ha en positiv effekt på beteendefunktion, men resultaten var delvis blandade. Begränsningar: studierna skilde sig åt, resultaten gäller inte varje autistisk person och visar inte att ett tillskott behövs eller passar just ditt barn."
+    "es": "Si eres una persona autista que trabaja en medicina, o cuidas a alguien que lo hace, vale la pena hablar de los apoyos en el trabajo y buscar colegas o redes de personas autistas. Un estudio transversal con 225 médicos autistas encontró que el 29% no había contado a nadie en el trabajo que era autista, y que el 46% había pedido adaptaciones pero solo la mitad las recibió. El 77% había pensado en el suicidio, el 24% lo había intentado y el 49% se había autolesionado. Ver el autismo como una diferencia se asoció con mejor bienestar. Es un estudio de asociaciones con una encuesta, por lo que no prueba causas y no describe a todas las personas. Si tú o alguien cercano pensáis en suicidio o autolesión, buscad ayuda profesional en un servicio de salud o de crisis; si hay peligro inmediato, llamad al número de emergencias de vuestro país. Si hay riesgo, busca ayuda profesional o llama al número de emergencias de tu país.",
+    "en": "If you are an autistic person working in medicine, or support someone who is, it is worth talking about workplace supports and finding colleagues or networks of autistic people. A cross-sectional study of 225 autistic doctors found that 29% had not told anyone at work they were autistic, and 46% had asked for adjustments but only half received them. 77% had considered suicide, 24% had attempted it and 49% had self-harmed. Seeing autism as a difference was linked to better wellbeing. This was a survey showing associations, so it cannot prove causes and does not describe every person. If you or someone close is thinking about suicide or self-harm, please contact a clinician, a health service or a crisis service; in immediate danger, call the emergency number of your country. If there is risk, seek professional help or call your country's emergency number.",
+    "sv": "Om du är autistisk och arbetar inom sjukvården, eller stödjer någon som gör det, är det värt att prata om stöd på arbetsplatsen och söka kollegor eller nätverk med andra autistiska personer. En tvärsnittsstudie med 225 autistiska läkare fann att 29% inte hade berättat för någon på jobbet att de är autistiska, och att 46% hade bett om anpassningar men bara hälften fick dem. 77% hade övervägt självmord, 24% hade försökt och 49% hade skadat sig själva. Att se autism som en skillnad hängde ihop med bättre mående. Det var en enkätstudie om samband, så den kan inte visa orsaker och beskriver inte alla personer. Om du eller någon nära dig tänker på självmord eller självskada, kontakta en läkare, vården eller en krisjour; vid akut fara, ring det nationella nödnumret i ditt land. Om det finns en risk, sök professionell hjälp eller ring ditt lands nödnummer."
    }
   },
   {
@@ -250,29 +136,6 @@
    }
   },
   {
-   "id": "PMC10706819",
-   "doi": "10.3390/ijms242316660",
-   "url": "https://europepmc.org/article/PMC/PMC10706819",
-   "title": "Microbiota in Autism Spectrum Disorder: A Systematic Review.",
-   "year": 2023,
-   "kind": "systematic_review",
-   "topics": [
-    "adult_life",
-    "feeding",
-    "pain_health"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"probióticos\")",
-    "code: en: names a dose or medicine (\"probiotics\")",
-    "code: sv: names a dose or medicine (\"probiotika\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si una persona autista tiene molestias digestivas, vale la pena anotarlas y comentarlas con su profesional sanitario; no hace falta esperar a que esta investigación avance. Es una revisión sistemática de cuarenta y cuatro estudios (metaanálisis, revisiones e investigación original) sobre la microbiota intestinal en niños autistas y sobre intervenciones como probióticos, prebióticos y trasplante de microbiota. Los resultados de la microbiota son mixtos y los autores señalan estudios muy distintos entre sí, muestras pequeñas y métodos variados. No demuestra qué funciona para cada persona. Las decisiones médicas corresponden a un clínico.",
-    "en": "If an autistic person has digestive discomfort, it is worth noting it down and discussing it with their healthcare professional; there is no need to wait for this research to develop. This is a systematic review of forty-four studies (meta-analyses, reviews and original research) on the gut microbiota in autistic children and on approaches such as probiotics, prebiotics and microbiota transfer. Findings on the microbiota are mixed, and the authors note very different studies, small samples and varied methods. It does not show what works for any one person. Medical decisions belong to a clinician.",
-    "sv": "Om en autistisk person har magbesvär är det värt att skriva ner dem och ta upp dem med vårdpersonal; man behöver inte vänta på att den här forskningen utvecklas. Det är en systematisk översikt av fyrtiofyra studier (metaanalyser, översikter och original­forskning) om tarmfloran hos autistiska barn och om metoder som probiotika, prebiotika och överföring av tarmflora. Resultaten om tarmfloran är blandade, och författarna pekar på mycket olikartade studier, små urval och varierande metoder. Den visar inte vad som fungerar för just en enskild person. Medicinska beslut hör till en kliniker."
-   }
-  },
-  {
    "id": "PMC10742338",
    "doi": "10.3390/brainsci13121656",
    "url": "https://europepmc.org/article/PMC/PMC10742338",
@@ -312,27 +175,6 @@
     "es": "Si das el pecho o biberón a tu bebé y eres autista, es normal que el reflejo de eyección de la leche, los sonidos o la imprevisibilidad resulten intensos. Pedir apoyo adaptado puede ayudar, y conviene pedir una misma profesional de referencia. Es una encuesta en línea, realizada por un equipo liderado por personas autistas, con 193 personas autistas del Reino Unido que habían estado embarazadas; 152 tenían experiencia alimentando a sus bebés. Quienes recibieron apoyo para amamantar tuvieron mejores experiencias. Sus límites: son relatos propios de quienes decidieron responder, y no describen a todas las personas autistas ni sirven como regla general.",
     "en": "If you are autistic and feeding your baby, it is common for the milk let-down reflex and the intensity or unpredictability of feeding to feel painful or overwhelming. Asking for tailored support, and for the same carer each time where possible, may help. This was an online survey by an autistic-led team, with 193 autistic people in the UK who had been pregnant; 152 had infant feeding experience. Those who got breastfeeding support reported better experiences. Its limits: it reflects the self-reported views of people who chose to respond, so it does not describe every autistic parent or set a rule for anyone.",
     "sv": "Om du är autistisk och matar ditt barn är det vanligt att mjölkutdrivningsreflexen och matningens intensitet eller oförutsägbarhet känns smärtsam eller överväldigande. Det kan hjälpa att be om anpassat stöd och, om möjligt, samma vårdgivare varje gång. Det här var en webbenkät från ett autistiskt lett forskarteam med 193 autistiska personer i Storbritannien som varit gravida; 152 hade erfarenhet av barnmatning. De som fick stöd vid amning beskrev bättre upplevelser. Begränsning: svaren bygger på egna rapporter från dem som valde att delta, så de beskriver inte alla autistiska föräldrar och är ingen regel för någon."
-   }
-  },
-  {
-   "id": "PMC10954784",
-   "doi": "10.3389/fnins.2024.1341656",
-   "url": "https://europepmc.org/article/PMC/PMC10954784",
-   "title": "Functional contribution of the intestinal microbiome in autism spectrum disorder, attention deficit hyperactivity disorder, and Rett syndrome: a systematic review of pediatric and adult studies.",
-   "year": 2024,
-   "kind": "systematic_review",
-   "topics": [
-    "crisis_regulation"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"probióticos\")",
-    "code: en: names a dose or medicine (\"probiotics\")",
-    "code: sv: names a dose or medicine (\"probiotika\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si una persona autista tiene estreñimiento o dolor abdominal, vale la pena anotarlo y comentarlo con su profesional de salud: puede ser un malestar real que afecta su día, no solo «conducta». Las decisiones médicas, como probióticos u otros tratamientos, corresponden a un clínico. Esta revisión sistemática encontró 18 artículos sobre autismo, 7 sobre TDAH y 3 sobre síndrome de Rett, con niños y adultos; vinculó el estreñimiento y el dolor visceral con cambios en la microbiota intestinal. Sus límites: los estudios eran pequeños, diferían en dieta y no permiten concluir causas ni aplicar los resultados a toda persona autista.",
-    "en": "If an autistic person has constipation or belly pain, it is worth noting it and raising it with their health professional: it may be real discomfort affecting their day, not just \"behaviour\". Medical decisions, such as probiotics or other treatments, belong to a clinician. This systematic review found 18 articles on autism, 7 on ADHD and 3 on Rett syndrome, covering children and adults; it linked constipation and visceral pain to changes in gut microbiota. Its limits: the studies were small and differed in diet, so they cannot show causes or apply to every autistic person.",
-    "sv": "Om en autistisk person har förstoppning eller magont är det värt att anteckna det och ta upp det med vårdpersonal: det kan vara verkligt obehag som påverkar dagen, inte bara \"beteende\". Medicinska beslut, till exempel om probiotika eller andra behandlingar, hör till en läkare. Denna systematiska översikt hittade 18 artiklar om autism, 7 om ADHD och 3 om Rett syndrom, med barn och vuxna; den kopplade förstoppning och visceral smärta till förändringar i tarmfloran. Begränsningar: studierna var små och skilde sig i kost, så de kan inte visa orsaker eller gälla alla autistiska personer."
    }
   },
   {
@@ -381,50 +223,6 @@
    }
   },
   {
-   "id": "PMC11407114",
-   "doi": "10.3389/fnut.2024.1447059",
-   "url": "https://europepmc.org/article/PMC/PMC11407114",
-   "title": "Efficacy and safety of Bacteroides fragilis BF839 for pediatric autism spectrum disorder: a randomized clinical trial.",
-   "year": 2024,
-   "kind": "trial",
-   "topics": [
-    "feeding",
-    "pain_health",
-    "school",
-    "transitions"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"probiótico\")",
-    "code: en: names a dose or medicine (\"probiotic\")",
-    "code: sv: names a dose or medicine (\"probiotikum\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si te preguntas si un probiótico cambia algo en la vida diaria, este estudio no basta para decidirlo. Es un ensayo aleatorizado, doble ciego y con placebo, con 60 niños de 2-10 años con diagnóstico de autismo, que tomaron un producto con la bacteria Bacteroides fragilis BF839 o placebo durante 16 semanas. Los autores informan mejoras en una escala de conducta, en el uso del cuerpo y de objetos, y en síntomas digestivos. Sin embargo, el grupo es pequeño, el resumen está incompleto y las escalas miden lo que observan los adultos, no lo que vive la persona. Es un estudio de suplemento, así que cualquier decisión sobre salud o tratamiento corresponde a un profesional clínico.",
-    "en": "If you wonder whether a probiotic would change daily life, this study is not enough to decide. It was a randomized, double-blind, placebo-controlled trial with 60 autistic children aged 2-10, who took a product containing the bacterium Bacteroides fragilis BF839 or a placebo for 16 weeks. The authors report improvements on a behaviour scale, in body and object use, and in digestive symptoms. However, the group is small, the abstract is incomplete, and the scales capture what adults observe, not what the child experiences. It tested a supplement, so any health or treatment decision belongs with a clinician.",
-    "sv": "Om du undrar om ett probiotikum skulle förändra vardagen räcker den här studien inte för att avgöra det. Det var en randomiserad, dubbelblind, placebokontrollerad studie med 60 autistiska barn i åldern 2-10 år, som fick en produkt med bakterien Bacteroides fragilis BF839 eller placebo i 16 veckor. Författarna rapporterar förbättringar på en beteendeskala, i användning av kropp och föremål samt i magtarmsymtom. Gruppen är dock liten, sammanfattningen är ofullständig och skalorna mäter vad vuxna observerar, inte barnets egen upplevelse. Studien gällde ett kosttillskott, så beslut om hälsa eller behandling hör hemma hos en läkare."
-   }
-  },
-  {
-   "id": "PMC11408986",
-   "doi": "10.1177/13623613231225901",
-   "url": "https://europepmc.org/article/PMC/PMC11408986",
-   "title": "Occurrence and predictors of lifetime suicidality and suicidal ideation in autistic adults.",
-   "year": 2024,
-   "kind": "study",
-   "topics": [
-    "adult_life",
-    "challenging_behavior"
-   ],
-   "issues": [
-    "code: sv: no emergency number of the country"
-   ],
-   "rejectedSheet": {
-    "es": "Si cuidas a una persona autista, vale la pena preguntarle con calma y sin juzgar cómo se siente, y hablar abiertamente del suicidio si surge. La soledad y otros diagnósticos psiquiátricos pueden ser señales para estar más atento. Es un estudio con adultos autistas del Registro Autista de los Países Bajos, que respondieron sobre pensamientos suicidas; el 80% había tenido pensamientos suicidas o intentos alguna vez en la vida. Muestra asociaciones, no causas, y no predice lo que vivirá cada persona. Si te preocupa a alguien, busca ayuda profesional: un clínico, un servicio de salud o un servicio de crisis. Si hay peligro inmediato, llama al número de emergencias de tu país.",
-    "en": "If you support an autistic person, it helps to ask how they are feeling calmly and without judgement, and to talk openly about suicide if it comes up. Loneliness and other psychiatric diagnoses may be signs to pay closer attention. This was a study with autistic adults from the Netherlands Autism Register, who answered questions about suicidal thoughts; 80% had had thoughts of suicide or attempts at least once in their lifetime. It shows associations, not causes, and cannot predict what any one person will experience. If you are worried about someone, seek professional help: a clinician, a health service or a crisis service. In immediate danger, call the emergency number of your country.",
-    "sv": "Om du stöttar en autistisk person hjälper det att lugnt och utan att döma fråga hur hen mår, och att prata öppet om självmord om det kommer upp. Ensamhet och andra psykiatriska diagnoser kan vara tecken på att vara extra uppmärksam. Studien gjordes med autistiska vuxna från det nederländska autismregistret, som svarade på frågor om självmordstankar; 80% hade någon gång under livet haft självmordstankar eller gjort försök. Den visar samband, inte orsaker, och kan inte förutsäga vad en enskild person upplever. Om du är orolig för någon, sök professionell hjälp: en läkare, vården eller en krisjour. Vid akut fara, ring det nationella nödnumret i ditt land."
-   }
-  },
-  {
    "id": "PMC11579173",
    "doi": "10.1007/s11920-024-01533-0",
    "url": "https://europepmc.org/article/PMC/PMC11579173",
@@ -437,33 +235,13 @@
     "family_caregivers"
    ],
    "issues": [
-    "code: sv: no emergency number of the country"
+    "unsupported: States that asking about suicide does not provoke risk (ES: 'preguntar no provoca el riesgo'), which the abstract does not say; this claim appears only in the Spanish version and not in the English or Swedish versions",
+    "languages differ"
    ],
    "rejectedSheet": {
-    "es": "Mañana, si te preocupa una persona autista, pregúntale con calma y sin juicios cómo se siente y si piensa en hacerse daño o en morir; preguntar no provoca el riesgo. Pueden ayudar un plan de seguridad y apoyos pensados para esa persona. Esta es una revisión de literatura reciente sobre pensamientos y conductas suicidas en personas autistas; resume factores de riesgo como el agotamiento autista, los problemas de salud mental y la regulación emocional. Sus límites: señala vacíos en factores protectores y en enfoques adaptados, y no sirve como regla para cada persona. Busca apoyo profesional (un clínico, un servicio de salud o un servicio de crisis); si hay peligro inmediato, llama al número de emergencias de tu país.",
-    "en": "Tomorrow, if you are worried about an autistic person, ask calmly and without judgement how they are feeling and whether they think about hurting themselves or dying. Safety planning and supports tailored to that person can help. This is a review of recent literature on suicidal thoughts and behaviors in autistic people; it summarizes risk factors such as autistic burnout, mental health conditions and emotion dysregulation. Its limits: it names gaps in protective factors and tailored approaches, and it is not a rule for every person. Please seek professional help (a clinician, a health service or a crisis service); in immediate danger, call the emergency number of your country.",
-    "sv": "I morgon, om du oroar dig för en autistisk person, fråga lugnt och utan att döma hur personen mår och om hen tänker på att skada sig själv eller dö. En säkerhetsplan och stöd anpassat efter just den personen kan hjälpa. Detta är en översikt av nyare forskning om självmordstankar och självmordsbeteenden hos autistiska personer; den sammanfattar riskfaktorer som autistisk utbrändhet, psykisk ohälsa och svårigheter att reglera känslor. Begränsningar: den pekar på kunskapsluckor om skyddande faktorer och anpassade metoder, och gäller inte som regel för varje person. Sök professionell hjälp (en läkare eller annan kliniker, vården eller en krisjour); vid akut fara, ring det nationella nödnumret i ditt land."
-   }
-  },
-  {
-   "id": "PMC11641496",
-   "doi": "10.3390/ijms252313078",
-   "url": "https://europepmc.org/article/PMC/PMC11641496",
-   "title": "An Update on Microbial Interventions in Autism Spectrum Disorder with Gastrointestinal Symptoms.",
-   "year": 2024,
-   "kind": "review",
-   "topics": [
-    "feeding",
-    "pain_health"
-   ],
-   "issues": [
-    "code: en: names a dose or medicine (\"probiotics\")",
-    "code: sv: names a dose or medicine (\"probiotika\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si una persona autista tiene molestias digestivas, vale la pena anotar cuándo aparecen y comentarlas con su pediatra o médico antes de cambiar dietas o probar suplementos. Esta revisión resume estudios preclínicos y clínicos sobre formas de modificar la microbiota intestinal, como dieta, prebióticos, probiot</br>icos y trasplante de microbiota fecal. Los resultados variaron mucho: algunos métodos ayudaron en parte, con eficacia desigual a largo plazo. Es una revisión, no un ensayo nuevo, y no muestra qué funciona para cada persona. Las decisiones médicas corresponden a un profesional clínico.",
-    "en": "If an autistic person has digestive discomfort, it is worth noting when it happens and talking with their paediatrician or doctor before changing diets or trying supplements. This review summarises preclinical and clinical studies on ways of changing gut bacteria, including diet, prebiotics, probiotics and fecal microbiota transplantation. Results varied widely: some methods helped to a degree, and long-term effects were uneven. It is a review, not a new trial, and it cannot show what works for any one person. Medical decisions belong to a clinician.",
-    "sv": "Om en autistisk person har magont eller andra mag-tarmbesvär är det bra att anteckna när det sker och prata med barnläkare eller läkare innan man ändrar kost eller provar tillskott. Den här översikten sammanfattar prekliniska och kliniska studier om sätt att påverka tarmfloran, till exempel kost, prebiotika, probiotika och fekal mikrobiotatransplantation. Resultaten varierade mycket: vissa metoder hjälpte delvis och effekten på lång sikt var ojämn. Det är en översikt, inte en ny studie, och den visar inte vad som fungerar för en enskild person. Medicinska beslut hör till vården."
+    "es": "Mañana, si te preocupa una persona autista, pregúntale con calma y sin juicios cómo se siente y si piensa en hacerse daño o en morir; preguntar no provoca el riesgo. Pueden ayudar un plan de seguridad y apoyos pensados para esa persona. Esta es una revisión de literatura reciente sobre pensamientos y conductas suicidas en personas autistas; resume factores de riesgo como el agotamiento autista, los problemas de salud mental y la regulación emocional. Sus límites: señala vacíos en factores protectores y en enfoques adaptados, y no sirve como regla para cada persona. Busca apoyo profesional (un clínico, un servicio de salud o un servicio de crisis); si hay peligro inmediato, llama al número de emergencias de tu país. Si hay riesgo, busca ayuda profesional o llama al número de emergencias de tu país.",
+    "en": "Tomorrow, if you are worried about an autistic person, ask calmly and without judgement how they are feeling and whether they think about hurting themselves or dying. Safety planning and supports tailored to that person can help. This is a review of recent literature on suicidal thoughts and behaviors in autistic people; it summarizes risk factors such as autistic burnout, mental health conditions and emotion dysregulation. Its limits: it names gaps in protective factors and tailored approaches, and it is not a rule for every person. Please seek professional help (a clinician, a health service or a crisis service); in immediate danger, call the emergency number of your country. If there is risk, seek professional help or call your country's emergency number.",
+    "sv": "I morgon, om du oroar dig för en autistisk person, fråga lugnt och utan att döma hur personen mår och om hen tänker på att skada sig själv eller dö. En säkerhetsplan och stöd anpassat efter just den personen kan hjälpa. Detta är en översikt av nyare forskning om självmordstankar och självmordsbeteenden hos autistiska personer; den sammanfattar riskfaktorer som autistisk utbrändhet, psykisk ohälsa och svårigheter att reglera känslor. Begränsningar: den pekar på kunskapsluckor om skyddande faktorer och anpassade metoder, och gäller inte som regel för varje person. Sök professionell hjälp (en läkare eller annan kliniker, vården eller en krisjour); vid akut fara, ring det nationella nödnumret i ditt land. Om det finns en risk, sök professionell hjälp eller ring ditt lands nödnummer."
    }
   },
   {
@@ -532,25 +310,6 @@
    }
   },
   {
-   "id": "PMC11816473",
-   "doi": "10.1177/13623613241276073",
-   "url": "https://europepmc.org/article/PMC/PMC11816473",
-   "title": "The experiences of autistic adults who were previously diagnosed with borderline or emotionally unstable personality disorder: A phenomenological study.",
-   "year": 2025,
-   "kind": "study",
-   "topics": [
-    "sleep"
-   ],
-   "issues": [
-    "code: sv: no emergency number of the country"
-   ],
-   "rejectedSheet": {
-    "es": "Si una persona autista ha recibido un diagnóstico de trastorno límite de la personalidad y siente que no encaja, puede ser útil escucharla y apoyar que pida una evaluación del autismo, sin culparla por sus diferencias. Es un estudio cualitativo con entrevistas a 10 adultos autistas diagnosticados antes de trastorno límite de la personalidad. Relataron estigma, tratamientos dañinos que fomentaban el enmascaramiento y dificultad para acceder a una evaluación; el diagnóstico de autismo les resultó validante y mejoró su salud mental. Es un grupo pequeño y no representa a todas las personas. Si hay preocupación por autolesiones o suicidio, acuda a un profesional sanitario o a un servicio de crisis; ante peligro inmediato, llame al número de emergencias de su país.",
-    "en": "If an autistic person was diagnosed with borderline personality disorder and feels it never fitted, it can help to listen and to support them in asking for an autism assessment, without blaming them for their differences. This was a qualitative interview study with 10 autistic adults previously diagnosed with borderline personality disorder. They described stigma, harmful treatments that encouraged masking, and difficulty getting an assessment; their autism diagnosis felt validating and improved their mental health. It is a small group and does not speak for every person. If you are worried about self-harm or suicide, contact a clinician, a health service or a crisis service; in immediate danger, call your country's emergency number.",
-    "sv": "Om en autistisk person fått diagnosen borderline personlighetsstörning och upplever att den aldrig stämt, kan det hjälpa att lyssna och stötta hen att be om en autismutredning, utan att skuldbelägga hen för sina olikheter. Det var en kvalitativ intervjustudie med 10 autistiska vuxna som tidigare fått diagnosen borderline personlighetsstörning. De beskrev stigma, skadliga behandlingar som uppmuntrade maskering och svårigheter att få en utredning; autismdiagnosen kändes validerande och förbättrade deras psykiska hälsa. Gruppen är liten och gäller inte alla. Om du oroar dig för självskada eller självmord, kontakta en läkare, vården eller en krisjour; vid akut fara, ring det nationella nödnumret i ditt land."
-   }
-  },
-  {
    "id": "PMC11894889",
    "doi": "10.1177/13623613241287586",
    "url": "https://europepmc.org/article/PMC/PMC11894889",
@@ -570,28 +329,6 @@
     "es": "Si valoras un apoyo de salud mental para una persona autista adulta, pregunta a la persona qué significa para ella una buena calidad de vida y si el apoyo le ayuda con eso. Esta revisión sistemática buscó en varias bases de datos más de 10,000 registros y halló 19 ensayos de intervenciones de salud mental para adultos autistas; solo cinco midieron la calidad de vida, y de ellos tres incluyeron participación de la comunidad. Sus límites: no prueba qué intervención funciona, y las medidas variaron y no siempre estaban validadas para personas autistas. Las decisiones médicas corresponden a un profesional clínico.",
     "en": "If you are weighing up mental health support for an autistic adult, ask the person what a good quality of life means to them and whether the support helps with that. This systematic review searched several databases, screened over 10,000 records and found 19 trials of mental health interventions for autistic adults; only five measured quality of life, and three of those involved the community. Its limits: it does not show which intervention works, and the measures varied and were not always validated for autistic people. Medical decisions belong to a clinician.",
     "sv": "Om du överväger psykiskt stöd för en autistisk vuxen, fråga personen vad god livskvalitet betyder för hen och om stödet hjälper med det. Den här systematiska översikten sökte i flera databaser, gick igenom över 10,000 poster och hittade 19 studier av insatser för psykisk hälsa hos autistiska vuxna; bara fem mätte livskvalitet, och tre av dem involverade gemenskapen. Begränsningar: den visar inte vilken insats som fungerar, och måtten varierade och var inte alltid validerade för autistiska personer. Medicinska beslut hör till en läkare."
-   }
-  },
-  {
-   "id": "PMC11990867",
-   "doi": "10.3390/nu17071135",
-   "url": "https://europepmc.org/article/PMC/PMC11990867",
-   "title": "The Gut-Brain-Microbiota Connection and Its Role in Autism Spectrum Disorders.",
-   "year": 2025,
-   "kind": "review",
-   "topics": [
-    "feeding",
-    "pain_health"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"probióticos\")",
-    "code: en: names a dose or medicine (\"probiotics\")",
-    "code: sv: names a dose or medicine (\"probiotika\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si una persona autista tiene molestias digestivas persistentes, como dolor o estreñimiento, vale la pena anotarlas y comentarlas con su profesional de salud; el intestino puede ser una parte del bienestar. Esta es una revisión narrativa que reúne estudios sobre la microbiota intestinal y el autismo. Sugiere que algunos cambios en la dieta o los probióticos podrían ayudar a ciertas personas, pero sus propios autores piden más investigación sobre efectos a largo plazo y seguridad. No es una regla para todas las personas autistas, y las decisiones médicas, como el trasplante de microbiota, corresponden a un profesional clínico.",
-    "en": "If an autistic person has ongoing digestive discomfort, such as pain or constipation, it is worth noting it and discussing it with their health professional; the gut may be one part of wellbeing. This is a narrative review that brings together studies on gut microbiota and autism. It suggests that some dietary changes or probiotics might help certain people, but its own authors call for more research on long-term effects and safety. It is not a rule for every autistic person, and medical decisions, such as microbiota transplantation, belong to a clinician.",
-    "sv": "Om en autistisk person har långvariga mag-tarmbesvär, som smärta eller förstoppning, är det värt att anteckna dem och ta upp dem med vårdpersonal; magen kan vara en del av måendet. Detta är en narrativ översikt som samlar studier om tarmfloran och autism. Den antyder att vissa kostförändringar eller probiotika kanske kan hjälpa en del personer, men forskarna själva efterlyser mer kunskap om långtidseffekter och säkerhet. Det är ingen regel för alla autistiska personer, och medicinska beslut, som tarmfloratransplantation, hör till en läkare."
    }
   },
   {
@@ -634,27 +371,6 @@
     "es": "Antes de intentar cambiar una conducta repetitiva, observe qué función cumple para su criatura: puede dar placer o ayudar a aprender, y solo algunas veces resulta perjudicial. Un programa grupal para familias ayudó a reconocerlas y entenderlas. Es un ensayo aleatorizado con 227 familias de niños autistas de 3 a 9 años y 11 meses, en tres centros de Inglaterra y Escocia. No hubo diferencias entre programas en el resultado principal; en una conducta elegida, el programa mejoró a las 24 semanas, pero no a las 52. Ambos programas mejoraron la confianza y el bienestar de las familias. No sirve como regla para todas las personas.",
     "en": "Before trying to change a repetitive behaviour, notice what it does for your child: it can bring pleasure or help learning, and only sometimes causes harm. A group programme helped families recognise and understand these behaviours. This was a randomised trial with 227 families of autistic children aged 3 to 9 years and 11 months, at three sites in England and Scotland. There were no differences between programmes on the main outcome; for one chosen behaviour the programme showed improvement at 24 weeks, but not at 52. Both programmes improved family confidence and wellbeing. It is not a rule for every person.",
     "sv": "Innan du försöker förändra ett repetitivt beteende, lägg märke till vad det ger ditt barn: det kan ge glädje eller hjälpa lärandet och bara ibland vara skadligt. Ett gruppprogram hjälpte familjer att känna igen och förstå beteendena. Det var en randomiserad studie med 227 familjer med autistiska barn i åldern 3 till 9 år och 11 månader, på tre platser i England och Skottland. Inga skillnader sågs mellan programmen i huvudresultatet; för ett valt beteende syntes förbättring efter 24 veckor, men inte efter 52. Båda programmen förbättrade familjens trygghet och välmående. Det är ingen regel för alla."
-   }
-  },
-  {
-   "id": "PMC12354140",
-   "doi": "10.1111/jcpp.14177",
-   "url": "https://europepmc.org/article/PMC/PMC12354140",
-   "title": "Research Review: Conceptualizing and measuring 'problem behavior' in early intervention autism research - a project AIM secondary systematic review.",
-   "year": 2025,
-   "kind": "systematic_review",
-   "topics": [
-    "challenging_behavior",
-    "crisis_regulation",
-    "family_caregivers"
-   ],
-   "issues": [
-    "code: sv: no emergency number of the country"
-   ],
-   "rejectedSheet": {
-    "es": "Si le ofrecen una intervención para reducir una conducta, pregunte por qué esa conducta es el objetivo y para quién es un problema. No es lo mismo una conducta dañina, como la autolesión, que un movimiento repetitivo que no causa daño. Esta es una revisión sistemática de 102 estudios de intervenciones no farmacológicas con niños autistas de hasta ocho años. Solo el 8% ofreció una definición conceptual de la conducta que buscaba reducir, y la mayoría usó informes de los padres. Es un análisis de cómo investigan, no de qué funciona, y no vale igual para cada persona. Si le preocupa la autolesión, hable con un profesional de salud o un servicio de crisis; ante un peligro inmediato, llame al número de emergencias de su país.",
-    "en": "If you are offered an intervention to reduce a behavior, ask why that behavior is the target and who it is a problem for. Behavior that causes harm, such as self-injury, is not the same as a harmless repetitive movement. This is a systematic review of 102 nonpharmacological intervention studies with autistic children up to age eight. Only 8% offered a conceptual definition of the behavior they aimed to reduce, and most relied on parent reports. It examines how researchers study this, not what works, and it does not apply equally to every person. If you are worried about self-injury, contact a clinician, a health service or a crisis service; in immediate danger, call the emergency number of your country.",
-    "sv": "Om ni erbjuds en insats för att minska ett beteende, fråga varför just det beteendet är målet och för vem det är ett problem. Ett beteende som skadar, som självskada, är inte detsamma som en ofarlig repetitiv rörelse. Detta är en systematisk översikt av 102 studier av icke-farmakologiska insatser för autistiska barn upp till åtta år. Bara 8% gav en begreppslig definition av beteendet de ville minska, och de flesta använde föräldrarapporter. Den granskar hur forskare undersöker detta, inte vad som fungerar, och gäller inte lika för alla. Om ni oroar er för självskada, kontakta en läkare, vården eller en kristjänst; vid akut fara, ring det nationella nödnumret i ert land."
    }
   },
   {
@@ -726,49 +442,6 @@
    }
   },
   {
-   "id": "PMC12476390",
-   "doi": "10.1007/s10803-024-06449-5",
-   "url": "https://europepmc.org/article/PMC/PMC12476390",
-   "title": "Complementary and Alternative Medicine for Autism - A Systematic Review.",
-   "year": 2025,
-   "kind": "systematic_review",
-   "topics": [
-    "sleep"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"vitaminas\")",
-    "code: en: names a dose or medicine (\"vitamins\")",
-    "code: sv: names a dose or medicine (\"vitaminer\")"
-   ],
-   "rejectedSheet": {
-    "es": "Antes de empezar una dieta o un suplemento, conviene hablarlo con el pediatra o el equipo médico, porque esta revisión sugiere que las vitaminas y los minerales solo podrían ayudar si hay una carencia. Es una revisión sistemática de ensayos clínicos publicados entre junio de 2013 y marzo de 2023; incluyó 39 estudios sobre personas autistas. Según ella, la evidencia no respalda la dieta sin gluten ni caseína (GFCF), y los suplementos dirigidos podrían ayudar, pero falta investigación concluyente. No sirve como regla para cada persona, y las decisiones médicas corresponden a un profesional clínico.",
-    "en": "Before starting a diet or supplement, talk it over with your paediatrician or medical team, because this review suggests vitamins and minerals may only help when there is a deficiency. It is a systematic review of clinical trials published from June 2013 to March 2023, and it included 39 studies with autistic people. It found the evidence does not support the Gluten Free Casein Free (GFCF) diet, and targeted supplements may help, but more conclusive research is needed. It is not a rule for every person, and medical decisions belong to a clinician.",
-    "sv": "Prata med barnläkaren eller vårdteamet innan ni startar en diet eller ett tillskott, eftersom den här översikten tyder på att vitaminer och mineraler kanske bara hjälper vid brist. Det är en systematisk översikt av kliniska studier publicerade från juni 2013 till mars 2023, och den omfattade 39 studier med autistiska personer. Enligt den stöder evidensen inte glutenfri och kaseinfri kost (GFCF), och riktade tillskott kan hjälpa, men mer avgörande forskning behövs. Den är ingen regel för alla, och medicinska beslut hör till en kliniker."
-   }
-  },
-  {
-   "id": "PMC12512243",
-   "doi": "10.3389/fmicb.2025.1648118",
-   "url": "https://europepmc.org/article/PMC/PMC12512243",
-   "title": "Microbiota-based interventions for autism spectrum disorder: a systematic review of efficacy and clinical potential.",
-   "year": 2025,
-   "kind": "systematic_review",
-   "topics": [
-    "feeding",
-    "pain_health"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"probióticos\")",
-    "code: en: names a dose or medicine (\"probiotics\")",
-    "code: sv: names a dose or medicine (\"probiotika\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si te preguntas por probióticos, prebióticos o trasplante de microbiota fecal, comenta antes la idea con el equipo médico de la persona autista: las decisiones médicas les corresponden a los clínicos. Esta revisión sistemática reunió 33 estudios (16 ensayos aleatorizados, 14 no aleatorizados y 3 retrospectivos) y encontró resultados variables en conducta y síntomas digestivos. Los efectos adversos fueron mínimos, sobre todo molestias digestivas pasajeras. Límites: los estudios eran diversos, faltan protocolos estandarizados y ensayos más grandes, y los resultados no valen para todas las personas.",
-    "en": "If you are wondering about probiotics, prebiotics or fecal microbiota transplantation, talk it through first with the autistic person's medical team: medical decisions belong to clinicians. This systematic review pulled together 33 studies (16 randomized trials, 14 non-randomized trials and 3 retrospective studies) and found varied results for behavior and digestive symptoms. Adverse events were minimal, mostly brief digestive discomfort. Limits: the studies were diverse, standardized protocols and larger trials are still needed, and the findings do not apply to every person.",
-    "sv": "Om du funderar på probiotika, prebiotika eller fekal mikrobiotatransplantation, prata först med den autistiska personens vårdteam: medicinska beslut hör till vårdpersonalen. Den här systematiska översikten samlade 33 studier (16 randomiserade studier, 14 icke-randomiserade och 3 retrospektiva) och fann varierande resultat för beteende och magtarmsymtom. Biverkningarna var små, mest övergående magbesvär. Begränsningar: studierna var olika, standardiserade protokoll och större studier behövs, och resultaten gäller inte alla personer."
-   }
-  },
-  {
    "id": "PMC12564765",
    "doi": "10.3390/brainsci15101113",
    "url": "https://europepmc.org/article/PMC/PMC12564765",
@@ -789,27 +462,6 @@
    }
   },
   {
-   "id": "PMC12618375",
-   "doi": "10.1007/s10198-025-01794-3",
-   "url": "https://europepmc.org/article/PMC/PMC12618375",
-   "title": "Cost-effectiveness of dialectical behavioural therapy versus treatment as usual for autism with suicidal behaviours: single-blind randomised controlled trial.",
-   "year": 2025,
-   "kind": "trial",
-   "topics": [
-    "adult_life",
-    "challenging_behavior",
-    "pain_health"
-   ],
-   "issues": [
-    "code: sv: no emergency number of the country"
-   ],
-   "rejectedSheet": {
-    "es": "Si una persona autista adulta tiene pensamientos o conductas suicidas, vale la pena preguntar a su servicio de salud por la terapia dialéctica conductual (DBT), que este estudio encontró útil y económica. Evidencia: ensayo aleatorizado con 123 pacientes autistas adultos ambulatorios, seguidos durante 12 meses, que comparó la DBT con el tratamiento habitual; la DBT mostró mejor respuesta, menos ideación suicida y costes similares o menores. Límites: se hizo con costes holandeses, no sabemos si los resultados valen en otros países ni a largo plazo, y no sirve igual para todas las personas. Si hay preocupación por la seguridad, busque ayuda profesional (un clínico, su servicio de salud o un servicio de crisis). En peligro inmediato, llame al número de emergencias de su país.",
-    "en": "If an autistic adult has suicidal thoughts or behaviours, it is worth asking their health service about dialectical behaviour therapy (DBT), which this study found helpful and affordable. Evidence: a randomised trial with 123 autistic adult outpatients followed for 12 months, comparing DBT with treatment as usual; DBT showed better response, less suicidal ideation and similar or lower costs. Limits: it used Dutch cost standards, so we do not know if results hold in other countries or over the long term, and it will not fit every person equally. If safety is a concern, seek professional help (a clinician, a health service or a crisis service). In immediate danger, call the emergency number of your country.",
-    "sv": "Om en autistisk vuxen har självmordstankar eller självmordsbeteenden är det värt att fråga vården om dialektisk beteendeterapi (DBT), som denna studie fann hjälpsam och kostnadseffektiv. Evidens: en randomiserad studie med 123 autistiska vuxna öppenvårdspatienter som följdes i 12 månader och jämförde DBT med sedvanlig behandling; DBT gav bättre svar, mindre självmordstankar och liknande eller lägre kostnader. Begränsningar: studien använde nederländsk kostnadsstandard, så vi vet inte om resultaten gäller i andra länder eller på lång sikt, och den passar inte alla lika bra. Om du är orolig för säkerheten, sök professionell hjälp (en kliniker, vården eller en krisjour). Vid akut fara, ring det nationella nödnumret i ditt land."
-   }
-  },
-  {
    "id": "PMC12648868",
    "doi": "10.1186/s13229-025-00693-x",
    "url": "https://europepmc.org/article/PMC/PMC12648868",
@@ -822,32 +474,13 @@
     "women_girls"
    ],
    "issues": [
-    "code: sv: no emergency number of the country"
+    "unsupported: States that asking about self-harm thoughts does not cause them (\"hablar de ello no lo provoca\" / \"asking does not cause these thoughts\" / \"att fråga väcker inte sådana tankar\"); the abstract does not address this.",
+    "unsupported: Says autistic people reported more suicidal thoughts and self-harm \"especially women and older people\"; the abstract supports higher rates for women only for suicidal ideation and suicidal self-harm, and for older people only for self-harming thoughts, deliberate self-harm and suicidal self-harm, not for all outcomes."
    ],
    "rejectedSheet": {
-    "es": "Pregunta con calma y sin juzgar a las personas autistas de mediana edad o mayores sobre cómo se sienten, incluidos pensamientos de hacerse daño; hablar de ello no lo provoca. Es un estudio con 388 personas de 40-93 años, 222 de ellas autistas, que respondieron cuestionarios. Las personas autistas refirieron más pensamientos suicidas y más autolesiones que las no autistas, sobre todo las mujeres y las de más edad. Los datos son autoinformados, de un único momento y de una muestra por conveniencia, y no describen a todas las personas. Si tú o alguien cercano estáis pensando en haceros daño, buscad ayuda profesional en un servicio de salud o de crisis; si hay peligro inmediato, llamad al número de emergencias de vuestro país.",
-    "en": "Ask autistic adults in midlife or older age, calmly and without judgement, how they are doing, including any thoughts of harming themselves; asking does not cause these thoughts. This study had 388 people aged 40-93 years, 222 of them autistic, who completed questionnaires. Autistic people reported more suicidal thoughts and self-harm than non-autistic people, especially women and older people. The data are self-reported, from one point in time and a convenience sample, so they do not describe everyone. If you or someone close is thinking of self-harm, contact a clinician, health service or crisis service; in immediate danger, call the emergency number of your country.",
-    "sv": "Fråga lugnt och utan att döma autistiska vuxna i medelåldern eller högre ålder hur de mår, även om tankar på att skada sig själva; att fråga väcker inte sådana tankar. Studien omfattade 388 personer i åldern 40-93 år, varav 222 autistiska, som besvarade enkäter. De autistiska personerna rapporterade fler självmordstankar och mer självskadande än icke-autistiska, särskilt kvinnor och äldre. Uppgifterna är självrapporterade, från en enda tidpunkt och ett bekvämlighetsurval, så de beskriver inte alla. Om du eller någon nära dig tänker på att skada sig själv, kontakta en läkare, vården eller en krisjour; vid akut fara, ring det nationella nödnumret i ditt land."
-   }
-  },
-  {
-   "id": "PMC12853244",
-   "doi": "10.1002/aur.70137",
-   "url": "https://europepmc.org/article/PMC/PMC12853244",
-   "title": "Traumatic Experiences, Psychological Distress and Suicide-Related Behaviors in Autistic Adults.",
-   "year": 2026,
-   "kind": "study",
-   "topics": [
-    "adult_life",
-    "challenging_behavior"
-   ],
-   "issues": [
-    "code: sv: no emergency number of the country"
-   ],
-   "rejectedSheet": {
-    "es": "Si cuidas a una persona autista, pregúntale con calma y sin juzgar cómo se siente, y ayúdale a estar a salvo de experiencias dañinas y a contar con apoyo para recuperarse de lo vivido. Es un estudio con encuesta anónima a 424 personas adultas autistas y 345 no autistas. Las autistas informaron más autolesiones, intentos y planes de suicidio, incluso teniendo en cuenta el trauma. Entre las autistas, la victimización en la infancia aparecía con frecuencia junto al malestar. Es una encuesta con muestra de conveniencia, muestra asociaciones y no causas, y no vale para todas las personas. Si te preocupa la seguridad de alguien, busca ayuda profesional: un clínico, un servicio de salud o un servicio de crisis. Si hay peligro inmediato, llama al número de emergencias de tu país.",
-    "en": "If you support an autistic person, ask calmly and without judgement how they are feeling, and help protect them from harmful experiences and connect them with support to recover from what they have lived through. This was an anonymous survey of 424 autistic and 345 non-autistic adults. Autistic adults reported more self-harm, suicide attempts and suicide plans, even after accounting for trauma. Among autistic adults, childhood victimization often appeared alongside distress. It used a convenience sample, shows links rather than causes, and does not apply to every person. If you are worried about someone's safety, seek professional help: a clinician, a health service or a crisis service. If there is immediate danger, call the emergency number of your country.",
-    "sv": "Om du stöttar en autistisk person: fråga lugnt och utan att döma hur hen mår, och hjälp till att skydda mot skadliga upplevelser och att få stöd för att återhämta sig efter det som hänt. Studien var en anonym enkät till 424 autistiska och 345 icke-autistiska vuxna. De autistiska vuxna rapporterade mer självskada, självmordsförsök och självmordsplaner, även när hänsyn togs till trauma. Bland autistiska vuxna förekom våld eller övergrepp i barndomen ofta tillsammans med psykisk ohälsa. Urvalet var ett bekvämlighetsurval, visar samband och inte orsaker, och gäller inte alla. Om du oroar dig för någons säkerhet, sök professionell hjälp: en läkare eller annan kliniker, vården eller en krisjour. Vid omedelbar fara, ring det nationella nödnumret i ditt land."
+    "es": "Pregunta con calma y sin juzgar a las personas autistas de mediana edad o mayores sobre cómo se sienten, incluidos pensamientos de hacerse daño; hablar de ello no lo provoca. Es un estudio con 388 personas de 40-93 años, 222 de ellas autistas, que respondieron cuestionarios. Las personas autistas refirieron más pensamientos suicidas y más autolesiones que las no autistas, sobre todo las mujeres y las de más edad. Los datos son autoinformados, de un único momento y de una muestra por conveniencia, y no describen a todas las personas. Si tú o alguien cercano estáis pensando en haceros daño, buscad ayuda profesional en un servicio de salud o de crisis; si hay peligro inmediato, llamad al número de emergencias de vuestro país. Si hay riesgo, busca ayuda profesional o llama al número de emergencias de tu país.",
+    "en": "Ask autistic adults in midlife or older age, calmly and without judgement, how they are doing, including any thoughts of harming themselves; asking does not cause these thoughts. This study had 388 people aged 40-93 years, 222 of them autistic, who completed questionnaires. Autistic people reported more suicidal thoughts and self-harm than non-autistic people, especially women and older people. The data are self-reported, from one point in time and a convenience sample, so they do not describe everyone. If you or someone close is thinking of self-harm, contact a clinician, health service or crisis service; in immediate danger, call the emergency number of your country. If there is risk, seek professional help or call your country's emergency number.",
+    "sv": "Fråga lugnt och utan att döma autistiska vuxna i medelåldern eller högre ålder hur de mår, även om tankar på att skada sig själva; att fråga väcker inte sådana tankar. Studien omfattade 388 personer i åldern 40-93 år, varav 222 autistiska, som besvarade enkäter. De autistiska personerna rapporterade fler självmordstankar och mer självskadande än icke-autistiska, särskilt kvinnor och äldre. Uppgifterna är självrapporterade, från en enda tidpunkt och ett bekvämlighetsurval, så de beskriver inte alla. Om du eller någon nära dig tänker på att skada sig själv, kontakta en läkare, vården eller en krisjour; vid akut fara, ring det nationella nödnumret i ditt land. Om det finns en risk, sök professionell hjälp eller ring ditt lands nödnummer."
    }
   },
   {
@@ -912,28 +545,6 @@
     "es": "Para mañana: no uses esta teoría para juzgar a una persona autista. Si una niña o mujer autista parece distinta de lo que se espera, eso no dice nada sobre su autismo. Pregúntale cómo percibe las situaciones sociales y qué intereses la absorben, y adapta el apoyo a lo que ella cuente. Es un metaanálisis de 34 estudios que compararon cuestionarios de empatía, sistematización y rasgos autistas entre personas autistas y neurotípicas. Las diferencias entre ambos grupos fueron proporcionalmente mayores en mujeres que en hombres. Sus límites: se basa en cuestionarios de autoinforme, mide promedios de grupos y no explica a cada persona, y no prueba causas.",
     "en": "For tomorrow: don't use this theory to judge any one autistic person. If an autistic girl or woman seems different from what people expect, that says nothing about her autism. Ask how she experiences social situations and what interests absorb her, and shape support around what she tells you. This is a meta-analysis of 34 studies that compared questionnaires on empathy, systemizing and autistic traits between autistic and neurotypical people. Differences between the two groups were proportionally larger in females than in males. Limits: it relies on self-report questionnaires, describes group averages rather than individuals, and cannot prove causes.",
     "sv": "Till i morgon: använd inte den här teorin för att bedöma en enskild autistisk person. Om en autistisk flicka eller kvinna verkar annorlunda än vad man väntar sig, säger det inget om hennes autism. Fråga hur hon upplever sociala situationer och vad som engagerar henne, och utforma stödet efter det hon berättar. Det är en metaanalys av 34 studier som jämförde enkäter om empati, systematisering och autistiska drag mellan autistiska och neurotypiska personer. Skillnaderna mellan grupperna var proportionellt större hos kvinnor än hos män. Begränsningar: den bygger på självskattade enkäter, beskriver gruppmedelvärden snarare än individer och kan inte bevisa orsaker."
-   }
-  },
-  {
-   "id": "PMC13180872",
-   "doi": "10.3389/fpsyt.2026.1731938",
-   "url": "https://europepmc.org/article/PMC/PMC13180872",
-   "title": "Caregiver-reported sleep problems and suicidality in autistic youth: findings from a sleep diary study.",
-   "year": 2026,
-   "kind": "study",
-   "topics": [
-    "challenging_behavior",
-    "family_caregivers",
-    "sleep",
-    "women_girls"
-   ],
-   "issues": [
-    "code: sv: no emergency number of the country"
-   ],
-   "rejectedSheet": {
-    "es": "Si su hijo o hija autista duerme mal o está muy somnoliento de día, vale la pena prestar atención a ese descanso y hablar con calma sobre cómo se siente, incluidos pensamientos de hacerse daño. Es un estudio transversal con una encuesta en línea: 51 cuidadores de jóvenes autistas de 7-26 años informaron sobre su sueño y sobre conductas suicidas. La somnolencia diurna y la calidad del sueño se relacionaron con la ideación suicida según los cuidadores. Es una muestra pequeña, basada en informes de cuidadores, y no demuestra causa ni vale para todas las personas. Si le preocupa, consulte con un profesional sanitario o un servicio de crisis; ante un peligro inmediato, llame al número de emergencias de su país.",
-    "en": "If your autistic child or teen sleeps badly or is very sleepy in the day, it is worth paying attention to their rest and calmly asking how they are feeling, including any thoughts of self-harm. This was a cross-sectional online survey: 51 caregivers of autistic youth aged 7-26 years reported on their sleep and on suicidal behaviour. Daytime sleepiness and sleep quality were linked to suicidal ideation as reported by caregivers. The sample is small, relies on caregiver reports, and cannot show cause or apply to every person. If you are worried, contact a clinician, a health service or a crisis service; in immediate danger, call the emergency number of your country.",
-    "sv": "Om ditt autistiska barn eller din tonåring sover dåligt eller är mycket trött på dagen kan det vara värt att uppmärksamma vilan och lugnt fråga hur hen mår, även om tankar på att skada sig själv. Detta var en tvärsnittsstudie med en webbenkät: 51 vårdnadshavare till autistiska unga i åldern 7-26 år rapporterade om sömn och suicidalt beteende. Dagtrötthet och sömnkvalitet hängde ihop med suicidtankar enligt vårdnadshavarna. Urvalet är litet, bygger på vårdnadshavares rapporter och kan inte visa orsak eller gälla alla. Om du är orolig, kontakta en läkare, vården eller en krisjour; vid akut fara, ring det nationella nödnumret i ditt land."
    }
   },
   {
@@ -1002,29 +613,6 @@
     "es": "Al pensar en el apoyo a una persona autista, conviene mirar su entorno completo: el espacio físico, los objetos, las relaciones y la cultura que la rodea, y no solo a la persona. Esta revisión exploratoria reunió 49 publicaciones sobre prácticas de salud que se basan en el enfoque enactivo o se parecen a él, y las organizó en cuatro dimensiones de la vida. Sus límites: el panorama es amplio pero poco integrado, el enfoque aún no está bien definido y no ofrece pautas claras para aplicar mañana. Puede servir para hacer preguntas a los profesionales, no como regla para todas las personas.",
     "en": "When thinking about support for an autistic person, it can help to look at their whole context: the physical setting, everyday objects, relationships and culture around them, not only the person. This scoping review gathered 49 publications on healthcare practices that are based on an enactive approach or resemble it, and sorted them into four dimensions of life. Its limits: the picture is rich but loosely integrated, the approach is still not well defined, and it gives no clear step-by-step guidance. It can help you ask professionals questions, not serve as a rule for every person.",
     "sv": "När du tänker på stöd till en autistisk person kan det hjälpa att se hela sammanhanget: den fysiska miljön, föremål, relationer och kultur runt personen, inte bara personen själv. Denna kartläggande översikt samlade 49 publikationer om vårdpraktiker som bygger på ett enaktivt förhållningssätt eller liknar det, och ordnade dem i fyra delar av livet. Begränsningar: bilden är rik men löst sammanhållen, ansatsen är ännu inte väldefinierad och ger ingen tydlig steg-för-steg-vägledning. Den kan hjälpa dig att ställa frågor till yrkespersoner, men är ingen regel för alla."
-   }
-  },
-  {
-   "id": "PMC13631852",
-   "doi": "10.2174/0118715303369166250325110016",
-   "url": "https://europepmc.org/article/PMC/PMC13631852",
-   "title": "Integrating Gut-Brain Axis: Exploring the Neurogastrointestinal Interactions and Therapeutic Potentials in Autism Spectrum Disorder.",
-   "year": 2026,
-   "kind": "review",
-   "topics": [
-    "adult_life",
-    "feeding",
-    "pain_health"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"probióticos\")",
-    "code: en: names a dose or medicine (\"probiotics\")",
-    "code: sv: names a dose or medicine (\"probiotika\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si una persona autista tiene dolor de barriga, estreñimiento, diarrea u otras molestias digestivas, vale la pena anotarlas y comentarlas con su médico o pediatra: pueden afectar al bienestar y no hay que darlas por normales. Esta es una revisión que resume investigaciones sobre el eje intestino-cerebro y el autismo; señala que las molestias digestivas aparecen con más frecuencia y que la microbiota intestinal podría ser distinta. Sus límites: indica un posible vínculo, no una causa, y los tratamientos con probióticos, prebióticos o trasplante de microbiota siguen siendo emergentes. Cualquier decisión médica corresponde a un profesional clínico, y nada de esto se aplica por igual a todas las personas.",
-    "en": "If an autistic person has stomach pain, constipation, diarrhoea or other digestive discomfort, it is worth noting it down and raising it with their doctor: it can affect wellbeing and should not be dismissed as just part of being autistic. This is a review summarising research on the gut-brain axis and autism; it reports that digestive problems appear more often and that gut microbiota may differ. Its limits: it points to a possible link, not a cause, and treatments such as probiotics, prebiotics or microbiota transplant are still emerging. Medical decisions belong to a clinician, and none of this applies equally to every person.",
-    "sv": "Om en autistisk person har magont, förstoppning, diarré eller andra magbesvär är det värt att anteckna det och ta upp det med läkaren: det kan påverka måendet och bör inte avfärdas som något som bara hör till autismen. Det här är en översikt som sammanfattar forskning om tarm-hjärn-axeln och autism; den beskriver att magproblem verkar vara vanligare och att tarmfloran kan skilja sig. Begränsningar: den pekar på en möjlig koppling, inte en orsak, och behandlingar som probiotika, prebiotika eller tarmfloratransplantation är fortfarande under utveckling. Medicinska beslut hör till en kliniker, och inget av detta gäller lika för alla personer."
    }
   },
   {
@@ -1097,30 +685,6 @@
    }
   },
   {
-   "id": "PMC3669921",
-   "doi": "10.1038/tp.2013.34",
-   "url": "https://europepmc.org/article/PMC/PMC3669921",
-   "title": "Sniffing around oxytocin: review and meta-analyses of trials in healthy and clinical groups with implications for pharmacotherapy.",
-   "year": 2013,
-   "kind": "meta_analysis",
-   "topics": [
-    "anxiety",
-    "family_caregivers",
-    "transitions",
-    "women_girls"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"oxitocina\")",
-    "code: en: names a dose or medicine (\"oxytocin\")",
-    "code: sv: names a dose or medicine (\"oxytocin\")"
-   ],
-   "rejectedSheet": {
-    "es": "Esta revisión trata de un fármaco, la oxitocina, así que es un estudio médico: cualquier decisión sobre medicación corresponde a un profesional clínico. Para el día a día, no ofrece pautas que aplicar en casa. Es un metaanálisis que reunió 19 ensayos clínicos con distintos grupos, incluido el autismo. En autismo, el efecto combinado fue d=0.57 (N=68). Sus límites: los ensayos usaron dosis muy diferentes, las muestras fueron pequeñas y los resultados dependen del contexto, la personalidad y las experiencias de infancia, así que no sirven como regla para cada persona autista.",
-    "en": "This review is about a drug, oxytocin, so it is a medical study: any decision about medication belongs to a clinician. For everyday life, it offers nothing to apply at home. It is a meta-analysis that pooled 19 clinical trials across several groups, including autism. For autism, the combined effect was d=0.57 (N=68). Its limits: the trials used very different doses, samples were small, and results seem to depend on context, personality and childhood experiences, so it is not a rule for every autistic person.",
-    "sv": "Denna översikt handlar om ett läkemedel, oxytocin, och är alltså en medicinsk studie: beslut om medicinering hör till en läkare. Den ger inga råd att använda hemma i vardagen. Det är en metaanalys som sammanställde 19 kliniska prövningar i olika grupper, bland annat autism. För autism var den sammanlagda effekten d=0.57 (N=68). Begränsningar: prövningarna använde mycket olika doser, urvalen var små och resultaten verkar bero på sammanhang, personlighet och barndomserfarenheter, så det är ingen regel för varje autistisk person."
-   }
-  },
-  {
    "id": "PMC4192569",
    "doi": "10.4317/medoral.19566",
    "url": "https://europepmc.org/article/PMC/PMC4192569",
@@ -1190,33 +754,6 @@
    }
   },
   {
-   "id": "PMC4726659",
-   "doi": "10.1016/j.neubiorev.2014.09.012",
-   "url": "https://europepmc.org/article/PMC/PMC4726659",
-   "title": "Autism, oxytocin and interoception.",
-   "year": 2014,
-   "kind": "review",
-   "topics": [
-    "adult_life",
-    "anxiety",
-    "family_caregivers",
-    "pain_health",
-    "school",
-    "sensory",
-    "women_girls"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"oxitocina\")",
-    "code: en: names a dose or medicine (\"oxytocin\")",
-    "code: sv: names a dose or medicine (\"oxytocinsystem\")"
-   ],
-   "rejectedSheet": {
-    "es": "Para mañana por la mañana: este artículo no ofrece una pauta práctica concreta. Puede servir para recordar que las señales del cuerpo (hambre, sed, cansancio, emociones) pueden vivirse de forma distinta, así que ofrece pausas, opciones y tiempo, sin dar por hecho lo que la persona siente. Es una revisión teórica que propone que un sistema de oxitocina distinto en la infancia podría ayudar a explicar rasgos del autismo. Sus límites: es una hipótesis, no una prueba, y no es una regla para todas las personas autistas. Sus términos de déficit no reflejan una visión afirmativa de la neurodiversidad.",
-    "en": "For tomorrow morning: this article offers no concrete practical routine. It can be a reminder that body signals (hunger, thirst, tiredness, emotions) may be experienced differently, so offer pauses, choices and time, without assuming what the person feels. It is a theoretical review proposing that a different oxytocin system in infancy might help explain features of autism. Its limits: it is a hypothesis, not proof, and not a rule for every autistic person. Its deficit-based wording does not reflect a neurodiversity-affirming view.",
-    "sv": "Till i morgon bitti: artikeln ger ingen konkret praktisk rutin. Den kan påminna om att kroppens signaler (hunger, törst, trötthet, känslor) kan upplevas annorlunda, så erbjud pauser, val och tid utan att anta vad personen känner. Det är en teoretisk översikt som föreslår att ett annorlunda oxytocinsystem i spädbarnsåldern kan bidra till att förklara drag inom autism. Begränsningar: det är en hypotes, inte ett bevis, och ingen regel för alla autistiska personer. Artikelns bristfokuserade språk speglar inte ett neurodiversitetsbekräftande synsätt."
-   }
-  },
-  {
    "id": "PMC4939998",
    "doi": "10.2147/ndt.s108912",
    "url": "https://europepmc.org/article/PMC/PMC4939998",
@@ -1277,27 +814,6 @@
     "es": "Si le preocupa el desarrollo de su criatura pequeña, hable con su pediatra o equipo de salud y pida un seguimiento atento desde el primer año; no espere a que una herramienta de cribado dé una respuesta definitiva. Esta revisión sistemática evaluó en detalle cinco instrumentos de cribado del autismo para niñas y niños de hasta 18 meses. Concluyó que su desarrollo aún es incipiente y poco sólido, y sugiere usarlos solo con niñez de alto riesgo, no para todas las familias. Pida que le expliquen las fortalezas y debilidades de la herramienta. Limitación: los resultados no sirven como regla para cada niña o niño, y la investigación sigue avanzando.",
     "en": "If you are concerned about your young child's development, talk with your paediatrician or health team and ask for attentive follow-up from the first year on; don't wait for a screening tool to give a final answer. This systematic review examined five autism screening instruments in detail for children up to 18 months. It concluded that their development is still at an early stage and not yet strong, and suggested using them only with high-risk children, not for every family. Ask the clinician to explain the tool's strengths and weaknesses. Limit: the findings are not a rule for every child, and research is still moving on.",
     "sv": "Om du oroar dig för ditt lilla barns utveckling, prata med barnläkaren eller vårdteamet och be om noggrann uppföljning från första levnadsåret; vänta inte på att ett screeningverktyg ger ett slutgiltigt svar. Denna systematiska översikt granskade fem screeninginstrument för autism i detalj för barn upp till 18 månader. Slutsatsen var att utvecklingen av dem fortfarande är i ett tidigt skede och inte stark, och att de bör användas bara för barn med hög risk, inte för alla familjer. Be vårdpersonalen förklara verktygets styrkor och svagheter. Begränsning: resultaten är ingen regel för varje barn, och forskningen pågår."
-   }
-  },
-  {
-   "id": "PMC5331586",
-   "doi": "10.3390/nu9020155",
-   "url": "https://europepmc.org/article/PMC/PMC5331586",
-   "title": "Relationship between Long Chain n-3 Polyunsaturated Fatty Acids and Autism Spectrum Disorder: Systematic Review and Meta-Analysis of Case-Control and Randomised Controlled Trials.",
-   "year": 2017,
-   "kind": "meta_analysis",
-   "topics": [
-    "feeding"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"omega-3\")",
-    "code: en: names a dose or medicine (\"omega-3\")",
-    "code: sv: names a dose or medicine (\"omega-3\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si le preocupa la alimentación de una persona autista, hable con su pediatra o dietista antes de añadir suplementos; las decisiones sobre suplementos son médicas y corresponden a un profesional clínico. Este metaanálisis reunió 15 estudios de casos y controles (n = 1193) y 4 ensayos aleatorizados (n = 107). Las personas autistas tenían niveles sanguíneos más bajos de algunos ácidos grasos omega-3, y los suplementos de omega-3 se asociaron con mejoras en la interacción social y en los intereses y conductas repetitivos frente al placebo. Los límites: pocos ensayos, muestras pequeñas, resultados muy variables entre estudios, y los autores piden estudios más grandes y largos. No vale como regla para todas las personas.",
-    "en": "If you are thinking about an autistic person's diet, talk with their paediatrician or dietitian before adding supplements; decisions about supplements are medical and belong to a clinician. This meta-analysis pooled 15 case-control studies (n = 1193) and 4 randomised trials (n = 107). Autistic people had lower blood levels of some omega-3 fatty acids, and omega-3 supplements were linked to improvements in social interaction and in repetitive and restricted interests and behaviours compared with placebo. Limits: few trials, small samples, results that varied a lot between studies, and the authors call for larger, longer studies. This is not a rule for every person.",
-    "sv": "Om du funderar på en autistisk persons kost, prata med barnläkare eller dietist innan du lägger till tillskott; beslut om tillskott är medicinska och hör till en kliniker. Denna metaanalys sammanställde 15 fall-kontrollstudier (n = 1193) och 4 randomiserade studier (n = 107). Autistiska personer hade lägre blodnivåer av vissa omega-3-fettsyror, och omega-3-tillskott kopplades till förbättringar i social interaktion och i repetitiva och begränsade intressen och beteenden jämfört med placebo. Begränsningar: få studier, små grupper, resultat som varierade mycket mellan studierna, och författarna efterlyser större och längre studier. Detta är ingen regel för alla."
    }
   },
   {
@@ -1398,25 +914,28 @@
    }
   },
   {
-   "id": "PMC5975530",
-   "doi": "10.1186/s12888-018-1740-9",
-   "url": "https://europepmc.org/article/PMC/PMC5975530",
-   "title": "The role of oxytocin receptor gene (OXTR) DNA methylation (DNAm) in human social and emotional functioning: a systematic narrative review.",
-   "year": 2018,
-   "kind": "systematic_review",
+   "id": "PMC5683266",
+   "doi": "10.2147/phmt.s85717",
+   "url": "https://europepmc.org/article/PMC/PMC5683266",
+   "title": "Gastrointestinal symptoms and autism spectrum disorder: links and risks - a possible new overlap syndrome.",
+   "year": 2015,
+   "kind": "review",
    "topics": [
+    "anxiety",
+    "communication_aac",
     "crisis_regulation",
-    "feeding"
+    "feeding",
+    "pain_health",
+    "sensory",
+    "sleep"
    ],
    "issues": [
-    "code: es: names a dose or medicine (\"oxitocina\")",
-    "code: en: names a dose or medicine (\"oxytocin\")",
-    "code: sv: names a dose or medicine (\"oxytocinreceptorgenen\")"
+    "languages differ"
    ],
    "rejectedSheet": {
-    "es": "Esta revisión no ofrece nada que cambie lo que haga mañana en casa: no sirve para decidir apoyos ni para valorar a una persona concreta. Lo útil es saber que la investigación sobre la metilación del ADN del gen del receptor de oxitocina y la conducta social y emocional aún es muy temprana. Es una revisión sistemática de 19 estudios con poblaciones, muestras y métodos muy distintos, incluidos algunos sobre autismo. Solo tres estudios miraron efectos sobre la expresión génica. Las autoras concluyen que aún no hay pruebas suficientes para sacar conclusiones, y los resultados no son una regla para cada persona.",
-    "en": "This review offers nothing that should change what you do tomorrow at home: it cannot guide supports or be used to judge any one person. What is useful is knowing that research on DNA methylation of the oxytocin receptor gene and social and emotional behaviour is still very early. It is a systematic review of 19 studies with very different populations, samples and methods, some including autism. Only three studies looked at effects on gene expression. The authors conclude there is not yet enough evidence to draw conclusions, and the findings are not a rule for every person.",
-    "sv": "Den här översikten ger inget som bör ändra vad du gör i morgon hemma: den kan inte styra stöd eller användas för att bedöma en enskild person. Det användbara är att veta att forskningen om DNA-metylering av oxytocinreceptorgenen och socialt och känslomässigt beteende fortfarande är mycket tidig. Det är en systematisk översikt av 19 studier med mycket olika grupper, prover och metoder, några om autism. Bara tre studier tittade på effekter på genuttryck. Författarna drar slutsatsen att det ännu inte finns tillräckliga belägg, och resultaten är ingen regel för varje person."
+    "es": "Si una persona autista muestra un empeoramiento inexplicable de su comportamiento no verbal (agitación, ansiedad, agresión, autolesión, falta de sueño), conviene pensar en posible dolor o malestar digestivo y consultarlo con su equipo médico. Anote cuándo ocurre y cómo son sus deposiciones y comidas. Esta es una revisión de la literatura sobre niños autistas; señala mayor riesgo de estreñimiento, diarrea y dolor abdominal. Sus límites: propone un posible \"síndrome de superposición\" y pide más investigación, así que no vale para todas las personas. Evite restringir la dieta sin indicación médica. Si hay autolesión o pensamientos de hacerse daño, busque ayuda profesional: un médico, un servicio de salud o un servicio de crisis. Ante peligro inmediato, llame al número de emergencias de su país. Si hay riesgo, busca ayuda profesional o llama al número de emergencias de tu país.",
+    "en": "If an autistic person shows an unexplained worsening of nonverbal behaviors (agitation, anxiety, aggression, self-injury, sleep deprivation), consider that digestive pain or discomfort may be involved, and raise it with their medical team. Note when it happens, plus bowel habits and meals. This is a review of the literature on autistic children; it points to a greater risk of constipation, diarrhea and abdominal pain. Its limits: it proposes a possible \"overlap syndrome\" and calls for more research, so it does not apply to every person. Avoid diet restrictions without a medical reason. If there is self-injury or thoughts of self-harm, seek professional help: a clinician, a health service or a crisis service. In immediate danger, call the emergency number of your country. If there is risk, seek professional help or call your country's emergency number.",
+    "sv": "Om en autistisk person plötsligt får oförklarligt förändrade icke-verbala beteenden (oro, ångest, aggression, självskada, sömnbrist) kan magont eller obehag spela roll, och det är bra att ta upp med vårdteamet. Anteckna när det sker samt avföring och måltider. Detta är en översikt om autistiska barn; den pekar på högre risk för förstoppning, diarré och buksmärta. Begränsningar: den föreslår ett möjligt \"överlappningssyndrom\" och efterlyser mer forskning, så den gäller inte alla. Undvik kostrestriktioner utan medicinsk orsak. Vid självskada eller tankar på att skada sig själv, sök professionell hjälp: en läkare, en vårdinrättning eller en krisjour. Vid akut fara, ring nödnumret i ditt land. Om det finns en risk, sök professionell hjälp eller ring ditt lands nödnummer."
    }
   },
   {
@@ -1501,33 +1020,6 @@
    }
   },
   {
-   "id": "PMC6471505",
-   "doi": "10.3390/nu11030521",
-   "url": "https://europepmc.org/article/PMC/PMC6471505",
-   "title": "Autism Spectrum Disorders and the Gut Microbiota.",
-   "year": 2019,
-   "kind": "review",
-   "topics": [
-    "anxiety",
-    "family_caregivers",
-    "feeding",
-    "pain_health",
-    "school",
-    "sensory",
-    "women_girls"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"probióticos\")",
-    "code: en: names a dose or medicine (\"probiotics\")",
-    "code: sv: names a dose or medicine (\"probiotika\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si tu hijo o hija autista tiene molestias de tripa (estreñimiento, dolor, diarrea), anótalas durante unos días y llévalas a su pediatra o médico: el malestar digestivo merece atención y puede influir en el ánimo y la conducta. No cambies suplementos ni dietas sin consultarlo. Es una revisión narrativa de estudios sobre la microbiota intestinal y los probióticos en niños autistas. Los autores señalan que no existe un perfil único de microbiota en las personas autistas y que los ensayos clínicos con probióticos son pocos y variados. Por eso no sirve como regla para todas las personas.",
-    "en": "If your autistic child has tummy troubles (constipation, pain, diarrhoea), note them for a few days and take the notes to their paediatrician or doctor: digestive discomfort deserves attention and may affect mood and behaviour. Don't change supplements or diets without checking first. This is a narrative review of studies on gut bacteria and probiotics in autistic children. The authors say there is no single microbiota profile in autistic people, and clinical trials of probiotics are few and varied. So it is not a rule for every person.",
-    "sv": "Om ditt autistiska barn har magproblem (förstoppning, smärta, diarré), anteckna dem under några dagar och ta med anteckningarna till barnläkaren eller läkaren: magbesvär förtjänar uppmärksamhet och kan påverka humör och beteende. Ändra inte kosttillskott eller kost utan att fråga först. Detta är en narrativ översikt av studier om tarmbakterier och probiotika hos autistiska barn. Författarna skriver att det inte finns någon enskild tarmflora-profil hos autistiska personer och att kliniska prövningar av probiotika är få och olikartade. Den gäller alltså inte som regel för alla."
-   }
-  },
-  {
    "id": "PMC6555998",
    "doi": "10.1186/s13229-019-0274-4",
    "url": "https://europepmc.org/article/PMC/PMC6555998",
@@ -1556,69 +1048,6 @@
    }
   },
   {
-   "id": "PMC6581070",
-   "doi": "10.3389/fpsyt.2019.00366",
-   "url": "https://europepmc.org/article/PMC/PMC6581070",
-   "title": "Systematic Review of Sleep Disturbances and Circadian Sleep Desynchronization in Autism Spectrum Disorder: Toward an Integrative Model of a Self-Reinforcing Loop.",
-   "year": 2019,
-   "kind": "systematic_review",
-   "topics": [
-    "adult_life",
-    "anxiety",
-    "communication_aac",
-    "crisis_regulation",
-    "family_caregivers",
-    "feeding",
-    "pain_health",
-    "school",
-    "sensory",
-    "sleep",
-    "transitions",
-    "women_girls"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"melatonina\")",
-    "code: es: number 103 is not in the source as written",
-    "code: en: names a dose or medicine (\"melatonin\")",
-    "code: en: number 103 is not in the source as written",
-    "code: sv: names a dose or medicine (\"melatonin\")",
-    "code: sv: number 103 is not in the source as written"
-   ],
-   "rejectedSheet": {
-    "es": "Si dormir cuesta en casa, vale la pena observar el patrón de sueño de la persona autista (horas, calidad, si se duerme y despierta tarde) y comentarlo con un profesional sanitario. Es una revisión sistemática de 103 estudios con niños y adultos autistas. Encontró que son frecuentes el sueño corto, la baja calidad del sueño y los ritmos desplazados hacia la tarde-noche. Sus límites: los datos son escasos, la relación entre sueño y autismo no está clara y la idea de un círculo que se refuerza es solo una hipótesis. No describe a cada persona. Las decisiones médicas, incluida la melatonina, corresponden a un clínico.",
-    "en": "If sleep is hard at home, it is worth noting the autistic person's sleep pattern (hours, quality, late sleeping and waking) and sharing it with a health professional. This is a systematic review of 103 studies with autistic children and adults. It found that short sleep, low sleep quality and rhythms shifted toward the evening are common. Its limits: the data are sparse, the link between sleep and autism is unclear, and the self-reinforcing loop is only a hypothesis. It does not describe every person. Medical decisions, including about melatonin, belong to a clinician.",
-    "sv": "Om sömnen är svår hemma kan det vara värt att notera den autistiska personens sömnmönster (timmar, kvalitet, sen insomning och sent uppvaknande) och ta upp det med vården. Detta är en systematisk översikt av 103 studier med autistiska barn och vuxna. Den fann att kort sömn, låg sömnkvalitet och dygnsrytm förskjuten mot kvällen är vanligt. Begränsningar: data är begränsade, kopplingen mellan sömn och autism är oklar och tanken om en självförstärkande loop är bara en hypotes. Den beskriver inte varje person. Medicinska beslut, även om melatonin, hör till en kliniker."
-   }
-  },
-  {
-   "id": "PMC6625034",
-   "doi": "10.1177/1362361318816053",
-   "url": "https://europepmc.org/article/PMC/PMC6625034",
-   "title": "'People like me don't get support': Autistic adults' experiences of support and treatment for mental health difficulties, self-injury and suicidality.",
-   "year": 2019,
-   "kind": "study",
-   "topics": [
-    "adult_life",
-    "anxiety",
-    "challenging_behavior",
-    "crisis_regulation",
-    "family_caregivers",
-    "pain_health",
-    "school",
-    "sensory",
-    "transitions",
-    "women_girls"
-   ],
-   "issues": [
-    "code: sv: no emergency number of the country"
-   ],
-   "rejectedSheet": {
-    "es": "Si buscas apoyo en salud mental para ti o para una persona autista, pide un enfoque adaptado a sus necesidades y explica de entrada qué le ayuda. Es una encuesta en línea, diseñada con un grupo de adultos autistas, en la que participaron 200 adultos autistas de 18-67 años, sin discapacidad intelectual. Contaron que era difícil acceder al apoyo, que faltaba comprensión sobre el autismo y que el apoyo adecuado, o su ausencia, influía en el bienestar y en la probabilidad de ver el suicidio como su futuro. Es una encuesta, no prueba qué tratamiento funciona, y no incluye a personas con discapacidad intelectual. Si hay pensamientos de suicidio o autolesión, contacta con un profesional sanitario, un servicio de salud o un servicio de crisis; ante peligro inmediato, llama al número de emergencias de tu país.",
-    "en": "If you are looking for mental health support for yourself or an autistic person, ask for care tailored to their needs and say up front what helps. This was an online survey, designed with a steering group of autistic adults, completed by 200 autistic adults aged 18-67 without intellectual disability. They described difficulty accessing support, a lack of understanding of autism, and said that appropriate support, or its absence, affected well-being and the likelihood of seeing suicide as their future. It is a survey, so it cannot show which treatment works, and it did not include people with intellectual disability. If there are thoughts of suicide or self-injury, contact a clinician, a health service or a crisis service; in immediate danger, call the emergency number of your country.",
-    "sv": "Om du söker psykisk hälsostöd för dig själv eller för en autistisk person, be om vård som är anpassad efter personens behov och förklara redan från start vad som hjälper. Det här var en webbenkät, utformad tillsammans med en grupp autistiska vuxna, som besvarades av 200 autistiska vuxna i åldern 18-67 utan intellektuell funktionsnedsättning. De beskrev svårigheter att få stöd, bristande förståelse för autism, och att lämpligt stöd, eller avsaknaden av det, påverkade måendet och hur sannolikt det var att de såg självmord som sin framtid. Det är en enkät, så den visar inte vilken behandling som fungerar, och personer med intellektuell funktionsnedsättning ingick inte. Vid tankar på självmord eller självskada, kontakta en läkare, vården eller en krisjour; vid akut fara, ring det nationella nödnumret i ditt land."
-   }
-  },
-  {
    "id": "PMC6779014",
    "doi": "10.1177/1362361319831487",
    "url": "https://europepmc.org/article/PMC/PMC6779014",
@@ -1637,27 +1066,6 @@
     "es": "Pregunta directamente a tu hijo o hija qué piensa y siente, y ofrécele varias formas de responder: hablar, escribir, dibujar, usar gestos o llevar un diario. Presume que tiene algo que decir. La evidencia es una revisión de alcance de 284 artículos sobre jóvenes con distintas discapacidades, más una consulta con un grupo de madres y padres de jóvenes autistas. Sus límites: pocos estudios se centraron en jóvenes autistas, y la consulta con familias fue de un solo grupo, así que no sirve como regla para todas las personas.",
     "en": "Ask your child directly what they think and feel, and offer several ways to answer: talking, writing, drawing, gestures or keeping a diary. Assume they have something to say. The evidence is a scoping review of 284 articles about youth with various disabilities, plus a consultation with a group of parents of autistic youth. Its limits: few of the studies focused on autistic youth, and the family consultation involved one group, so it is not a rule for every person.",
     "sv": "Fråga ditt barn direkt vad hen tycker och känner, och erbjud flera sätt att svara: tala, skriva, rita, använda gester eller föra dagbok. Utgå från att hen har något att berätta. Underlaget är en kartläggande översikt av 284 artiklar om unga med olika funktionsnedsättningar, plus en samrådsgrupp med föräldrar till autistiska unga. Begränsningar: få studier handlade om autistiska unga, och samrådet med föräldrar gällde en enda grupp, så resultaten är ingen regel för alla."
-   }
-  },
-  {
-   "id": "PMC6801530",
-   "doi": "10.3390/ijerph16193543",
-   "url": "https://europepmc.org/article/PMC/PMC6801530",
-   "title": "Rubella Virus Infection, the Congenital Rubella Syndrome, and the Link to Autism.",
-   "year": 2019,
-   "kind": "review",
-   "topics": [
-    "women_girls"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"vitamina\")",
-    "code: en: names a dose or medicine (\"vitamin\")",
-    "code: sv: names a dose or medicine (\"vitamin\")"
-   ],
-   "rejectedSheet": {
-    "es": "Esta revisión no ofrece nada que cambie la rutina de mañana. Si le preocupan la rubéola o el embarazo, consulte con su profesional sanitario. Es una revisión de la literatura que recoge datos de la epidemia de rubéola de la década de 1960: entre el 8%-13% de los niños con síndrome de rubéola congénita desarrollaron autismo. Además, propone una hipótesis sobre la vitamina A y el hígado que aún debe comprobarse. Sus límites: es una propuesta teórica, no demuestra causas y no vale para todas las personas autistas. Ninguna sugerencia de la revisión debe aplicarse sin consejo clínico.",
-    "en": "This review does not offer anything to change tomorrow's routine. If rubella or pregnancy is a worry, talk with a health professional. It is a literature review that reports data from the 1960s rubella epidemic: 8%-13% of children with congenital rubella syndrome developed autism. It also puts forward a hypothesis about vitamin A and the liver that still has to be tested. Its limits: it is a theoretical proposal, it does not prove causes, and it does not apply to every autistic person. None of its suggestions should be acted on without clinical advice.",
-    "sv": "Den här översikten ger inget som ändrar rutinerna i morgon. Om röda hund eller graviditet oroar, prata med vårdpersonal. Det är en litteraturöversikt som redovisar uppgifter från epidemin av röda hund på 1960-talet: 8%-13% av barnen med medfödd rubellasyndrom utvecklade autism. Den lägger också fram en hypotes om A-vitamin och levern som ännu måste prövas. Begränsningar: det är ett teoretiskt förslag, det bevisar inga orsaker och gäller inte alla autistiska personer. Inga av förslagen bör följas utan medicinsk rådgivning."
    }
   },
   {
@@ -1744,34 +1152,6 @@
    }
   },
   {
-   "id": "PMC7146354",
-   "doi": "10.3390/nu12030792",
-   "url": "https://europepmc.org/article/PMC/PMC7146354",
-   "title": "Composition of Gut Microbiota in Children with Autism Spectrum Disorder: A Systematic Review and Meta-Analysis.",
-   "year": 2020,
-   "kind": "meta_analysis",
-   "topics": [
-    "adult_life",
-    "anxiety",
-    "family_caregivers",
-    "feeding",
-    "pain_health",
-    "sleep",
-    "transitions",
-    "women_girls"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"probióticos\")",
-    "code: en: names a dose or medicine (\"probiotics\")",
-    "code: sv: names a dose or medicine (\"probiotika\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si un niño autista tiene molestias digestivas, vale la pena anotarlas y comentarlas con su profesional de salud; no hay cambios probados que hacer en casa a partir de este estudio. Es un metaanálisis de 18 estudios con 493 niños autistas y 404 niños sin autismo, que comparó las bacterias intestinales. Encontró diferencias medias en algunos grupos de bacterias. Sin embargo, no demuestra que la microbiota cause rasgos autistas, y los autores indican que faltan más estudios sobre probióticos. Las diferencias no se aplican a todas las personas.",
-    "en": "If an autistic child has digestive discomfort, it is worth noting it down and raising it with their health professional; this study gives no proven changes to make at home. It is a meta-analysis of 18 studies, with 493 autistic children and 404 children without autism, comparing gut bacteria. It found differences in the average amount of some bacteria groups. However, it does not show that gut bacteria cause autistic traits, and the authors say more studies on probiotics are needed. The differences do not apply to every person.",
-    "sv": "Om ett autistiskt barn har magproblem är det värt att anteckna dem och ta upp dem med barnets vårdpersonal; studien ger inga bevisade förändringar att göra hemma. Det är en metaanalys av 18 studier med 493 autistiska barn och 404 barn utan autism, som jämförde tarmbakterier. Den fann skillnader i genomsnittlig mängd hos vissa bakteriegrupper. Den visar dock inte att tarmbakterier orsakar autistiska drag, och författarna säger att fler studier om probiotika behövs. Skillnaderna gäller inte alla personer."
-   }
-  },
-  {
    "id": "PMC7158144",
    "doi": "10.1186/s12888-020-02577-1",
    "url": "https://europepmc.org/article/PMC/PMC7158144",
@@ -1790,27 +1170,6 @@
     "es": "Esta formación al personal sanitario en Apoyo Conductual Positivo no mostró una mejora clara para adultos autistas con discapacidad intelectual. Si ya recibís este apoyo, seguid observando qué ayuda a cada persona y comentadlo con el equipo. Es un ensayo aleatorizado en 23 servicios comunitarios de Inglaterra; este análisis incluyó a 113 adultos con discapacidad intelectual y autismo. No hubo diferencias estadísticamente significativas en la conducta tras 12 meses. Los límites: el grupo fue pequeño, los autores piden ensayos más grandes y mejores intervenciones, y el resultado no describe a cada persona.",
     "en": "Training health professionals in Positive Behaviour Support did not show a clear benefit for autistic adults with intellectual disability. If you already receive this support, keep noting what helps each person and talk it through with the team. This was a randomised trial in 23 community services in England; this analysis covered 113 adults with intellectual disability and autism. There were no statistically significant differences in behaviour over 12 months. Limits: the group was small, the authors call for larger trials and better interventions, and the result does not describe every person.",
     "sv": "Utbildning av vårdpersonal i Positive Behaviour Support visade ingen tydlig nytta för autistiska vuxna med intellektuell funktionsnedsättning. Om ni redan får detta stöd: fortsätt notera vad som hjälper just den personen och diskutera det med teamet. Det var en randomiserad studie i 23 kommunala verksamheter i England; den här analysen omfattade 113 vuxna med intellektuell funktionsnedsättning och autism. Efter 12 månader fanns inga statistiskt säkerställda skillnader i beteende. Begränsningar: gruppen var liten, forskarna efterlyser större studier och bättre insatser, och resultatet beskriver inte varje person."
-   }
-  },
-  {
-   "id": "PMC7215504",
-   "doi": "10.3390/ijerph17082647",
-   "url": "https://europepmc.org/article/PMC/PMC7215504",
-   "title": "The Role of Microbiome, Dietary Supplements, and Probiotics in Autism Spectrum Disorder.",
-   "year": 2020,
-   "kind": "review",
-   "topics": [
-    "adult_life"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"probióticos\")",
-    "code: en: names a dose or medicine (\"probiotics\")",
-    "code: sv: names a dose or medicine (\"probiotika\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si le preocupa la alimentación o el intestino de su hijo o hija autista, puede observar con calma qué le sienta bien y comentarlo con un profesional sanitario antes de cambiar la dieta o añadir suplementos o probióticos. Esto es una revisión de la literatura científica sobre microbioma, dieta y probióticos en el autismo. Los resultados sobre los probióticos no son concluyentes, y el perfil del microbioma no está bien definido porque las personas son muy distintas. No es una regla para todas las personas; los autores piden más investigación.",
-    "en": "If you are thinking about the food or gut comfort of your autistic child, you can calmly notice what feels good for them and talk with a health professional before changing the diet or adding supplements or probiotics. This is a review of existing research on the microbiome, diet and probiotics in autism. Its results on probiotics are inconclusive, and the microbiome profile is not well defined because people differ so much. It is not a rule for every person, and the authors call for more research.",
-    "sv": "Om du funderar på ditt autistiska barns mat eller magkomfort kan du lugnt lägga märke till vad som känns bra och prata med vårdpersonal innan du ändrar kosten eller lägger till tillskott eller probiotika. Detta är en översikt av tidigare forskning om mikrobiom, kost och probiotika vid autism. Resultaten om probiotika är inte entydiga, och mikrobiomets profil är inte väl beskriven eftersom människor skiljer sig så mycket åt. Det är ingen regel för alla, och författarna efterlyser mer forskning."
    }
   },
   {
@@ -1833,36 +1192,6 @@
     "es": "Si te preguntas por qué una persona es autista, esta revisión indica que no hay una sola causa: se habla de genes, de factores epigenéticos y de factores ambientales. Nada de esto depende de lo que hizo la familia, y no cambia lo que la persona necesita mañana: apoyo, comprensión y adaptaciones. Es una revisión que reúne la investigación publicada hasta entonces; no es un estudio con participantes nuevos. Sus límites: describe riesgos y pistas, no explica a cada persona, y no sirve para decidir nada sobre un caso concreto. Si tienes dudas sobre genética, consulta con un profesional sanitario.",
     "en": "If you wonder why a person is autistic, this review suggests there is no single cause: it discusses genes, epigenetic factors and environmental factors together. None of this depends on what a family did, and it does not change what the person needs tomorrow: support, understanding and adjustments. It is a review that gathers research published up to that point, not a new study with participants. Its limits: it describes risks and clues, not an explanation for each individual, and it cannot guide decisions about one person. For questions about genetics, speak with a health professional.",
     "sv": "Om du undrar varför en person är autistisk visar den här översikten att det inte finns en enda orsak: den tar upp gener, epigenetiska faktorer och miljöfaktorer tillsammans. Inget av detta beror på vad familjen gjort, och det ändrar inte vad personen behöver i morgon: stöd, förståelse och anpassningar. Det är en översikt som samlar publicerad forskning fram till dess, inte en ny studie med deltagare. Begränsningar: den beskriver risker och ledtrådar, inte en förklaring för varje individ, och den kan inte styra beslut om en enskild person. Vid frågor om genetik, kontakta vården."
-   }
-  },
-  {
-   "id": "PMC7313636",
-   "doi": "10.1089/aut.2019.0079",
-   "url": "https://europepmc.org/article/PMC/PMC7313636",
-   "title": "\"Having All of Your Internal Resources Exhausted Beyond Measure and Being Left with No Clean-Up Crew\": Defining Autistic Burnout.",
-   "year": 2020,
-   "kind": "study",
-   "topics": [
-    "adult_life",
-    "anxiety",
-    "challenging_behavior",
-    "communication_aac",
-    "crisis_regulation",
-    "family_caregivers",
-    "pain_health",
-    "school",
-    "sensory",
-    "sleep",
-    "transitions",
-    "women_girls"
-   ],
-   "issues": [
-    "code: sv: no emergency number of the country"
-   ],
-   "rejectedSheet": {
-    "es": "Si una persona autista muestra agotamiento prolongado, pérdida de habilidades o menos tolerancia a los estímulos, conviene bajar las exigencias, dar tiempo de descanso, ofrecer apoyo y aceptación, y permitirle hacer las cosas a su manera, sin enmascarar. Es un estudio con personas autistas: entrevistas a 19 adultos y 19 fuentes públicas de internet, en Estados Unidos. Es exploratorio, con una muestra pequeña y por conveniencia, y no representa a todas las personas. Algunas personas describieron conducta suicida asociada al burnout. Si te preocupa la seguridad de alguien, busca ayuda profesional: un clínico, un servicio de salud o un servicio de crisis; en peligro inmediato, llama al número de emergencias de tu país.",
-    "en": "If an autistic person shows long-lasting exhaustion, loss of skills or lower tolerance for stimulation, it may help to lower demands, allow time off, offer acceptance and support, and let them do things in an autistic way, without masking. This was a study with autistic people: interviews with 19 autistic adults and 19 public Internet sources, in the United States. It was a small exploratory study with a convenience sample, so it does not describe everyone. Some people described suicidal behavior linked to burnout. If you are worried about someone's safety, seek professional help from a clinician, a health service or a crisis service; in immediate danger, call your country's emergency number.",
-    "sv": "Om en autistisk person visar långvarig utmattning, förlorade färdigheter eller lägre tolerans för stimuli kan det hjälpa att sänka kraven, ge tid att vila, erbjuda acceptans och stöd och låta personen göra saker på ett autistiskt sätt, utan att maskera. Det här är en studie med autistiska personer: intervjuer med 19 autistiska vuxna och 19 offentliga internetkällor i USA. Studien var liten och utforskande, med ett bekvämlighetsurval, så den beskriver inte alla. Vissa beskrev suicidalt beteende kopplat till utbrändhet. Om du är orolig för någons säkerhet, sök professionell hjälp hos en läkare, vården eller en krisjour; vid akut fara, ring det nationella nödnumret i ditt land."
    }
   },
   {
@@ -1940,32 +1269,6 @@
    }
   },
   {
-   "id": "PMC7502035",
-   "doi": "10.1007/s10803-019-04323-3",
-   "url": "https://europepmc.org/article/PMC/PMC7502035",
-   "title": "Is Camouflaging Autistic Traits Associated with Suicidal Thoughts and Behaviours? Expanding the Interpersonal Psychological Theory of Suicide in an Undergraduate Student Sample.",
-   "year": 2020,
-   "kind": "study",
-   "topics": [
-    "adult_life",
-    "anxiety",
-    "challenging_behavior",
-    "family_caregivers",
-    "school",
-    "sensory",
-    "transitions",
-    "women_girls"
-   ],
-   "issues": [
-    "code: sv: no emergency number of the country"
-   ],
-   "rejectedSheet": {
-    "es": "Si una persona autista o con rasgos autistas se esfuerza mucho por ocultarlos, conviene preguntarle con calma cómo se siente, si percibe que pertenece a su entorno y si ha tenido pensamientos suicidas, y escucharla sin juzgar. Es un estudio transversal con una encuesta en línea a 160 estudiantes universitarios de 18-23 años, con 86.9% mujeres. Encontró que camuflar rasgos autistas se asociaba con más sentimiento de no pertenecer y más suicidabilidad a lo largo de la vida. Sus límites: es una muestra pequeña y casi toda femenina, y una asociación no prueba causa ni vale para cada persona. Si te preocupa a alguien, busca ayuda profesional: un clínico, un servicio de salud o un servicio de crisis. Ante peligro inmediato, llama al número de emergencias de tu país.",
-    "en": "If an autistic person, or someone with autistic traits, puts a lot of effort into hiding them, it helps to ask calmly how they are, whether they feel they belong, and whether they have had suicidal thoughts, and to listen without judging. This was a cross-sectional online survey of 160 undergraduate students aged 18-23, 86.9% of them female. It found that camouflaging autistic traits was associated with more feelings of not belonging and more lifetime suicidality. Its limits: the sample was small and mostly female, and an association does not prove cause or apply to every person. If you are worried about someone, seek professional help: a clinician, a health service or a crisis service. In immediate danger, call the emergency number of your country.",
-    "sv": "Om en autistisk person, eller någon med autistiska drag, anstränger sig mycket för att dölja dem, hjälper det att lugnt fråga hur hen mår, om hen känner att hen hör till och om hen har haft självmordstankar, och att lyssna utan att döma. Det var en tvärsnittsstudie med en webbenkät till 160 högskolestudenter i åldern 18-23, varav 86.9% kvinnor. Den fann att kamouflering av autistiska drag hängde ihop med mer känsla av utanförskap och mer självmordsbenägenhet under livet. Begränsningar: urvalet var litet och mest kvinnor, och ett samband bevisar inte orsak och gäller inte alla. Om du är orolig för någon, sök professionell hjälp: en läkare eller annan vårdgivare, en vårdinstans eller en krisjour. Vid akut fara, ring det nationella nödnumret i ditt land."
-   }
-  },
-  {
    "id": "PMC7645034",
    "doi": "10.3389/fpsyg.2020.586171",
    "url": "https://europepmc.org/article/PMC/PMC7645034",
@@ -2037,52 +1340,6 @@
    }
   },
   {
-   "id": "PMC8218414",
-   "doi": "10.1186/s13229-021-00449-3",
-   "url": "https://europepmc.org/article/PMC/PMC8218414",
-   "title": "Development and validation of the suicidal behaviours questionnaire - autism spectrum conditions in a community sample of autistic, possibly autistic and non-autistic adults.",
-   "year": 2021,
-   "kind": "study",
-   "topics": [
-    "adult_life",
-    "anxiety",
-    "challenging_behavior",
-    "family_caregivers",
-    "school",
-    "transitions",
-    "women_girls"
-   ],
-   "issues": [
-    "code: sv: no emergency number of the country"
-   ],
-   "rejectedSheet": {
-    "es": "Si te preocupa que una persona autista adulta piense en el suicidio, no esperes a que exista una herramienta: pregúntale con calma y sin juzgar, y escucha. Este estudio adaptó un cuestionario breve de autoinforme con aportaciones de personas autistas adultas y lo probó en línea con 308 adultas autistas, 113 posiblemente autistas y 268 no autistas; los resultados apoyaron su validez en los dos primeros grupos. Sus límites: la muestra era mayoritariamente femenina y diagnosticada en la edad adulta, no incluye discapacidad intelectual y es una herramienta de investigación, no sirve para predecir riesgo. Si tú o alguien cercano pensáis en el suicidio o en haceros daño, buscad ayuda profesional (un clínico, un servicio de salud o un servicio de crisis); en peligro inmediato, llamad al número de emergencias de vuestro país.",
-    "en": "If you worry that an autistic adult is thinking about suicide, don't wait for a tool: ask calmly and without judgement, and listen. This study adapted a short self-report questionnaire with input from autistic adults and tested it online with 308 autistic, 113 possibly autistic and 268 non-autistic adults; results supported its validity in the first two groups. Limits: the sample was mostly female and diagnosed in adulthood, it excluded intellectual disability, and it is a research tool that cannot predict risk. If you or someone close to you is thinking about suicide or self-harm, please contact professional help (a clinician, a health service or a crisis service); in immediate danger, call your country's emergency number.",
-    "sv": "Om du oroar dig för att en autistisk vuxen tänker på självmord, vänta inte på ett verktyg: fråga lugnt och utan att döma, och lyssna. Studien anpassade ett kort självskattningsformulär med hjälp av autistiska vuxna och testade det online med 308 autistiska, 113 möjligen autistiska och 268 icke-autistiska vuxna; resultaten stödde att det var giltigt i de två första grupperna. Begränsningar: urvalet bestod mest av kvinnor som fått diagnos som vuxna, personer med intellektuell funktionsnedsättning ingick inte, och det är ett forskningsverktyg som inte kan förutsäga risk. Om du eller någon nära dig tänker på självmord eller självskada, sök professionell hjälp (en läkare, vården eller en krisjour); vid akut fara, ring det nationella nödnumret i ditt land."
-   }
-  },
-  {
-   "id": "PMC8222620",
-   "doi": "10.3389/fpsyt.2021.688890",
-   "url": "https://europepmc.org/article/PMC/PMC8222620",
-   "title": "International Expert Opinions and Recommendations on the Use of Melatonin in the Treatment of Insomnia and Circadian Sleep Disturbances in Adult Neuropsychiatric Disorders.",
-   "year": 2021,
-   "kind": "systematic_review",
-   "topics": [
-    "crisis_regulation"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"melatonina\")",
-    "code: en: names a dose or medicine (\"melatonin\")",
-    "code: sv: names a dose or medicine (\"melatonin\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si el sueño de una persona autista adulta es difícil, puede ayudar anotar a qué hora duerme y despierta, y llevar ese registro a una consulta. La decisión sobre melatonina, dosis u horarios corresponde siempre a un profesional clínico. Este trabajo es una revisión sistemática de 41 estudios en adultos con distintos trastornos neuropsiquiátricos, incluido el autismo, y aporta recomendaciones de personas expertas. Es un estudio médico. Sus límites: el autismo es solo una parte de lo revisado, se centra en adultos y no sirve como regla para cada persona.",
-    "en": "If sleep is hard for an autistic adult, it may help to note when they fall asleep and wake, and bring that record to an appointment. Decisions about melatonin, doses or timing always belong to a clinician. This was a systematic review of 41 studies in adults with various neuropsychiatric conditions, including autism, and it gives expert recommendations. It is a medical study. Its limits: autism is only one part of what was reviewed, it focuses on adults, and it is not a rule for every person.",
-    "sv": "Om sömnen är svår för en autistisk vuxen kan det hjälpa att notera när personen somnar och vaknar och ta med anteckningarna till ett vårdbesök. Beslut om melatonin, dos eller tidpunkt tillhör alltid en läkare eller annan kliniker. Detta var en systematisk översikt av 41 studier på vuxna med olika neuropsykiatriska tillstånd, bland annat autism, och den ger expertrekommendationer. Det är en medicinsk studie. Begränsningar: autism är bara en del av det som granskades, fokus ligger på vuxna, och resultaten är ingen regel för varje person."
-   }
-  },
-  {
    "id": "PMC8260941",
    "doi": "10.3389/fpsyt.2021.665326",
    "url": "https://europepmc.org/article/PMC/PMC8260941",
@@ -2130,75 +1387,6 @@
    }
   },
   {
-   "id": "PMC8394938",
-   "doi": "10.3390/cells10081976",
-   "url": "https://europepmc.org/article/PMC/PMC8394938",
-   "title": "Folic Acid and Autism: A Systematic Review of the Current State of Knowledge.",
-   "year": 2021,
-   "kind": "systematic_review",
-   "topics": [
-    "communication_aac"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"600 µg\")",
-    "code: en: names a dose or medicine (\"600 µg\")",
-    "code: sv: names a dose or medicine (\"600 µg\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si le preocupa el ácido fólico, hable con un profesional sanitario antes de cambiar nada; esta revisión no ofrece una pauta para decidir en casa. Es una revisión sistemática de estudios sobre ácido fólico y autismo. Algunos estudios señalan un posible efecto beneficioso de la suplementación materna prenatal (600 µg) sobre la probabilidad de autismo, pero otros dieron resultados opuestos. Se trata de un tema médico, y las decisiones médicas corresponden a un clínico. Sus límites: los autores piden ensayos más claros, con más participantes y más seguimiento, así que no permite conclusiones firmes para ninguna persona.",
-    "en": "If folic acid is on your mind, talk with a health professional before changing anything; this review gives no guidance for deciding at home. It is a systematic review of studies on folic acid and autism. Some studies point to a possible benefit of prenatal maternal supplementation (600 µg) on the likelihood of autism, but others found opposite results. This is a medical topic, and medical decisions belong to a clinician. Its limits: the authors call for clearer trials with more participants and longer follow-up, so it cannot support firm conclusions for any one person.",
-    "sv": "Om folsyra oroar dig, prata med en vårdgivare innan du ändrar något; den här översikten ger ingen vägledning för beslut hemma. Det är en systematisk översikt av studier om folsyra och autism. Vissa studier tyder på en möjlig fördel med tillskott till modern under graviditeten (600 µg) för sannolikheten för autism, men andra visade motsatta resultat. Detta är ett medicinskt ämne, och medicinska beslut hör till en läkare. Begränsningar: författarna efterlyser tydligare studier med fler deltagare och längre uppföljning, så översikten ger inga säkra slutsatser för någon enskild person."
-   }
-  },
-  {
-   "id": "PMC8400809",
-   "doi": "10.3390/jpm11080784",
-   "url": "https://europepmc.org/article/PMC/PMC8400809",
-   "title": "The Effectiveness of Cobalamin (B12) Treatment for Autism Spectrum Disorder: A Systematic Review and Meta-Analysis.",
-   "year": 2021,
-   "kind": "meta_analysis",
-   "topics": [
-    "communication_aac",
-    "crisis_regulation",
-    "family_caregivers",
-    "feeding",
-    "pain_health",
-    "sleep"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"vitamina\")",
-    "code: en: names a dose or medicine (\"vitamin\")",
-    "code: sv: names a dose or medicine (\"vitamin\")"
-   ],
-   "rejectedSheet": {
-    "es": "Este estudio analizó la vitamina B12, que es un tratamiento médico: cualquier decisión sobre ella corresponde a un médico o una médica, no a una hoja informativa. Si le interesa, puede anotar sueño, digestión y cambios en el ánimo y llevarlo a la consulta. Es un metaanálisis de 17 estudios sobre niñas y niños autistas; solo 4 fueron con doble ciego y placebo. Sus límites: muchos estudios eran pequeños, sin grupo de control o retrospectivos, y las personas autoras indican que hacen falta estudios mayores. Los resultados no valen para todas las personas autistas.",
-    "en": "This study looked at vitamin B12, which is a medical treatment, so any decision about it belongs with a clinician, not a information sheet. If you are curious, you could note sleep, digestion and mood changes and bring them to an appointment. It is a meta-analysis of 17 studies of autistic children; only 4 were double-blind, placebo-controlled. Its limits: many studies were small, uncontrolled or retrospective, and the authors say larger studies are needed. Results cannot be assumed to apply to every autistic person.",
-    "sv": "Studien gällde vitamin B12, som är en medicinsk behandling, så beslut om den hör hemma hos en läkare och inte i ett informationsblad. Om du är nyfiken kan du anteckna sömn, mage och humör och ta med dem till ett besök. Det är en metaanalys av 17 studier på autistiska barn; bara 4 var dubbelblinda och placebokontrollerade. Begränsningar: många studier var små, saknade kontrollgrupp eller var retrospektiva, och författarna menar att större studier behövs. Resultaten gäller inte nödvändigtvis alla autistiska personer."
-   }
-  },
-  {
-   "id": "PMC8439029",
-   "doi": "10.1186/s13099-021-00448-y",
-   "url": "https://europepmc.org/article/PMC/PMC8439029",
-   "title": "The use of biomarkers associated with leaky gut as a diagnostic tool for early intervention in autism spectrum disorder: a systematic review.",
-   "year": 2021,
-   "kind": "systematic_review",
-   "topics": [
-    "feeding",
-    "pain_health"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"probióticos\")",
-    "code: en: names a dose or medicine (\"probiotics\")",
-    "code: sv: names a dose or medicine (\"probiotika\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si una persona autista tiene molestias digestivas como dolor, estreñimiento o diarrea, vale la pena comentarlo con su pediatra o médico; no hay que darlas por normales ni por parte del autismo. Esta revisión sistemática reunió estudios sobre marcadores en sangre y orina relacionados con la microbiota intestinal y el llamado intestino permeable en niños autistas. Sus límites: la relación causa-efecto con el autismo no se comprende bien todavía, y los marcadores no sirven como prueba diagnóstica para una persona concreta. Cualquier decisión sobre dietas, probióticos o tratamientos corresponde a un profesional sanitario.",
-    "en": "If an autistic person has digestive discomfort such as pain, constipation or diarrhoea, it is worth raising it with their paediatrician or doctor; it should not be assumed to be just part of being autistic. This systematic review gathered studies on blood and urine markers linked to gut bacteria and so-called leaky gut in autistic children. Its limits: the cause-and-effect link with autism is not yet well understood, and these markers cannot serve as a diagnostic test for any one person. Any decision about diets, probiotics or treatments belongs with a health professional.",
-    "sv": "Om en autistisk person har magproblem som smärta, förstoppning eller diarré är det värt att ta upp det med barnläkare eller läkare; det bör inte antas vara bara en del av att vara autistisk. Denna systematiska översikt samlade studier om markörer i blod och urin kopplade till tarmbakterier och så kallad läckande tarm hos autistiska barn. Begränsningar: orsakssambandet med autism är ännu inte väl förstått, och markörerna kan inte användas som diagnostiskt test för en enskild person. Beslut om kost, probiotika eller behandling hör hemma hos sjukvårdspersonal."
-   }
-  },
-  {
    "id": "PMC8526555",
    "doi": "10.3389/fpsyt.2021.730448",
    "url": "https://europepmc.org/article/PMC/PMC8526555",
@@ -2222,26 +1410,6 @@
    }
   },
   {
-   "id": "PMC8527356",
-   "doi": "10.1001/jamanetworkopen.2021.30272",
-   "url": "https://europepmc.org/article/PMC/PMC8527356",
-   "title": "Risk of Self-harm in Children and Adults With Autism Spectrum Disorder: A Systematic Review and Meta-analysis.",
-   "year": 2021,
-   "kind": "meta_analysis",
-   "topics": [
-    "challenging_behavior",
-    "crisis_regulation"
-   ],
-   "issues": [
-    "code: sv: no emergency number of the country"
-   ],
-   "rejectedSheet": {
-    "es": "Si cuidas a una persona autista, conviene preguntarle con calma y sin juicio cómo se siente, y tomar en serio cualquier señal de malestar, autolesión o ideas de suicidio. Esta revisión sistemática con metaanálisis reunió 31 estudios observacionales de niños y adultos, y encontró mayores probabilidades de autolesión (OR combinado 3.18) y de suicidalidad (OR combinado 3.32) en personas autistas, también en entornos clínicos y no clínicos. Son asociaciones: no dicen qué ocurrirá en una persona concreta ni explican las causas. Si te preocupa alguien, busca ayuda profesional (clínico, servicio de salud o servicio de crisis). Ante peligro inmediato, llama al número de emergencias de tu país.",
-    "en": "If you support an autistic person, it helps to ask calmly and without judgment how they are feeling, and to take any sign of distress, self-harm or thoughts of suicide seriously. This systematic review and meta-analysis pooled 31 observational studies of children and adults. It found higher odds of self-injury (pooled OR 3.18) and suicidality (pooled OR 3.32) in autistic people, in both clinical and nonclinical settings. These are associations: they cannot say what will happen for one person or explain causes. If you are worried about someone, seek professional help (a clinician, a health service or a crisis service). In immediate danger, call your country's emergency number.",
-    "sv": "Om du stöttar en autistisk person hjälper det att lugnt och utan att döma fråga hur hen mår, och att ta alla tecken på ångest, självskada eller självmordstankar på allvar. Den här systematiska översikten med metaanalys sammanställde 31 observationsstudier av barn och vuxna. Den fann högre odds för självskadebeteende (sammanvägd OR 3.18) och suicidalitet (sammanvägd OR 3.32) hos autistiska personer, både i kliniska och icke-kliniska miljöer. Det är samband: de säger inte vad som händer för en enskild person och förklarar inte orsakerna. Om du är orolig för någon, sök professionell hjälp (en läkare, vården eller en krisjour). Vid akut fara, ring det nationella nödnumret i ditt land."
-   }
-  },
-  {
    "id": "PMC8553330",
    "doi": "10.1002/brb3.2341",
    "url": "https://europepmc.org/article/PMC/PMC8553330",
@@ -2262,48 +1430,6 @@
     "es": "Las conductas repetitivas y los intereses intensos tienen muchas formas, y pueden cumplir una función para la persona. Antes de intentar cambiarlas, conviene observar cuándo aparecen y qué aportan, y cuidar que el entorno ofrezca estímulos y actividades que la persona disfrute. Es una revisión sistemática que analizó 131 artículos, incluidos algunos con modelos animales. Señala que estas conductas se relacionan con diferencias cerebrales, con la flexibilidad cognitiva y con entornos poco estimulantes. Sus límites: reúne correlaciones, no demuestra causas, y no sirve como regla para cada persona autista. Comenta los hallazgos con profesionales que conozcan a la persona.",
     "en": "Repetitive behaviours and intense interests take many forms, and they may serve a purpose for the person. Before trying to change them, it helps to notice when they happen and what they give the person, and to make sure the environment offers stimulating activities they enjoy. This is a systematic review of 131 articles, including some animal models. It links these behaviours to brain differences, cognitive flexibility and non-stimulating environments. Its limits: it gathers correlations, does not prove causes, and is not a rule for every autistic person. Discuss the findings with professionals who know the person.",
     "sv": "Repetitiva beteenden och starka intressen tar många former och kan fylla en funktion för personen. Innan man försöker förändra dem hjälper det att notera när de uppstår och vad de ger, och att se till att miljön erbjuder stimulerande aktiviteter som personen gillar. Detta är en systematisk översikt av 131 artiklar, bland annat med djurmodeller. Den kopplar beteendena till hjärnskillnader, kognitiv flexibilitet och understimulerande miljöer. Begränsningar: den samlar samband, visar inte orsaker och är ingen regel för varje autistisk person. Diskutera resultaten med yrkespersoner som känner personen."
-   }
-  },
-  {
-   "id": "PMC8646719",
-   "doi": "10.1002/aur.2614",
-   "url": "https://europepmc.org/article/PMC/PMC8646719",
-   "title": "The association between COVID-19, personal wellbeing, depression, and suicide risk factors in Australian autistic adults.",
-   "year": 2021,
-   "kind": "study",
-   "topics": [
-    "challenging_behavior",
-    "pain_health"
-   ],
-   "issues": [
-    "code: sv: no emergency number of the country"
-   ],
-   "rejectedSheet": {
-    "es": "Si una persona autista ha vivido la pandemia con mucho impacto, vale la pena preguntarle con calma cómo está de ánimo y bienestar, y ofrecerle apoyo. Su experiencia puede tener aspectos buenos y malos. Se trata de un estudio con 111 adultos autistas de Australia, de 20 a 71 años, que respondieron cuestionarios durante la segunda ola. Un mayor impacto se asoció con peor bienestar y más síntomas depresivos, pero no con el riesgo de suicidio. Las asociaciones fueron pequeñas, no prueban causa y no valen para toda persona. Si te preocupa el riesgo de suicidio o autolesión, contacta con un profesional de salud o un servicio de crisis; ante peligro inmediato, llama al número de emergencias de tu país.",
-    "en": "If an autistic person was strongly affected by the pandemic, it is worth gently asking how their mood and wellbeing are, and offering support. Their experience may include both good and bad parts. This was a study of 111 autistic adults in Australia, aged 20 to 71 years, who completed questionnaires during the second wave. Greater impact was linked to poorer wellbeing and more depressive symptoms, but not to suicide risk. The links were small, do not prove cause, and do not apply to every person. If you are worried about suicide or self-injury, contact a clinician, a health service or a crisis service; if there is immediate danger, call the emergency number of your country.",
-    "sv": "Om en autistisk person påverkades mycket av pandemin är det värt att försiktigt fråga hur humör och välmående är, och erbjuda stöd. Upplevelsen kan innehålla både goda och dåliga sidor. Det här var en studie med 111 autistiska vuxna i Australien, 20 till 71 år, som svarade på frågeformulär under den andra vågen. Större påverkan hängde ihop med sämre välmående och fler depressiva symtom, men inte med självmordsrisk. Sambanden var små, bevisar inte orsak och gäller inte alla. Om du är orolig för självmord eller självskada, kontakta en läkare, en vårdinstans eller en krisjour; vid akut fara, ring det nationella nödnumret i ditt land."
-   }
-  },
-  {
-   "id": "PMC8655007",
-   "doi": "10.1038/s41598-021-02504-8",
-   "url": "https://europepmc.org/article/PMC/PMC8655007",
-   "title": "Understanding the impact of dog ownership on autistic adults: implications for mental health and suicide prevention.",
-   "year": 2021,
-   "kind": "study",
-   "topics": [
-    "adult_life",
-    "challenging_behavior",
-    "feeding",
-    "transitions"
-   ],
-   "issues": [
-    "code: sv: no emergency number of the country"
-   ],
-   "rejectedSheet": {
-    "es": "Si una persona autista ya tiene un perro, o lo está pensando, conviene fijarse en las actividades concretas: abrazarlo, pasearlo, tenerlo cerca y las rutinas como darle de comer. Pueden ayudar al ánimo y a organizar el día. También conviene hablar de las cargas, como la salud del perro o sus problemas de conducta. Es un estudio con entrevistas a 36 personas autistas adultas con perro en el Reino Unido. Es una muestra pequeña y no demuestra que un perro sirva a todas las personas. Si hay pensamientos de suicidio o autolesión, busca ayuda profesional: un clínico, un servicio de salud o un servicio de crisis. En peligro inmediato, llama al número de emergencias de tu país.",
-    "en": "If an autistic person already has a dog, or is thinking about one, it helps to look at specific activities: cuddling, walking, having the dog nearby, and routines like feeding. These may support mood and daily life. It is also worth talking about the burdens, such as the dog's health or behaviour problems. This was an interview study with 36 autistic adult dog owners in the UK. It is a small sample and does not show that a dog suits everyone. If there are thoughts of suicide or self-harm, seek professional help: a clinician, a health service or a crisis service. In immediate danger, call your country's emergency number.",
-    "sv": "Om en autistisk person redan har hund, eller funderar på det, kan det hjälpa att se på konkreta aktiviteter: att gosa, promenera, ha hunden nära och rutiner som matning. De kan stödja humöret och vardagen. Det är också värt att prata om bördorna, som hundens hälsa eller beteendeproblem. Det var en intervjustudie med 36 autistiska vuxna hundägare i Storbritannien. Urvalet är litet och studien visar inte att en hund passar alla. Om det finns tankar på självmord eller självskada, sök professionell hjälp: en läkare, vården eller en krisjour. Vid akut fara, ring det nationella nödnumret i ditt land."
    }
   },
   {
@@ -2431,49 +1557,6 @@
    }
   },
   {
-   "id": "PMC9021086",
-   "doi": "10.1007/s10803-021-05102-9",
-   "url": "https://europepmc.org/article/PMC/PMC9021086",
-   "title": "Suicidal Thoughts and Behaviours Among Autistic Adults Presenting to the Psychiatric Emergency Department: An Exploratory Chart Review.",
-   "year": 2022,
-   "kind": "study",
-   "topics": [
-    "adult_life",
-    "challenging_behavior",
-    "pain_health",
-    "transitions"
-   ],
-   "issues": [
-    "code: sv: no emergency number of the country"
-   ],
-   "rejectedSheet": {
-    "es": "Si una persona autista acude a urgencias, conviene preguntarle directamente por pensamientos suicidas, aunque el motivo de la visita sea otro. Ayuda mencionar cambios vitales o conflictos con otras personas. Este estudio fue una revisión exploratoria de historiales de 16 personas adultas autistas atendidas en urgencias psiquiátricas durante 10 semanas. Los pensamientos suicidas no siempre eran el motivo de consulta, y darles vueltas resultaba angustiante y agotador. Es una muestra muy pequeña y no sirve como regla para todas las personas. Si te preocupa alguien, busca ayuda profesional: un médico, un servicio de salud o un servicio de crisis. Si hay peligro inmediato, llama al número de emergencias de tu país.",
-    "en": "If an autistic person goes to an emergency department, it helps to ask them directly about suicidal thoughts, even when the stated reason for the visit is something else. Noticing life changes or conflicts with other people can also help. This was an exploratory review of charts of 16 autistic adults seen at a psychiatric emergency department over 10 weeks. Suicidal thoughts were not always the reason for the visit, and ruminating on them was distressing and tiring. The sample is very small and is not a rule for every person. If you are worried about someone, seek professional help: a clinician, a health service or a crisis service. In immediate danger, call your country's emergency number.",
-    "sv": "Om en autistisk person söker akuten är det bra att fråga direkt om självmordstankar, även när det uppgivna skälet till besöket är ett annat. Det kan också hjälpa att uppmärksamma livsförändringar eller konflikter med andra. Studien var en explorativ genomgång av journaler för 16 autistiska vuxna på en psykiatrisk akutmottagning under 10 veckor. Självmordstankar var inte alltid skälet till besöket, och att älta dem var plågsamt och utmattande. Urvalet är mycket litet och gäller inte som regel för alla. Om du är orolig för någon, sök professionell hjälp: en läkare, vården eller en krisjour. Vid akut fara, ring det nationella nödnumret i ditt land."
-   }
-  },
-  {
-   "id": "PMC9105305",
-   "doi": "10.3390/nu14091900",
-   "url": "https://europepmc.org/article/PMC/PMC9105305",
-   "title": "Vitamin D: Before, during and after Pregnancy: Effect on Neonates and Children.",
-   "year": 2022,
-   "kind": "review",
-   "topics": [
-    "feeding"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"vitamina\")",
-    "code: en: names a dose or medicine (\"vitamin\")",
-    "code: sv: names a dose or medicine (\"vitamin\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si le preocupa la vitamina D antes, durante o después del embarazo, o en la infancia, hable con el pediatra o la matrona sobre si conviene medirla; las decisiones sobre suplementos corresponden a un profesional sanitario. Esto es una revisión de la literatura sobre vitamina D, embarazo y niñez, que menciona posibles vínculos con complicaciones del embarazo, huesos, infecciones respiratorias y autismo. Sus límites: el resumen no indica cuántos estudios se incluyeron y habla de relaciones posibles, no de causas probadas. No significa que una carencia explique el autismo de una persona ni que haya hecho algo mal.",
-    "en": "If you are wondering about vitamin D before, during or after pregnancy, or in childhood, ask a paediatrician or midwife whether checking levels makes sense; decisions about supplements belong to a health professional. This is a review of the literature on vitamin D, pregnancy and childhood, which mentions possible links with pregnancy complications, bone health, respiratory infections and autism. Its limits: the abstract does not say how many studies were included, and it describes possible relationships, not proven causes. It does not mean a deficiency explains any autistic person's autism, or that anyone did something wrong.",
-    "sv": "Om du funderar på D-vitamin före, under eller efter graviditet, eller i barndomen, fråga barnläkare eller barnmorska om det är lämpligt att mäta nivåerna; beslut om tillskott hör till sjukvården. Detta är en översikt av litteraturen om D-vitamin, graviditet och barndom, som nämner möjliga samband med graviditetskomplikationer, skelettets hälsa, luftvägsinfektioner och autism. Begränsningar: sammanfattningen anger inte hur många studier som ingår och beskriver möjliga samband, inte bevisade orsaker. Det betyder inte att brist förklarar en autistisk persons autism, eller att någon gjort fel."
-   }
-  },
-  {
    "id": "PMC9136002",
    "doi": "10.3389/fpsyt.2022.889636",
    "url": "https://europepmc.org/article/PMC/PMC9136002",
@@ -2496,29 +1579,6 @@
     "es": "Si cuidas a una niña o mujer autista, recuerda que el autismo puede presentarse de formas distintas según el sexo, y que sus señales pueden pasar desapercibidas. Si algo te preocupa, anota ejemplos concretos de su día a día y llévalos a una evaluación. Esta es una revisión de estudios sobre diferencias entre hombres y mujeres autistas en diagnóstico, imágenes cerebrales y conducta, e incluye modelos animales. Menciona que alrededor del 70% de los casos descritos son hombres. Sus límites: es una revisión, no una prueba nueva, y no sirve como regla para cada persona.",
     "en": "If you support an autistic girl or woman, keep in mind that autism can look different depending on sex, and her signs may go unnoticed. If something worries you, write down concrete examples from daily life and bring them to an assessment. This is a review of studies on differences between autistic males and females in diagnosis, brain imaging and behaviour, and it also covers animal models. It notes that around 70% of described cases were male. Its limits: it is a review, not a new test, and it cannot be treated as a rule for any one person.",
     "sv": "Om du stöttar en autistisk flicka eller kvinna, kom ihåg att autism kan se olika ut beroende på kön och att hennes tecken kan förbises. Om något oroar dig, skriv ner konkreta exempel från vardagen och ta med dem till en utredning. Detta är en översikt av studier om skillnader mellan autistiska män och kvinnor i diagnos, hjärnavbildning och beteende, och den tar även upp djurmodeller. Den nämner att omkring 70% av de beskrivna fallen var män. Begränsningar: det är en översikt, inte en ny undersökning, och den kan inte ses som en regel för en enskild person."
-   }
-  },
-  {
-   "id": "PMC9196865",
-   "doi": "10.3389/fpsyg.2022.862719",
-   "url": "https://europepmc.org/article/PMC/PMC9196865",
-   "title": "Overall Rebalancing of Gut Microbiota Is Key to Autism Intervention.",
-   "year": 2022,
-   "kind": "review",
-   "topics": [
-    "adult_life",
-    "feeding",
-    "pain_health"
-   ],
-   "issues": [
-    "code: es: names a dose or medicine (\"probióticos\")",
-    "code: en: names a dose or medicine (\"probiotics\")",
-    "code: sv: names a dose or medicine (\"probiotika\")"
-   ],
-   "rejectedSheet": {
-    "es": "Si una persona autista tiene molestias digestivas, vale la pena comentarlo con su profesional de salud y anotar qué come y cómo se siente; no hace falta cambiar nada por cuenta propia. Esta es una revisión de estudios sobre intervenciones que buscan reequilibrar la microbiota intestinal en niños autistas, con ensayos clínicos y estudios en animales. Sugiere que el equilibrio general de la microbiota podría importar más que una sola cepa. Sus límites: no es una guía para todas las personas, los resultados son preliminares y las decisiones médicas, incluidas antibióticos o probióticos, corresponden a un clínico.",
-    "en": "If an autistic person has digestive discomfort, it is worth raising it with their health professional and noting what they eat and how they feel; there is no need to change anything alone. This is a review of studies on interventions that aim to rebalance gut microbiota in autistic children, including clinical trials and animal studies. It suggests the overall balance of gut bacteria may matter more than any single strain. Its limits: it is not a guide for every person, findings are early, and medical decisions, including antibiotics or probiotics, belong to a clinician.",
-    "sv": "Om en autistisk person har magproblem är det värt att ta upp det med vårdpersonal och anteckna vad personen äter och hur hen mår; du behöver inte ändra något på egen hand. Detta är en översikt av studier om insatser som vill balansera tarmfloran hos autistiska barn, med kliniska prövningar och djurstudier. Den antyder att tarmflorans helhetsbalans kan vara viktigare än en enskild bakteriestam. Begränsningar: den är ingen vägledning för alla, resultaten är tidiga och medicinska beslut, även om antibiotika eller probiotika, hör till en läkare."
    }
   },
   {
