@@ -34,6 +34,10 @@ No hay estado en el servidor: el mismo historial produce siempre los mismos hech
 
 Lo que ya no existe en código: protocolo pegajoso, fase, pasos ya dados, pregunta de triaje obligatoria, tope de frases, filtro de relleno, de repetición, de medicación, de diagnóstico, de palabras de emergencia. Todo eso es criterio del modelo, y se evalúa con llamadas reales y con el juez.
 
+### Números verificados (2026-10-20)
+
+Todos los números de `emergency.ts` y `resources.ts` se contrastaron con la página oficial que cada entrada nombra en `verify`. Cambios tras la verificación: la línea de ayuda de la National Autistic Society (0808 800 4104) cerró en 2021 y se quitó el número; la Línea 192 de Colombia no aparece ya en el directorio de MinSalud de 2025 y se retiró, y la 106 pasó a nacional; se añadieron LICA (601 357 5260) y el Centro Autismo Teletón (55 5699 2122, lunes a sábado); la 113 de Perú se nombra sin opción de menú porque el menú ha cambiado. Volver a verificar una vez al año.
+
 ### Latencia (medida)
 
 | Pieza | Medido |

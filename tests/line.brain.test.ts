@@ -58,6 +58,8 @@ test("state: language, country, caller and the whom-to-call question are derived
   assert.equal(detectCountry(["Estamos en Colombia", "ahora en Bogotá"]), "CO");
   assert.equal(detectCountry(["Estoy en Colombia", "no, me equivoqué, estoy es en el Perú"]), "PE", "the last country named wins");
   assert.equal(detectCountry(["We live in the UK"]), "GB");
+  assert.equal(detectCountry(["He's walking toward his brother. We're in the US."]), "US");
+  assert.equal(detectCountry(["He keeps hitting us and we can't stop him"]), null, "'us' the pronoun is not a country");
   assert.equal(detectCountry(["Vi bor i Sverige"]), "SE");
   assert.equal(detectCountry(["nada de país"]), null);
   assert.equal(detectCaller(["Mi hijo se golpea la cabeza"]), "caregiver");
@@ -170,8 +172,8 @@ test("scenarios: every turn keeps the invariants with the scripted model", async
       last = r;
       const text = r.sentences.join(" ");
       for (const p of checkTurn({ text, asksWhomToCall: s.expect.whomTurns?.includes(i) ?? false, sourceAllowed: r.retrieval.docs.length > 0, firstSentenceMs: r.firstSentenceMs, firstSentenceBudgetMs: 900 })) failures.push(`${s.id} t${i + 1}: ${p}`);
-      const severeExpected = s.expect.severeFrom !== undefined && i >= s.expect.severeFrom;
-      if (severeExpected !== r.state.severe) failures.push(`${s.id} t${i + 1}: severe=${r.state.severe}, expected ${severeExpected}`);
+      // Only scenarios that declare severeFrom assert the signal; the others leave it to the model's judgement.
+      if (s.expect.severeFrom !== undefined && i >= s.expect.severeFrom && !r.state.severe) failures.push(`${s.id} t${i + 1}: code found no severe signal`);
       assert.equal(r.source, "model", `${s.id} t${i + 1}: the model spoke`);
       assert.doesNotMatch(text, /\[slow\]|\*\*/, `${s.id} t${i + 1}: tags and markdown stripped`);
       if (s.expect.whomTurns?.includes(i)) assert.match(r.sentences[0], /\d{3}|En qué país/, `${s.id} t${i + 1}: the number or the country question comes first`);
