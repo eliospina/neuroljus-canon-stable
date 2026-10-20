@@ -11,6 +11,7 @@
  */
 
 import type { EmergencyLang } from "../../src/lib/emergency";
+import { EXTENDED } from "./scenariosExtended";
 
 export type Scenario = {
   id: string;
@@ -32,7 +33,7 @@ export type Scenario = {
   must: string[];
 };
 
-export const SCENARIOS: Scenario[] = [
+export const CORE: Scenario[] = [
   {
     id: "es-gasolina-estufa",
     lang: "es",
@@ -177,3 +178,6 @@ export const SCENARIOS: Scenario[] = [
     must: ["Practical sleep steps, one or two at a time.", "Second turn: something different from the first, and a question about what 'everything' included."],
   },
 ];
+
+/** The core set plus the improvised situations in scenariosExtended.ts. */
+export const SCENARIOS: Scenario[] = [...CORE, ...EXTENDED];

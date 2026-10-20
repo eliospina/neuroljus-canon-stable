@@ -77,7 +77,7 @@ const COUNTRIES: Array<[string, RegExp]> = [
   ["ES", w("espa[ñn]a|spain|spanien|madrid|barcelona|valencia|sevilla|espa[ñn]ol(a)?s?")],
   ["CO", w("colombia|colombian\\p{L}*|bogot[áa]|medell[ií]n|cali|kolumbien")],
   ["MX", w("m[ée]xico|mexico|mexikan\\p{L}*|mexican\\p{L}*|cdmx|guadalajara|monterrey")],
-  ["US", w("estados unidos|united states|usa|u\\.s\\.|eeuu|ee\\.uu\\.|america|new york|california|texas|florida|usa:s")],
+  ["US", w("estados unidos|united states|usa|u\\.s\\.|the us|eeuu|ee\\.uu\\.|america|new york|california|texas|florida|usa:s")],
   ["GB", w("reino unido|inglaterra|united kingdom|england|britain|uk|london|londres|storbritannien|england")],
   ["BR", w("brasil|brazil|brasilien|s[ãa]o paulo|rio de janeiro")],
   ["CL", w("chile|chilen\\p{L}*|santiago de chile")],
