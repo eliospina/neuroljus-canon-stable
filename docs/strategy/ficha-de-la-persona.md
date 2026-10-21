@@ -116,7 +116,7 @@ Sin ficha, cada herramienta ve una foto; con ficha, ven una película. Un modelo
 ## 5. Confianza
 
 - **Cuenta** de quien cuida: correo y enlace de acceso. Sin contraseñas. Dentro, una o varias personas.
-- **La persona autista adulta puede tener su propia cuenta** y ser dueña de su ficha. Recomiendo que sea así desde el primer día: Sara existe, y un sistema que solo entiende "cuidador y cuidado" la deja fuera.
+- **La persona autista es dueña de su propia ficha desde el día uno** (decidido por la dueña, 21 de octubre). Sara existe, y un sistema que solo entiende "cuidador y cuidado" la deja fuera. Quien no puede crearla hoy la recibe de quien cuida y la toma cuando pueda.
 - **Consentimiento en dos niveles**, separados y claros: (1) guardar la ficha y compartirla con quien yo elija; (2) que mi historia sin nombre ayude a entrenar. El segundo apagado por defecto.
 - **Exportar y borrar** todo, de una persona o de la cuenta entera, con un botón. Lo que ya salió anonimizado no se puede recuperar y se dice así.
 - **Dónde vive**: cifrado, en la Unión Europea, con reglas de acceso por fila (nadie ve una ficha que no es suya o que no le compartieron). Supabase en Estocolmo o Fráncfort cumple esto y empieza gratis.
@@ -153,7 +153,7 @@ Cada paso tiene que ser usable de verdad al terminarlo, por Ana, Jonas o Sara. N
 Antes del paso 1 hay que decidir tres cosas, y son tuyas:
 
 - **Cómo se llama.** "Ficha" es lo que uso aquí porque es lo que dice una madre. Otras: "perfil", "diccionario", "libro de Mateo". El nombre que la gente diga en voz alta.
-- **Si la persona autista puede ser dueña de su propia ficha desde el día uno.** Yo digo que sí.
+- **Decidido (21 de octubre): la persona autista es dueña de su propia ficha desde el día uno.** Puede crear su cuenta, escribir "en sus palabras", decidir quién la ve y revocarlo. Quien cuida puede crear una ficha para quien no puede hacerlo, y esa ficha pasa a la persona cuando pueda tomarla.
 - **Si guardamos medicación y médico cuando quien cuida los pone.** Opcional y útil en crisis; también es el dato más sensible. Yo lo guardaría, opcional, marcado como tal.
 
 ---
