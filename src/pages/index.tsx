@@ -108,6 +108,9 @@ export default function Home() {
         heroCompanion: "Prova Companion i mobilen →",
         heroLine: "Prata med Linjen nu",
         heroLineNote: "Kris just nu? Stödlinjen svarar dygnet runt, på svenska, engelska och spanska.",
+        heroVision: "Öppna NL-VISION",
+        heroVisionNote: "Se signalerna med kameran, lokalt på din enhet. Inget lämnar telefonen.",
+        heroCompanionNote: "Protokollet i sin första kropp: din telefon. Nästa är ditt hem.",
         navLine: "Linjen",
         navCompanion: "Companion",
         navAsk: "Fråga",
@@ -215,6 +218,9 @@ export default function Home() {
         heroCompanion: "Try Companion on your phone →",
         heroLine: "Talk to the Line now",
         heroLineNote: "Crisis right now? The support line answers around the clock, in Spanish, English and Swedish.",
+        heroVision: "Open NL-VISION",
+        heroVisionNote: "See the signals with the camera, locally on your device. Nothing leaves the phone.",
+        heroCompanionNote: "The protocol in its first body: your phone. The next one is your home.",
         navLine: "The Line",
         navCompanion: "Companion",
         navAsk: "Ask",
@@ -322,6 +328,9 @@ export default function Home() {
         heroCompanion: "Prueba Companion en tu móvil →",
         heroLine: "Hablar con la Línea ahora",
         heroLineNote: "¿Crisis ahora mismo? La línea de apoyo responde las 24 horas, en español, inglés y sueco.",
+        heroVision: "Abrir NL-VISION",
+        heroVisionNote: "Mira las señales con la cámara, en tu dispositivo. Nada sale del teléfono.",
+        heroCompanionNote: "El protocolo en su primer cuerpo: tu teléfono. El siguiente es tu casa.",
         navLine: "La Línea",
         navCompanion: "Companion",
         navAsk: "Pregunta",
@@ -468,14 +477,23 @@ export default function Home() {
               <span>{copy.heroDim}</span>
             </h1>
             <p className="heroSub">{copy.heroSub}</p>
-            <div className="heroLine">
-              <Link href="/linea" className="heroLineBtn">
-                {copy.heroLine}
-              </Link>
-              <span className="heroLineNote">{copy.heroLineNote}</span>
+            <div className="heroDoors">
+              <div className="heroDoor">
+                <Link href="/linea" className="heroLineBtn">
+                  {copy.heroLine}
+                </Link>
+                <span className="heroLineNote">{copy.heroLineNote}</span>
+              </div>
+              <div className="heroDoor">
+                <Link href="/labs/nl-vision" className="heroVisionBtn">
+                  {copy.heroVision}
+                </Link>
+                <span className="heroLineNote">{copy.heroVisionNote}</span>
+              </div>
             </div>
             <p className="heroCompanion">
               <Link href="/companion">{copy.heroCompanion}</Link>
+              <span>{copy.heroCompanionNote}</span>
             </p>
           </section>
 
@@ -760,26 +778,43 @@ export default function Home() {
           line-height: 1.6;
           color: #a1a1aa;
         }
-        .heroLine {
+        .heroDoors {
           margin-top: 24px;
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: 14px;
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 20px;
+          max-width: 760px;
         }
-        .heroLine :global(.heroLineBtn) {
+        .heroDoor {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .heroDoors :global(.heroLineBtn),
+        .heroDoors :global(.heroVisionBtn) {
           display: inline-block;
+          align-self: flex-start;
           padding: 16px 26px;
           border-radius: 12px;
-          background: #ffffff;
-          color: #09090b;
           font-size: 18px;
           font-weight: 700;
           text-decoration: none;
+        }
+        .heroDoors :global(.heroLineBtn) {
+          background: #ffffff;
+          color: #09090b;
           box-shadow: 0 0 0 2px #3ecf9a inset;
         }
-        .heroLine :global(.heroLineBtn):hover {
+        .heroDoors :global(.heroLineBtn):hover {
           background: #3ecf9a;
+        }
+        .heroDoors :global(.heroVisionBtn) {
+          background: transparent;
+          color: #ffffff;
+          box-shadow: 0 0 0 2px #52525b inset;
+        }
+        .heroDoors :global(.heroVisionBtn):hover {
+          box-shadow: 0 0 0 2px #3ecf9a inset;
         }
         .heroLineNote {
           max-width: 360px;
@@ -788,16 +823,26 @@ export default function Home() {
           color: #a1a1aa;
         }
         .heroCompanion {
-          margin-top: 18px;
+          margin-top: 22px;
+          display: flex;
+          flex-wrap: wrap;
+          align-items: baseline;
+          gap: 10px 14px;
+          font-size: 14px;
+          color: #a1a1aa;
         }
         .heroCompanion :global(a) {
-          display: inline-block;
-          padding: 12px 18px;
-          border-radius: 10px;
-          background: #3ecf9a;
-          color: #09090b;
+          color: #3ecf9a;
           font-weight: 600;
           text-decoration: none;
+        }
+        .heroCompanion :global(a):hover {
+          text-decoration: underline;
+        }
+        @media (max-width: 640px) {
+          .heroDoors {
+            grid-template-columns: 1fr;
+          }
         }
         .metrics {
           display: grid;
