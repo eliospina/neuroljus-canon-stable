@@ -829,7 +829,7 @@ export default function Home() {
           letter-spacing: 0.08em;
         }
         .path {
-          margin: 0 0 40px;
+          margin: 0 auto 40px;
         }
         .path h2 {
           margin: 0;
