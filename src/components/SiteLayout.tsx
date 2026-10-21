@@ -40,6 +40,7 @@ const navLabels: Record<Lang, Record<string, string>> = {
   sv: {
     skip: "Hoppa till innehållet",
     home: "Hem",
+    line: "Linjen",
     about: "Om",
     method: "Metod",
     contact: "Kontakt",
@@ -51,6 +52,7 @@ const navLabels: Record<Lang, Record<string, string>> = {
   en: {
     skip: "Skip to content",
     home: "Home",
+    line: "The Line",
     about: "About",
     method: "Method",
     contact: "Contact",
@@ -62,6 +64,7 @@ const navLabels: Record<Lang, Record<string, string>> = {
   es: {
     skip: "Saltar al contenido",
     home: "Inicio",
+    line: "La Línea",
     about: "Sobre",
     method: "Método",
     contact: "Contacto",
@@ -89,6 +92,7 @@ export default function SiteLayout({
 
   const items: NavItem[] = [
     { href: "/", label: t.home, match: (p) => p === "/" },
+    { href: "/linea", label: t.line, match: (p) => p === "/linea" },
     { href: "/labs/nl-vision", label: "NL-VISION", match: (p) => p === "/labs/nl-vision" },
     {
       href: "/labs/future-care-room",

@@ -104,8 +104,14 @@ export default function Home() {
         ex2: "caregiver_pause → STOP · hand_back",
         modulesTitle: "Distribuerade moduler",
         modCompanionTitle: "Companion",
-        modCompanionBody: "Omsorgsroboten som börjar i telefonen. Beskriv, tryck Starta: skärmen dämpas, mjukt brus, bildkort.",
+        modCompanionBody: "Första robotdemon: protokollet körs i en kropp, i dag din telefon. Nyttan kommer när kroppen är ditt hem.",
         heroCompanion: "Prova Companion i mobilen →",
+        heroLine: "Prata med Linjen nu",
+        heroLineNote: "En fråga, en svår natt, en kris. Stödlinjen svarar dygnet runt, på svenska, engelska och spanska.",
+        heroVision: "Öppna NL-VISION",
+        heroVisionNote: "Se signalerna med kameran, lokalt på din enhet. Inget lämnar telefonen.",
+        heroCompanionNote: "Protokollet i sin första kropp: din telefon. Nästa är ditt hem.",
+        navLine: "Linjen",
         navCompanion: "Companion",
         navAsk: "Fråga",
         navLibrary: "Bibliotek",
@@ -208,8 +214,14 @@ export default function Home() {
         ex2: "caregiver_pause → STOP · hand_back",
         modulesTitle: "Deployed modules",
         modCompanionTitle: "Companion",
-        modCompanionBody: "The care robot that starts on your phone. Describe, press Start: the screen dims, soft noise, visual card.",
+        modCompanionBody: "First robot demo: the protocol running in a body, today your phone. The benefit comes when the body is your home.",
         heroCompanion: "Try Companion on your phone →",
+        heroLine: "Talk to the Line now",
+        heroLineNote: "A question, a hard night, a crisis. The support line answers around the clock, in Spanish, English and Swedish.",
+        heroVision: "Open NL-VISION",
+        heroVisionNote: "See the signals with the camera, locally on your device. Nothing leaves the phone.",
+        heroCompanionNote: "The protocol in its first body: your phone. The next one is your home.",
+        navLine: "The Line",
         navCompanion: "Companion",
         navAsk: "Ask",
         navLibrary: "Library",
@@ -312,8 +324,14 @@ export default function Home() {
         ex2: "caregiver_pause → STOP · hand_back",
         modulesTitle: "Módulos desplegados",
         modCompanionTitle: "Companion",
-        modCompanionBody: "El robot de cuidado que empieza en el teléfono. Describe, pulsa Empezar: la pantalla se atenúa, ruido suave, tarjeta visual.",
+        modCompanionBody: "Primer demo de robot: el protocolo ejecutándose en un cuerpo, hoy tu teléfono. El beneficio llega cuando el cuerpo sea tu casa.",
         heroCompanion: "Prueba Companion en tu móvil →",
+        heroLine: "Hablar con la Línea ahora",
+        heroLineNote: "Una duda, una noche difícil, una crisis. La línea de apoyo responde las 24 horas, en español, inglés y sueco.",
+        heroVision: "Abrir NL-VISION",
+        heroVisionNote: "Mira las señales con la cámara, en tu dispositivo. Nada sale del teléfono.",
+        heroCompanionNote: "El protocolo en su primer cuerpo: tu teléfono. El siguiente es tu casa.",
+        navLine: "La Línea",
         navCompanion: "Companion",
         navAsk: "Pregunta",
         navLibrary: "Biblioteca",
@@ -420,6 +438,7 @@ export default function Home() {
             <Link href="/labs/future-care-room">{copy.navLabs}</Link>
             <Link href="/labs/nl-vision">{copy.navVision}</Link>
             <Link href="/labs/robot-interface">{copy.navProtocol}</Link>
+            <Link href="/linea">{copy.navLine}</Link>
             <Link href="/companion">{copy.navCompanion}</Link>
             <Link href="/ask">{copy.navAsk}</Link>
             <Link href="/library">{copy.navLibrary}</Link>
@@ -458,8 +477,14 @@ export default function Home() {
               <span>{copy.heroDim}</span>
             </h1>
             <p className="heroSub">{copy.heroSub}</p>
-            <p className="heroCompanion">
-              <Link href="/companion">{copy.heroCompanion}</Link>
+            <div className="heroLine">
+              <Link href="/linea" className="heroLineBtn">
+                {copy.heroLine}
+              </Link>
+              <span className="heroLineNote">{copy.heroLineNote}</span>
+            </div>
+            <p className="heroTools">
+              <Link href="/labs/nl-vision">{copy.heroVision} →</Link>
             </p>
           </section>
 
@@ -744,17 +769,50 @@ export default function Home() {
           line-height: 1.6;
           color: #a1a1aa;
         }
-        .heroCompanion {
-          margin-top: 18px;
+        .heroLine {
+          margin-top: 28px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
         }
-        .heroCompanion :global(a) {
+        .heroLine :global(.heroLineBtn) {
           display: inline-block;
-          padding: 12px 18px;
-          border-radius: 10px;
+          padding: 16px 28px;
+          border-radius: 12px;
+          background: #3ecf9a;
+          color: #09090b;
+          font-size: 18px;
+          font-weight: 700;
+          text-decoration: none;
+          box-shadow: 0 12px 36px rgba(62, 207, 154, 0.25);
+        }
+        .heroLine :global(.heroLineBtn):hover {
+          background: #5fe0b0;
+        }
+        .heroLineNote {
+          max-width: 560px;
+          font-size: 14px;
+          line-height: 1.5;
+          color: #a1a1aa;
+        }
+        .heroTools {
+          margin-top: 20px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+        }
+        .heroTools :global(a) {
+          display: inline-block;
+          padding: 12px 20px;
+          border-radius: 12px;
           background: #3ecf9a;
           color: #09090b;
           font-weight: 600;
           text-decoration: none;
+        }
+        .heroTools :global(a):hover {
+          background: #5fe0b0;
         }
         .metrics {
           display: grid;
