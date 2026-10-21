@@ -104,7 +104,7 @@ export default function Home() {
         ex2: "caregiver_pause → STOP · hand_back",
         modulesTitle: "Distribuerade moduler",
         modCompanionTitle: "Companion",
-        modCompanionBody: "Omsorgsroboten som börjar i telefonen. Beskriv, tryck Starta: skärmen dämpas, mjukt brus, bildkort.",
+        modCompanionBody: "Första robotdemon: protokollet körs i en kropp, i dag din telefon. Nyttan kommer när kroppen är ditt hem.",
         heroCompanion: "Prova Companion i mobilen →",
         heroLine: "Prata med Linjen nu",
         heroLineNote: "Kris just nu? Stödlinjen svarar dygnet runt, på svenska, engelska och spanska.",
@@ -214,7 +214,7 @@ export default function Home() {
         ex2: "caregiver_pause → STOP · hand_back",
         modulesTitle: "Deployed modules",
         modCompanionTitle: "Companion",
-        modCompanionBody: "The care robot that starts on your phone. Describe, press Start: the screen dims, soft noise, visual card.",
+        modCompanionBody: "First robot demo: the protocol running in a body, today your phone. The benefit comes when the body is your home.",
         heroCompanion: "Try Companion on your phone →",
         heroLine: "Talk to the Line now",
         heroLineNote: "Crisis right now? The support line answers around the clock, in Spanish, English and Swedish.",
@@ -324,7 +324,7 @@ export default function Home() {
         ex2: "caregiver_pause → STOP · hand_back",
         modulesTitle: "Módulos desplegados",
         modCompanionTitle: "Companion",
-        modCompanionBody: "El robot de cuidado que empieza en el teléfono. Describe, pulsa Empezar: la pantalla se atenúa, ruido suave, tarjeta visual.",
+        modCompanionBody: "Primer demo de robot: el protocolo ejecutándose en un cuerpo, hoy tu teléfono. El beneficio llega cuando el cuerpo sea tu casa.",
         heroCompanion: "Prueba Companion en tu móvil →",
         heroLine: "Hablar con la Línea ahora",
         heroLineNote: "¿Crisis ahora mismo? La línea de apoyo responde las 24 horas, en español, inglés y sueco.",
@@ -485,7 +485,6 @@ export default function Home() {
             </div>
             <p className="heroTools">
               <Link href="/labs/nl-vision">{copy.heroVision} →</Link>
-              <Link href="/companion">{copy.heroCompanion}</Link>
             </p>
           </section>
 
