@@ -130,7 +130,7 @@ export default function Home() {
           "Din vårdgivarminne i den här webbläsaren — inte automatisk igenkänning av besökare. Ingen inloggning.",
         principlesTitle: "Designprinciper",
         principles: [
-          "Vårdgivaren författar rutiner, sammanhang och mål — som ansvar för personen, inte som personalens ego.",
+          "Den som vårdar bestämmer rutiner, sammanhang och mål, eftersom hen svarar för personen. Auktoriteten kommer ur det ansvaret, inte ur befattningen.",
           "Den neurodivergenta personen rankas inte under personalens bekvämlighet eller neurotypisk ”förmåga”.",
           "Knuff, slag och förnedring är aldrig vård — vittna, skydda, rapportera. Neuroljus upptäcker inte våld via kamera.",
           "Försummad hygien, smutsig miljö och tillåten självskada är försummelse av värdighet — vittna, skydda, eskalera enligt lokal behörighet.",
@@ -240,7 +240,7 @@ export default function Home() {
           "Your caregiver memory in this browser — not automatic recognition of visitors. No login.",
         principlesTitle: "Design principles",
         principles: [
-          "The caregiver authors routines, context, and goals — as responsibility for the person, not staff ego.",
+          "The caregiver sets routines, context and goals, because they answer for the person. Authority comes from that responsibility, not from rank.",
           "The neurodivergent person is never ranked below staff convenience or neurotypical “capability.”",
           "Pushing, hitting, and humiliation are never care — witness, protect, report. Neuroljus does not detect violence via camera.",
           "Neglected hygiene, soiled environments, and allowed self-harm are neglect of dignity — witness, protect, escalate under local authorization.",
@@ -350,7 +350,7 @@ export default function Home() {
           "Tu memoria de cuidadora en este navegador — no reconocimiento automático de visitantes. Sin login.",
         principlesTitle: "Principios de diseño",
         principles: [
-          "La cuidadora define rutinas, contexto y objetivos — como responsabilidad por la persona, no como ego del personal.",
+          "Quien cuida define rutinas, contexto y objetivos, porque responde por la persona. La autoridad nace de esa responsabilidad, no del cargo.",
           "La persona neurodivergente no se rankea debajo de la comodidad del personal ni de la “capacidad” neurotípica.",
           "Empujar, pegar y humillar nunca es cuidado — testimonio, proteger, reportar. Neuroljus no detecta violencia por cámara.",
           "Higiene abandonada, entorno sucio y autoagresión permitida son negligencia de la dignidad — testimonio, proteger, escalar bajo autorización local.",
