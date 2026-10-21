@@ -483,7 +483,7 @@ export default function Home() {
               </Link>
               <span className="heroLineNote">{copy.heroLineNote}</span>
             </div>
-            <p className="heroCompanion">
+            <p className="heroTools">
               <Link href="/labs/nl-vision">{copy.heroVision} →</Link>
               <Link href="/companion">{copy.heroCompanion}</Link>
             </p>
@@ -771,46 +771,50 @@ export default function Home() {
           color: #a1a1aa;
         }
         .heroLine {
-          margin-top: 24px;
+          margin-top: 28px;
           display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: 14px;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
         }
         .heroLine :global(.heroLineBtn) {
           display: inline-block;
-          padding: 16px 26px;
+          padding: 16px 28px;
           border-radius: 12px;
-          background: #ffffff;
+          background: #3ecf9a;
           color: #09090b;
           font-size: 18px;
           font-weight: 700;
           text-decoration: none;
-          box-shadow: 0 0 0 2px #3ecf9a inset;
+          box-shadow: 0 12px 36px rgba(62, 207, 154, 0.25);
         }
         .heroLine :global(.heroLineBtn):hover {
-          background: #3ecf9a;
+          background: #5fe0b0;
         }
         .heroLineNote {
-          max-width: 360px;
+          max-width: 560px;
           font-size: 14px;
           line-height: 1.5;
           color: #a1a1aa;
         }
-        .heroCompanion {
-          margin-top: 18px;
+        .heroTools {
+          margin-top: 20px;
           display: flex;
           flex-wrap: wrap;
           gap: 12px;
         }
-        .heroCompanion :global(a) {
+        .heroTools :global(a) {
           display: inline-block;
           padding: 12px 18px;
-          border-radius: 10px;
-          background: #3ecf9a;
-          color: #09090b;
+          border-radius: 12px;
+          border: 1px solid #3f3f46;
+          color: #e4e4e7;
           font-weight: 600;
           text-decoration: none;
+        }
+        .heroTools :global(a):hover {
+          border-color: #3ecf9a;
+          color: #3ecf9a;
         }
         .metrics {
           display: grid;
