@@ -804,16 +804,15 @@ export default function Home() {
         }
         .heroTools :global(a) {
           display: inline-block;
-          padding: 12px 18px;
+          padding: 12px 20px;
           border-radius: 12px;
-          border: 1px solid #3f3f46;
-          color: #e4e4e7;
+          background: #3ecf9a;
+          color: #09090b;
           font-weight: 600;
           text-decoration: none;
         }
         .heroTools :global(a):hover {
-          border-color: #3ecf9a;
-          color: #3ecf9a;
+          background: #5fe0b0;
         }
         .metrics {
           display: grid;
