@@ -2,6 +2,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { clientIp, rateLimited } from "@/lib/line/http";
 import {
   callAnthropicReflection,
   degradedReflectionReply,
@@ -52,27 +53,8 @@ const NEMOTRON_PROMPT = (() => {
   }
 })();
 
-// In-memory store. Note: on serverless this is per-instance, not global,
-// but it still meaningfully slows down abuse from a single source.
-const hits = new Map<string, { count: number; resetAt: number }>();
-
-function getClientIp(req: NextApiRequest): string {
-  const fwd = req.headers["x-forwarded-for"];
-  if (typeof fwd === "string" && fwd.length > 0) return fwd.split(",")[0].trim();
-  if (Array.isArray(fwd) && fwd.length > 0) return fwd[0];
-  return req.socket?.remoteAddress || "unknown";
-}
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const entry = hits.get(ip);
-  if (!entry || now > entry.resetAt) {
-    hits.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return false;
-  }
-  entry.count += 1;
-  return entry.count > RATE_LIMIT_MAX_REQUESTS;
-}
+const isRateLimited = (ip: string) => rateLimited(`chat:${ip}`, RATE_LIMIT_MAX_REQUESTS);
+const getClientIp = clientIp;
 
 function sanitizeMessages(input: unknown): ChatMessage[] {
   if (!Array.isArray(input)) return [];
@@ -170,7 +152,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       "If the user describes institutional neglect: name it as neglect of dignity, not 'challenging behavior'. Help structure facts. Prefer local documentation; future report/alert adapters exist in code but stay disabled. " +
       "If the user mentions repeated phrases or speech cycles: honor them as human communication worth recording without fake-translating inner meaning. " +
       "When the user asks how to improve the portal or what Neuroljus should do next, answer from the REAL public product only: " +
-      "(1) /labs/nl-vision raw landmarks, (2) /labs/future-care-room Story Mode and Possible discomfort, (3) /labs/robot-interface protocol export, (4) /observation-method structured notes, (5) /labs/pattern-notebook caregiver-authored local notes (YOU hold patterns; open portal has no login or biometric identity — never claim Neuroljus detects patterns across anonymous visitors). " +
+      "(1) /labs/nl-vision raw landmarks, (2) /companion routines run on the phone and rated, (3) /labs/robot-interface protocol export, (4) /labs/pattern-notebook caregiver-authored local notes (YOU hold patterns; open portal has no login or biometric identity — never claim Neuroljus detects patterns across anonymous visitors). " +
       "If asked how patterns work: say honestly that this is an open lab without accounts; Pattern Notebook stores what the caregiver writes in this browser; automatic person recognition across visits is a future learning horizon with consent, not live. " +
       "Do NOT turn every lived incident into a care protocol. Internal witness/memory routes may exist but are not the public pitch. " +
       "Do NOT give generic SaaS advice (random UI tips, signup funnels, feature lists unrelated to these labs). " +

@@ -114,7 +114,7 @@ export default function ContactPage() {
           </div>
 
           <nav className="navLinks" aria-label="Primary">
-            <Link href="/labs/future-care-room">{copy.navLabs}</Link>
+            <Link href="/labs/robot-interface">{copy.navLabs}</Link>
             <Link href="/labs/nl-vision">{copy.navVision}</Link>
             <Link href="/labs/robot-interface">{copy.navProtocol}</Link>
             <Link href="/about">{copy.navAbout}</Link>

@@ -480,8 +480,6 @@ export default function RobotInterfaceLab() {
           </div>
           <nav className="navLinks" aria-label="Labs">
             <Link href="/labs/nl-vision">NL-VISION</Link>
-            <Link href="/labs/future-care-room">Care Room</Link>
-            <Link href="/care-agent">Care Agent</Link>
             <Link href="/companion">Companion</Link>
             <Link href="/">Platform</Link>
           </nav>
@@ -503,11 +501,6 @@ export default function RobotInterfaceLab() {
             <p className="cli">neuroljus workspace --protocol</p>
             <h1>Robot Care Interface</h1>
             <p className="roomLink">
-              Prefer the experiential view?{" "}
-              <Link href="/labs/future-care-room">Enter the Future Care Room</Link>
-              {" · "}
-              <Link href="/care-agent">Describe a situation in words: Care Agent</Link>
-              {" · "}
               <Link href="/companion">Run it on your phone: Companion</Link>
             </p>
           </div>

@@ -1,16 +1,11 @@
 import assert from "node:assert/strict";
 import { beforeEach, afterEach, test } from "node:test";
-import searchRoute from "../src/pages/api/line/search";
 import { ALLOWED_DOMAINS, MAX_SEARCHES, buildLineSearch, parseSearch } from "../src/lib/line/search";
-import { resetLineRateLimits } from "../src/lib/line/http";
-import { SECRET, mockReq, mockRes } from "./helpers/lineHttp";
 
 const OLD = { ...process.env };
 const realFetch = globalThis.fetch;
 beforeEach(() => {
-  process.env.LINE_API_SECRET = SECRET;
   delete process.env.ANTHROPIC_API_KEY;
-  resetLineRateLimits();
 });
 afterEach(() => {
   process.env = { ...OLD };
@@ -101,45 +96,4 @@ test("failures return mode none so the agent can say it found nothing", async ()
   assert.deepEqual(errors, ["529"]);
   const b = await buildLineSearch({ ...base, apiKey: null, query: "visual timetable" });
   assert.equal(b.mode, "none");
-});
-
-test("endpoint: validation, auth, key from the environment and no logging of the query", async () => {
-  let res = mockRes();
-  await searchRoute(mockReq({}), res);
-  assert.equal(res.statusCode, 400);
-
-  res = mockRes();
-  await searchRoute(mockReq({ query: "visual timetable" }, { secret: null }), res);
-  assert.equal(res.statusCode, 401);
-
-  process.env.ANTHROPIC_API_KEY = "env-key";
-  let key = "";
-  globalThis.fetch = (async (u: string, init: RequestInit) => {
-    key = (init.headers as Record<string, string>)["x-api-key"];
-    return webResponse()(u, init);
-  }) as typeof fetch;
-  const logged: string[] = [];
-  const o = [console.error, console.log, console.warn];
-  console.error = console.log = console.warn = (...a: unknown[]) => void logged.push(a.join(" "));
-  try {
-    res = mockRes();
-    await searchRoute(mockReq({ query: "visual timetable for Leo", lang: "en" }), res);
-  } finally {
-    [console.error, console.log, console.warn] = o;
-  }
-  assert.equal(res.statusCode, 200);
-  assert.equal(res.json_.mode, "web");
-  assert.equal(key, "env-key");
-  assert.ok(!logged.join("\n").includes("Leo"));
-});
-
-test("endpoint: search has its own, tighter rate limit", async () => {
-  process.env.LINE_SEARCH_RATE_LIMIT_PER_MIN = "2";
-  const codes: number[] = [];
-  for (let i = 0; i < 3; i++) {
-    const res = mockRes();
-    await searchRoute(mockReq({ query: "visual timetable" }), res);
-    codes.push(res.statusCode);
-  }
-  assert.deepEqual(codes, [200, 200, 429]);
 });

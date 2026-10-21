@@ -439,7 +439,7 @@ function NLVisionTasks() {
           <b>NL-VISION</b>
         </div>
         <nav>
-          <Link href="/labs/future-care-room">Care Room</Link>
+          <Link href="/companion">Companion</Link>
           <Link href="/labs/robot-interface">Protocol Workspace</Link>
         </nav>
       </header>
