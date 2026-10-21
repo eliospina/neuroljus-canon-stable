@@ -8,6 +8,8 @@ import { FICHA_COPY } from "@/lib/ficha/copy";
 import { cardOf, encodeCard, rankHelps, type Ficha } from "@/lib/ficha/model";
 import { deleteFicha, readFicha, saveFicha, writeActiveId } from "@/lib/ficha/localStore";
 import { useAccount } from "@/components/ficha/Account";
+import { NLVISION_STORAGE_KEY } from "@/lib/nlVision/signals";
+import { compareToBaseline, emptyBaseline, foldSession, latestSession, markSeen, MIN_BASELINE_SESSIONS, type SessionSummary } from "@/lib/ficha/vision";
 
 /**
  * "Mateo, hoy": one person, four verbs, and the record that grows underneath.
@@ -32,6 +34,8 @@ export default function FichaPage() {
   const [sign, setSign] = useState("");
   const [meaning, setMeaning] = useState("");
   const [help, setHelp] = useState("");
+  const [camera, setCamera] = useState<SessionSummary | null>(null);
+  const [cameraMeaning, setCameraMeaning] = useState("");
   useAccount(() => {
     if (id) setF(readFicha(id));
   });
@@ -41,6 +45,12 @@ export default function FichaPage() {
     const found = readFicha(id);
     setF(found);
     if (found) writeActiveId(found.id);
+    try {
+      const raw = window.localStorage.getItem(NLVISION_STORAGE_KEY);
+      setCamera(raw ? latestSession(JSON.parse(raw)) : null);
+    } catch {
+      setCamera(null);
+    }
     if (found) setLang(found.lang);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady, id]);
@@ -169,6 +179,61 @@ export default function FichaPage() {
               {copy.add}
             </button>
           </form>
+        </section>
+
+        <section>
+          <h2>{copy.vision.title}</h2>
+          <p className="hint">{copy.vision.hint}</p>
+          {(() => {
+            if (!camera)
+              return (
+                <p>
+                  {copy.vision.none}{" "}
+                  <Link href="/labs/nl-vision">{copy.vision.open} →</Link>
+                </p>
+              );
+            const base = f.vision ?? emptyBaseline();
+            const fresh = camera.t1 > base.seenUntil;
+            const diffs = compareToBaseline(camera, base);
+            const when = new Date(camera.t1).toLocaleString(lang === "sv" ? "sv-SE" : lang === "en" ? "en-GB" : "es-ES", { weekday: "short", hour: "2-digit", minute: "2-digit" });
+            const describe = (d: (typeof diffs)[number]) => (d.direction === "more" ? copy.vision.more : copy.vision.less)(copy.vision.metrics[d.metric]);
+            return (
+              <div className="camera">
+                <p>
+                  <strong>{copy.vision.last(Math.max(1, Math.round(camera.seconds / 60)), when)}</strong>{" "}
+                  {base.sessions < MIN_BASELINE_SESSIONS ? copy.vision.learning(base.sessions, MIN_BASELINE_SESSIONS) : diffs.length === 0 ? copy.vision.usual : null}
+                </p>
+                {diffs.length > 0 && (
+                  <ul className="diffs">
+                    {diffs.map((d) => (
+                      <li key={d.metric}>{describe(d)}</li>
+                    ))}
+                  </ul>
+                )}
+                {fresh ? (
+                  <div className="cameraActions">
+                    <button type="button" className="nl-cta-ghost" onClick={() => update({ vision: foldSession(base, camera) })}>
+                      {copy.vision.ordinary}
+                    </button>
+                    <input value={cameraMeaning} onChange={(e) => setCameraMeaning(e.target.value)} placeholder={copy.vision.meaning} maxLength={240} />
+                    <button
+                      type="button"
+                      className="nl-cta-ghost"
+                      onClick={() => {
+                        const sign = diffs.length ? diffs.map(describe).join(", ") : copy.vision.title;
+                        update({ vision: markSeen(base, camera), signals: [...f.signals, { sign: `${sign} (${copy.verbs.look})`, meaning: cameraMeaning.trim(), confirmed: 1 }] });
+                        setCameraMeaning("");
+                      }}
+                    >
+                      {copy.vision.asSignal}
+                    </button>
+                  </div>
+                ) : (
+                  <p className="hint">{copy.vision.seen}</p>
+                )}
+              </div>
+            );
+          })()}
         </section>
 
         <section>
@@ -414,6 +479,28 @@ export default function FichaPage() {
           font-size: 18px;
           cursor: pointer;
         }
+        .camera p {
+          margin: 0 0 8px;
+        }
+        .diffs {
+          margin: 0 0 10px;
+          padding-left: 20px;
+          color: var(--nl-aurora-b);
+        }
+        .cameraActions {
+          display: grid;
+          grid-template-columns: auto 1fr auto;
+          gap: 8px;
+        }
+        .cameraActions input {
+          min-height: 44px;
+          padding: 0 12px;
+          border: 1px solid var(--nl-border-strong);
+          border-radius: 10px;
+          background: var(--nl-bg-raised);
+          color: var(--nl-text);
+          font-size: 16px;
+        }
         .addRow {
           display: grid;
           grid-template-columns: 1fr 1fr auto;
@@ -440,7 +527,8 @@ export default function FichaPage() {
           .verbs {
             grid-template-columns: 1fr 1fr;
           }
-          .addRow {
+          .addRow,
+          .cameraActions {
             grid-template-columns: 1fr;
           }
           .rows li {
