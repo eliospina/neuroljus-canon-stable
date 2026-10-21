@@ -75,8 +75,8 @@ export default function Home() {
         pillAdapters: "adapters",
         pillAudit: "audit",
         cli: "neuroljus status --all",
-        heroTitle: "Vetenskaplig, empirisk och robotisk kunskap",
-        heroDim: "om omsorg för personer med autism.",
+        heroTitle: "Omsorg för personer med autism.",
+        heroDim: "Vetenskaplig, empirisk och robotisk kunskap.",
         heroSub:
           "Stödlinje dygnet runt, kamera som ser signaler, protokoll som en telefon, ett hem eller en robot kan köra. Allt lokalt. Den som vårdar bestämmer.",
         m1: "scenariopresets",
@@ -185,8 +185,8 @@ export default function Home() {
         pillAdapters: "adapters",
         pillAudit: "audit",
         cli: "neuroljus status --all",
-        heroTitle: "Scientific, empirical and robotic knowledge",
-        heroDim: "of care for people with autism.",
+        heroTitle: "Care for people with autism.",
+        heroDim: "Scientific, empirical and robotic knowledge.",
         heroSub:
           "A 24-hour support line, a camera that sees signals, protocols a phone, a home or a robot can run. All local. The carer decides.",
         m1: "scenario presets",
@@ -295,8 +295,8 @@ export default function Home() {
         pillAdapters: "adapters",
         pillAudit: "audit",
         cli: "neuroljus status --all",
-        heroTitle: "Conocimiento científico, empírico y robótico",
-        heroDim: "del cuidado en personas con autismo.",
+        heroTitle: "Cuidado en personas con autismo.",
+        heroDim: "Conocimiento científico, empírico y robótico.",
         heroSub:
           "Línea de apoyo 24 horas, cámara que ve señales, protocolos que ejecuta un teléfono, una casa o un robot. Todo local. Quien cuida decide.",
         m1: "presets de escenario",
