@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { LANG_NAMES } from "@/components/SiteLayout";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import ContactForm from "../components/ContactForm";
@@ -130,13 +131,13 @@ export default function ContactPage() {
             </div>
             <div className="langToggle" role="group" aria-label="Language">
               <button onClick={() => setLang("es")} aria-pressed={lang === "es"}>
-                ES
+                {LANG_NAMES.es}
               </button>
               <button onClick={() => setLang("en")} aria-pressed={lang === "en"}>
-                EN
+                {LANG_NAMES.en}
               </button>
               <button onClick={() => setLang("sv")} aria-pressed={lang === "sv"}>
-                SV
+                {LANG_NAMES.sv}
               </button>
             </div>
           </div>

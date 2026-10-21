@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import type { GetStaticProps } from "next";
 import { useCallback, useMemo, useState } from "react";
-import { useLang, type Lang } from "@/components/SiteLayout";
+import { LANG_NAMES, useLang, type Lang } from "@/components/SiteLayout";
 import { LIBRARY_DOCS, docLink, type EvidenceKind } from "@/lib/library";
 import { TOPIC_LABELS, TOPIC_ORDER, type TopicId } from "@/lib/library/topics";
 
@@ -205,7 +205,7 @@ export default function LibraryPage({ items, counts }: Props) {
           <div className="lang" role="group" aria-label="Language">
             {(["es", "en", "sv"] as Lang[]).map((l) => (
               <button key={l} type="button" onClick={() => setLang(l)} aria-pressed={lang === l}>
-                {l.toUpperCase()}
+                {LANG_NAMES[l]}
               </button>
             ))}
           </div>

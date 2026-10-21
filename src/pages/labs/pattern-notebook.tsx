@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { LANG_NAMES } from "@/components/SiteLayout";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
@@ -183,14 +184,14 @@ export default function PatternNotebook() {
           </nav>
           <div className="langToggle" role="group" aria-label="Language">
             <button type="button" onClick={() => setLang("es")} aria-pressed={lang === "es"}>
-              ES
-            </button>
+                {LANG_NAMES.es}
+              </button>
             <button type="button" onClick={() => setLang("en")} aria-pressed={lang === "en"}>
-              EN
-            </button>
+                {LANG_NAMES.en}
+              </button>
             <button type="button" onClick={() => setLang("sv")} aria-pressed={lang === "sv"}>
-              SV
-            </button>
+                {LANG_NAMES.sv}
+              </button>
           </div>
         </header>
 
