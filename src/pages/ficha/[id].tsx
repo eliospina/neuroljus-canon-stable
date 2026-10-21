@@ -7,6 +7,7 @@ import ListInput from "@/components/ficha/ListInput";
 import { FICHA_COPY } from "@/lib/ficha/copy";
 import { cardOf, encodeCard, rankHelps, type Ficha } from "@/lib/ficha/model";
 import { deleteFicha, readFicha, saveFicha, writeActiveId } from "@/lib/ficha/localStore";
+import { useAccount } from "@/components/ficha/Account";
 
 /**
  * "Mateo, hoy": one person, four verbs, and the record that grows underneath.
@@ -31,6 +32,9 @@ export default function FichaPage() {
   const [sign, setSign] = useState("");
   const [meaning, setMeaning] = useState("");
   const [help, setHelp] = useState("");
+  useAccount(() => {
+    if (id) setF(readFicha(id));
+  });
 
   useEffect(() => {
     if (!router.isReady) return;

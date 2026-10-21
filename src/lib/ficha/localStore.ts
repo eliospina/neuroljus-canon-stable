@@ -1,7 +1,8 @@
 /**
- * Where the ficha lives today: this browser only (localStorage). The record
- * never leaves the device from here. When accounts arrive, this module keeps
- * the same functions and a server store sits behind them.
+ * Where the ficha lives: this browser (localStorage) as the working copy.
+ * With an account signed in (sync.ts), every save and delete here also
+ * reaches the account; without one, nothing leaves the device. Tests pass
+ * their own storage and never touch the sync hook.
  */
 
 import { sanitizeFicha, type Ficha } from "./model";
@@ -52,12 +53,14 @@ export function saveFicha(input: Ficha, given?: Storage): Ficha {
   if (i >= 0) list[i] = ficha;
   else list.unshift(ficha);
   writeFichas(list, given);
+  if (!given) sync?.push(ficha);
   return ficha;
 }
 
 export function deleteFicha(id: string, given?: Storage): Ficha[] {
   const next = readFichas(given).filter((f) => f.id !== id);
   writeFichas(next, given);
+  if (!given) sync?.remove(id);
   return next;
 }
 
@@ -86,4 +89,20 @@ export function writeActiveId(id: string | null, given?: Storage): void {
 export function updateFicha(id: string, change: (f: Ficha) => Ficha, given?: Storage): Ficha | null {
   const f = readFicha(id, given);
   return f ? saveFicha(change(f), given) : null;
+}
+
+// ---------------------------------------------------------------------------
+// Sync hook: when an account is signed in, sync.ts registers push/remove here
+// and every local save or delete also reaches the account. Nothing else in the
+// app needs to know whether an account exists.
+
+export type FichaSync = { push: (f: Ficha) => void; remove: (id: string) => void };
+let sync: FichaSync | null = null;
+
+export function registerSync(next: FichaSync | null): void {
+  sync = next;
+}
+
+export function currentSync(): FichaSync | null {
+  return sync;
 }
