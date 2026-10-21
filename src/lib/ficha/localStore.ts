@@ -60,3 +60,30 @@ export function deleteFicha(id: string, given?: Storage): Ficha[] {
   writeFichas(next, given);
   return next;
 }
+
+/** The person the tools are working for right now (one per browser). */
+export const ACTIVE_KEY = "neuroljus.ficha.active";
+
+export function readActiveId(given?: Storage): string | null {
+  const s = storage(given);
+  if (!s) return null;
+  try {
+    const id = s.getItem(ACTIVE_KEY);
+    return id && readFicha(id, given) ? id : null;
+  } catch {
+    return null;
+  }
+}
+
+export function writeActiveId(id: string | null, given?: Storage): void {
+  const s = storage(given);
+  if (!s) return;
+  if (id) s.setItem(ACTIVE_KEY, id);
+  else s.removeItem(ACTIVE_KEY);
+}
+
+/** Read, change and save one record. Returns the saved record, or null if it does not exist. */
+export function updateFicha(id: string, change: (f: Ficha) => Ficha, given?: Storage): Ficha | null {
+  const f = readFicha(id, given);
+  return f ? saveFicha(change(f), given) : null;
+}

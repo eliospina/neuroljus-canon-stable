@@ -28,6 +28,9 @@ import { addRun, readRuns, type CompanionRun, type RunEnd } from "@/lib/companio
 import { helpfulSummary, OUTCOMES, rankRoutines, routineKey, setRunOutcome, type Outcome } from "@/lib/companion/outcomes";
 import { addPatternNote } from "@/lib/carePatterns/localStore";
 import { readIdeas } from "@/lib/ask/ideas";
+import FichaPicker, { useActiveFicha } from "@/components/ficha/FichaPicker";
+import { recordTry } from "@/lib/ficha/model";
+import { updateFicha } from "@/lib/ficha/localStore";
 import {
   DEFAULT_ENTITIES,
   homeAssistantScript,
@@ -104,6 +107,7 @@ function mmss(seconds: number): string {
 
 export default function CompanionPage() {
   const [lang, setLang] = useLang("en");
+  const [activeFicha, setActiveFicha, fichas] = useActiveFicha();
   const copy = UI[lang];
   const pcopy = PROFILE_UI[lang];
   const ocopy = OUTCOME_UI[lang];
@@ -288,6 +292,7 @@ export default function CompanionPage() {
             uncertainty: outcome === "no_change" ? ocopy.noteNoChange : ocopy.noteUncertainty,
             seenBefore: before.some((r) => r.id !== run.id && r.outcome && routineKey(r.scenario, r.commands) === key),
           });
+          if (activeFicha) updateFicha(activeFicha, (f) => recordTry(f, SCENARIO_NAMES[lang][run.scenario], outcome));
         }
         setRuns(readRuns(window.localStorage));
       } catch {
@@ -295,7 +300,7 @@ export default function CompanionPage() {
       }
       setRated(outcome);
     },
-    [lastRunId, result, rated, lang, ocopy]
+    [lastRunId, result, rated, lang, ocopy, activeFicha]
   );
 
   // Drive the body from the deterministic phone state.
@@ -472,6 +477,7 @@ export default function CompanionPage() {
           </section>
 
           <section className="card">
+            <FichaPicker lang={lang} active={activeFicha} onChange={setActiveFicha} list={fichas} />
             <form
               onSubmit={(e) => {
                 e.preventDefault();

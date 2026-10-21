@@ -3,6 +3,9 @@ import { LANG_NAMES } from "@/components/SiteLayout";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import type { FormEvent } from "react";
+import FichaPicker, { useActiveFicha } from "@/components/ficha/FichaPicker";
+import { recordNote } from "@/lib/ficha/model";
+import { updateFicha } from "@/lib/ficha/localStore";
 import {
   addPatternNote,
   deletePatternNote,
@@ -23,6 +26,7 @@ const emptyForm = {
 
 export default function PatternNotebook() {
   const [lang, setLang] = useState<Lang>("en");
+  const [activeFicha, setActiveFicha, fichas] = useActiveFicha();
   const [notes, setNotes] = useState<PatternNote[]>([]);
   const [form, setForm] = useState(emptyForm);
   const [savedFlash, setSavedFlash] = useState(false);
@@ -51,7 +55,7 @@ export default function PatternNotebook() {
         heroSub:
           "Öppen portal — inga dörrar, inga konton, ingen biometrisk igenkänning. Neuroljus skiljer inte besökare åt. Här sparar DU vad som verkade lindra eller förvärra hos personen du vårdar — lokalt i den här webbläsaren.",
         frame:
-          "Detta är inte automatisk mönsterdetektering mellan främlingar. Det är din vårdgivarminne, strukturerad. Framtida personprofiler med samtycke är en lärandehorisont — inte byggt här ännu. Ingen diagnos av smärta eller genetik.",
+          "Detta är inte automatisk mönsterdetektering mellan främlingar. Det är din vårdgivarminne, strukturerad. Välj personen ovanför formuläret, så skrivs anteckningen också in i hens profil. Ingen diagnos av smärta eller genetik.",
         formTitle: "Ny anteckning",
         gesture: "Observerad gest / hållning / ljud",
         context: "Sammanhang (ljus, ljud, rutin, personer nära)",
@@ -79,7 +83,7 @@ export default function PatternNotebook() {
         heroSub:
           "Open portal — no doors, no accounts, no biometric recognition. Neuroljus does not tell visitors apart. Here YOU save what seemed to ease or worsen for the person you care for — local to this browser.",
         frame:
-          "This is not automatic pattern detection across strangers. It is your caregiver memory, structured. Future person-linked profiles with consent are a learning horizon — not built here yet. No diagnosis of pain or genetics.",
+          "This is not automatic pattern detection across strangers. It is your caregiver memory, structured. Choose the person above the form and the note is also written into their profile. No diagnosis of pain or genetics.",
         formTitle: "New note",
         gesture: "Observed gesture / posture / sound",
         context: "Context (light, sound, routine, people nearby)",
@@ -107,7 +111,7 @@ export default function PatternNotebook() {
         heroSub:
           "Portal abierto — sin puertas, sin cuentas, sin reconocimiento biométrico. Neuroljus no distingue visitantes. Aquí guardas TÚ lo que pareció aliviar o empeorar en la persona a quien cuidas — solo en este navegador.",
         frame:
-          "Esto no es detección automática de patrones entre desconocidos. Es tu memoria de cuidadora, estructurada. Perfiles personales futuros con consentimiento son un horizonte de aprendizaje — aún no construido aquí. Sin diagnóstico de dolor ni genética.",
+          "Esto no es detección automática de patrones entre desconocidos. Es tu memoria de cuidadora, estructurada. Elige a la persona encima del formulario y la nota se anota también en su ficha. Sin diagnóstico de dolor ni genética.",
         formTitle: "Nueva nota",
         gesture: "Gesto / postura / sonido observado",
         context: "Contexto (luz, sonido, rutina, personas cerca)",
@@ -142,6 +146,11 @@ export default function PatternNotebook() {
       uncertainty: form.uncertainty.trim(),
       seenBefore: form.seenBefore,
     });
+    if (activeFicha) {
+      updateFicha(activeFicha, (f) =>
+        recordNote(f, { gesture: form.gesture, context: form.context, eased: form.eased, worsened: form.worsened })
+      );
+    }
     setNotes(next);
     setForm(emptyForm);
     setSavedFlash(true);
@@ -209,6 +218,7 @@ export default function PatternNotebook() {
 
           <section className="panel" aria-labelledby="form-title">
             <h2 id="form-title">{copy.formTitle}</h2>
+            <FichaPicker lang={lang} active={activeFicha} onChange={setActiveFicha} list={fichas} />
             <form onSubmit={onSubmit}>
               <label>
                 {copy.gesture}
