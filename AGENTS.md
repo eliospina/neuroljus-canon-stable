@@ -29,12 +29,15 @@ Commands: `npm run dev` · `npm run build` · `npm run smoke` (tsc) · `npm test
 - `src/pages/labs/future-care-room.tsx` — the public-facing interactive experience (care room scene, live controls, protocol layer, timeline). Linked from the landing page hero and labs cards.
 - `src/pages/index.tsx` — trilingual landing (Swedish/English/Spanish); all copy changes must be made in all three languages.
 
-## Current state (July 2026)
+## Current state (October 2026)
 
-Active branch: `lab/robot-interface` (ahead of `main`). It contains the care protocol engine, both lab pages, landing reframe, and strategy/board docs. Pending decisions:
+Everything lives on `main`; Vercel deploys it to neuroljus.com. There is no long-lived feature branch. Work goes through short-lived branches and draft PRs that the owner merges with an explicit "ok".
 
-- Open PR `lab/robot-interface` → `main` to publish (review full diff — it includes landing copy changes, not just the labs).
-- Untracked local files not yet in git: `LICENSE`, `CITATION.cff`, `VALIDATION.md`, and `docs/` (PhD proposal, white papers, PDFs). The owner decides if/when to commit these.
+- The voice line is in production: ElevenLabs agent "NeuroLjus Línea" (web widget on `/linea`, no phone number assigned yet) with `brain.ts` as its Custom LLM. Privacy on the ElevenLabs side: no audio recording, transcript and PII deleted, retention 0 days.
+- `/linea` is the public page for the line and the landing hero's primary button opens it. The landing no longer has a "design principles" section: it is for tools, not discourse.
+- Line quality is measured with real calls by the owner and `npm run line:eval -- --live --judge`; last judge run 38/42 (`docs/line/eval-2026-10-20.md`). The anonymised needs audit (`npm run line:needs`) shows what callers needed and what the model lacked.
+- `LICENSE`, `CITATION.cff`, `VALIDATION.md` and `docs/` are committed.
+- Owner-side items still open: Vercel Fluid Compute and an external keep-warm pinger for cold starts, a phone number for the agent.
 
 ## Rules and tone
 
