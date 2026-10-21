@@ -243,7 +243,7 @@ test("brain: with no model or a failing model the line says one honest sentence,
   const r3 = await brainTurnText({ messages: [{ role: "user", content: "Mi hijo Mateo se come tierra y papel todos los días desde hace 3 semanas" }], apiKey: null, model: "x", modelStream: mockModelStream, noWeb: true, log: (l) => lines3.push(l) });
   assert.equal(r3.state.likelyProtocol, null);
   const entry = JSON.parse(lines3.find((l) => l.includes("line_uncovered"))!);
-  assert.doesNotMatch(entry.situation, /Mateo|3 semanas/);
+  assert.equal(entry.situation, undefined, "nothing the caller said is logged");
 });
 
 // ---------------------------------------------------------------- HTTP (OpenAI Chat Completions, SSE)
