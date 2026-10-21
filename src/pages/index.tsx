@@ -596,15 +596,6 @@ export default function Home() {
             </div>
           </section>
 
-          <section className="shell principles" aria-labelledby="principles-title">
-            <h2 id="principles-title">{copy.principlesTitle}</h2>
-            <ul>
-              {copy.principles.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </section>
-
           <section className="shell ctaBand">
             <div>
               <h2>{copy.ctaTitle}</h2>
