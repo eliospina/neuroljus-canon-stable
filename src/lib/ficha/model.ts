@@ -251,3 +251,45 @@ export function decodeCard(code: string): Card | null {
     return null;
   }
 }
+
+// ---------------------------------------------------------------------------
+// The record grows from use. Companion ratings and notebook notes call these.
+
+export type TryOutcome = "helped" | "no_change" | "worse";
+
+const same = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase();
+
+/** Count one more try of something; adds it if new. Pure: returns a new record. */
+export function recordTry(f: Ficha, text: string, outcome: TryOutcome): Ficha {
+  const t = text.trim().slice(0, MAX_TEXT);
+  if (!t) return f;
+  const bump = (h: Tried): Tried => ({
+    ...h,
+    tried: h.tried + 1,
+    helped: h.helped + (outcome === "helped" ? 1 : 0),
+    worsened: h.worsened + (outcome === "worse" ? 1 : 0),
+  });
+  const i = f.helps.findIndex((h) => same(h.text, t));
+  const helps = i >= 0 ? f.helps.map((h, j) => (j === i ? bump(h) : h)) : [...f.helps, bump({ text: t, tried: 0, helped: 0, worsened: 0 })].slice(-MAX_ITEMS);
+  return { ...f, helps };
+}
+
+export type NoteInput = { gesture: string; context: string; eased: string; worsened: string };
+
+/** A notebook note: the gesture is a signal (confirmed once more), what eased helped, what worsened made it worse. */
+export function recordNote(f: Ficha, note: NoteInput): Ficha {
+  let next = f;
+  const sign = note.gesture.trim().slice(0, MAX_TEXT);
+  if (sign) {
+    const meaning = note.context.trim().slice(0, MAX_TEXT);
+    const i = next.signals.findIndex((s) => same(s.sign, sign));
+    const signals =
+      i >= 0
+        ? next.signals.map((s, j) => (j === i ? { ...s, confirmed: s.confirmed + 1, meaning: s.meaning || meaning } : s))
+        : [...next.signals, { sign, meaning, confirmed: 1 }].slice(-MAX_ITEMS);
+    next = { ...next, signals };
+  }
+  if (note.eased.trim()) next = recordTry(next, note.eased, "helped");
+  if (note.worsened.trim()) next = recordTry(next, note.worsened, "worse");
+  return next;
+}

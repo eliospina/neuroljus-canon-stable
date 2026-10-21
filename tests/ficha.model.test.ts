@@ -92,3 +92,39 @@ test("local store: save, read, update and delete, all through sanitize", () => {
   saveFicha(mateo(), s);
   assert.deepEqual(deleteFicha("ficha_test_mateo", s), []);
 });
+
+import { recordNote, recordTry } from "../src/lib/ficha/model";
+import { readActiveId, updateFicha, writeActiveId } from "../src/lib/ficha/localStore";
+
+test("recordTry counts a try, matches case-insensitively, and adds what is new", () => {
+  let f = recordTry(mateo(), "Ruido Marrón", "helped");
+  assert.deepEqual(f.helps[0], { text: "ruido marrón", tried: 12, helped: 10, worsened: 0 });
+  f = recordTry(f, "Transición nocturna", "worse");
+  assert.deepEqual(f.helps.at(-1), { text: "Transición nocturna", tried: 1, helped: 0, worsened: 1 });
+  f = recordTry(f, "Transición nocturna", "no_change");
+  assert.deepEqual(f.helps.at(-1), { text: "Transición nocturna", tried: 2, helped: 0, worsened: 1 });
+  assert.equal(recordTry(f, "   ", "helped"), f);
+});
+
+test("recordNote turns a notebook note into a signal and two counts", () => {
+  const f = recordNote(mateo(), { gesture: "Tararea más fuerte", context: "", eased: "su manta", worsened: "voces altas" });
+  assert.equal(f.signals[0].confirmed, 5);
+  assert.equal(f.signals[0].meaning, "viene sobrecarga");
+  assert.deepEqual(f.helps.find((h) => h.text === "su manta"), { text: "su manta", tried: 1, helped: 1, worsened: 0 });
+  assert.deepEqual(f.helps.find((h) => h.text === "voces altas"), { text: "voces altas", tried: 1, helped: 0, worsened: 1 });
+  const g = recordNote(mateo(), { gesture: "muerde la manga", context: "antes de salir", eased: "", worsened: "" });
+  assert.deepEqual(g.signals.at(-1), { sign: "muerde la manga", meaning: "antes de salir", confirmed: 1 });
+});
+
+test("the active record survives only while it exists, and updateFicha saves through it", () => {
+  const s = memoryStorage();
+  saveFicha(mateo(), s);
+  writeActiveId("ficha_test_mateo", s);
+  assert.equal(readActiveId(s), "ficha_test_mateo");
+  const saved = updateFicha("ficha_test_mateo", (f) => recordTry(f, "su manta", "helped"), s);
+  assert.equal(readFicha("ficha_test_mateo", s)?.helps.find((h) => h.text === "su manta")?.helped, 1);
+  assert.ok(saved);
+  assert.equal(updateFicha("ficha_nope", (f) => f, s), null);
+  deleteFicha("ficha_test_mateo", s);
+  assert.equal(readActiveId(s), null);
+});

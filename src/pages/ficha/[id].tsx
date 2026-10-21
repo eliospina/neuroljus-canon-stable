@@ -6,7 +6,7 @@ import SiteLayout, { useLang } from "@/components/SiteLayout";
 import ListInput from "@/components/ficha/ListInput";
 import { FICHA_COPY } from "@/lib/ficha/copy";
 import { cardOf, encodeCard, rankHelps, type Ficha } from "@/lib/ficha/model";
-import { deleteFicha, readFicha, saveFicha } from "@/lib/ficha/localStore";
+import { deleteFicha, readFicha, saveFicha, writeActiveId } from "@/lib/ficha/localStore";
 
 /**
  * "Mateo, hoy": one person, four verbs, and the record that grows underneath.
@@ -36,6 +36,7 @@ export default function FichaPage() {
     if (!router.isReady) return;
     const found = readFicha(id);
     setF(found);
+    if (found) writeActiveId(found.id);
     if (found) setLang(found.lang);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.isReady, id]);
@@ -112,7 +113,7 @@ export default function FichaPage() {
 
         <nav className="verbs" aria-label={copy.today}>
           {VERBS.map((v) => (
-            <Link key={v.key} href={v.href} className="verb">
+            <Link key={v.key} href={v.key === "act" || v.key === "note" ? `${v.href}?ficha=${f.id}` : v.href} className="verb">
               <strong>{copy.verbs[v.key]}</strong>
               <span>{copy.verbsSub[v.key]}</span>
             </Link>
