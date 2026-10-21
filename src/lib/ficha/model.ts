@@ -8,6 +8,8 @@
  * (owner: "person") or a carer keeps it for them (owner: "carer").
  */
 
+import { sanitizeBaseline, type VisionBaseline } from "./vision";
+
 export type FichaLang = "es" | "en" | "sv";
 export type Speech = "yes" | "some" | "no";
 export type AgeBand = "child" | "teen" | "adult";
@@ -48,6 +50,8 @@ export type Ficha = {
   /** Never do. */
   avoid: string[];
   crisis: Crisis;
+  /** What is usual for this person as seen by NL-VISION (movement only). Null until the first session is counted. */
+  vision: VisionBaseline | null;
 };
 
 /** The 30-second card: what a new carer reads before touching anyone. */
@@ -99,6 +103,7 @@ export function emptyFicha(lang: FichaLang = "es", owner: Owner = "carer"): Fich
     helps: [],
     avoid: [],
     crisis: { steps: [], whomToCall: "", medication: "", clinician: "" },
+    vision: null,
   };
 }
 
@@ -152,6 +157,7 @@ export function sanitizeFicha(input: unknown): Ficha {
       medication: str(crisis.medication),
       clinician: str(crisis.clinician),
     },
+    vision: sanitizeBaseline(o.vision),
   };
 }
 
