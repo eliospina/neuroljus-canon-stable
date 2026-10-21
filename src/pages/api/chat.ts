@@ -373,7 +373,7 @@ Raw prototype numbers (last local window):
         "I'm having trouble processing that right now. Could you please try rephrasing your question?";
       return res.status(200).json({ role: "assistant", content, provider: "openai" });
     } catch (error) {
-      console.error("Reflection provider error:", error);
+      console.error("Reflection provider error:", error instanceof Error ? error.name : "error");
       return res.status(500).json({
         role: "assistant",
         content: "I'm experiencing some technical difficulties. Please try again in a moment.",
@@ -383,7 +383,7 @@ Raw prototype numbers (last local window):
       clearTimeout(timeout);
     }
   } catch (error) {
-    console.error("Chat handler error:", error);
+    console.error("Chat handler error:", error instanceof Error ? error.name : "error");
     return res.status(500).json({
       role: "assistant",
       content: "I'm experiencing some technical difficulties. Please try again in a moment.",

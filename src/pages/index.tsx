@@ -472,24 +472,6 @@ export default function Home() {
             </p>
           </section>
 
-          <section className="shell metrics" aria-label="Platform metrics">
-            <div>
-              <b>5</b>
-              <span>{copy.m1}</span>
-            </div>
-            <div>
-              <b>7</b>
-              <span>{copy.m2}</span>
-            </div>
-            <div>
-              <b>4</b>
-              <span>{copy.m3}</span>
-            </div>
-            <div>
-              <b>1</b>
-              <span>{copy.m4}</span>
-            </div>
-          </section>
 
           <section className="shell path" aria-labelledby="path-title">
             <h2 id="path-title">{copy.pathTitle}</h2>

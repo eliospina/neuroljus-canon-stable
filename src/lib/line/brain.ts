@@ -241,11 +241,11 @@ export function anonymize(text: string): string {
 export function logUncovered(state: CallState, docs: Retrieved, webTried: boolean, log: (line: string) => void = (l) => console.info(l)): void {
   if (process.env.LINE_LOG_UNCOVERED === "0") return;
   if (state.current.length < 15) return;
-  log(JSON.stringify({ event: "line_uncovered", lang: state.lang, turn: state.turn, severe: state.severe, situation: anonymize(state.current), libraryDocs: docs.docs.map((d) => d.id), webTried }));
+  log(JSON.stringify({ event: "line_uncovered", lang: state.lang, turn: state.turn, severe: state.severe, libraryDocs: docs.docs.map((d) => d.id), webTried }));
 }
 
 export function logFallback(state: CallState, reason: string, ms: number, log: (line: string) => void = (l) => console.warn(l)): void {
-  log(JSON.stringify({ event: "line_fallback", reason, ms, lang: state.lang, turn: state.turn, severe: state.severe, situation: anonymize(state.current) }));
+  log(JSON.stringify({ event: "line_fallback", reason, ms, lang: state.lang, turn: state.turn, severe: state.severe }));
 }
 
 // ---------------------------------------------------------------------------
