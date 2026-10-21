@@ -39,7 +39,7 @@ export default function ContactPage() {
         cli: "neuroljus contact --open",
         heroTitle: "Kontakt",
         heroSub:
-          "Samtal med vårdgivare, feedback om observationsmetoden, forskningssamarbete, etik och tillgänglighet.",
+          "Samtal med vårdgivare, feedback om observationsmetoden, forskningssamarbete, etik och tillgänglighet. Vi hanterar inte ekonomiskt stöd eller myndighetsärenden.",
       },
       en: {
         seoTitle: "Contact — Neuroljus",
@@ -59,7 +59,7 @@ export default function ContactPage() {
         cli: "neuroljus contact --open",
         heroTitle: "Contact",
         heroSub:
-          "Caregiver conversations, observation-method feedback, research collaboration, ethics, and accessibility inquiries.",
+          "Caregiver conversations, observation-method feedback, research collaboration, ethics, and accessibility inquiries. We do not handle financial aid or paperwork.",
       },
       es: {
         seoTitle: "Contacto — Neuroljus",
@@ -79,7 +79,7 @@ export default function ContactPage() {
         cli: "neuroljus contact --open",
         heroTitle: "Contacto",
         heroSub:
-          "Conversaciones con cuidadoras, feedback del método de observación, colaboración en investigación, ética y accesibilidad.",
+          "Conversaciones con cuidadoras, feedback del método de observación, colaboración en investigación, ética y accesibilidad. No gestionamos ayudas económicas ni trámites.",
       },
     }),
     []

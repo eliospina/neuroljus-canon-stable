@@ -78,7 +78,7 @@ export default function Home() {
         heroTitle: "Autism: fråga nu,",
         heroDim: "när som helst.",
         heroSub:
-          "Med rösten, på svenska, engelska och spanska, utan registrering. Dessutom en kamera som ser signaler och protokoll som en telefon, ett hem eller en robot kan köra. Allt lokalt. Den som vårdar bestämmer.",
+          "Med rösten, på svenska, engelska och spanska, utan registrering. Dessutom en kamera som ser signaler och omsorgsrutiner redo att användas. Allt lokalt. Den som vårdar bestämmer.",
         m1: "scenariopresets",
         m2: "kommandotyper",
         m3: "adaptermål",
@@ -188,7 +188,7 @@ export default function Home() {
         heroTitle: "Autism: ask now,",
         heroDim: "at any hour.",
         heroSub:
-          "By voice, in English, Spanish and Swedish, no sign-up. Plus a camera that sees signals and protocols a phone, a home or a robot can run. All local. The carer decides.",
+          "By voice, in English, Spanish and Swedish, no sign-up. Plus a camera that sees signals and care routines ready to use. All local. The carer decides.",
         m1: "scenario presets",
         m2: "command types",
         m3: "adapter targets",
@@ -298,7 +298,7 @@ export default function Home() {
         heroTitle: "Autismo: pregunta ahora,",
         heroDim: "a cualquier hora.",
         heroSub:
-          "Por voz, en español, inglés y sueco, sin registro. Además, una cámara que ve señales y protocolos que ejecuta un teléfono, una casa o un robot. Todo local. Quien cuida decide.",
+          "Por voz, en español, inglés y sueco, sin registro. Además, una cámara que ve señales y rutinas de cuidado listas para usar. Todo local. Quien cuida decide.",
         m1: "presets de escenario",
         m2: "tipos de comando",
         m3: "destinos adaptador",
@@ -418,20 +418,11 @@ export default function Home() {
       </Head>
 
       <div className="page">
-        <div className="statusbar" aria-hidden="true">
-          <span>
-            neuroljus://local · <b>care_command_protocol_v0</b> · audit=on · video=on-device · care_chat=claude
-          </span>
-          <span>{copy.statusRight}</span>
-        </div>
-
         <header className="shell topnav" role="banner">
           <div className="brandRow">
             <Link href="/" className="logo">
               Neuroljus
             </Link>
-            <span className="sep">/</span>
-            <span className="platform">{copy.platform}</span>
           </div>
 
           <nav className="navLinks" aria-label="Primary">
@@ -448,12 +439,6 @@ export default function Home() {
           </nav>
 
           <div className="navRight">
-            <div className="pills" role="group" aria-label="Platform layers">
-              <span className="pill on">{copy.pillRuntime}</span>
-              <span className="pill">{copy.pillProtocol}</span>
-              <span className="pill">{copy.pillAdapters}</span>
-              <span className="pill">{copy.pillAudit}</span>
-            </div>
             <div className="langToggle" role="group" aria-label="Language">
               <button onClick={() => setLang("es")} aria-pressed={lang === "es"}>
                 ES
@@ -470,7 +455,6 @@ export default function Home() {
 
         <main>
           <section className="shell hero" aria-labelledby="hero-title">
-            <p className="cli">{copy.cli}</p>
             <h1 id="hero-title">
               {copy.heroTitle}
               <br />
