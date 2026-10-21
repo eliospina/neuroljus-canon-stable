@@ -418,20 +418,11 @@ export default function Home() {
       </Head>
 
       <div className="page">
-        <div className="statusbar" aria-hidden="true">
-          <span>
-            neuroljus://local · <b>care_command_protocol_v0</b> · audit=on · video=on-device · care_chat=claude
-          </span>
-          <span>{copy.statusRight}</span>
-        </div>
-
         <header className="shell topnav" role="banner">
           <div className="brandRow">
             <Link href="/" className="logo">
               Neuroljus
             </Link>
-            <span className="sep">/</span>
-            <span className="platform">{copy.platform}</span>
           </div>
 
           <nav className="navLinks" aria-label="Primary">
@@ -448,12 +439,6 @@ export default function Home() {
           </nav>
 
           <div className="navRight">
-            <div className="pills" role="group" aria-label="Platform layers">
-              <span className="pill on">{copy.pillRuntime}</span>
-              <span className="pill">{copy.pillProtocol}</span>
-              <span className="pill">{copy.pillAdapters}</span>
-              <span className="pill">{copy.pillAudit}</span>
-            </div>
             <div className="langToggle" role="group" aria-label="Language">
               <button onClick={() => setLang("es")} aria-pressed={lang === "es"}>
                 ES
@@ -470,7 +455,6 @@ export default function Home() {
 
         <main>
           <section className="shell hero" aria-labelledby="hero-title">
-            <p className="cli">{copy.cli}</p>
             <h1 id="hero-title">
               {copy.heroTitle}
               <br />
