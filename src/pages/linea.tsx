@@ -19,6 +19,7 @@ type Copy = {
   seoDesc: string;
   kicker: string;
   title: string;
+  sub: string;
   lead: string;
   emergency: string;
   start: string;
@@ -45,7 +46,8 @@ const T: Record<Lang, Copy> = {
     seoTitle: "La Línea — Neuroljus",
     seoDesc: "Línea de apoyo en crisis para personas autistas y quienes las cuidan. Responde las 24 horas, en español, inglés y sueco.",
     kicker: "La Línea · parte de Neuroljus",
-    title: "Alguien que sabe qué hacer, ahora.",
+    title: "Línea de apoyo en crisis para personas autistas y quienes las cuidan.",
+    sub: "Habla y recibe pasos concretos al instante. Las 24 horas, en español, inglés y sueco. Sin registro.",
     lead: "Una línea de apoyo para momentos de crisis con una persona autista: una rabieta que no baja, alguien que se golpea, que se escapó, que no come, que no duerme. Responde al instante, con pasos concretos, las 24 horas, en español, inglés y sueco.",
     emergency: "Si hay peligro de vida ahora mismo, llama primero al número de emergencias de tu país.",
     start: "Hablar ahora",
@@ -70,7 +72,8 @@ const T: Record<Lang, Copy> = {
     seoTitle: "The Line — Neuroljus",
     seoDesc: "Crisis support line for autistic people and the people who care for them. Answers around the clock, in Spanish, English and Swedish.",
     kicker: "The Line · part of Neuroljus",
-    title: "Someone who knows what to do, right now.",
+    title: "Crisis support line for autistic people and the people who care for them.",
+    sub: "Speak and get concrete steps at once. Around the clock, in Spanish, English and Swedish. No signup.",
     lead: "A support line for crisis moments with an autistic person: a meltdown that will not ease, someone hitting themself, someone who ran off, who will not eat, who will not sleep. It answers at once, with concrete steps, around the clock, in Spanish, English and Swedish.",
     emergency: "If a life is in danger right now, call your country's emergency number first.",
     start: "Talk now",
@@ -95,7 +98,8 @@ const T: Record<Lang, Copy> = {
     seoTitle: "Linjen — Neuroljus",
     seoDesc: "Stödlinje i kris för autistiska personer och de som tar hand om dem. Svarar dygnet runt, på svenska, engelska och spanska.",
     kicker: "Linjen · en del av Neuroljus",
-    title: "Någon som vet vad man ska göra, just nu.",
+    title: "Stödlinje i kris för autistiska personer och de som tar hand om dem.",
+    sub: "Prata och få konkreta steg direkt. Dygnet runt, på svenska, engelska och spanska. Ingen registrering.",
     lead: "En stödlinje för krisögonblick med en autistisk person: ett utbrott som inte lägger sig, någon som slår sig själv, som sprungit iväg, som inte äter, som inte sover. Den svarar direkt, med konkreta steg, dygnet runt, på svenska, engelska och spanska.",
     emergency: "Om ett liv är i fara just nu, ring först ditt lands nödnummer.",
     start: "Prata nu",
@@ -146,6 +150,7 @@ export default function LinePage() {
         <section className="hero">
           <p className="kicker">{copy.kicker}</p>
           <h1>{copy.title}</h1>
+          <p className="sub">{copy.sub}</p>
           <p className="emergency">{copy.emergency}</p>
           <button type="button" className="start" onClick={openLine} aria-live="polite">
             {opened ? copy.starting : copy.start}
@@ -229,6 +234,13 @@ export default function LinePage() {
           font-weight: 700;
           letter-spacing: -0.03em;
           line-height: 1.08;
+        }
+        .sub {
+          margin-top: 14px;
+          max-width: 640px;
+          font-size: 17px;
+          line-height: 1.55;
+          color: var(--nl-text-dim);
         }
         .lead {
           margin-top: 16px;
