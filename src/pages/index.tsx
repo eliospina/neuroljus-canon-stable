@@ -477,23 +477,15 @@ export default function Home() {
               <span>{copy.heroDim}</span>
             </h1>
             <p className="heroSub">{copy.heroSub}</p>
-            <div className="heroDoors">
-              <div className="heroDoor">
-                <Link href="/linea" className="heroLineBtn">
-                  {copy.heroLine}
-                </Link>
-                <span className="heroLineNote">{copy.heroLineNote}</span>
-              </div>
-              <div className="heroDoor">
-                <Link href="/labs/nl-vision" className="heroVisionBtn">
-                  {copy.heroVision}
-                </Link>
-                <span className="heroLineNote">{copy.heroVisionNote}</span>
-              </div>
+            <div className="heroLine">
+              <Link href="/linea" className="heroLineBtn">
+                {copy.heroLine}
+              </Link>
+              <span className="heroLineNote">{copy.heroLineNote}</span>
             </div>
             <p className="heroCompanion">
+              <Link href="/labs/nl-vision">{copy.heroVision} →</Link>
               <Link href="/companion">{copy.heroCompanion}</Link>
-              <span>{copy.heroCompanionNote}</span>
             </p>
           </section>
 
@@ -778,43 +770,26 @@ export default function Home() {
           line-height: 1.6;
           color: #a1a1aa;
         }
-        .heroDoors {
+        .heroLine {
           margin-top: 24px;
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 20px;
-          max-width: 760px;
-        }
-        .heroDoor {
           display: flex;
-          flex-direction: column;
-          gap: 10px;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 14px;
         }
-        .heroDoors :global(.heroLineBtn),
-        .heroDoors :global(.heroVisionBtn) {
+        .heroLine :global(.heroLineBtn) {
           display: inline-block;
-          align-self: flex-start;
           padding: 16px 26px;
           border-radius: 12px;
+          background: #ffffff;
+          color: #09090b;
           font-size: 18px;
           font-weight: 700;
           text-decoration: none;
-        }
-        .heroDoors :global(.heroLineBtn) {
-          background: #ffffff;
-          color: #09090b;
           box-shadow: 0 0 0 2px #3ecf9a inset;
         }
-        .heroDoors :global(.heroLineBtn):hover {
+        .heroLine :global(.heroLineBtn):hover {
           background: #3ecf9a;
-        }
-        .heroDoors :global(.heroVisionBtn) {
-          background: transparent;
-          color: #ffffff;
-          box-shadow: 0 0 0 2px #52525b inset;
-        }
-        .heroDoors :global(.heroVisionBtn):hover {
-          box-shadow: 0 0 0 2px #3ecf9a inset;
         }
         .heroLineNote {
           max-width: 360px;
@@ -823,26 +798,19 @@ export default function Home() {
           color: #a1a1aa;
         }
         .heroCompanion {
-          margin-top: 22px;
+          margin-top: 18px;
           display: flex;
           flex-wrap: wrap;
-          align-items: baseline;
-          gap: 10px 14px;
-          font-size: 14px;
-          color: #a1a1aa;
+          gap: 12px;
         }
         .heroCompanion :global(a) {
-          color: #3ecf9a;
+          display: inline-block;
+          padding: 12px 18px;
+          border-radius: 10px;
+          background: #3ecf9a;
+          color: #09090b;
           font-weight: 600;
           text-decoration: none;
-        }
-        .heroCompanion :global(a):hover {
-          text-decoration: underline;
-        }
-        @media (max-width: 640px) {
-          .heroDoors {
-            grid-template-columns: 1fr;
-          }
         }
         .metrics {
           display: grid;
