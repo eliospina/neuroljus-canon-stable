@@ -63,7 +63,7 @@ export default function PatternNotebook() {
         listTitle: "Dina anteckningar",
         empty: "Inga anteckningar ännu. Börja med en gest du nyss såg.",
         delete: "Ta bort",
-        ctaRoom: "Öppna Care Room · Possible discomfort",
+        ctaRoom: "Öppna Companion",
         ctaObs: "Observation Method",
         disclaimer:
           "Ingen medicinsk bedömning. Om oro kvarstår: kontakta vård. Trådlösa band/bälten är en framtida adapterhorisont — inte en produkt här.",
@@ -91,7 +91,7 @@ export default function PatternNotebook() {
         listTitle: "Your notes",
         empty: "No notes yet. Start with a gesture you just saw.",
         delete: "Delete",
-        ctaRoom: "Open Care Room · Possible discomfort",
+        ctaRoom: "Open Companion",
         ctaObs: "Observation Method",
         disclaimer:
           "Not a medical assessment. If concern remains: contact healthcare. Wireless belts/bands are a future adapter horizon — not a product here.",
@@ -119,7 +119,7 @@ export default function PatternNotebook() {
         listTitle: "Tus notas",
         empty: "Aún no hay notas. Empieza con un gesto que acabas de ver.",
         delete: "Eliminar",
-        ctaRoom: "Abrir Care Room · Possible discomfort",
+        ctaRoom: "Abrir Companion",
         ctaObs: "Observation Method",
         disclaimer:
           "No es evaluación médica. Si la preocupación continúa: contacta salud. Cinturones/bandas inalámbricas son un horizonte futuro de adaptadores — no un producto aquí.",
@@ -177,9 +177,8 @@ export default function PatternNotebook() {
             <span className="platform">{copy.platform}</span>
           </div>
           <nav className="navLinks" aria-label="Primary">
-            <Link href="/labs/future-care-room">Labs</Link>
+            <Link href="/companion">Companion</Link>
             <Link href="/labs/nl-vision">NL-VISION</Link>
-            <Link href="/observation-method">Observation</Link>
             <Link href="/labs/robot-interface">Protocol</Link>
           </nav>
           <div className="langToggle" role="group" aria-label="Language">
@@ -202,11 +201,8 @@ export default function PatternNotebook() {
           <p className="frame">{copy.frame}</p>
 
           <div className="ctaRow">
-            <Link className="cta" href="/labs/future-care-room">
+            <Link className="cta" href="/companion">
               {copy.ctaRoom}
-            </Link>
-            <Link className="cta ghost" href="/observation-method">
-              {copy.ctaObs}
             </Link>
           </div>
 

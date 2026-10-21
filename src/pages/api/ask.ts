@@ -5,6 +5,7 @@
 // never written to logs.
 
 import type { NextApiRequest, NextApiResponse } from "next";
+import { clientIp, rateLimited } from "@/lib/line/http";
 import { ask, ASK_TIMEOUT_MS, MAX_QUESTION_CHARS, type AskLang } from "@/lib/ask/expert";
 import { getAnthropicModel, getReflectionProvider } from "@/lib/careReflection/provider";
 import { countryFromHeaders } from "@/lib/emergency";
@@ -13,25 +14,7 @@ export const config = { maxDuration: 30 };
 
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX_REQUESTS = 12;
-const hits = new Map<string, { count: number; resetAt: number }>();
-
-function clientIp(req: NextApiRequest): string {
-  const fwd = req.headers["x-forwarded-for"];
-  if (typeof fwd === "string" && fwd) return fwd.split(",")[0].trim();
-  if (Array.isArray(fwd) && fwd.length > 0) return fwd[0];
-  return req.socket?.remoteAddress || "unknown";
-}
-
-function rateLimited(ip: string): boolean {
-  const now = Date.now();
-  const e = hits.get(ip);
-  if (!e || now > e.resetAt) {
-    hits.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return false;
-  }
-  e.count += 1;
-  return e.count > RATE_LIMIT_MAX_REQUESTS;
-}
+const limited = (ip: string) => rateLimited(`ask:${ip}`, RATE_LIMIT_MAX_REQUESTS);
 
 function lang(input: unknown): AskLang {
   return input === "es" || input === "sv" || input === "en" ? input : "en";
@@ -42,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.setHeader("Allow", "POST");
     return res.status(405).json({ ok: false, error: "Method not allowed." });
   }
-  if (rateLimited(clientIp(req))) return res.status(429).json({ ok: false, error: "Too many requests. Please wait a moment." });
+  if (limited(clientIp(req))) return res.status(429).json({ ok: false, error: "Too many requests. Please wait a moment." });
 
   try {
     const body = (req.body ?? {}) as Record<string, unknown>;

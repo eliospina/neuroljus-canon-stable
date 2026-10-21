@@ -107,16 +107,10 @@ export default function SiteLayout({
     { href: "/library", label: t.library, match: (p) => p === "/library" },
     { href: "/labs/nl-vision", label: "NL-VISION", match: (p) => p === "/labs/nl-vision" },
     {
-      href: "/labs/future-care-room",
-      label: "Care Room",
-      match: (p) => p === "/labs/future-care-room",
-    },
-    {
       href: "/labs/robot-interface",
       label: "Robot Lab",
       match: (p) => p === "/labs/robot-interface",
     },
-    { href: "/observation-method", label: t.method, match: (p) => p === "/observation-method" },
     { href: "/about", label: t.about, match: (p) => p === "/about" },
     { href: "/contact", label: t.contact, match: (p) => p === "/contact" },
   ];

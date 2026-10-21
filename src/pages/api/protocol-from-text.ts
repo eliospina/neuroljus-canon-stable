@@ -6,6 +6,7 @@
 // Claude interprets; buildCarePlan() decides. The caregiver text is never logged.
 
 import type { NextApiRequest, NextApiResponse } from "next";
+import { clientIp, rateLimited } from "@/lib/line/http";
 import { buildCarePlan } from "@/lib/careProtocol/planner";
 import type { VisionSnapshot } from "@/lib/careProtocol/types";
 import {
@@ -23,25 +24,8 @@ export const config = { maxDuration: 20 };
 
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX_REQUESTS = 20;
-const hits = new Map<string, { count: number; resetAt: number }>();
-
-function getClientIp(req: NextApiRequest): string {
-  const fwd = req.headers["x-forwarded-for"];
-  if (typeof fwd === "string" && fwd.length > 0) return fwd.split(",")[0].trim();
-  if (Array.isArray(fwd) && fwd.length > 0) return fwd[0];
-  return req.socket?.remoteAddress || "unknown";
-}
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const entry = hits.get(ip);
-  if (!entry || now > entry.resetAt) {
-    hits.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
-    return false;
-  }
-  entry.count += 1;
-  return entry.count > RATE_LIMIT_MAX_REQUESTS;
-}
+const isRateLimited = (ip: string) => rateLimited(`protocol:${ip}`, RATE_LIMIT_MAX_REQUESTS);
+const getClientIp = clientIp;
 
 function sanitizeLang(input: unknown): IntentLang {
   return input === "sv" || input === "es" || input === "en" ? input : "en";

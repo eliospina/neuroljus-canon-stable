@@ -11,16 +11,6 @@ const modules = [
     path: "/companion",
   },
   {
-    id: "MOD.CARE_AGENT",
-    href: "/care-agent",
-    path: "/care-agent",
-  },
-  {
-    id: "MOD.CARE_ROOM",
-    href: "/labs/future-care-room",
-    path: "/labs/future-care-room",
-  },
-  {
     id: "MOD.PROTOCOL_WS",
     href: "/labs/robot-interface",
     path: "/labs/robot-interface",
@@ -29,11 +19,6 @@ const modules = [
     id: "MOD.VISION",
     href: "/labs/nl-vision",
     path: "/labs/nl-vision",
-  },
-  {
-    id: "MOD.OBSERVATION",
-    href: "/observation-method",
-    path: "/observation-method",
   },
   {
     id: "MOD.PATTERNS",
@@ -148,9 +133,9 @@ export default function Home() {
         path1Cta: "Öppna NL-VISION",
         path2Title: "2 · Forma omsorg",
         path2Body:
-          "Care Room: lev en övergång eller ”Possible discomfort”. Story Mode. Du behåller kontrollen.",
-        path2Href: "/labs/future-care-room",
-        path2Cta: "Öppna Care Room",
+          "Companion: rutinen körs på din telefon och du betygsätter om den hjälpte. Du behåller kontrollen.",
+        path2Href: "/companion",
+        path2Cta: "Öppna Companion",
         path3Title: "3 · Exportera protokoll",
         path3Body: "Samma kuvert till människa, hem eller robot, alltid för den autistiska personen.",
         path3Href: "/labs/robot-interface",
@@ -258,9 +243,9 @@ export default function Home() {
         path1Cta: "Open NL-VISION",
         path2Title: "2 · Shape care",
         path2Body:
-          "Care Room: live a transition or Possible discomfort. Story Mode. You keep authority.",
-        path2Href: "/labs/future-care-room",
-        path2Cta: "Open Care Room",
+          "Companion: the routine runs on your phone and you rate whether it helped. You keep authority.",
+        path2Href: "/companion",
+        path2Cta: "Open Companion",
         path3Title: "3 · Export protocol",
         path3Body: "The same envelope for a person, a home or a robot, always for the autistic person.",
         path3Href: "/labs/robot-interface",
@@ -368,9 +353,9 @@ export default function Home() {
         path1Cta: "Abrir NL-VISION",
         path2Title: "2 · Dar forma al cuidado",
         path2Body:
-          "Care Room: vive una transición o Possible discomfort. Story Mode. Tú mantienes el control.",
-        path2Href: "/labs/future-care-room",
-        path2Cta: "Abrir Care Room",
+          "Companion: la rutina se ejecuta en tu teléfono y tú valoras si ayudó. Tú mantienes el control.",
+        path2Href: "/companion",
+        path2Cta: "Abrir Companion",
         path3Title: "3 · Exportar protocolo",
         path3Body: "El mismo sobre para una persona, un hogar o un robot, siempre para la persona autista.",
         path3Href: "/labs/robot-interface",
@@ -396,11 +381,8 @@ export default function Home() {
 
   const moduleCopy = [
     { title: copy.modCompanionTitle, body: copy.modCompanionBody },
-    { title: copy.modAgentTitle, body: copy.modAgentBody },
-    { title: copy.modCareTitle, body: copy.modCareBody },
     { title: copy.modProtoTitle, body: copy.modProtoBody },
     { title: copy.modVisionTitle, body: copy.modVisionBody },
-    { title: copy.modObsTitle, body: copy.modObsBody },
     { title: copy.modPatTitle, body: copy.modPatBody },
   ];
 
@@ -426,14 +408,13 @@ export default function Home() {
           </div>
 
           <nav className="navLinks" aria-label="Primary">
-            <Link href="/labs/future-care-room">{copy.navLabs}</Link>
+            <Link href="/labs/robot-interface">{copy.navLabs}</Link>
             <Link href="/labs/nl-vision">{copy.navVision}</Link>
             <Link href="/labs/robot-interface">{copy.navProtocol}</Link>
             <Link href="/linea">{copy.navLine}</Link>
             <Link href="/companion">{copy.navCompanion}</Link>
             <Link href="/ask">{copy.navAsk}</Link>
             <Link href="/library">{copy.navLibrary}</Link>
-            <Link href="/care-agent">{copy.navAgent}</Link>
             <Link href="/about">{copy.navAbout}</Link>
             <Link href="/contact">{copy.navContact}</Link>
           </nav>
@@ -770,29 +751,6 @@ export default function Home() {
         }
         .heroTools :global(a):hover {
           background: #5fe0b0;
-        }
-        .metrics {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 1px;
-          background: #27272a;
-          margin-bottom: 32px;
-        }
-        .metrics div {
-          background: #09090b;
-          padding: 20px 0;
-        }
-        .metrics b {
-          display: block;
-          font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-          font-size: 28px;
-          margin-bottom: 4px;
-        }
-        .metrics span {
-          font-size: 11px;
-          color: #71717a;
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
         }
         .path {
           margin: 0 auto 40px;

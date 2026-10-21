@@ -673,7 +673,6 @@ export default function CompanionPage() {
             <p>{copy.privacy}</p>
             <p>{copy.bodyNote}</p>
             <nav>
-              <Link href="/care-agent">{copy.navAgent}</Link>
               <Link href="/labs/robot-interface">{copy.navWorkspace}</Link>
               <Link href="/">{copy.navHome}</Link>
             </nav>

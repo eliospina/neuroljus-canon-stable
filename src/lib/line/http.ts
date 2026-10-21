@@ -1,6 +1,5 @@
 /**
- * Shared plumbing for the voice-line endpoints (/api/line/*), called by the
- * ElevenLabs agent as webhook tools.
+ * Shared plumbing for the API routes: the line brain and the site endpoints.
  *
  * - Auth: a shared secret in the x-line-secret header (LINE_API_SECRET), compared
  *   in constant time. Without the variable the endpoints refuse everything.
@@ -46,6 +45,14 @@ export function rateLimited(key: string, max: number, now = Date.now()): boolean
   }
   e.count += 1;
   return e.count > max;
+}
+
+/** Client address for rate limiting: first x-forwarded-for hop, else the socket. */
+export function clientIp(req: NextApiRequest): string {
+  const fwd = req.headers["x-forwarded-for"];
+  if (typeof fwd === "string" && fwd.length > 0) return fwd.split(",")[0].trim();
+  if (Array.isArray(fwd) && fwd.length > 0) return fwd[0];
+  return req.socket?.remoteAddress || "unknown";
 }
 
 export function parseLang(input: unknown): EmergencyLang {
