@@ -49,7 +49,7 @@ const T: Record<Lang, Copy> = {
     title: "Línea de apoyo al cuidado de personas autistas.",
     sub: "Para quien cuida, en casa o en el trabajo, y para la propia persona autista. Para lo pequeño y para lo grande: una duda, una noche difícil, una crisis. Pasos concretos al instante, las 24 horas, en español, inglés y sueco. Sin registro.",
     lead: "Una línea de apoyo para momentos de crisis con una persona autista: una rabieta que no baja, alguien que se golpea, que se escapó, que no come, que no duerme. Responde al instante, con pasos concretos, las 24 horas, en español, inglés y sueco.",
-    emergency: "Si hay peligro de vida ahora mismo, llama primero al número de emergencias de tu país.",
+    emergency: "La Línea no sustituye a los servicios de emergencia: si hace falta, te da el número de tu país y se queda contigo mientras llamas.",
     start: "Hablar ahora",
     starting: "Abriendo la línea…",
     how: "Cómo funciona",
@@ -75,7 +75,7 @@ const T: Record<Lang, Copy> = {
     title: "A support line for the care of autistic people.",
     sub: "For whoever cares, at home or at work, and for the autistic person themself. For the small things and the big ones: a question, a hard night, a crisis. Concrete steps at once, around the clock, in Spanish, English and Swedish. No signup.",
     lead: "A support line for crisis moments with an autistic person: a meltdown that will not ease, someone hitting themself, someone who ran off, who will not eat, who will not sleep. It answers at once, with concrete steps, around the clock, in Spanish, English and Swedish.",
-    emergency: "If a life is in danger right now, call your country's emergency number first.",
+    emergency: "The Line does not replace emergency services: when it is needed, it gives you your country's number and stays with you while you call.",
     start: "Talk now",
     starting: "Opening the line…",
     how: "How it works",
@@ -101,7 +101,7 @@ const T: Record<Lang, Copy> = {
     title: "En stödlinje för omsorgen om autistiska personer.",
     sub: "För den som tar hand om någon, hemma eller i jobbet, och för den autistiska personen själv. För det lilla och det stora: en fråga, en svår natt, en kris. Konkreta steg direkt, dygnet runt, på svenska, engelska och spanska. Ingen registrering.",
     lead: "En stödlinje för krisögonblick med en autistisk person: ett utbrott som inte lägger sig, någon som slår sig själv, som sprungit iväg, som inte äter, som inte sover. Den svarar direkt, med konkreta steg, dygnet runt, på svenska, engelska och spanska.",
-    emergency: "Om ett liv är i fara just nu, ring först ditt lands nödnummer.",
+    emergency: "Linjen ersätter inte larmtjänsten: när det behövs ger den dig ditt lands nödnummer och stannar hos dig medan du ringer.",
     start: "Prata nu",
     starting: "Öppnar linjen…",
     how: "Så fungerar det",
@@ -151,7 +151,6 @@ export default function LinePage() {
           <p className="kicker">{copy.kicker}</p>
           <h1>{copy.title}</h1>
           <p className="sub">{copy.sub}</p>
-          <p className="emergency">{copy.emergency}</p>
           <button type="button" className="start" onClick={openLine} aria-live="polite">
             {opened ? copy.starting : copy.start}
           </button>
@@ -162,6 +161,7 @@ export default function LinePage() {
 
         <div id="line-more" className="moreBody" hidden={!more}>
         <p className="lead">{copy.lead}</p>
+        <p className="emergency">{copy.emergency}</p>
         <section className="grid">
           <div>
             <h2>{copy.how}</h2>
@@ -258,7 +258,7 @@ export default function LinePage() {
           line-height: 1.5;
         }
         .start {
-          margin-top: 24px;
+          margin-top: 28px;
           min-height: 64px;
           padding: 0 36px;
           border: none;
