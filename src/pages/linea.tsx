@@ -36,6 +36,8 @@ type Copy = {
   companion: string;
   ask: string;
   back: string;
+  readMore: string;
+  readLess: string;
 };
 
 const T: Record<Lang, Copy> = {
@@ -61,6 +63,8 @@ const T: Record<Lang, Copy> = {
     companion: "Abrir Companion",
     ask: "Preguntar a NeuroLjus",
     back: "Volver al inicio",
+    readMore: "¿Cómo funciona y quién responde? Leer más",
+    readLess: "Leer menos",
   },
   en: {
     seoTitle: "The Line — Neuroljus",
@@ -84,6 +88,8 @@ const T: Record<Lang, Copy> = {
     companion: "Open Companion",
     ask: "Ask NeuroLjus",
     back: "Back to home",
+    readMore: "How it works and who answers? Read more",
+    readLess: "Read less",
   },
   sv: {
     seoTitle: "Linjen — Neuroljus",
@@ -107,6 +113,8 @@ const T: Record<Lang, Copy> = {
     companion: "Öppna Companion",
     ask: "Fråga NeuroLjus",
     back: "Tillbaka till start",
+    readMore: "Hur fungerar det och vem svarar? Läs mer",
+    readLess: "Läs mindre",
   },
 };
 
@@ -114,6 +122,7 @@ export default function LinePage() {
   const [lang, setLang] = useLang("es");
   const copy = T[lang];
   const [opened, setOpened] = useState(false);
+  const [more, setMore] = useState(false);
 
   // The ElevenLabs widget mounts itself bottom-right; our big button only brings it in and opens it.
   const openLine = () => {
@@ -137,13 +146,17 @@ export default function LinePage() {
         <section className="hero">
           <p className="kicker">{copy.kicker}</p>
           <h1>{copy.title}</h1>
-          <p className="lead">{copy.lead}</p>
           <p className="emergency">{copy.emergency}</p>
           <button type="button" className="start" onClick={openLine} aria-live="polite">
             {opened ? copy.starting : copy.start}
           </button>
+          <button type="button" className="more" onClick={() => setMore((m) => !m)} aria-expanded={more} aria-controls="line-more">
+            {more ? copy.readLess : copy.readMore}
+          </button>
         </section>
 
+        <div id="line-more" className="moreBody" hidden={!more}>
+        <p className="lead">{copy.lead}</p>
         <section className="grid">
           <div>
             <h2>{copy.how}</h2>
@@ -191,16 +204,17 @@ export default function LinePage() {
             </Link>
           </div>
         </section>
+        </div>
       </main>
 
       <style jsx>{`
         .line {
           max-width: 880px;
           margin: 0 auto;
-          padding: 48px 20px 120px;
+          padding: 72px 20px 120px;
         }
         .hero {
-          padding-bottom: 32px;
+          padding-bottom: 24px;
         }
         .kicker {
           font-size: 13px;
@@ -246,6 +260,27 @@ export default function LinePage() {
         }
         .start:hover {
           transform: translateY(-1px);
+        }
+        .more {
+          display: block;
+          margin-top: 22px;
+          padding: 0;
+          border: none;
+          background: none;
+          color: var(--nl-text-dim);
+          font-size: 14px;
+          text-decoration: underline;
+          text-underline-offset: 3px;
+          cursor: pointer;
+        }
+        .more:hover {
+          color: var(--nl-aurora-a);
+        }
+        .moreBody {
+          margin-top: 8px;
+        }
+        .moreBody[hidden] {
+          display: none;
         }
         .grid {
           display: grid;
