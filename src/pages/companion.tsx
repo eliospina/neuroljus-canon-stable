@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { PlannedStep, PlannerInput, PlannerResult, ScenarioId, VisionSnapshot } from "@/lib/careProtocol/types";
 import { readLatestLocalVisionSnapshot } from "@/lib/careProtocol/nlVisionBridge";
 import { buildCarePlan } from "@/lib/careProtocol/planner";
-import { useLang } from "@/components/SiteLayout";
+import { LANG_NAMES, useLang } from "@/components/SiteLayout";
 import ProfileEditor from "@/components/companion/ProfileEditor";
 import {
   applyProfile,
@@ -427,7 +427,7 @@ export default function CompanionPage() {
           <div className="lang" role="group" aria-label="Language">
             {(["es", "en", "sv"] as CompanionLang[]).map((l) => (
               <button key={l} type="button" onClick={() => setLang(l)} aria-pressed={lang === l}>
-                {l.toUpperCase()}
+                {LANG_NAMES[l]}
               </button>
             ))}
           </div>

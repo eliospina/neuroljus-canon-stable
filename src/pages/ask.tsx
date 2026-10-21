@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
-import { useLang, type Lang } from "@/components/SiteLayout";
+import { LANG_NAMES, useLang, type Lang } from "@/components/SiteLayout";
 import type { AskLabel, AskResult } from "@/lib/ask/expert";
 import { helpfulSummary } from "@/lib/companion/outcomes";
 import { readRuns, type CompanionRun } from "@/lib/companion/runLog";
@@ -255,7 +255,7 @@ export default function AskPage() {
           <div className="lang" role="group" aria-label="Language">
             {(["es", "en", "sv"] as Lang[]).map((l) => (
               <button key={l} type="button" onClick={() => setLang(l)} aria-pressed={lang === l}>
-                {l.toUpperCase()}
+                {LANG_NAMES[l]}
               </button>
             ))}
           </div>

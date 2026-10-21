@@ -6,6 +6,9 @@ import type { ReactNode } from "react";
 
 export type Lang = "sv" | "en" | "es";
 
+/** Each language in its own name: a person recognises their language, not a code. */
+export const LANG_NAMES: Record<Lang, string> = { es: "Español", en: "English", sv: "Svenska" };
+
 const LANG_KEY = "nl_lang";
 
 /**
@@ -41,6 +44,7 @@ const navLabels: Record<Lang, Record<string, string>> = {
     skip: "Hoppa till innehållet",
     home: "Hem",
     line: "Linjen",
+    ficha: "Profil",
     companion: "Companion",
     ask: "Fråga",
     library: "Bibliotek",
@@ -56,6 +60,7 @@ const navLabels: Record<Lang, Record<string, string>> = {
     skip: "Skip to content",
     home: "Home",
     line: "The Line",
+    ficha: "Profile",
     companion: "Companion",
     ask: "Ask",
     library: "Library",
@@ -71,6 +76,7 @@ const navLabels: Record<Lang, Record<string, string>> = {
     skip: "Saltar al contenido",
     home: "Inicio",
     line: "La Línea",
+    ficha: "Ficha",
     companion: "Companion",
     ask: "Pregunta",
     library: "Biblioteca",
@@ -102,6 +108,7 @@ export default function SiteLayout({
   const items: NavItem[] = [
     { href: "/", label: t.home, match: (p) => p === "/" },
     { href: "/linea", label: t.line, match: (p) => p === "/linea" },
+    { href: "/ficha", label: t.ficha, match: (p) => p.startsWith("/ficha") || p === "/tarjeta" },
     { href: "/companion", label: t.companion, match: (p) => p === "/companion" },
     { href: "/ask", label: t.ask, match: (p) => p === "/ask" },
     { href: "/library", label: t.library, match: (p) => p === "/library" },
@@ -157,7 +164,7 @@ export default function SiteLayout({
                   aria-pressed={lang === code}
                   className={lang === code ? "langBtn active" : "langBtn"}
                 >
-                  {code.toUpperCase()}
+                  {LANG_NAMES[code]}
                 </button>
               ))}
             </div>

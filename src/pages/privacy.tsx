@@ -13,6 +13,11 @@ const sections = [
       "The voice is handled by ElevenLabs. Its agent is set to not record audio, to delete the transcript and any personal data after the call, and to keep nothing (retention 0 days). What you say is turned into text and sent to our server, which asks Claude (Anthropic) for the answer; neither stores the conversation. The server keeps anonymous tags only: language, country, who called (a carer, the person, a child), the topics, which library documents were offered and what the model lacked. It never keeps what you said. Calls are rate-limited by network address; no account and no name are asked.",
   },
   {
+    title: "The person's profile (ficha)",
+    body:
+      "A profile you create about one person (a name or nickname, age band, whether they speak, what calms and what triggers them, their own words, signals, what helped, crisis steps, and optionally medication and clinician if you write them) stays in your browser. Nothing is sent to us. The 30-second card link carries the card's contents inside the link itself: anyone holding the link can read it, it does not expire, and we never see it because browsers do not send the part after # to any server. Share no more than you would put on paper. You can download or delete the profile from its page.",
+  },
+  {
     title: "Companion",
     body:
       "The sensory profile, the routines you run and your ratings stay in your browser (localStorage). They are never sent to us. The situation you type or dictate is sent to our server and to Claude to build the routine, together with the most recent NL-VISION reading if there is one, and an anonymous summary of which routine types helped (counts, no text). You can export, import and delete the profile from the page, and clearing the site data in your browser removes everything.",

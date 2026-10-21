@@ -1,4 +1,5 @@
 import Head from "next/head";
+import { LANG_NAMES } from "@/components/SiteLayout";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 
@@ -97,6 +98,7 @@ export default function Home() {
         heroVisionNote: "Se signalerna med kameran, lokalt på din enhet. Inget lämnar telefonen.",
         heroCompanionNote: "Protokollet i sin första kropp: din telefon. Nästa är ditt hem.",
         navLine: "Linjen",
+        navFicha: "Profil",
         navCompanion: "Companion",
         navAsk: "Fråga",
         navLibrary: "Bibliotek",
@@ -207,6 +209,7 @@ export default function Home() {
         heroVisionNote: "See the signals with the camera, locally on your device. Nothing leaves the phone.",
         heroCompanionNote: "The protocol in its first body: your phone. The next one is your home.",
         navLine: "The Line",
+        navFicha: "Profile",
         navCompanion: "Companion",
         navAsk: "Ask",
         navLibrary: "Library",
@@ -317,6 +320,7 @@ export default function Home() {
         heroVisionNote: "Mira las señales con la cámara, en tu dispositivo. Nada sale del teléfono.",
         heroCompanionNote: "El protocolo en su primer cuerpo: tu teléfono. El siguiente es tu casa.",
         navLine: "La Línea",
+        navFicha: "Ficha",
         navCompanion: "Companion",
         navAsk: "Pregunta",
         navLibrary: "Biblioteca",
@@ -412,6 +416,7 @@ export default function Home() {
             <Link href="/labs/nl-vision">{copy.navVision}</Link>
             <Link href="/labs/robot-interface">{copy.navProtocol}</Link>
             <Link href="/linea">{copy.navLine}</Link>
+            <Link href="/ficha">{copy.navFicha}</Link>
             <Link href="/companion">{copy.navCompanion}</Link>
             <Link href="/ask">{copy.navAsk}</Link>
             <Link href="/library">{copy.navLibrary}</Link>
@@ -422,13 +427,13 @@ export default function Home() {
           <div className="navRight">
             <div className="langToggle" role="group" aria-label="Language">
               <button onClick={() => setLang("es")} aria-pressed={lang === "es"}>
-                ES
+                {LANG_NAMES.es}
               </button>
               <button onClick={() => setLang("en")} aria-pressed={lang === "en"}>
-                EN
+                {LANG_NAMES.en}
               </button>
               <button onClick={() => setLang("sv")} aria-pressed={lang === "sv"}>
-                SV
+                {LANG_NAMES.sv}
               </button>
             </div>
           </div>
