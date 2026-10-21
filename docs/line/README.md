@@ -58,7 +58,7 @@ Desde ElevenLabs hay que sumar su salto de red a Vercel y la propia síntesis de
 3. Prompt del sistema del agente: corto, solo voz y turno (`agent-prompt.md`). El cerebro ignora el `system` que manda ElevenLabs.
 4. Quita las herramientas webhook del agente (el cerebro ya tiene protocolos, biblioteca y web). Déjalas si quieres depurar.
 5. Variables en Vercel: `LINE_API_SECRET` y `ANTHROPIC_API_KEY`; opcionales `CRON_SECRET`, `LINE_BRAIN_RATE_LIMIT_PER_MIN` (240), `LINE_BRAIN_THINKING=adaptive` (razonamiento previo; más lento), `LINE_LOG_UNCOVERED=0`.
-6. Retención de audio y transcripciones del agente: desactivada.
+6. Privacidad del agente (2026-10-21): `record_voice=false`, `delete_audio=true`, `delete_transcript_and_pii=true`, `retention_days=0`, aplicado a conversaciones existentes. La «retención cero» de ElevenLabs no se puede activar con un Custom LLM. Los términos del widget dicen que nada se guarda; el agente se llama «NeuroLjus Línea».
 
 ### Probar sin voz
 
