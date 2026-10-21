@@ -152,7 +152,7 @@ export default function Home() {
         path2Href: "/labs/future-care-room",
         path2Cta: "Öppna Care Room",
         path3Title: "3 · Exportera protokoll",
-        path3Body: "Samma kuvert till människa, hem eller robot — för den autistiska personen, inte personalens KPI.",
+        path3Body: "Samma kuvert till människa, hem eller robot, alltid för den autistiska personen.",
         path3Href: "/labs/robot-interface",
         path3Cta: "Öppna protokoll",
         pathCompanion:
@@ -262,7 +262,7 @@ export default function Home() {
         path2Href: "/labs/future-care-room",
         path2Cta: "Open Care Room",
         path3Title: "3 · Export protocol",
-        path3Body: "The same envelope for a person, a home, or a robot — for the autistic person, not staff KPIs.",
+        path3Body: "The same envelope for a person, a home or a robot, always for the autistic person.",
         path3Href: "/labs/robot-interface",
         path3Cta: "Open protocol",
         pathCompanion:
@@ -372,7 +372,7 @@ export default function Home() {
         path2Href: "/labs/future-care-room",
         path2Cta: "Abrir Care Room",
         path3Title: "3 · Exportar protocolo",
-        path3Body: "El mismo sobre para una persona, un hogar o un robot — para la persona autista, no el KPI del personal.",
+        path3Body: "El mismo sobre para una persona, un hogar o un robot, siempre para la persona autista.",
         path3Href: "/labs/robot-interface",
         path3Cta: "Abrir protocolo",
         pathCompanion:
