@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import type { Ficha, FichaLang } from "@/lib/ficha/model";
 import { readActiveId, readFichas, writeActiveId } from "@/lib/ficha/localStore";
+import { useAccount } from "@/components/ficha/Account";
 
 /**
  * "For: Mateo". Picks the person a tool is working for, so what happens here
@@ -19,6 +20,10 @@ const T: Record<FichaLang, { for: string; nobody: string; note: string; create: 
 export function useActiveFicha(): [string | null, (id: string | null) => void, Ficha[]] {
   const [list, setList] = useState<Ficha[]>([]);
   const [active, setActive] = useState<string | null>(null);
+  useAccount(() => {
+    setList(readFichas());
+    setActive(readActiveId());
+  });
   useEffect(() => {
     const all = readFichas();
     setList(all);

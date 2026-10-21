@@ -6,6 +6,7 @@ import SiteLayout, { useLang } from "@/components/SiteLayout";
 import { FICHA_COPY } from "@/lib/ficha/copy";
 import { emptyFicha, type AgeBand, type Ficha, type Owner, type Speech } from "@/lib/ficha/model";
 import { readFichas, saveFicha } from "@/lib/ficha/localStore";
+import AccountPanel, { useAccount } from "@/components/ficha/Account";
 
 /**
  * The list of profiles in this browser and the five questions that create one.
@@ -84,6 +85,7 @@ export default function FichaIndex() {
   const [list, setList] = useState<Ficha[]>([]);
   const [creating, setCreating] = useState(false);
   const [draft, setDraft] = useState<Ficha>(() => emptyFicha("es"));
+  const account = useAccount(() => setList(readFichas()));
 
   useEffect(() => {
     setList(readFichas());
@@ -130,6 +132,7 @@ export default function FichaIndex() {
                 ))
               )}
             </section>
+            <AccountPanel lang={lang} account={account} />
           </>
         )}
 

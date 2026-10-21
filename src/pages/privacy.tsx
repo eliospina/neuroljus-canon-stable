@@ -15,7 +15,7 @@ const sections = [
   {
     title: "The person's profile (ficha)",
     body:
-      "A profile you create about one person (a name or nickname, age band, whether they speak, what calms and what triggers them, their own words, signals, what helped, crisis steps, and optionally medication and clinician if you write them) stays in your browser. Nothing is sent to us. The 30-second card link carries the card's contents inside the link itself: anyone holding the link can read it, it does not expire, and we never see it because browsers do not send the part after # to any server. Share no more than you would put on paper. You can download or delete the profile from its page.",
+      "A profile you create about one person (a name or nickname, age band, whether they speak, what calms and what triggers them, their own words, signals, what helped, crisis steps, and optionally medication and clinician if you write them) stays in your browser. Nothing is sent to us. The 30-second card link carries the card's contents inside the link itself: anyone holding the link can read it, it does not expire, and we never see it because browsers do not send the part after # to any server. Share no more than you would put on paper. You can download or delete the profile from its page. If you sign in (email and a link, no password), the profiles in your browser are also saved to your account in Supabase, in the European Union, encrypted at rest, in a table where each row is readable only by the user who owns it; signing out leaves the browser copy in place, and deleting a profile deletes it in both places.",
   },
   {
     title: "Companion",
