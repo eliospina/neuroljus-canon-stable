@@ -48,9 +48,9 @@ const sections = [
       "Our server logs error names, timings and the anonymous tags described above. It does not log the text of questions, chat messages, situations or calls.",
   },
   {
-    title: "Before any pilot",
+    title: "Formal studies",
     body:
-      "A pilot with real families or care homes would come with a full privacy policy, consent and assent, a deletion process, retention rules, documentation of the AI processing, accessibility validation and a risk review. We will not run one without those.",
+      "The site is open: anyone can use it, and because the tools keep their data in your browser we do not know who does. A formal study with families or care homes, where Neuroljus collects and analyses data, would come with its own privacy policy, consent and assent, a deletion process, retention rules, documentation of the AI processing, accessibility validation and a risk review. We will not run one without those.",
   },
 ];
 

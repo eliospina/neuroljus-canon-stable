@@ -6,12 +6,12 @@ const commitments = [
   "Keep prototype language clear where signals could otherwise be overinterpreted.",
   "Support sensory-friendly controls such as low-stimulus, monochrome, and low-light modes in NL-VISION.",
   "Use clear labels, readable contrast, keyboard-reachable controls, and responsive layouts.",
-  "Validate with target users before any pilot or active product use.",
+  "Validate with caregivers and autistic people in a formal study before calling any tool clinically tested.",
 ];
 
 const openWork = [
   "Formal WCAG audit.",
-  "Testing with caregivers and neurodivergent users.",
+  "A formal usability study with caregivers and neurodivergent users.",
   "Consent and assent flows suitable for vulnerable contexts.",
   "Clearer multilingual accessibility review across English, Swedish, and Spanish.",
   "Documented pause criteria for experiences that increase distress or sensory load.",
