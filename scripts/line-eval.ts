@@ -11,7 +11,7 @@
  *                                        # no deployment or secret needed (ANTHROPIC_API_KEY)
  *   ... --review out.md                  # with --live or --claude: also write every call as a
  *                                        # sheet a clinician, a caregiver or an autistic person can
- *                                        # read and score by hand (docs/line/calidad.md)
+ *                                        # read and score by hand (docs/line/revision-expertos.md)
  *
  * The invariants are the few things code guarantees: an answer, plain speech,
  * the number first when the caller asks whom to call, no source named with
@@ -27,6 +27,7 @@ import type { ChatMessage } from "../src/lib/line/state";
 import { checkTurn } from "./line-eval/checks";
 import { judgeCall } from "./line-eval/judge";
 import { mockModelStream } from "./line-eval/mockModel";
+import { MUST_ES } from "./line-eval/mustEs";
 import { SCENARIOS, type Scenario } from "./line-eval/scenarios";
 
 const LIVE = process.argv.includes("--live");
@@ -114,7 +115,7 @@ export async function runScenario(s: Scenario, turnFn: (m: ChatMessage[]) => Pro
 /** One call as a page for a human reviewer: the scene, what a good call does, the call, and blanks to score. */
 export function reviewSheet(s: Scenario, assistant: string[], judge?: { score: number; reasons: string[] }): string {
   const call = s.turns.flatMap((t, i) => [`**Llama:** ${t}`, `**Línea:** ${assistant[i] ?? ""}`]).join("\n\n");
-  const must = s.must.map((m) => `- ${m}`).join("\n");
+  const must = (MUST_ES[s.id] ?? s.must).map((m) => `- ${m}`).join("\n");
   const judged = judge ? `\n\n*Juez automático: ${judge.score}/10. ${judge.reasons[0] ?? ""}*` : "";
   return `## ${s.id} (${s.lang})\n\n**Lo que una buena llamada hace:**\n${must}\n\n${call}${judged}\n\n**Tu nota (1 a 10):** ____  \n**¿Algo peligroso o equivocado?** ____  \n**¿Qué habrías dicho tú?** ____\n`;
 }
@@ -162,7 +163,7 @@ async function main() {
     failed += failures.length;
   }
   if (REVIEW_PATH) {
-    const head = `# Revisión de la Línea · ${new Date().toISOString().slice(0, 10)}\n\nLlamadas simuladas, sin personas reales. Lee cada llamada como si escucharas a un colega al teléfono y puntúala. Cómo se usa esta hoja: docs/line/calidad.md.\n`;
+    const head = `# Revisión de la Línea · ${new Date().toISOString().slice(0, 10)}\n\nLlamadas simuladas, sin personas reales. Lee cada llamada como si escucharas a un colega al teléfono y puntúala. Antes de empezar, lee las instrucciones que acompañan esta hoja (docs/line/revision-expertos.md).\n`;
     writeFileSync(REVIEW_PATH, [head, ...sheets].join("\n---\n\n"));
     console.log(`\nReview sheet: ${REVIEW_PATH} (${sheets.length} calls)`);
   }

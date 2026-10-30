@@ -25,7 +25,7 @@ Como un control de calidad: la Línea se prueba con llamadas simuladas antes de 
 
 - `npm run line:eval -- --claude --judge`: 42 llamadas de crisis simuladas, y un segundo modelo juzga cada una contra lo que una buena llamada hace (`must`). Último resultado: 38 de 42 (`eval-2026-10-20.md`).
 - **Regla:** todo cambio del prompt o del cerebro pasa el juez antes de fusionarse, y el resultado va en el PR.
-- **Revisión humana:** `npm run line:eval -- --claude --judge --review revision.md` escribe cada llamada en una hoja legible, con la escena, lo que una buena llamada hace, la llamada completa, la nota del juez automático y espacios para la nota humana. Se la das a tres personas: un clínico, un cuidador con experiencia y una persona autista. Cada una puntúa de 1 a 10, marca lo peligroso o equivocado y escribe qué habría dicho. Lo que marquen se convierte en cambios del prompt o de los protocolos y en nuevos escenarios.
+- **Revisión humana:** `npm run line:eval -- --claude --judge --review revision.md` escribe cada llamada en una hoja legible, con la escena, lo que una buena llamada hace (en español, desde `scripts/line-eval/mustEs.ts`), la llamada completa, la nota del juez automático y espacios para la nota humana. Se la das, junto con las instrucciones para quien revisa (`revision-expertos.md`), a tres personas: un clínico, un cuidador con experiencia y una persona autista. Cada una puntúa de 1 a 10, marca lo peligroso o equivocado y escribe qué habría dicho. Lo que marquen se convierte en cambios del prompt o de los protocolos y en nuevos escenarios.
 
 ### 2. Señales anónimas de la vida real (pronto)
 
