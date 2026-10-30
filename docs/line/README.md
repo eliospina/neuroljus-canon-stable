@@ -63,6 +63,8 @@ Desde ElevenLabs hay que sumar su salto de red a Vercel y la propia síntesis de
 
 ### Probar sin voz
 
+Cómo se sabe que la Línea es buena siendo anónima (estándares, señales anónimas, estudio formal) y cómo usar la hoja de revisión humana (`--review`): `calidad.md`.
+
 `npm run line:eval` corre `scripts/line-eval/scenarios.ts` contra el cerebro **con un modelo guionizado** (no razona; prueba la plomería) y verifica solo lo que el código garantiza: respuesta no vacía, voz limpia, el número o la pregunta del país primero cuando preguntan a quién llamar, sin fuentes inventadas, latencia de la primera frase, y que el respaldo nunca recite pasos. Corre en CI.
 
 `npm run line:eval -- --live` con `LINE_BRAIN_URL` y `LINE_API_SECRET` corre las mismas conversaciones contra el cerebro desplegado con Claude; `--claude` corre el mismo cerebro en proceso con el Claude real (solo `ANTHROPIC_API_KEY`, sin despliegue ni secreto). **`--judge`** (con `--live` o `--claude`) (con `ANTHROPIC_API_KEY`) añade lo que importa: un segundo modelo lee cada llamada completa y la juzga como juzgaría a un colega, contra el `must` de cada escenario: ¿respondió a la escena real, con la seguridad por delante, rompiendo la regla cuando la vida lo pedía, dando el número cuando importaba? Los escenarios incluyen situaciones improvisadas donde regla y vida chocan: gasolina junto a la estufa, el lago con corriente, «¿a quién llamo?» sin país, una sobredosis de risperidona a tres horas del pueblo.

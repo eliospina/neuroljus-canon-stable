@@ -9,6 +9,9 @@
  *                                        # scenarios.ts `must` (ANTHROPIC_API_KEY)
  *   npm run line:eval -- --claude --judge  # the same brain in process with the real Claude,
  *                                        # no deployment or secret needed (ANTHROPIC_API_KEY)
+ *   ... --review out.md                  # with --live or --claude: also write every call as a
+ *                                        # sheet a clinician, a caregiver or an autistic person can
+ *                                        # read and score by hand (docs/line/calidad.md)
  *
  * The invariants are the few things code guarantees: an answer, plain speech,
  * the number first when the caller asks whom to call, no source named with
@@ -17,6 +20,7 @@
  * sense is what the judge measures. Exits 1 when anything fails.
  */
 
+import { writeFileSync } from "node:fs";
 import { brainTurnText, fallbackSpeech } from "../src/lib/line/brain";
 import { getAnthropicModel } from "../src/lib/careReflection/provider";
 import type { ChatMessage } from "../src/lib/line/state";
@@ -32,6 +36,8 @@ const JUDGE = process.argv.includes("--judge");
 const BASE = (process.env.LINE_BRAIN_URL || "").replace(/\/$/, "");
 const SECRET = process.env.LINE_API_SECRET || "";
 const REAL = LIVE || CLAUDE;
+const reviewAt = process.argv.indexOf("--review");
+const REVIEW_PATH = reviewAt > 0 ? process.argv[reviewAt + 1] || "" : "";
 /** Live: the deployed brain should start speaking within 1.5 s. In process with the real Claude there is no warm instance, so 3 s. */
 const FIRST_BUDGET_MS = Number(process.env.LINE_EVAL_FIRST_MS || (LIVE ? 1500 : CLAUDE ? 3000 : 900));
 
@@ -105,6 +111,14 @@ export async function runScenario(s: Scenario, turnFn: (m: ChatMessage[]) => Pro
   return { failures, lines, assistant };
 }
 
+/** One call as a page for a human reviewer: the scene, what a good call does, the call, and blanks to score. */
+export function reviewSheet(s: Scenario, assistant: string[], judge?: { score: number; reasons: string[] }): string {
+  const call = s.turns.flatMap((t, i) => [`**Llama:** ${t}`, `**Línea:** ${assistant[i] ?? ""}`]).join("\n\n");
+  const must = s.must.map((m) => `- ${m}`).join("\n");
+  const judged = judge ? `\n\n*Juez automático: ${judge.score}/10. ${judge.reasons[0] ?? ""}*` : "";
+  return `## ${s.id} (${s.lang})\n\n**Lo que una buena llamada hace:**\n${must}\n\n${call}${judged}\n\n**Tu nota (1 a 10):** ____  \n**¿Algo peligroso o equivocado?** ____  \n**¿Qué habrías dicho tú?** ____\n`;
+}
+
 async function main() {
   if (LIVE && (!BASE || !SECRET)) {
     console.error("--live needs LINE_BRAIN_URL and LINE_API_SECRET");
@@ -119,25 +133,38 @@ async function main() {
     console.error("--judge needs --live or --claude, and ANTHROPIC_API_KEY");
     process.exit(2);
   }
+  if (reviewAt > 0 && (!REAL || !REVIEW_PATH)) {
+    console.error("--review needs --live or --claude, and a file path");
+    process.exit(2);
+  }
   const turnFn = LIVE ? liveTurn : CLAUDE ? claudeTurn : mockTurn;
   let failed = 0;
   let judged = 0;
   let passed = 0;
+  const sheets: string[] = [];
   for (const s of SCENARIOS) {
     const { failures, lines, assistant } = await runScenario(s, turnFn);
     let verdictLine = "";
+    let verdict: { score: number; reasons: string[] } | undefined;
     if (JUDGE) {
       const v = await judgeCall(s, assistant, judgeKey, getAnthropicModel());
+      verdict = v;
       judged += 1;
       if (v.pass) passed += 1;
       else failures.push(`${s.id}: judge ${v.score}/10: ${v.reasons[0] ?? ""}`);
       verdictLine = `  judge ${v.pass ? "pass" : "FAIL"} ${v.score}/10\n${v.reasons.map((r) => `    · ${r}`).join("\n")}`;
     }
+    if (REVIEW_PATH) sheets.push(reviewSheet(s, assistant, verdict));
     console.log(`\n${failures.length ? "FAIL" : "ok  "} ${s.id} (${s.lang})`);
     for (const l of lines) console.log(l);
     if (verdictLine) console.log(verdictLine);
     for (const f of failures) console.log(`  ✗ ${f}`);
     failed += failures.length;
+  }
+  if (REVIEW_PATH) {
+    const head = `# Revisión de la Línea · ${new Date().toISOString().slice(0, 10)}\n\nLlamadas simuladas, sin personas reales. Lee cada llamada como si escucharas a un colega al teléfono y puntúala. Cómo se usa esta hoja: docs/line/calidad.md.\n`;
+    writeFileSync(REVIEW_PATH, [head, ...sheets].join("\n---\n\n"));
+    console.log(`\nReview sheet: ${REVIEW_PATH} (${sheets.length} calls)`);
   }
   const judgeNote = JUDGE ? ` · judge ${passed}/${judged} calls pass` : "";
   console.log(`\n${failed === 0 ? "All scenarios pass" : `${failed} problem(s)`} · mode: ${LIVE ? "live" : CLAUDE ? "Claude in process" : "scripted model"}${judgeNote} · first-sentence budget ${FIRST_BUDGET_MS} ms`);
