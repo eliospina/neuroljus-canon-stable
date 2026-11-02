@@ -40,16 +40,17 @@ Near-term research tools:
 
 ## What Neuroljus Offers Now
 
+- **La Línea** (`/linea`) — a voice crisis line in Spanish, English and Swedish: ElevenLabs does the voice, `src/lib/line/brain.ts` does the reasoning with the 10 crisis protocols, the library and the web. See [docs/line/README.md](docs/line/README.md).
+- **The person's record** (`/ficha`, `/tarjeta`) — one record per person that the tools read and write, local-first with an optional EU account, and a 30-second card carried inside a link.
 - **Caregiver interviews** to learn how observation, handoffs, uncertainty, and respectful language work in real care settings.
-- **Observation Method v0** (`/observation-method`) to test structured caregiver notes over time.
 - **NL-VISION Lab** (`/labs/nl-vision`) as a local observation layer for optional visual signals, with live pattern-identification overlays.
-- **Future Care Room** (`/labs/future-care-room`) — an interactive care-room simulation where caregiver settings become a living care protocol.
+- **Pattern Notebook** (`/labs/pattern-notebook`) — local caregiver notes: gesture, context, what helped.
 - **Robot Care Interface** (`/labs/robot-interface`) — the technical protocol workspace: routine builder, simulator, audit trail, adapter packets (ROS2/MQTT/HTTP/offline).
 - **Care protocol engine** (`src/lib/careProtocol/`) — deterministic, local, tested (`npm test`).
 - **Ask NeuroLjus** (`/ask`) — practical, labelled answers: science cited from the verified library, known practice, data from this person (by code), new ideas to try.
-- **Autism library** (`/library`) — 500+ open-access studies verified by code (DOI, licence, retraction), with key findings and practical sheets in three languages.
+- **Autism library** (`/library`) — 1,710 open-access studies verified by code (DOI, licence, retraction), with key findings and practical sheets in three languages.
 - **Companion** (`/companion`) — the care robot that starts on a phone: describe the situation, press Start, and the phone itself runs the plan. The same plan exports to Home Assistant, ROS2, MQTT, HTTP or an offline playbook.
-- **Care Agent** (`/care-agent`) — natural-language description → Claude interprets → the deterministic planner emits the protocol and adapter packets.
+- **Care Agent** (inside Companion, `POST /api/protocol-from-text`) — natural-language description → Claude interprets → the deterministic planner emits the protocol and adapter packets.
 - **Research collaboration** for ethics, privacy, accessibility, validation design, and future evidence-building.
 
 Neuroljus does not currently offer diagnosis, medical advice, clinical deployment, institutional pilots, or automated interpretation of autistic communication. Diagnostic support is a future horizon to be built only with qualified research and care partners.
@@ -106,26 +107,37 @@ To set it up on a fresh Vercel project:
 ├─ postcss.config.js
 ├─ tailwind.config.ts
 ├─ tsconfig.json
+├─ data/library/           # the verified research library and its BM25 index
+├─ scripts/library/        # library ingestion, verification and practical sheets
 ├─ public/
-│  ├─ favicon.svg
-│  └─ labs/
-│     └─ nl-vision/        # observation prototype
+│  └─ favicon.svg
 └─ src/
    ├─ components/
    │  ├─ CareChat.tsx      # non-diagnostic caregiver-support chat
    │  ├─ LiveVitals.tsx    # prototype observation dashboard
-   │  └─ NeuroljusLanding.tsx
+   │  ├─ SiteLayout.tsx    # shared header, menu and language
+   │  ├─ companion/        # sensory profile editor
+   │  └─ ficha/            # person record picker, account
    ├─ pages/
-   │  ├─ _app.tsx
    │  ├─ index.tsx         # main landing
+   │  ├─ linea.tsx         # the voice line
+   │  ├─ companion.tsx     # the phone as the first robot body
+   │  ├─ ask.tsx · library.tsx
+   │  ├─ ficha/ · tarjeta.tsx   # the person's record and its 30-second card
    │  ├─ api/
-   │  │  └─ chat.ts        # Care Chat endpoint → Claude (claude-sonnet-5-5)
-   │  ├─ labs/
-   │  │  └─ nl-vision.tsx  # Vision + Care Chat demo
+   │  │  ├─ chat.ts        # Care Chat endpoint → Claude (claude-sonnet-5-5)
+   │  │  ├─ ask.ts · protocol-from-text.ts · library-sheet.ts
+   │  │  └─ line/brain/    # the voice line's Custom LLM
+   │  ├─ labs/             # nl-vision, robot-interface, pattern-notebook
    │  ├─ privacy.tsx
    │  └─ accessibility.tsx
    ├─ lib/
    │  ├─ careProtocol/    # deterministic protocol engine (no network)
+   │  ├─ companion/       # phone body, profile, outcomes, Home Assistant export
+   │  ├─ ask/ · library/  # cited answers and the library at runtime
+   │  ├─ ficha/           # the person's record (pure model, local store, sync)
+   │  ├─ protocols/       # the 10 crisis protocols (es/en/sv)
+   │  ├─ line/            # the voice line's brain
    │  ├─ careReflection/  # Care Chat providers: anthropic (default) · openai · none
    │  └─ nlVision/        # on-device signal simulation
    └─ styles/
@@ -152,15 +164,15 @@ To set it up on a fresh Vercel project:
 - Prioritizes within-person longitudinal observations over universal claims about autism
 - Rejects claims that AI or robots can understand, translate, or infer inner states with certainty
 
-## Care Agent (`/care-agent`)
+## Care Agent (inside Companion)
 
-A caregiver describes what is happening in Spanish, English or Swedish ("Leo se tapa los oídos, hay mucha gente en la cocina"). Three layers, in this order:
+The standalone `/care-agent` page was removed after the [2026-10-21 audit](docs/strategy/auditoria-2026-10-21.md); its engine runs inside Companion. A caregiver describes what is happening in Spanish, English or Swedish ("Leo se tapa los oídos, hay mucha gente en la cocina"). Three layers, in this order:
 
 1. **Claude interprets.** `src/lib/careProtocol/intentParser.ts` sends the text to Claude with a strict JSON schema and gets back only protocol settings: scenario, light/sound/distance targets, allowed commands, a one-sentence interpretation and a confidence level. Unknown or out-of-range values are discarded and the closest scenario preset fills the gap.
 2. **The deterministic planner decides.** `buildCarePlan()` turns those settings into the timed `planned_sequence`, the `care_command_protocol_v0` document and the four adapter packets (ROS2, MQTT, HTTP, offline). Claude never writes an envelope.
 3. **Safety exceptions cannot be skipped.** The preset's exceptions are a floor the model can only extend. A description of physical risk, self-injury or a medical emergency is caught locally before any network call (and by Claude as a second check): no automatic action is planned, only `notify_caregiver` and `log_observation`, with the message "This needs a person. If there is danger, call 112." (the number follows the caller's country: 112 in Sweden and the EU, 911 in the US and Mexico, 123 in Colombia, 999 in the UK, 000 in Australia; a generic line when unknown — `src/lib/emergency.ts`)
 
-Endpoint: `POST /api/protocol-from-text` with `{ text, lang, visionContext? }` (max 500 characters, 15 s timeout, the text is never logged). If Claude is unreachable the endpoint still answers from the presets and says so (`source: "fallback"`). The latest local NL-VISION snapshot is attached exactly as in the Care Room.
+Endpoint: `POST /api/protocol-from-text` with `{ text, lang, visionContext? }` (max 500 characters, 15 s timeout, the text is never logged). If Claude is unreachable the endpoint still answers from the presets and says so (`source: "fallback"`). The latest local NL-VISION snapshot is attached as context.
 
 ## Companion (`/companion`)
 
@@ -201,7 +213,7 @@ The library does not diagnose or prescribe. If there is danger, call your countr
 
 ## Product Status
 
-Focused development is active for the website, the local labs (NL-VISION, Robot Care Interface, Future Care Room), the care protocol engine, and research materials, under [Board Decision 002](docs/board/decision-002-adopt-care-intelligence-positioning.md).
+Focused development is active for the website, the voice line, Companion, Ask, the library, the person's record, the local labs (NL-VISION, Robot Care Interface, Pattern Notebook), the care protocol engine, and research materials, under [Board Decision 002](docs/board/decision-002-adopt-care-intelligence-positioning.md).
 
 Institutional pilots, clinical workflows, server-side features beyond the existing chat endpoint, and human validation remain gated by the evidence and approvals in `docs/board/reopen-criteria.md`.
 
